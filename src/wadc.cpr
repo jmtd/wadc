@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Project>
+    <SourceDirectories>
+        <Directory absolutePath="W:\wadc\src\" relativePath=""/>
+    </SourceDirectories>
+    <LibrarySourceDirectories/>
+    <LibraryClassDirectories/>
+    <DestinationDirectory absolutePath="W:\wadc\src\" relativePath=""/>
+    <WorkingDirectory absolutePath="W:\wadc\src\" relativePath=""/>
+    <Target absolutePath="W:\wadc\src\MainFrame.class"
+        java2DebugVmType="classic" relativePath="MainFrame.class"/>
+    <CompilerOptions showCompilerWarnings="true" showDeprecationWarnings="true"/>
+    <ResourceFilePattern>*.gif</ResourceFilePattern>
+    <BuildExclusionPattern>CVS</BuildExclusionPattern>
+</Project>
