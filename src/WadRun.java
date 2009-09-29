@@ -16,9 +16,9 @@ class WadRun {
   int lastsector = -1;
   int lastlastsector = -1;
   int curthingtype = 1;
-  int curfriendly = 0;
   int skill = 7;
   boolean mute = false;
+  boolean friendly = false;
   int curlinetype = 0;
   int curlinetag = 0;
   int cursectortype = 0;
@@ -261,7 +261,7 @@ class WadRun {
     }});
 
     builtin("friendly", 0, new Builtin() { Exp eval() {
-	  curfriendly ^= 1;
+	  friendly = !friendly;
       return n;
     }});
 
@@ -701,7 +701,7 @@ class WadRun {
     t.x = xp;
     t.y = yp;
     t.type = curthingtype;
-    t.opt = skill+(mute?8:0)+(curfriendly?0x80:0);
+    t.opt = skill+(mute?8:0)+(friendly?0x80:0);
     t.idx = things.size();
     t.angle = (-orient+3)*90;
     for(int i = 0; i<5; i++) t.specialargs[i] = curthingarg[i];
