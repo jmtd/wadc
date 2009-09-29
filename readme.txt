@@ -451,6 +451,11 @@ thing being added by using
 where type you have to take from uds.txt, or better still use
 monsters.h / pickups.h / decoration.h / spawns.h include files instead.
 
+	friendly
+
+toggles the 'friendly' flag of monsters. Friendly monsters are a Boom
+feature. 'friendly' defaults to off.
+
 	linetype(type,tag)
 
 Sets the current type & tag for lines being drawn. Needs to be reset to 0
