@@ -335,6 +335,11 @@ class WadRun {
       return n;
     }});
 
+    builtin("impassable", 0, new Builtin() { Exp eval() {
+      if((lineflags&0x01)==0) { lineflags |= 0x01; } else { lineflags &= ~0x01; };
+      return n;
+    }});
+
     builtin("sin", 1, new Builtin() { Exp eval(Exp a) {
       double d = (a.ival()*3.14159)/1800.0;
       return new Int((int)(Math.sin(d)*1024.0));
