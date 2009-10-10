@@ -7,7 +7,7 @@ public class Line {
   String t,m,b;
   int xoff, yoff;
   boolean undefx, undefy;
-  int flags = 1;
+  int flags = 0;
   int type = 0;
   int tag = 0;
   int specialargs[] = new int[5];
