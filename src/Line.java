@@ -11,7 +11,9 @@ public class Line {
   int type = 0;
   int tag = 0;
   int specialargs[] = new int[5];
+  boolean midtex = false;
   Line() { for(int i = 0; i<5; i++) specialargs[i] = 0; }
+  Line(boolean mt) { this(); midtex = mt; }
   void copyattrs(Line l, Vector sidesv) {
     if(l.right!=null) right = l.right.cloneadd(this,sidesv);
     if(l.left!=null) left = l.left.cloneadd(this,sidesv);
