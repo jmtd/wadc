@@ -115,8 +115,7 @@ public class Wad {
         writeShort(a.to.idx);
         if(a.right!=null) {
           a.flags |= 4;
-          a.flags &= 0xFFFE;
-          a.m = "-";
+          if(!a.midtex) a.m = "-";
         };
         writeShort(a.flags); // flags
         if(!wr.hexen) {

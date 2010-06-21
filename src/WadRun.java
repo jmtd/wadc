@@ -29,6 +29,7 @@ class WadRun {
   boolean undefy = false;
   int forcesec = -1;
   boolean hexen = false;
+  boolean midtex = false;
   int curlinearg[] = new int[5];
   int curthingarg[] = new int[5];
 
@@ -336,8 +337,18 @@ class WadRun {
       return n;
     }});
 
+    builtin("midtex", 0, new Builtin() { Exp eval() {
+	  midtex = !midtex;
+      return n;
+    }});
+
     builtin("unpegged", 0, new Builtin() { Exp eval() {
       if((lineflags&24)==0) { lineflags |= 24; } else { lineflags &= ~24; };
+      return n;
+    }});
+
+    builtin("impassable", 0, new Builtin() { Exp eval() {
+      if((lineflags&0x01)==0) { lineflags |= 0x01; } else { lineflags &= ~0x01; };
       return n;
     }});
 
@@ -613,7 +624,7 @@ class WadRun {
     if(from==to) {
       wp.error("line endpoints are identical?");
     };
-    Line l = new Line();
+    Line l = new Line(midtex);
     l.from = from;
     l.to = to;
     l.idx = lines.size();
