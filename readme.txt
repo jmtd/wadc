@@ -490,10 +490,13 @@ correct names and adding the wad to -file. Who knows in the future WadC may
 support a texture browser and automatic saving of custom textures, but it is not 
 a priority. bot/top/mid get assigned to both sidedefs upon creation of the 
 linedef (using step), floor/ceil are assigned when leftsector/rightsector is 
-executed. WadC automatically removes textures on doublesided linedefs upon 
-saving the wad, so currently there is no support for "fake walls" etc.
-The upside is that it is impossible to create a wad with missing texture HOMs
-(unless you go about assigning "-" manually). 
+executed.
+
+By default, WadC automatically removes textures on doublesided linedefs.
+You can toggle this on and off using the 'midtex' command:
+
+    midtex
+
 Tip: wrap all your texture uses in a function:
 
     lite5 { mid("LITE5") }
