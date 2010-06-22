@@ -506,6 +506,10 @@ back to 0 when done.
 
 sets both lower & upper unpegged. calling it again resets to normal.
 
+    impassable
+
+By default, two-sided lines are passable. Setting 'impassable' prevents this.
+
 	arch(height,width,depth,subdivision,floor,lightlevel)
 
 (experimental) makes an arch, of a certain base height, starting at a certain floor
