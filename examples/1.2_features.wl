@@ -2,6 +2,9 @@
 #"monsters.h"
 #"pickups.h"
 
+-- 1.2_features.wl: demonstrate the new features in WadC 1.2:
+-- midtex, impassable and friendly
+
 main {
   thing movestep(-64,-64)
   box(0,192,160,512,add(256,128))
