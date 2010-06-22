@@ -158,7 +158,7 @@ public class MainFrame extends Frame {
       prj.close();
       msg("wrote file "+name);
     } catch(IOException i) {
-      msg("saving file "+name+" unsuccesful");
+      msg("saving file "+name+" unsuccessful");
     };
   }
 
