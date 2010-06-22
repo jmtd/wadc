@@ -1,10 +1,22 @@
-WadC ("Wad Compiler") by Aardappel
+WadC ("Wad Compiler")
 
+Current maintainer: Jon Dowland
+jon+wadc@alcopop.org
+http://jmtd.net/computing/software/wadc/
+
+Originally by Aardappel
 http://wouter.fov120.com/wadc/
 wouter@fov120.com
 
 version history:
 ================
+1.2
+---
+* First release by Jon Dowland.
+* Doom features:
+  - friendly flag - toggle boom friendly monsters
+  - impassable flag - toggle impassable 2s lines
+  - midtex flag - toggle middle-textures on 2s lines
 1.1
 ---
 * Doom features:
