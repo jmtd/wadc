@@ -28,9 +28,9 @@ public class Wad {
       long dpos = f.getFilePointer();
       writedir("MAP01",0);
       writedir("THINGS",tsize);
-      writedir("VERTEXES",vsize);
       writedir("LINEDEFS",lsize);
       writedir("SIDEDEFS",dsize);
+      writedir("VERTEXES",vsize);
       writedir("SECTORS",ssize);
       if(wr.hexen) writedir("BEHAVIOR", bsize);
       f.seek(8);
