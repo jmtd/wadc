@@ -92,6 +92,13 @@ tekwall4 { top("TEKWALL4") }
 midtek { mid("TEKWALL6") }
 tekwall6 { top("TEKWALL6") }
 
+tekwall(len,type) {
+	eq(type,0) ? tekgren2 : tekgren4 
+	lessthaneq(len,64)
+		? straight(len)
+		: straight(64)
+		  tekwall(sub(len,64), type ? 0 : 1)
+}
 
 main {
 
@@ -269,22 +276,10 @@ main {
   xoff(16)
   straight(48)
   xoff(0)
-  tekgren5
-  straight(64)
-  tekgren2
-  straight(64)
-  tekgren5
-  straight(64)
-  tekgren2
-  straight(64)
-  tekgren5
-  straight(64)
+  tekwall(mul(5,64), 0)
   tekgren4
   right(64)
-  tekgren2
-  straight(64)
-  tekgren5
-  straight(64)
+  tekwall(128,1)
   tekgren3
   straight(64)
   unpegged
