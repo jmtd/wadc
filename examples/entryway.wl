@@ -175,11 +175,11 @@ main {
   sky
   midbars3 -- Not appearing in map
   bronze2
-  unpegged
+  unpegged impassable midtex
   step(128,-128)
   step(192,64)
   right(64)
-  unpegged
+  unpegged impassable midtex
   browngrn
   right(128)
   straight(192)
