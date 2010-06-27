@@ -288,34 +288,17 @@ main {
   unpegged
   tekgren3
   straight(64)
-  tekgren2
-  straight(64)
-  tekgren5
-  straight(64)
-  tekgren2
-  straight(64)
+  tekwall(mul(3,64),0)
   unpegged
   tekwall6
   right(128)
   unpegged
   right(64)
   straight(128)
-  tekgren2
-  straight(64)
-  tekgren5
-  straight(64)
-  tekgren2
-  straight(64)
-  tekgren5
-  straight(64)
-  tekgren2
-  straight(64)
+  tekwall(mul(5,64), 0)
   tekgren5
   left(64)
-  tekgren2
-  straight(64)
-  tekgren5
-  straight(64)
+  tekwall(128,0)
   tekgren2
   straight(48)
   support2
@@ -325,14 +308,7 @@ main {
   rightsector(56,128,224)
 
   movestep(-256,-448)
-  tekgren2
-  straight(64)
-  tekgren5
-  straight(64)
-  tekgren2
-  straight(64)
-  tekgren5
-  straight(64)
+  tekwall(256,0)
   right(128)
   tekgren5
   right(64)
