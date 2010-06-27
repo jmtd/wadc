@@ -173,7 +173,7 @@ main {
   movestep(128,320)
   turnaround
   sky
-  midbars3 -- Not appearing in map
+  midbars3
   bronze2
   unpegged impassable midtex
   step(128,-128)
@@ -570,8 +570,8 @@ main {
   straight(-512)
   straight(-64)
   step(-128,-64)
-  brnsmal1 -- Not appearing in map
-  left(64)
+  impassable midtex brnsmal1
+  left(64) impassable midtex
   ashwall3
   straight(192)
   linetype(1,0)
@@ -750,7 +750,7 @@ main {
   ceil5_2
   floor5_2
   straight(-16)
-  left(192)
+  impassable left(192) impassable
   right(16)
   rightsector(96,192,176)
 
