@@ -197,7 +197,8 @@ main {
   mid("TEKGREN3") 
   straight(64)
   unpegged
-  top("TEKWALL4") 
+  top("TEKWALL4")
+  !northcorridor
   straight(128)
   unpegged
   mid("TEKGREN3") 
@@ -208,6 +209,7 @@ main {
   right(128)
   unpegged
   right(64)
+  !southcorridor1
   straight(128)
   tekwall(mul(5,64), 0)
   mid("TEKGREN5") 
@@ -220,29 +222,16 @@ main {
   straight(16)
   xoff(0)
   rightsector(56,128,224)
-
-  movestep(-256,-448)
+ 
+  ^southcorridor1 rotleft
   tekwall(256,0)
-  right(128)
-  mid("TEKGREN5") 
-  right(64)
-  mid("TEKGREN2") 
-  straight(64)
-  mid("TEKGREN5") 
-  straight(64)
-  mid("TEKGREN2") 
-  straight(64)
+  !southcorridor2
+  right(128) rotright
+  tekwall(256, 1)
   rightsector(56,128,224)
   
-  movestep(-256,128)
-  turnaround
-  straight(64)
-  mid("TEKGREN5") 
-  straight(64)
-  mid("TEKGREN2") 
-  straight(64)
-  mid("TEKGREN5") 
-  straight(64)
+  ^southcorridor2 
+  tekwall(256,0)
   mid("TEKGREN2") 
   straight(48)
   mid("SUPPORT2") 
@@ -273,7 +262,7 @@ main {
   straight(64)
   rightsector(56,128,224)
 
-  movestep(384,-192)
+  ^northcorridor rotleft
   mid("TEKGREN2") 
   straight(128)
   top("BIGDOOR1") 
