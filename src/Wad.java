@@ -20,9 +20,9 @@ public class Wad {
       writeInt(wr.hexen ? 7 : 6);  // numentries
       writeInt(12); // dir offset
       int tsize = writethings();
-      int vsize = writevertices();
       int lsize = writelines();
       int dsize = writesides();
+      int vsize = writevertices();
       int ssize = writesectors();
       int bsize = writebehaviour();
       long dpos = f.getFilePointer();
