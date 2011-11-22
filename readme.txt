@@ -17,6 +17,9 @@ version history:
   - friendly flag - toggle boom friendly monsters
   - impassable flag - toggle impassable 2s lines
   - midtex flag - toggle middle-textures on 2s lines
+* new examples:
+  - 1.2_features.wl - demo the new features above
+  - entryway.wl - a recreation of Doom 2 MAP01 in WadC, thanks GreyGhost
 1.1
 ---
 * Doom features:
