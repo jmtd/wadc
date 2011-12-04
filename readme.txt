@@ -2,7 +2,7 @@ WadC ("Wad Compiler")
 
 Current maintainer: Jon Dowland
 jon+wadc@alcopop.org
-http://jmtd.net/computing/software/wadc/
+http://jmtd.net/wadc/
 
 Originally by Aardappel
 http://wouter.fov120.com/wadc/
