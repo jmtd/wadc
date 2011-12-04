@@ -1,0 +1,2 @@
+default:
+	javac src/*.java
