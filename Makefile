@@ -3,3 +3,5 @@ default:
 
 clean:
 	rm src/*.class
+
+.PHONY: clean
