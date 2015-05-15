@@ -312,7 +312,7 @@ class MyCanvas extends Canvas {
       public void mouseReleased(MouseEvent e) {
         Graphics g = c.getGraphics();
         if(mf.lastwp!=null) {
-          if(e.isPopupTrigger()) {
+          if(e.getButton() != MouseEvent.BUTTON1) {
             mf.lastwp.wr.zoom(e.getX(),e.getY(),2.0f);
           } else if((e.getModifiers()&MouseEvent.CTRL_MASK)!=0) {
              mf.lastwp.wr.addstep(e.getX(),e.getY(),'L');
