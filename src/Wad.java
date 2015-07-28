@@ -36,7 +36,7 @@ public class Wad {
       f.seek(8);
       writeInt((int)dpos);
       f.close();
-      mf.msg("wrote wad succesfully");
+      mf.msg("wrote wad successfully");
     } catch(IOException i) {
       mf.msg("saving wad unsuccesful");
     };

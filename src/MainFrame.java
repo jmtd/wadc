@@ -250,7 +250,7 @@ public class MainFrame extends Frame {
     run(e);
     String wadfile = null;
     if(lastwp==null || lastwp.err!=null) {
-      //msg("wadsave: can only save wad after program has been run succesfully");
+      //msg("wadsave: can only save wad after program has been run successfully");
     } else {
       save(e);
       wadfile = basename.substring(0,basename.lastIndexOf('.'))+".wad";
