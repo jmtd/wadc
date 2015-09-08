@@ -392,6 +392,12 @@ class WadRun {
       return n;
     }});
 
+    builtin("die", 1, new Builtin() { Exp eval(Exp s) {
+      wp.mf.msg(s.show());
+      wp.error("died");
+      return n;
+    }});
+
     builtin("lastfile", 1, new Builtin() { Exp eval(Exp s) {
       wp.mf.basename = s.sval();
       return n;
