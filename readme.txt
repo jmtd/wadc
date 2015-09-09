@@ -1,15 +1,27 @@
 WadC ("Wad Compiler")
 
-Current maintainer: Jon Dowland
+Current maintainer: Jonathan Dowland
 jon+wadc@alcopop.org
 http://jmtd.net/wadc/
 
 Originally by Aardappel
-http://wouter.fov120.com/wadc/
-wouter@fov120.com
+http://strlen.com/wadc/
+aardappelatgmaildotcom
 
 version history:
 ================
+
+UNRELEASED
+---
+* bug fixes:
+  - Fix map view zooming with mouse clicks on non-Windows platforms.
+* language features:
+  - new built-in die("string"): prints string, then terminates.
+  - new built-in cat(a, b): concatenates a and b
+  - Texture manipulation with texture / newpatch
+* library additions:
+  - lisp.wl, lisp-style lists (broken out from examples/lisp.wl)
+
 1.2
 ---
 * First release by Jon Dowland.
@@ -20,6 +32,7 @@ version history:
 * new examples:
   - 1.2_features.wl - demo the new features above
   - entryway.wl - a recreation of Doom 2 MAP01 in WadC, thanks GreyGhost
+
 1.1
 ---
 * Doom features:
@@ -787,3 +800,24 @@ runtime errors:
   detect wether something is inside or outside, and this will only show
   up when defining an adjoining sector.
 
+Custom textures
+===============
+
+There is some basic experimental support for defining new textures.
+
+    texture("name", 64, 128)
+    addpatch("RW24_2", 0, 0)
+
+"texture" either starts a new texture definition, with the name "name"
+(first argument), width 64 and height 128.
+
+"addpatch" adds a patch onto the currently selected texture. It must be
+called after at least one call to "texture'. The first argument names
+the patch to be added, and the second two arguments define the x and y
+offsets of the patch inside the texture.
+
+You can switch between texture definitions by calling "texture" with
+the same name again.
+
+If you define at least one texture, the output WAD will contain the
+definitions in a TEXTURE2 lump.
