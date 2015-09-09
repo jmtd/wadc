@@ -46,6 +46,9 @@ public class WadParse {
   MainFrame mf;
   Hashtable includes = new Hashtable();
 
+  Hashtable<String,Texture> textures = new Hashtable<String,Texture>();
+  Texture current_texture = null;
+
   WadRun wr = new WadRun(this);
 
   void error(String s) { throw new Error(s); }
@@ -262,6 +265,19 @@ public class WadParse {
 
   void run() { wr.run(); };
 
+  void setTexture(String s, int w, int h) {
+      Texture t = textures.get(s);
+      if(null == t) {
+          t = new Texture(s,w,h);
+          textures.put(s,t);
+      }
+      current_texture = t;
+  }
+
+  void addPatch(String n, int x, int y) {
+      if(null != current_texture) {
+          current_texture.patches.add(new Patch(n, x, y));
+      }
+  }
+
 }
-
-

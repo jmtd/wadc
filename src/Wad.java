@@ -15,9 +15,12 @@ public class Wad {
     mf = m;
     mf.msg("writing wad to "+filename);
     try {
+      int numentries = wr.hexen ? 7 : 6;
+      if(!w.textures.isEmpty()) numentries++;
+
       f = new RandomAccessFile(filename,"rw");
       f.writeBytes("PWAD");
-      writeInt(wr.hexen ? 7 : 6);  // numentries
+      writeInt(numentries);
       writeInt(12); // dir offset
       int tsize = writethings();
       int lsize = writelines();
@@ -25,6 +28,7 @@ public class Wad {
       int vsize = writevertices();
       int ssize = writesectors();
       int bsize = writebehaviour();
+      int texsize = writetextures();
       long dpos = f.getFilePointer();
       writedir("MAP01",0);
       writedir("THINGS",tsize);
@@ -33,6 +37,7 @@ public class Wad {
       writedir("VERTEXES",vsize);
       writedir("SECTORS",ssize);
       if(wr.hexen) writedir("BEHAVIOR", bsize);
+      if(!w.textures.isEmpty()) writedir("TEXTURE2", texsize);
       f.seek(8);
       writeInt((int)dpos);
       f.close();
@@ -195,5 +200,41 @@ public class Wad {
     if(wr.hexen) f.write(data);
     return 16;
   };
+
+  int writetextures() throws IOException {
+    int i, size, offset = 0;
+    if(wp.textures.isEmpty()) return 0;
+
+    writeInt(wp.textures.size());
+    size = 4;
+
+    // array of offsets to the textures (4*numtex)
+    // offsets are relative to the start of THIS lump
+    offset = 4 + wp.textures.size() * 4;
+    for(i = 0; i < wp.textures.size(); ++i) {
+      writeInt(offset);
+      size += 4; offset += 4;
+    }
+
+    for( Texture tex : wp.textures.values() ) {
+      size += 8; string(tex.name);
+      size += 4; writeInt(0); // garbage
+      size += 2; writeShort(tex.width);
+      size += 2; writeShort(tex.height);
+      size += 4; writeInt(0); // garbage
+      size += 2; writeShort(tex.patches.size());
+
+      for( Patch p : tex.patches ) {
+        writeShort(p.xoff); // 2 originx
+        writeShort(p.yoff); // 2 originy
+        writeShort(1);      // XXX: 2 patch number (need to read PNAMES!)
+        writeShort(0);      // 2 garbage
+        writeShort(0);      // 2 garbage
+        size += 10;
+      }
+    }
+    return size;
+  }
+
 }
 

@@ -379,6 +379,16 @@ class WadRun {
       return new Int(a.ival()/b.ival());
     }});
 
+    builtin("texture", 3, new Builtin() { Exp eval(Exp s, Exp w, Exp h) {
+        wp.setTexture(s.sval(), w.ival(), h.ival());
+        return n;
+    }});
+
+    builtin("addpatch", 3, new Builtin() { Exp eval(Exp s, Exp x, Exp y) {
+        wp.addPatch(s.sval(), x.ival(), y.ival());
+        return n;
+    }});
+
     builtin("eq", 2, new Builtin() { Exp eval(Exp a, Exp b) {
       return new Int(a.ival()==b.ival()?1:0);
     }});
