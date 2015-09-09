@@ -392,6 +392,10 @@ class WadRun {
       return n;
     }});
 
+    builtin("cat", 2, new Builtin() { Exp eval(Exp a, Exp b) {
+      return new Str(a.sval() + b.sval());
+    }});
+
     builtin("die", 1, new Builtin() { Exp eval(Exp s) {
       wp.mf.msg(s.show());
       wp.error("died");
