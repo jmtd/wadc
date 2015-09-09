@@ -1,0 +1,102 @@
+wadc tutorial
+
+first, basic thing
+
+box room, player start, how to move around w/o drawing a line
+
+    main {
+          pushpop( movestep(32,32) thing)
+          box(128,128,0,128,128)
+    }
+
+introduce user-defined functions for abstraction/reuse
+
+    boring {
+          box(128,128,0,128,128)
+    }
+    main {
+          pushpop(movestep(32,32) thing)
+            boring
+    }
+
+try repeating the use of the function:
+
+    main {
+          pushpop(movestep(32,32) thing)
+            boring
+            boring
+    }
+
+didn't work: the second box is trying to overdraw on the first. Add a move:
+
+    boring {
+          box(128,128,0,128,128)
+          move(128)
+    }
+
+Let's try another routine. bear in mind starting location is bottom-left corner
+
+    corridor {
+          movestep(0,32)
+          box(0,128,128,128,64)
+          move(128)
+    }
+
+looks ok on ui but overdraw bug. tweak routine to draw in a different order
+(Backwards)
+
+    corridor {
+          movestep(128,96)
+          turnaround
+          box(0,128,128,128,64)
+          turnaround
+          movestep(0,-96)
+    }
+
+Works now.  Another room type, a bend
+
+    leftturn {
+          movestep(96,96)
+          turnaround
+          box(0,128,128,96,64)
+          movestep(0,64)
+          box(0,128,128,64,32)
+          rotright
+          movestep(32,-96)
+    }
+
+dev tip: when developing something like this, if you get lost, 
+try putting straight(64) in places to see where the cursor is
+at that point in time
+
+time for randomroom!
+
+    randomroom {
+          boring | corridor | leftturn
+    }
+
+try chaining it!
+
+    main {
+        for(1, 5, randomroom)
+    }
+
+refresh a load of times.  eventually, you will hit a situation where one
+of the rooms tries to draw into the space occupied by another.
+
+let's review our "contract" for these rooms:
+
+ * each room draws from bottom-left and puts cursor in place for next block
+   to be run immediately after
+ * each room self contained in 128x128
+
+(we also need to agree on where the join points are. this is a bit loose.)
+
+we need to implement a blockmap:
+2d coordinate of 128x128 blocks, (x,y) starting 0,0 and growing vertically/right
+
+each room will check to see whether the 'block' it's going into is occupied
+or not, and either bail out, or draw and then mark that block as occupied
+
+(at this point look at lisp.wl in examples; this will be a building block for
+our blockmap)
