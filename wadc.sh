@@ -2,5 +2,4 @@
 set -u
 set -e
 
-cd src
-java MainFrame
+java -jar wadc.jar
