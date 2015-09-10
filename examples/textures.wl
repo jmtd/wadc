@@ -25,11 +25,14 @@ main {
     -- onto them (the WINUMx menu graphics)
     set("i", 0)
     for(0, 9,
-      texture(cat("LOL", get("i")), 128, 128)
+      texture(cat("LOL", get("i")), 64, 128)
       addpatch("RW24_2", 0, 0)
-      newpatch(cat("WINUM",get("i")))
       addpatch(cat("WINUM",get("i")), 32, 0)
-      print(get("i"))
       inc("i")
     )
+
+    -- a room so we can see this in DOOM
+    pushpop(movestep(32,32) thing)
+    mid("LOL3")
+    box(0, 128, 140, 256, 256)
 }
