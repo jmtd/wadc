@@ -821,3 +821,6 @@ the same name again.
 
 If you define at least one texture, the output WAD will contain the
 definitions in a TEXTURE2 lump.
+
+If you have defined any new patch names, a modified PNAMES lump is
+also written to the output WAD.
