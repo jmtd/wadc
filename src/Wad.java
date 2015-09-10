@@ -19,6 +19,7 @@ public class Wad {
     try {
       int numentries = wr.hexen ? 7 : 6;
       if(!w.textures.isEmpty()) numentries++;
+      if(!w.patches.isEmpty()) numentries++;
 
       f = new RandomAccessFile(filename,"rw");
       f.writeBytes("PWAD");
@@ -31,6 +32,7 @@ public class Wad {
       int ssize = writesectors();
       int bsize = writebehaviour();
       int texsize = writetextures();
+      int psize = writepnames();
       long dpos = f.getFilePointer();
       writedir("MAP01",0);
       writedir("THINGS",tsize);
@@ -40,12 +42,13 @@ public class Wad {
       writedir("SECTORS",ssize);
       if(wr.hexen) writedir("BEHAVIOR", bsize);
       if(!w.textures.isEmpty()) writedir("TEXTURE2", texsize);
+      if(!w.patches.isEmpty()) writedir("PNAMES", psize);
       f.seek(8);
       writeInt((int)dpos);
       f.close();
       mf.msg("wrote wad successfully");
     } catch(IOException i) {
-      mf.msg("saving wad unsuccesful");
+      mf.msg("saving wad unsuccessful");
     };
   }
 
@@ -208,6 +211,7 @@ public class Wad {
     if(wp.textures.isEmpty()) return 0;
 
     readPnames();
+    addNewPatches();
 
     writeInt(wp.textures.size());
     size = 4;
@@ -283,5 +287,24 @@ public class Wad {
         }
         iwad.close();
     }
+
+  // add any new patch definitions to the end of the list
+  void addNewPatches() {
+    for(String pname : wp.patches) {
+      pnames.put(pname, pnames.size());
+    }
+  }
+
+  int writepnames() throws IOException {
+    String sPnames [] = new String[pnames.size()];
+    for(String key : pnames.keySet()) {
+      sPnames[pnames.get(key)] = key;
+    }
+    writeInt(pnames.size());
+    for(String p : sPnames) {
+      string(p);
+    }
+    return 4 + 8 * pnames.size();
+  }
 
 }

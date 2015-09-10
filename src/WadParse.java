@@ -49,6 +49,9 @@ public class WadParse {
   Hashtable<String,Texture> textures = new Hashtable<String,Texture>();
   Texture current_texture = null;
 
+  // new patch definitions
+  ArrayList<String> patches = new ArrayList<String>();
+
   WadRun wr = new WadRun(this);
 
   void error(String s) { throw new Error(s); }
@@ -278,6 +281,10 @@ public class WadParse {
       if(null != current_texture) {
           current_texture.patches.add(new Patch(n, x, y));
       }
+  }
+
+  void newPatch(String n) {
+      patches.add(n);
   }
 
 }
