@@ -46,7 +46,7 @@ public class WadParse {
   MainFrame mf;
   Hashtable includes = new Hashtable();
 
-  Hashtable<String,Texture> textures = new Hashtable<String,Texture>();
+  TreeMap<String,Texture> textures = new TreeMap<String,Texture>();
   Texture current_texture = null;
 
   // new patch definitions
