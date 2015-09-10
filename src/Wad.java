@@ -10,6 +10,7 @@ public class Wad {
   int curlumppos = 12;
   boolean linewarn = true;
   Hashtable<String, Integer> pnames= new Hashtable<String, Integer>();
+  boolean write_pnames = false;
 
   Wad(WadParse w, MainFrame m, String filename) {
     wp = w;
@@ -17,9 +18,13 @@ public class Wad {
     mf = m;
     mf.msg("writing wad to "+filename);
     try {
+
+      readPnames();
+      findNewPatches();
+
       int numentries = wr.hexen ? 7 : 6;
       if(!w.textures.isEmpty()) numentries++;
-      if(!w.patches.isEmpty()) numentries++;
+      if(write_pnames) numentries++;
 
       f = new RandomAccessFile(filename,"rw");
       f.writeBytes("PWAD");
@@ -42,7 +47,7 @@ public class Wad {
       writedir("SECTORS",ssize);
       if(wr.hexen) writedir("BEHAVIOR", bsize);
       if(!w.textures.isEmpty()) writedir("TEXTURE2", texsize);
-      if(!w.patches.isEmpty()) writedir("PNAMES", psize);
+      if(write_pnames) writedir("PNAMES", psize);
       f.seek(8);
       writeInt((int)dpos);
       f.close();
@@ -210,9 +215,6 @@ public class Wad {
     int size, offset = 0;
     if(wp.textures.isEmpty()) return 0;
 
-    readPnames();
-    addNewPatches();
-
     writeInt(wp.textures.size());
     size = 4;
 
@@ -234,13 +236,7 @@ public class Wad {
       size += 2; writeShort(tex.patches.size());
 
       for( Patch p : tex.patches ) {
-          int pnum = 0;
-          Integer opnum = pnames.get(p.name);
-          if(null == opnum) {
-              System.err.println("WTF no patch num for " + p.name);
-          } else {
-              pnum = opnum; // auto-unbox?
-          }
+        int pnum = pnames.get(p.name);
         writeShort(p.xoff); // 2 originx
         writeShort(p.yoff); // 2 originy
         writeShort(pnum);   // patch number
@@ -288,10 +284,15 @@ public class Wad {
         iwad.close();
     }
 
-  // add any new patch definitions to the end of the list
-  void addNewPatches() {
-    for(String pname : wp.patches) {
-      pnames.put(pname, pnames.size());
+  // check for any patches used not in the IWAD
+  void findNewPatches() {
+    for( Texture tex : wp.textures.values() ) {
+      for( Patch p : tex.patches ) {
+        if(null == pnames.get(p.name)) {
+          write_pnames = true;
+          pnames.put(p.name, pnames.size());
+        }
+      }
     }
   }
 
