@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class Wad {
   WadParse wp;
@@ -8,6 +9,7 @@ public class Wad {
   RandomAccessFile f;
   int curlumppos = 12;
   boolean linewarn = true;
+  Hashtable<String, Integer> pnames= new Hashtable<String, Integer>();
 
   Wad(WadParse w, MainFrame m, String filename) {
     wp = w;
@@ -202,8 +204,10 @@ public class Wad {
   };
 
   int writetextures() throws IOException {
-    int i, size, offset = 0;
+    int size, offset = 0;
     if(wp.textures.isEmpty()) return 0;
+
+    readPnames();
 
     writeInt(wp.textures.size());
     size = 4;
@@ -211,9 +215,10 @@ public class Wad {
     // array of offsets to the textures (4*numtex)
     // offsets are relative to the start of THIS lump
     offset = 4 + wp.textures.size() * 4;
-    for(i = 0; i < wp.textures.size(); ++i) {
+    for( Texture tex : wp.textures.values() ) {
       writeInt(offset);
-      size += 4; offset += 4;
+      size += 4;
+      offset += (22 + 10 * tex.patches.size());
     }
 
     for( Texture tex : wp.textures.values() ) {
@@ -225,16 +230,58 @@ public class Wad {
       size += 2; writeShort(tex.patches.size());
 
       for( Patch p : tex.patches ) {
+          int pnum = 0;
+          Integer opnum = pnames.get(p.name);
+          if(null == opnum) {
+              System.err.println("WTF no patch num for " + p.name);
+          } else {
+              pnum = opnum; // auto-unbox?
+          }
         writeShort(p.xoff); // 2 originx
         writeShort(p.yoff); // 2 originy
-        writeShort(1);      // XXX: 2 patch number (need to read PNAMES!)
-        writeShort(0);      // 2 garbage
-        writeShort(0);      // 2 garbage
+        writeShort(pnum);   // patch number
+        writeInt(0);        // 4 garbage
         size += 10;
       }
     }
     return size;
   }
 
-}
+  void readPnames() throws IOException {
+        byte[] pnamestr = "PNAMES\0\0".getBytes();
+        int doffs, dsize;
+        int poffs = 0, numps;
 
+        RandomAccessFile iwad = new RandomAccessFile(mf.iwad, "r");
+        iwad.seek(4);
+        dsize = Integer.reverseBytes(iwad.readInt());
+        doffs = Integer.reverseBytes(iwad.readInt());
+
+        // find the PNAMES lump
+        iwad.seek(doffs);
+        for(int i = 0; i < dsize; ++i) {
+            byte[] name = new byte[8];
+            int pos  = Integer.reverseBytes(iwad.readInt());
+            int size = Integer.reverseBytes(iwad.readInt());
+            iwad.read(name);
+
+            if(Arrays.equals(pnamestr, name)) {
+                poffs = pos;
+                break;
+            }
+        }
+        if(0 == poffs) { // XXX: handle ERROR
+        }
+
+        // read in the PNAMES
+        iwad.seek(poffs);
+        numps = Integer.reverseBytes(iwad.readInt());
+        for(int i = 0; i < numps; ++i) {
+            byte[] name = new byte[8];
+            iwad.read(name);
+            pnames.put((new String(name, StandardCharsets.US_ASCII)).replaceAll("\0",""), i);
+        }
+        iwad.close();
+    }
+
+}
