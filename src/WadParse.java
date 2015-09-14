@@ -28,6 +28,8 @@ potential todos:
 
 import java.awt.*;
 import java.util.*;
+import java.io.InputStream;
+import java.io.IOException;
 
 public class WadParse {
   int linenum = 1;
@@ -128,13 +130,29 @@ public class WadParse {
     }
   }
 
+  /*
+   * resolve an include directive to a file inside the Jar.
+   * XXX: we should first check CWD/<path> and use that if it exists
+   */
+  String loadinclude(String name) {
+        String ret = "";
+        byte[] foo = new byte[4096];
+        InputStream input = getClass().getResourceAsStream("/include/"+name);
+        try {
+            input.read(foo, 0, 4096); // XXX: while...
+            ret += new String(foo, "UTF-8");
+        } catch(IOException e) {
+            mf.msg("couldn't load " + name);
+        } // XXX: failing to resolve the path is a NullPointerException
+        return ret;
+  }
+
   void attachinclude() {
     lex();
     if(token!='\"') error("filename expected");
     if(includes.get(sinfo)==null) {
       includes.put(sinfo,sinfo);
-      String fn = "../include/"+sinfo;
-      buf = buf.substring(0,buf.length()-1)+mf.loadtextfile(fn)+'\0';
+      buf = buf.substring(0,buf.length()-1) + loadinclude(sinfo) +'\0';
     };
     lex();
   }
