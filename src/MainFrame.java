@@ -138,8 +138,16 @@ public class MainFrame extends Frame {
     pack();
     show();
     newfile(null);
-    WadParse prefs = new WadParse(loadtextfile("wadc.cfg"),this);
-    if(prefs.err==null) prefs.run();
+
+    String cfg = loadtextfile("wadc.cfg");
+    if("".equals(cfg)) {
+        // if we couldn't read wadc.cfg, write out a default
+        savecfg();
+    } else {
+        WadParse prefs = new WadParse(cfg, this);
+        if(prefs.err==null) prefs.run();
+    }
+
     String lf = loadtextfile(basename);
     if(lf.length()>0) { textArea1.setText(lf); } else { newfile(null); };
   }
@@ -208,8 +216,7 @@ public class MainFrame extends Frame {
     changed = false;
   }
 
-  void quit(ActionEvent e) {
-    if(changed) saveas(e);
+  void savecfg() {
     savetextfile("wadc.cfg",
       "-- wadc config file\n\n" +
       "main {\n" +
@@ -222,6 +229,11 @@ public class MainFrame extends Frame {
       "  twad3(\"" + twad3 + "\")\n" +
       "}\n"
     );
+  }
+
+  void quit(ActionEvent e) {
+    if(changed) saveas(e);
+    savecfg();
     System.exit(1);
   }
 
