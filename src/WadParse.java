@@ -30,6 +30,11 @@ import java.awt.*;
 import java.util.*;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.file.LinkOption;
 
 public class WadParse {
   int linenum = 1;
@@ -132,19 +137,40 @@ public class WadParse {
 
   /*
    * resolve an include directive to a file inside the Jar.
-   * XXX: we should first check CWD/<path> and use that if it exists
    */
-  String loadinclude(String name) {
+  String loadIncludeFromJar(String name) {
         String ret = "";
         byte[] foo = new byte[4096];
         InputStream input = getClass().getResourceAsStream("/include/"+name);
+        if(null == input) {
+            return ret;
+        }
         try {
             input.read(foo, 0, 4096); // XXX: while...
             ret += new String(foo, "UTF-8");
         } catch(IOException e) {
             mf.msg("couldn't load " + name);
-        } // XXX: failing to resolve the path is a NullPointerException
+        }
         return ret;
+  }
+
+  String loadinclude(String name) {
+      ArrayList<String> l = new ArrayList<String>();
+      Path p = Paths.get(mf.basename).getParent();
+      p = Paths.get(p.toString(), name);
+
+      if(! Files.isRegularFile(p)) {
+          return loadIncludeFromJar(name);
+      }
+
+      try {
+        Files.lines(p).forEach(line -> l.add(line));
+
+      } catch(IOException i) {
+        mf.msg("couldn't load file "+name);
+      };
+
+      return String.join("\n", l);
   }
 
   void attachinclude() {

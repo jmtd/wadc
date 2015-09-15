@@ -206,7 +206,8 @@ public class MainFrame extends Frame {
 
   void newfile(ActionEvent e) {
     textArea1.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
-    basename = "../examples/untitled.wl";
+    // XXX: nasty hack to ensure basename is always a FQ path
+    basename = new File(System.getProperty("user.home"), "untitled.wl").toString();
   }
 
   void open(ActionEvent e) {
