@@ -139,7 +139,7 @@ public class MainFrame extends Frame {
     show();
     newfile(null);
 
-    String cfg = loadtextfile("wadc.cfg");
+    String cfg = getPrefs();
     if("".equals(cfg)) {
         // if we couldn't read wadc.cfg, write out a default
         savecfg();
@@ -185,6 +185,25 @@ public class MainFrame extends Frame {
     return "";
   }
 
+  String getPrefs() {
+      String prefDir = System.getProperty("user.home") + File.separator + ".wadc";
+      return loadtextfile(prefDir + File.separator + "wadc.cfg");
+  }
+
+  void setPrefs(String prefs) {
+      String prefDir = System.getProperty("user.home") + File.separator + ".wadc";
+      File f = new File(prefDir);
+
+      if(!f.exists() && !f.mkdir()) {
+          msg("couldn't create " + prefDir + ", saving configuration unsuccessful");
+      }
+      if(f.exists() && !f.isDirectory()) {
+          msg(prefDir + " exists but is not a directory, saving configuration unsuccessful");
+      }
+
+      savetextfile(prefDir + File.separator + "wadc.cfg", prefs);
+  }
+
   void newfile(ActionEvent e) {
     textArea1.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
     basename = "../examples/untitled.wl";
@@ -217,7 +236,7 @@ public class MainFrame extends Frame {
   }
 
   void savecfg() {
-    savetextfile("wadc.cfg",
+    setPrefs(
       "-- wadc config file\n\n" +
       "main {\n" +
       "  lastfile(\"" + basename + "\")\n" +
