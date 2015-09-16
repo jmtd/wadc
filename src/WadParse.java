@@ -139,19 +139,25 @@ public class WadParse {
    * resolve an include directive to a file inside the Jar.
    */
   String loadIncludeFromJar(String name) {
-        String ret = "";
-        byte[] foo = new byte[4096];
-        InputStream input = getClass().getResourceAsStream("/include/"+name);
-        if(null == input) {
-            return ret;
-        }
-        try {
-            input.read(foo, 0, 4096); // XXX: while...
-            ret += new String(foo, "UTF-8");
-        } catch(IOException e) {
-            mf.msg("couldn't load " + name);
-        }
-        return ret;
+    String ret = "";
+    byte[] foo = new byte[4096];
+    InputStream input = getClass().getResourceAsStream("/include/"+name);
+
+    if(null == input)
+      return ret;
+
+    try {
+      // holy smokes this sucks.
+      int len;
+      do {
+        len = input.read(foo);
+        if(len > 0) ret += new String(Arrays.copyOfRange(foo, 0, len - 1), "UTF-8");
+      } while(0 < len);
+
+    } catch(IOException e) {
+        mf.msg("couldn't load " + name);
+    }
+    return ret;
   }
 
   String loadinclude(String name) {
@@ -160,7 +166,10 @@ public class WadParse {
       p = Paths.get(p.toString(), name);
 
       if(! Files.isRegularFile(p)) {
+          mf.msg("trying to resolve " + name + " via jar...");
           return loadIncludeFromJar(name);
+      } else {
+          mf.msg("resolving " + name + " as file");
       }
 
       try {
@@ -170,7 +179,9 @@ public class WadParse {
         mf.msg("couldn't load file "+name);
       };
 
-      return String.join("\n", l);
+      String ret = String.join("\n", l);
+      System.out.println("debug: " + name + "\n" + ret);
+      return ret;
   }
 
   void attachinclude() {
