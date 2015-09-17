@@ -19,8 +19,10 @@ public class Wad {
     mf.msg("writing wad to "+filename);
     try {
 
-      readPnames();
-      findNewPatches();
+      if(!wp.textures.isEmpty()) {
+        readPnames();
+        findNewPatches();
+      }
 
       int numentries = wr.hexen ? 7 : 6;
       if(!w.textures.isEmpty()) numentries++;
