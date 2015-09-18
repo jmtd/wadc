@@ -299,26 +299,28 @@ public class MainFrame extends Frame {
     };
   }
 
-  void bspdoom(String wadfile) {
-    if(wadfile==null) return;
-    Process p;
-    String cmd = bspcmd+" -o "+wadfile+" "+wadfile;
-    msg("launching: "+cmd);
+  // helper routine for invoking bsp, doom, etc.
+  void subcmd(String [] cmd) {
+    ProcessBuilder pb = new ProcessBuilder(cmd);
+    pb.inheritIO();
+    msg("launching: "+ String.join(" ", cmd));
+
     try {
-      p = Runtime.getRuntime().exec(cmd);
-      if(p.waitFor()!=0) msg("bsp cmd failed?");
+      if(pb.start().waitFor() != 0) msg(cmd[0] +" cmd failed?");
     } catch(Exception e) {
-      msg("bsp command interrupted!");
-    };
-    cmd = doomcmd + " " + wadfile;
-    msg("launching: "+cmd);
-    try {
-      Runtime.getRuntime().exec(cmd);
-    } catch(Exception e) {
-      msg("doom command interrupted!");
+      msg(cmd[0] + " command interrupted!");
     };
   }
 
+  void bspdoom(String wadfile) {
+    if(wadfile==null) return;
+
+    subcmd(new String [] { bspcmd, wadfile, "-o", wadfile });
+
+    String [] cmd = (doomcmd + " temp").split("\\s+");
+    cmd[cmd.length - 1] = wadfile;
+    subcmd(cmd);
+  }
 }
 
 class MyCanvas extends Canvas {
