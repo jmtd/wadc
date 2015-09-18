@@ -1,7 +1,7 @@
 WadC ("Wad Compiler")
 
 Current maintainer: Jonathan Dowland
-jon+wadc@alcopop.org
+jon@dow.land
 http://jmtd.net/wadc/
 
 Originally by Aardappel
@@ -99,7 +99,7 @@ Requirements
 Source code
 ===========
 This distribution comes with full source, which is released under the
-GPL (GNU Public License, see http://www.gnu.org/copyleft/gpl.txt).
+GPL (GNU Public License, version 2. see the included LICENSE.txt file.)
 
 
 Installation

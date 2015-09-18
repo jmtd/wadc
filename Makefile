@@ -3,7 +3,7 @@ CLASSES := $(patsubst %.java,%.class,$(wildcard src/*.java))
 default: wadc.jar
 
 wadc.jar: $(CLASSES)
-	cd src && jar cef MainFrame ../wadc.jar *.class ../include
+	cd src && jar cef MainFrame ../wadc.jar *.class ../include ../LICENSE.txt
 
 $(CLASSES):
 	javac src/*.java
@@ -18,6 +18,7 @@ wadc.zip: wadc.jar
 		*.sh \
 		readme.txt \
 		tutorial.md \
+		LICENSE.txt \
 		examples/*.wl \
 		examples/old/*.wl \
 		include/*.h
