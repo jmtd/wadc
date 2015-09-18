@@ -1,4 +1,4 @@
-= WadC ("Wad Compiler")
+# WadC ("Wad Compiler")
 
 Current maintainer: Jonathan Dowland
 jon@dow.land
@@ -8,9 +8,9 @@ Originally by Aardappel
 http://strlen.com/wadc/
 aardappelatgmaildotcom
 
-== version history
+## version history
 
-=== (will be) 2.0 (currently RC)
+### (will be) 2.0 (currently RC)
 
 * bug fixes:
   - Fix map view zooming with mouse clicks on non-Windows platforms.
@@ -22,7 +22,7 @@ aardappelatgmaildotcom
 * library additions:
   - lisp.wl, lisp-style lists (broken out from examples/lisp.wl)
 
-=== 1.2
+### 1.2
 
 * First release by Jon Dowland.
 * Doom features:
@@ -33,7 +33,7 @@ aardappelatgmaildotcom
   - 1.2\_features.wl - demo the new features above
   - entryway.wl - a recreation of Doom 2 MAP01 in WadC, thanks GreyGhost
 
-=== 1.1
+### 1.1
 
 * Doom features:
   - auto texturing (!)
@@ -51,7 +51,7 @@ aardappelatgmaildotcom
   - more examples / useful include files
   - many small enhancements/fixes
 
-=== 1.0: first public release
+### 1.0: first public release
 
 * UI features:
   - generating code by drawing lines with the mouse (!)
@@ -71,13 +71,13 @@ aardappelatgmaildotcom
   - more examples etc.
   - comes with source (GPL)
 
-=== 0.9: initial beta
+### 0.9: initial beta
 
 some may have seen this.
 
 
 
-== What is it?
+## What is it?
 
 A programming language for the construction of Doom maps. Integrated 
 environment, shows you what the map described by the program looks like at the 
@@ -88,20 +88,20 @@ both programming & Doom editing, you are unlikely to be interested in this
 software.
 
 
-== Requirements
+## Requirements
 
 - any computer that runs Java 1.1 or better
 - any version of Doom
 - a Doom nodebuilder (bsp 5.0 recommended)
 
 
-== Source code
+## Source code
 
 This distribution comes with full source, which is released under the
 GPL (GNU Public License, version 2. see the included LICENSE.txt file.)
 
 
-== Installation
+## Installation
 
 
 You need a Java runtime environment installed to use WadC. Get one from
@@ -117,7 +117,7 @@ To play the .wad files you create using WadC in Doom, you also need a
 node builder, such as BSP, available from http://games.moria.org.uk/doom/bsp/
 For a list of other node builders, see http://doomwiki.org/wiki/Category:Node\_builders
 
-== What else is in the zip?
+## What else is in the zip?
 
 
 The zip also includes
@@ -128,7 +128,7 @@ The zip also includes
                 it and see how it works. See also "Include files",
                 below.
 
-== Using the GUI
+## Using the GUI
 
 Assuming you got it to run, you will now see the main screen, divided in an
 editor part (here you write the program), a 2d map view, and an output
@@ -182,7 +182,7 @@ want to use and where they are located by modifying "wadc.cfg", (see "configurat
 file").
 
 
-== The Language
+## The Language
 
 For most people it will be easiest to think of the language as a powerful
 macro language. It consists of a set of builtin functions that allow you
@@ -190,7 +190,7 @@ to draw lines and sectors and such, and a way to abstract over them using
 a function.
 
 
-=== Lexical stuff
+### Lexical stuff
 
 The language just knows two literals, integers (23, 0, -1 etc.) and strings
 ("LITE5"), the latter sofar mainly used for texture names.
@@ -203,7 +203,7 @@ code). Single line comments start with "--" and last for the rest of that line,
 multiline comments is anything enclosed in /* */ (not nested).
 
 
-=== Integer expressions
+### Integer expressions
 
 The following builtin functions allow you to do simple operations on integers:
 
@@ -223,7 +223,7 @@ sin takes an argument in degrees (not radians) *10, i.e. 90 degrees in 900. It
 returns the 1.0 to -1.0 range as 1024 to -1024. asin performs the inverse
 transformation over the same ranges.
 
-=== If Then Else
+### If Then Else
 
 is an expression of the form "exp ? exp : exp" as in C/Java. For example
 
@@ -232,7 +232,7 @@ is an expression of the form "exp ? exp : exp" as in C/Java. For example
 returns a, unless it is negative then it returns 0.
 
 
-=== Concatenating expressions
+### Concatenating expressions
 
 Writing any two expressions seperated by a space simply creates a new 
 expression, where the expressions get evaluated in order, but the result is the 
@@ -252,7 +252,7 @@ expression:
 if for example you wanted to debug what "a" was when it is negative.
 
 
-=== Bracketing expressions
+### Bracketing expressions
 
 You can freely use "{" and "}" to bracket (groups of) expressions to make
 more complex cases of if's clear in meaning. for example:
@@ -264,7 +264,7 @@ both c and d are part of the else part of the if. To prevent this, write:
     { a ? b : c } d
 
 
-=== Function/Macro definition
+### Function/Macro definition
 
 This is where the fun starts. WadC's functions are like macros because they don't
 evaluate their arguments but just pass them on. But unlike macros they can do
@@ -322,7 +322,7 @@ will print "heh" just once. There are really very few cases where this
 is needed (mostly in recursive functions).
 
 
-=== Include files
+### Include files
 
 You can include another WadC sourcecode file using "#", for example:
 
@@ -364,7 +364,7 @@ up editing a lot. You should make sure to get familiar with them:
                     teleporting and placement, and room segments.
 
 
-=== The choice operator
+### The choice operator
 
 The choice operator can be placed between one or more expressions,
 and will make WadC choose one at random:
@@ -405,7 +405,7 @@ the random number generator:
 
 This affects any use of the choice operator that follows.
 
-=== Doom Specific Commands
+### Doom Specific Commands
 
 The bit you have been waiting for :)
 
@@ -619,7 +619,7 @@ Clearly there are a few Doom specific types and flags missing, this will
 come in future versions.
 
 
-==== Line splitting/merging
+#### Line splitting/merging
 
 If either a line or a vertex is drawn on exactly the same location as an
 existing line or vertex then the drawing command is ignored, i.e. if a
@@ -634,7 +634,7 @@ This means you can write macros that generate complex sectors, and
 combine them with others, without having to worry how they match up.
 
 
-==== "world coordinates" xoff alignment
+#### "world coordinates" xoff alignment
 
 If you make maps with lots of detail, and thus many short lines,
 setting xoff correctly for each of them becomes unmanageable. For
@@ -661,7 +661,7 @@ the curve() command is not affected by undefx, it uses its own alignment.
 
 
 
-==== Position / Texture memory
+#### Position / Texture memory
 
 This is a language feature specifically meant to make drawing complex
 forms easier. Often you will draw a lot of lines and sectors and
@@ -678,7 +678,7 @@ variable "name".
 Go back to the position/orientation stored in "name" and restore the textures.
 
 
-==== Tag Identifiers
+#### Tag Identifiers
 
 These are especially useful in combination with the linetype & sectortype
 commands. Simply use any identifier prefixed by a "$":
@@ -690,7 +690,7 @@ whereever the same tag is used, a unique tag number is automatically generated a
 used.
 
 
-==== Auto texturing
+#### Auto texturing
 
 This is a very powerful feature which lets you create "rules" that say
 how a map should be textured, instead of doing it by hand.
@@ -784,7 +784,7 @@ way by planning your maps styles around this feature: for example making
 all rooms that require a certain floor/ceiling be at a certain height etc.
 
 
-==== variables and objects
+#### variables and objects
 
 These features are here to make the language a bit more complete as a
 general purpose programming language.
@@ -811,7 +811,7 @@ than global variables.
 See lisp.wl for an example of how to use these functions to create an
 actual datatype, and a caveat on the usage of "onew".
 
-=== Pitfalls
+### Pitfalls
 
 Here are some common things that can go wrong, and which can result in
 runtime errors:
@@ -823,7 +823,7 @@ runtime errors:
   detect wether something is inside or outside, and this will only show
   up when defining an adjoining sector.
 
-=== Custom textures
+### Custom textures
 
 
 There is some basic experimental support for defining new textures.
