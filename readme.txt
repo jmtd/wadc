@@ -16,8 +16,9 @@ UNRELEASED
 * bug fixes:
   - Fix map view zooming with mouse clicks on non-Windows platforms.
 * language features:
-  - new built-in die("string"): prints string, then terminates.
+  - new built-in die(foo): prints foo, then terminates.
   - new built-in cat(a, b): concatenates a and b
+  - new built-in seed(x): seeds the random-number generator for reproducibility
   - Texture manipulation with texture / newpatch
 * library additions:
   - lisp.wl, lisp-style lists (broken out from examples/lisp.wl)
@@ -103,14 +104,30 @@ GPL (GNU Public License, see http://www.gnu.org/copyleft/gpl.txt).
 
 Installation
 ============
-Unpack the whole zip to any directory you like. Run "wadc.bat" (you may
-need to adapt this to work on your system, on some systems "java" may be
-"javaw", "jre" or "jrew"  instead). Note that you need some variety of
-Java 1.1 or higher installed for  this to work, if you don't, go to
-java.sun.com and download & install the latest JRE (or JDK). To play
-the .wad files you create using WadC in Doom, you also need a nodebuilder.
-I myself use BSP 5.0, get it from http://www.doomworld.com/files/editors.shtml
 
+You need a Java runtime environment installed to use WadC. Get one from
+https://java.com/download if you don't have it already.
+
+Unpack the whole zip to any directory you like. On most systems, just
+double-click or activate the "wadc.jar" file. From a command line in
+the location where you extracted the ZIP, could also run
+
+    java -jar wadc.jar
+
+To play the .wad files you create using WadC in Doom, you also need a
+node builder, such as BSP, available from http://games.moria.org.uk/doom/bsp/
+For a list of other node builders, see http://doomwiki.org/wiki/Category:Node_builders
+
+What else is in the zip?
+========================
+
+The zip also includes
+
+    examples/ - example WadC files to try out.
+    includes/ - a copy of the WadC "standard library". This is also
+                embedded in the JAR, but is included so you can read
+                it and see how it works. See also "Include files",
+                below.
 
 Using the GUI
 =============
@@ -120,7 +137,6 @@ pane (error messages and the like appear here).
 
 The file menu takes care of loading & saving your programs, this should all
 be pretty obvious. The default extension for a program is .wl ("Wad Language").
-(all example source files and includes are located in the "examples" subdirectory).
 
 In the program menu, "Run" runs your current program. You should do this 
 frequently to see what your map looks like. If there were errors parsing your 
@@ -163,9 +179,8 @@ file. Before loading it up in Doom you have to run it through a nodebuilder.
 
 "Run / Save / Save Wad / BSP/ DOOM" as above, but now also runs the nodebuilder
 on it, and then your favourite doom port. You can set which bsp / doom port you
-want to use and where they are located by modifying "wadc.cfg" in the src dir.
-(this option doesn't always work well depending on which JDK is used,
-alternatively use a batch file such as the launchdoom.bat provided)
+want to use and where they are located by modifying "wadc.cfg", (see "configuration
+file").
 
 
 The Language
@@ -318,6 +333,10 @@ this will include the file "standard.h" in your
 program (actually, it will append it to the end of it, so if it has any
 errors WadC will report linenumbers beyond the end of your file :)
 
+WadC will first look in the directory containing your current .wl file
+to find the file you asked for. If it isn't there, WadC will then try
+to load it from within the embedded copy of the standard library.
+
 Generally, ".h" is used for files that are only useful when included
 somewhere (i.e. don't contain a "main" function) and ".wl" for normal
 sources. "standard.h" contains useful macros, it should be included
@@ -380,7 +399,12 @@ at every iteration, use a function:
       for(1,4,straight(len))
     }
 
+If you want to use choice in a level but want reproducibility, you can seed
+the random number generator:
 
+    seed(1337)
+
+This affects any use of the choice operator that follows.
 
 Doom Specific Commands
 ======================
