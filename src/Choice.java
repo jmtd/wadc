@@ -1,7 +1,10 @@
 import java.util.*;
 
 class Choice extends Exp {
-  static Random rnd = new Random();
+  static Random rnd;
+  public Choice(Random r) {
+    rnd = r;
+  }
   Vector v = new Vector();
   void add(Exp e) { v.addElement(e); }
   Exp replace(Vector n, Vector r) {

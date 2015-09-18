@@ -49,6 +49,7 @@ class WadRun {
   int xoff = 0, yoff = 0;
   int lineflags = 0;
 
+  Random rnd;
 
   // generated data
 
@@ -85,9 +86,10 @@ class WadRun {
 
   Vector collect;
 
-  static Random rnd = new Random();
-
-  WadRun(WadParse p) { wp = p; }
+  WadRun(WadParse p) {
+      wp = p;
+      rnd = new Random();
+  }
 
   void dep() { wp.mf.msg("north east west south are deprecated commands (you shouldn't need them).");}
 
@@ -534,6 +536,11 @@ class WadRun {
       return n;
     }});
 
+    builtin("seed", 1, new Builtin() { Exp eval(Exp a) {
+      long seed = a.ival();
+      rnd.setSeed(seed);
+      return n;
+    }});
 
   }
 
