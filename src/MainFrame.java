@@ -9,6 +9,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Arrays;
 
 public class MainFrame extends Frame {
   TextArea textArea1 = new TextArea("",15,30);
@@ -325,9 +326,13 @@ public class MainFrame extends Frame {
 
     subcmd(new String [] { bspcmd, wadfile, "-o", wadfile });
 
-    String [] cmd = (doomcmd + " temp").split("\\s+");
-    cmd[cmd.length - 1] = wadfile;
-    subcmd(cmd);
+    String [] cmd = (doomcmd + " a b c d").split("\\s+");
+    int i = 4;
+    if(! "".equals(twad1)) cmd[cmd.length - i--] = twad1;
+    if(! "".equals(twad2)) cmd[cmd.length - i--] = twad2;
+    if(! "".equals(twad3)) cmd[cmd.length - i--] = twad3;
+    cmd[cmd.length - i--] = wadfile;
+    subcmd(Arrays.copyOfRange(cmd, 0, cmd.length - i));
   }
 }
 
