@@ -432,8 +432,13 @@ class WadRun {
       return n;
     }});
 
-    builtin("doomcmd", 1, new Builtin() { Exp eval(Exp s) {
-      wp.mf.doomcmd = s.sval();
+    builtin("doomexe", 1, new Builtin() { Exp eval(Exp s) {
+      wp.mf.doomexe = s.sval();
+      return n;
+    }});
+
+    builtin("doomargs", 1, new Builtin() { Exp eval(Exp s) {
+      wp.mf.doomargs = s.sval();
       return n;
     }});
 

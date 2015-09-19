@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class MainFrame extends Frame {
   TextArea textArea1 = new TextArea("",15,30);
@@ -29,7 +32,8 @@ public class MainFrame extends Frame {
   MenuItem menuItem8 = new MenuItem();
   Canvas cv;
   String basename;
-  String doomcmd = "c:\\doom2\\zdoom -warp 1 -file";
+  String doomexe = "c:\\doom\\zdoom.exe";
+  String doomargs = "-warp 1 -file";
   String bspcmd = "c:\\doom2\\bsp";
   String iwad = "c:\\doom2\\doom2.wad";
   String twad1 = "";
@@ -250,7 +254,8 @@ public class MainFrame extends Frame {
       "-- wadc config file\n\n" +
       "main {\n" +
       "  lastfile(\"" + basename + "\")\n" +
-      "  doomcmd(\"" + doomcmd + "\")\n" +
+      "  doomexe(\"" + doomexe + "\")\n" +
+      "  doomargs(\"" + doomargs + "\")\n" +
       "  bspcmd(\"" + bspcmd + "\")\n" +
       "  iwad(\"" + iwad + "\")\n" +
       "  twad1(\"" + twad1 + "\")\n" +
@@ -309,30 +314,31 @@ public class MainFrame extends Frame {
   }
 
   // helper routine for invoking bsp, doom, etc.
-  void subcmd(String [] cmd) {
+  void subcmd(List<String> cmd) {
     ProcessBuilder pb = new ProcessBuilder(cmd);
     pb.inheritIO();
     msg("launching: "+ String.join(" ", cmd));
 
     try {
-      if(pb.start().waitFor() != 0) msg(cmd[0] +" cmd failed?");
+      if(pb.start().waitFor() != 0) msg(cmd.get(0) +" cmd failed?");
     } catch(Exception e) {
-      msg(cmd[0] + " command interrupted!");
+      msg(cmd.get(0) + " command interrupted!");
     };
   }
 
   void bspdoom(String wadfile) {
     if(wadfile==null) return;
 
-    subcmd(new String [] { bspcmd, wadfile, "-o", wadfile });
+    subcmd(Arrays.asList(bspcmd, wadfile, "-o", wadfile));
 
-    String [] cmd = (doomcmd + " a b c d").split("\\s+");
-    int i = 4;
-    if(! "".equals(twad1)) cmd[cmd.length - i--] = twad1;
-    if(! "".equals(twad2)) cmd[cmd.length - i--] = twad2;
-    if(! "".equals(twad3)) cmd[cmd.length - i--] = twad3;
-    cmd[cmd.length - i--] = wadfile;
-    subcmd(Arrays.copyOfRange(cmd, 0, cmd.length - i));
+    ArrayList<String> cmd = new ArrayList<String>();
+    cmd.add(doomexe);
+    cmd.addAll(Arrays.asList(doomargs.split("\\s+")));
+    cmd.addAll(Arrays.asList(twad1, twad2, twad3, wadfile).stream()
+        .filter(s -> !"".equals(s))
+        .collect(Collectors.toList()));
+
+    subcmd(cmd);
   }
 }
 
