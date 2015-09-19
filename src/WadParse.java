@@ -188,7 +188,6 @@ public class WadParse {
       };
 
       String ret = String.join("\n", l);
-      System.out.println("debug: " + name + "\n" + ret);
       return ret;
   }
 
