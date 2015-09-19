@@ -1,0 +1,32 @@
+= Release Notes
+
+== What's broken since 1.3?
+
+=== wadc.cfg location
+
+wadc.cfg is no longer written/read from the current working directory. On
+Windows, it's found at `%USERHOME%/.wadc/wadc.cfg`, on UNIX platforms it
+looks in `$HOME/.wadc`. Examples
+
+```
+    c:\Users\Your Name\.wadc
+    /Users/Jon/.wadc
+    /home/you/.wadc
+```
+
+=== changed preferences
+
+`doomcmd` no longer exists. It has been replaced with
+
+ * `doomexe`  - path to your preferred doom executable
+ * `doomargs` - arguments to pass to your preferred doom executable,
+                separated by whitespace. This should end with '`-file`'.
+
+The reason for this is to allow you to supply a `doomexe` containing
+whitespace in the path.
+
+=== texture/resource wads
+
+If you have defined any of `twad1`, `twad2` or `twad3` in your
+configuration, they will be added to the doom command line, immediately
+after your `doomargs`, and before the path to the WAD you are building.
