@@ -1,0 +1,10 @@
+correct way to embed license info in JAR?
+replace pnames list with a hash or something (remove duplicates?)
+default window size better
+
+would be nice if current seed was printed when executing. however,
+we can't get the rng seed, so we'll have to set it ourselves.
+
+it would be cool to embed the source in the WAD!
+
+
