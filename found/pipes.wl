@@ -10,14 +10,14 @@ slimetype(x,tag) {
 slimemain(x) { slimetype(x,$slime1) }
 
 -- normal corridor
-slimecorridor(y) { _slimecorridor(y,get("slimefloor"),get("slimelight")) }
-_slimecorridor(y,f,l) {
-  box(add(32,f),add(96,f),l,y,32)
+slimecorridor(y) { _slimecorridor(y, get("slimefloor"), get("slimeceil"), get("slimelight")) }
+_slimecorridor(y,f,c,l) {
+  box(add(32,f),sub(c,32),l,y,32)
   movestep(0,sub(256,32))
-  box(add(32,f),add(96,f),l,y,32)
+  box(add(32,f),sub(c,32),l,y,32)
   movestep(0,mul(-1,sub(256,64)))
 
-  slimemain( box(f,add(128,f),l,y,sub(256,64)) )
+  slimemain( box(f,c,l,y,sub(256,64)) )
 
   movestep(y,-32)
 }
@@ -121,7 +121,7 @@ _slimecurve(f,l) {
 scurve(f,c,l) { slimecurve_l | slimecurve_r(f,l) }
 
 slimebars(tag) { 
-  _slimebars(get("slimefloor"), add(128,get("slimefloor")),
+  _slimebars(get("slimefloor"), get("slimeceil"),
              get("slimelight"), tag)
 }
 _slimebars(f,c,l,tag) {
@@ -242,9 +242,19 @@ _slimesecret(y,f,l,whatever) {
  * TODO: parameterize the floor/ceiling heights
  *       into globals and use them for above fns
  */
-slimeinit(f,l) {
+slimeinit(f,c,l) {
   unpegged
   !slimeinit
+
+  set("slimefloor",f)
+  set("slimeceil", c) -- XXX very little uses this yet
+  set("slimelight",l)
+}
+
+-- boom 242 control sectors
+-- XXX: this actually needs to be in slimeinit, but needs reworking so
+-- it can be called more than once.
+slime_control() {
   turnaround
   ceil("SLIME01")
 
@@ -279,15 +289,15 @@ slimeinit(f,l) {
   ceil("SLIME16")
   ^slimeinit
 
-  set("slimefloor",f)
-  set("slimelight",l)
+  --set("slimefloor",f)
+  --set("slimelight",l)
 }
 
-slimesplit(left, right) { 
+slimesplit(left, centre, right) { 
   _slimesplit(get("slimefloor"),get("slimelight"),
-              left, right)
+              left, centre, right)
 }
-_slimesplit(f,l, left, right) {
+_slimesplit(f,l, left, centre, right) {
   !slimesplitmarker
   right(32) straight(192) straight(32)
 
@@ -316,6 +326,8 @@ _slimesplit(f,l, left, right) {
 
 	straight(192) 
   slimemain( rightsector(f,add(128,f),l) )
+  centre
+
   straight(32)
   rightsector(add(f,32),add(f,96),l)
 
@@ -328,6 +340,11 @@ _slimesplit(f,l, left, right) {
 	movestep(384,384)
 	rotright
 	right
+
+    -- centre hook, for detailing
+    ^slimesplitmarker
+    popsector
+    centre
 
 }
 
@@ -347,16 +364,31 @@ _slimechoke(f,l) {
 }
 
 -- slimebarcurve: just bars with curves after out of sight
-slimefade(f,l) {
+-- XXX: floor/ceil needs parameterizing
+slimefade() { _slimefade(get("slimefloor"), get("slimeceil"), get("slimelight")) }
+_slimefade(f,c,l) {
   set("slimefade",0)
   for(1,15,
-    _slimecorridor(16,0,sub(mul(8,15),mul(get("slimefade"),8)))
+    _slimecorridor(16, f, c, sub(mul(8,15),mul(get("slimefade"),8)))
     set("slimefade",add(1,get("slimefade")))
   )
 }
 
 slimebarcurve(f,l) {
   slimebars(0)
-  slimefade(f,l)
+  slimefade
   twice( slimecurve_r(0,0) )
+}
+
+-- WIP
+-- need to rework slimesplit so that we can safely put inner sectors in the
+-- middle bit, by re-ordering the drawing/sector creation
+slime_downpipe {
+
+  turnaround turnaround
+  -- movestep(32, -320)
+  -- WIP downpipe
+  --thing quad(curve(72,72,8,0))
+  --innerleftsector(0,64,140) -- something funny with control sectors?
+
 }

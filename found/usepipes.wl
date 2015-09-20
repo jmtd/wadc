@@ -1,11 +1,14 @@
 #"pickups.h"
 #"monsters.h"
-#"pipes.wl"
+#"spawns.h"
 #"standard.h"
+
+#"pipes.wl"
 #"boring.wl"
 
 usepipes {
-  slimeinit(0,120)
+  slimeinit(0, 128, 120)
+  slime_control
 
   /*
    * beginning rooms; preamble to pipes
@@ -36,7 +39,7 @@ usepipes {
   rotright
 
   /*
-   * now for the circular pipe tunnels
+   * now for the pipe tunnels
    */
   move(add(-32,-256))
 
@@ -49,15 +52,19 @@ usepipes {
   slimebars(0)
   slimesplit(
     slimebarcurve(0,120),
+
+    slime_downpipe,
+
     slimebars(0)
-    slimefade(0,120)
+    slimefade
     twice( _slimecurve(0,0) )
   )
+
+
   impassable
   ^beginning_detail_left
 
   slimeopening(928) -- TODO: a less random figure
-  thing
   slimeswitch(128,1)
   slimebars(1)
   pushpop( movestep(128,-128) rotleft slimechoke )
@@ -71,13 +78,40 @@ usepipes {
     triple( thing move(128) )
     mute
   )
-  slimecorridor(768)
+  slimecorridor(896)
 
   pushpop(movestep(384,384) rotright slimechoke )
-  slimesplit( !tempmain, !tempmain2 )
+  slimesplit( !tempmain, !donothing, !tempmain2 )
   ^tempmain2
-  move(32)
+  move(32) -- ?
   slimebarcurve(0,120)
+
   ^tempmain
+  slimecorridor(128)
+
+  -- we're going to drop down 192 units here, but first
+  -- some detailing on the top-level
+  !tempmain
+
+  -- inaccessible area
+  move(256)
+  slimebars(0)
+  slimecorridor(512)
+  slimecurve_l
+  slimecorridor(128)
+
+  -- the lower floors. temp low ceiling for trail-off
+  slimeinit(-192, add(-192,32), 120)
+
+  ^tempmain
+  movestep(256,256) rotleft !tempmain
+  straight(256) left(256)
+  !tempmain2
+  rotright slimebars(0) slimefade popsector
+  ^tempmain2
+  left(256) left(256)
+  leftsector(-192,128,120) rotright
+
+  -- slimecorridor(128) fucksake.
 
 }
