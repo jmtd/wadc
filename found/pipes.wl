@@ -125,15 +125,15 @@ slimebars(tag) {
              get("slimelight"), tag)
 }
 _slimebars(f,c,l,tag) {
-  slimecorridor(128)
+  slimecorridor(32)
   !slimebars
   top("SUPPORT3")
   bot("-")
   sectortype(0,tag)
-  movestep(-72,32)
+  movestep(-28,32)
   unpegged
   triple(
-    movestep(0,32)
+    movestep(0,30)
     xoff(0) straight(24)
     triple( xoff(0) right(24) )
     innerrightsector(f,f,l)
@@ -158,12 +158,12 @@ _slimeswitch(y,f,c,l,tag) {
   pushpop(
     movestep(-64,24)
     rotleft
-    mid("SW1BRIK")
     linetype(103,tag)
-    right(32)
+    bot("SW1BRIK") xoff(16) yoff(40) right(32)
     linetype(0,0)
-    left(8) left(32) left(8)
-    innerleftsector(64,sub(128,32),l) 
+    bot("SHAWN2") left(8) left(32) left(8)
+    floor("FLAT23")
+    innerleftsector(64,sub(128,32),l)
   )
 }
 
@@ -347,12 +347,16 @@ _slimechoke(f,l) {
 }
 
 -- slimebarcurve: just bars with curves after out of sight
+slimefade(f,l) {
+  set("slimefade",0)
+  for(1,15,
+    _slimecorridor(16,0,sub(mul(8,15),mul(get("slimefade"),8)))
+    set("slimefade",add(1,get("slimefade")))
+  )
+}
+
 slimebarcurve(f,l) {
   slimebars(0)
-  set("slimebarcurveitr",0)
-  for(1,15,
-    _slimecorridor(16,0,sub(mul(8,15),mul(get("slimebarcurveitr"),8)))
-    set("slimebarcurveitr",add(1,get("slimebarcurveitr")))
-  )
+  slimefade(f,l)
   twice( slimecurve_r(0,0) )
 }

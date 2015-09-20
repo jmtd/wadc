@@ -39,7 +39,25 @@ usepipes {
    * now for the circular pipe tunnels
    */
   move(add(-32,-256))
+
+  /*
+   * unreachable detailing to the left
+   */
+  !beginning_detail_left
+  turnaround movestep(0,-256)
+  impassable
+  slimebars(0)
+  slimesplit(
+    slimebarcurve(0,120),
+    slimebars(0)
+    slimefade(0,120)
+    twice( _slimecurve(0,0) )
+  )
+  impassable
+  ^beginning_detail_left
+
   slimeopening(928) -- TODO: a less random figure
+  thing
   slimeswitch(128,1)
   slimebars(1)
   pushpop( movestep(128,-128) rotleft slimechoke )
@@ -61,31 +79,5 @@ usepipes {
   move(32)
   slimebarcurve(0,120)
   ^tempmain
-
-  -- left branch
-  slimecorridor(128) -- dual of bars
-  pushpop( movestep(128,0) slimechoke )
-  slimecorridor(128) -- dual of switch
-  move(32)
-  sectortype(17,0)
-  slimecorridor(add(32,add(768,128)))  -- dual of opening
-  sectortype(0,0)
-  slimecorridor(128) -- dual of bars
-  slimecorridor(128) -- dual of switch
-  slimecurve_l
-
-  slimecorridor(768)
-  pushpop( movestep(64,0) slimechoke )
-  slimecorridor(64) -- dual of slimesecret
-  move(32)
-  movestep(384,-128) rotright
-
-  move(-256)
-  slimebars(2)
-  slimeswitch(128,2)
-
-  slimesplit(!tempmain,move(0))
-  ^tempmain
-  slimebarcurve(0,120)
 
 }
