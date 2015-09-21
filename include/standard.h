@@ -44,6 +44,15 @@ for(from,to,body) {
   lessthaneq(from,to) ? body for(add(from,1),to,body) : 0
 }
 
+fori(from, to, body) {
+    set("i", from)
+    for(from, to,
+        body
+        inc("i",1)
+    )
+}
+i { get("i") }
+
 inc(i,n) {
     set(i, add(get(i), n))
 }
