@@ -1,35 +1,10 @@
 /*
- * boom.wl - routines for working with Boom special effects
- *
- * so far just water* for managing deep water effects
+ * water.h - routines for working with Boom deep water
  *
  * XXX: Things to fix:
      * de-duplicate control sectors (need to build a map
        data structure)
  */
-
-#"standard.h"
-
-main {
-    waterinit_fwater(-16)
-    movestep(0,64) -- out of the way of control sectors
-    pushpop(movestep(32,32) thing)
-
-    -- a ramp of rooms, descending in floor and ceiling height
-    fori(0, 7,
-        water(
-            room(sub(0, mul(i,24)), 200, 256, 256),
-            sub(0, mul(i,24)),
-            add(128,sub(0, mul(i,24)))
-        )
-        movestep(-256,0)
-    )
-}
-
--- simplified box, ceil is floor + 128
-room(f,l,x,y) {
-    box(f, add(128,f), l, x, y)
-}
 
 /*
  * waterinit - this should be called only once and before using any
