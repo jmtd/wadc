@@ -1,3 +1,12 @@
+/*
+ * zdoom.h - part of WadC
+ * Copyright © 2008 Wouter van Oortmerssen
+ * Copyright © 2008-2015 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 -- some zdoom specific macros
 
 sloped(f,c,x) { linetypehexen(181, f, c, 0, 0, 0) x linetype(0,0) }

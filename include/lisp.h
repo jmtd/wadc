@@ -1,3 +1,12 @@
+/*
+ * lisp.h - part of WadC
+ * Copyright © 2008 Wouter van Oortmerssen
+ * Copyright © 2008-2015 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 -- basic constructor/accessor functions
 
 cons(a, b) { sethdtl(onew, a, b) }
