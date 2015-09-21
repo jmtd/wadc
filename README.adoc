@@ -1,0 +1,28 @@
+= WadC ("Wad Compiler")
+
+Current maintainer: Jonathan Dowland <jon@dow.land>
+
+Homepage: http://jmtd.net/wadc/
+
+Originally by Aardappel <http://strlen.com/wadc/>
+
+== About
+
+WadC is a programming language and IDE for the construction of Doom maps.
+
+WadC is a lazy functional/macro hybrid programming language. Think of it
+like https://en.wikipedia.org/wiki/Logo_(programming_language)[Logo] on
+steroids, with monsters.
+
+== Documentation
+
+ * [Complete reference](doc/reference.adoc)
+ * [Release notes and version history](doc/release_notes.adoc)
+
+It's also worth reading the [examples](examples/) and [standard library](include/).
+
+== Download
+
+Downloads are on the [releases page](https://github.com/jmtd/wadc/releases).
+
+See also the WadC homepage: <http://jmtd.net/wadc/>.
