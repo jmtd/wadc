@@ -1,4 +1,4 @@
-#"lisp.wl"
+#"lisp.h"
 
 -- example LISP style lists using objects!
 
