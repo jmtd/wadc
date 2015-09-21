@@ -22,7 +22,16 @@ toc::[]
   - new built-in `newtag`: generate and return a new unique tag number
   - Texture manipulation with `texture` and `newpatch`
 * library additions:
-  - `lisp.wl`, lisp-style lists (broken out from `examples/lisp.wl`)
+  - `lisp.h`, lisp-style lists (broken out from `examples/lisp.wl`)
+  - `water.h`, Boom deep water tools
+  - within `standard.h`:
+    * `inc` and `dec`, convenient for increment/decrementing a variable
+    * `fori` and `i`, the `for` loop but you can read the value of the iterator
+* new Examples:
+  - `textures.wl`, demonstrating the texture features
+  - `llevels.wl`, test WAD using texture features
+  - `water.wl`, demonstrating the Boom water helpers
+  - "beta" directory containing my unfinished stuff
 
 ==== What's broken since 1.3?
 

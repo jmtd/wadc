@@ -14,8 +14,10 @@ steroids, with monsters.
 
  * link:doc/reference.adoc[Complete reference]
  * link:doc/release_notes.adoc[Release notes and version history]
+ * link:doc/tutorial.adoc[Incomplete tutorial (work in progress)]
 
-It's also worth reading the link:examples and link:include/[standard library].
+It's also worth reading the link:examples/[examples] and
+link:include/[standard library].
 
 == Download
 
@@ -25,7 +27,7 @@ See also the WadC homepage: <http://jmtd.net/wadc/>.
 
 == Who
 
-Since 2008, WadC is developed by Jonathan Dowland <jon@dow.land>.
+Since 2008, WadC is developed by link:http://jmtd.net[Jonathan Dowland].
 
 WadC was originally written by Wouter van Oortmerssen
 (link:http://strlen.com/wadc/[Aardappel]) in 2001.
