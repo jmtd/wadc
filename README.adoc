@@ -16,13 +16,13 @@ steroids, with monsters.
 
 == Documentation
 
- * [Complete reference](doc/reference.adoc)
- * [Release notes and version history](doc/release_notes.adoc)
+ * link:doc/reference.adoc[Complete reference]
+ * link:doc/release_notes.adoc[Release notes and version history]
 
-It's also worth reading the [examples](examples/) and [standard library](include/).
+It's also worth reading the link:examples and link:include/[standard library].
 
 == Download
 
-Downloads are on the [releases page](https://github.com/jmtd/wadc/releases).
+Downloads are on the https://github.com/jmtd/wadc/releases[releases page].
 
 See also the WadC homepage: <http://jmtd.net/wadc/>.
