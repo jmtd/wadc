@@ -44,6 +44,14 @@ for(from,to,body) {
   lessthaneq(from,to) ? body for(add(from,1),to,body) : 0
 }
 
+inc(i,n) {
+    set(i, add(get(i), n))
+}
+
+dec(i,n) {
+    set(i, sub(get(i), n))
+}
+
 box(floor,ceil,light,x,y) {
   straight(x)
   right(y)

@@ -1,9 +1,5 @@
 #"standard.h"
 
-inc(i) {
-  set(i, add(1, get(i)))
-}
-
 main {
 
     -- simple example of a new texture with two patches
@@ -18,7 +14,7 @@ main {
       addpatch("RW24_2", 0, 0)
       addpatch("RW24_2",64, 0)
       addpatch(cat("BFALL",get("i")), 32, 0)
-      inc("i")
+      inc("i", 1)
     )
 
     -- generate a bunch of new textures, adding some new lumps
@@ -28,7 +24,7 @@ main {
       texture(cat("LOL", get("i")), 64, 128)
       addpatch("RW24_2", 0, 0)
       addpatch(cat("WINUM",get("i")), 32, 0)
-      inc("i")
+      inc("i", 1)
     )
 
     -- a room so we can see this in DOOM
