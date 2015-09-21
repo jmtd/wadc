@@ -12,6 +12,27 @@
 
 #"standard.h"
 
+main {
+    waterinit(24)
+    movestep(0,64) -- out of the way of control sectors
+
+    pushpop(movestep(32,32) thing)
+
+    -- a ramp of rooms, descending in floor and ceiling height
+    fori(0, 7,
+        water(
+            room(mul(i,-16), 200, 256, 256),
+            add(128,mul(i,-16))
+        )
+        movestep(-256,0)
+    )
+}
+
+-- simplify box; ceil is floor + 128
+room(f,l,x,y) {
+    box(f, add(128,f), l, x, y)
+}
+
 /*
  * waterinit - this should be called only once and before using any
  * other water* routines.
@@ -50,26 +71,4 @@ water(x,ceilheight) {
     x
     sectortype(0,0)
     inc("watertag",1)
-}
-
--- simplify box; ceil is floor + 128
-room(f,l,x,y) {
-    box(f, add(128,f), l, x, y)
-}
-
-main {
-
-    waterinit(24)
-    movestep(0,64) -- out of the way of control sectors
-
-    pushpop(movestep(32,32) thing)
-
-    -- a ramp of rooms, descending in floor and ceiling height
-    fori(0, 7,
-        water(
-          room(mul(i,-16), 200, 256, 256),
-          add(128,mul(i,-16))
-        )
-        movestep(-256,0)
-    )
 }

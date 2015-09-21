@@ -555,6 +555,10 @@ class WadRun {
       return n;
     }});
 
+    builtin("newtag", 0, new Builtin() { Exp eval() {
+      return new Int(wp.curtag++);
+    }});
+
   }
 
   void builtin(String s, int nargs, Builtin b) {
