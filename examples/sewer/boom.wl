@@ -5,8 +5,6 @@
  *
  * XXX: Things to fix:
      * de-duplicate control sectors
-     * add a WadC built-in "newtag" to return a new, unused tag number; avoid
-       reserving a range and hoping for the best
      * more water property parameterisation (light level, textures, flats)
  */
 
@@ -42,7 +40,7 @@ room(f,l,x,y) {
  */
 waterinit(waterheight) {
     set("water", waterheight)
-    set("watertag", 512)
+    set("watertag", newtag)
     !water -- where the next control sector will go
 }
 
@@ -70,5 +68,5 @@ water(x,ceilheight) {
     floor("SLIME01")
     x
     sectortype(0,0)
-    inc("watertag",1)
+    set("watertag", newtag)
 }
