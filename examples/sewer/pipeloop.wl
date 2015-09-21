@@ -1,29 +1,34 @@
-#"pipes.wl"
+#"sewer.h"
+#"water.h"
+
+sewerwater(x) {
+        water(x, get("sewerfloor"), get("sewerceil"))
+}
 
 pipeloop {
 
-    slimeinit(0, 140, 128)
-    slime_control
-    movestep(-512,-512) -- XXX: should be handle by slimecontrol really
+    sewerinit
+    waterinit_fwater(-64)
+    movestep(-512,-512) -- XXX: should be handle by sewercontrol really
 
     pushpop( movestep(128,128) thing ) -- XXX: put in standard.h or something
 
-    twice( slimecurve_l )
-
     -- stairs down
     for(0,8,
-        dec("slimefloor", 16)
-        dec("slimeceil",  16)
-        slimecorridor(64)
+        dec("sewerfloor", 16)
+        dec("sewerceil",  16)
+        sewerwater(sewerpipe(64))
     )
 
-    twice( slimecurve_l )
+    twice(sewerwater(sewerleft))
 
     -- stairs up
     for(0,8,
-        inc("slimefloor", 16)
-        inc("slimeceil",  16)
-        slimecorridor(64)
+        inc("sewerfloor", 16)
+        inc("sewerceil",  16)
+        sewerwater(sewerpipe(64))
     )
+
+    twice(sewerwater(sewerleft))
 
 }
