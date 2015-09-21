@@ -537,16 +537,16 @@ to same sector" error.
 
     lastsector
     forcesector(index)
-    
+
 returns the index (not tag!) of the last sector created. you can use this
 value with together with forcesector, to add sides to a sector which is not
 spacially adjoining it. forcesector will force the next makesector command
 to add sidedefs to the sector specified instead of creating a new one. The
 properties specified in the makesector command (floor level etc) are ignored.
 
-    mute
-    
-any following monsters will be muted. Calling it again switches it off again.
+    deaf
+
+any following monsters will be deaf. Calling it again switches it off again.
 
     easy
     hurtmeplenty

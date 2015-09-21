@@ -67,6 +67,7 @@ file in your configuration for this to work.
 `newtag`::     generate and return a new unique tag number
 `texture`::    begins the definition of a new texture, to combine with `addpatch`
 `addpatch`::   adds a patch to the currently defined texture
+`deaf`::       `mute` has been renamed to `deaf`.
 
 ===== Library additions
 

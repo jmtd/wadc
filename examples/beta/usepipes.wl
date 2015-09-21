@@ -79,9 +79,9 @@ usepipes {
   pushpop(
     movestep(512,128)
     turnaround
-    demon mute
+    demon deaf
     triple( thing move(128) )
-    mute
+    deaf
   )
   slimecorridor(896)
 

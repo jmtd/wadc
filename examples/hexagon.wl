@@ -8,7 +8,7 @@ main {
   togglethings
   mergesectors
   prunelines
-  mute
+  deaf
   thing
   shotgun
   thing
