@@ -1,6 +1,8 @@
 = Release Notes
 :toc:
-:toc-placement: preamble
+:toc-placement!:
+
+toc::[]
 
 == 2.0
 
