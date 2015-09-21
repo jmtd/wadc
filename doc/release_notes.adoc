@@ -22,8 +22,8 @@ is no longer sensitive to the directory from which it is launched.
 WadC now requires Java version 1.8 or newer to run or build. It has been
 tested only with
 
-* java version "1.8.0\_45"
-* javac 1.8.0\_45
+* java version "1.8.0_45"
+* javac 1.8.0_45
 
 ===== configuration file syntax and location
 
@@ -31,18 +31,16 @@ wadc.cfg is no longer written/read from the current working directory. On
 Windows, it's found at `%USERHOME%/.wadc/wadc.cfg`, on UNIX platforms it
 looks in `$HOME/.wadc`. Examples
 
-```
-    c:\Users\Your Name\.wadc
-    /Users/Jon/.wadc
-    /home/you/.wadc
-```
+ c:\Users\Your Name\.wadc
+ /Users/Jon/.wadc
+ /home/you/.wadc
 
 The configuration option `doomcmd` no longer exists. It has been replaced
 with
 
- * `doomexe`  - path to your preferred doom executable
- * `doomargs` - arguments to pass to your preferred doom executable,
-                separated by whitespace. This should end with '`-file`'.
+`doomexe`::  path to your preferred doom executable
+`doomargs`:: arguments to pass to your preferred doom executable, +
+             separated by whitespace. This should end with '`-file`'.
 
 The reason for this is to allow you to supply a `doomexe` containing
 whitespace in the path.
@@ -63,27 +61,29 @@ file in your configuration for this to work.
 
 ==== Language features
 
- * `die(foo)`: prints foo, then terminates.
- * `cat(a, b)`: concatenates a and b
- * `seed(x)`: seeds the random-number generator for reproducibility
- * `newtag`: generate and return a new unique tag number
- * `texture`: begins the definition of a new texture, to combine with
-   - `addpatch`: which adds a patch to the currently defined texture
+`die(foo)`::   prints foo, then terminates.
+`cat(a, b)`::  concatenates a and b
+`seed(x)`::    seeds the random-number generator for reproducibility
+`newtag`::     generate and return a new unique tag number
+`texture`::    begins the definition of a new texture, to combine with `addpatch`
+`addpatch`::   adds a patch to the currently defined texture
 
 ===== Library additions
 
- * `lisp.h`, lisp-style lists (broken out from `examples/lisp.wl`)
- * `water.h`, Boom deep water tools
- * within `standard.h`:
-   - `inc` and `dec`, convenient for increment/decrementing a variable
-   - `fori` and `i`, the `for` loop but you can read the value of the iterator
+`lisp.h`::  lisp-style lists (broken out from `examples/lisp.wl`)
+`water.h`:: Boom deep water tools
+
+within `standard.h`:
+
+ * `inc` and `dec`, convenient for increment/decrementing a variable
+ * `fori` and `i`, the `for` loop but you can read the value of the iterator
 
 ===== New examples
 
- - `textures.wl`, demonstrating the texture features
- - `llevels.wl`, test WAD using texture features
- - `water.wl`, demonstrating the Boom water helpers
- - "beta" directory containing my unfinished stuff
+`textures.wl`:: demonstrating the texture features
+`llevels.wl`::  test WAD using texture features
+`water.wl`::    demonstrating the Boom water helpers
+"beta"::        directory containing my unfinished stuff
 
 ==== Bug fixes
 
@@ -97,12 +97,12 @@ contain spaces or other special characters.
 
 * First release by Jon Dowland.
 * Doom features:
-  - friendly flag - toggle boom friendly monsters
-  - impassable flag - toggle impassable 2s lines
-  - midtex flag - toggle middle-textures on 2s lines
+  - `friendly` flag - toggle boom friendly monsters
+  - `impassable` flag - toggle impassable 2s lines
+  - `midtex` flag - toggle middle-textures on 2s lines
 * new examples:
-  - 1.2\_features.wl - demo the new features above
-  - entryway.wl - a recreation of Doom 2 MAP01 in WadC, thanks GreyGhost
+  - `1.2_features.wl` - demo the new features above
+  - `entryway.wl` - a recreation of Doom 2 MAP01 in WadC, thanks GreyGhost
 
 === 1.1
 
