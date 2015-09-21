@@ -11,7 +11,7 @@
 #"standard.h"
 
 main {
-    waterinit(-16, "FWATER1", "WATERMAP", 80)
+    waterinit_fwater(-16)
     movestep(0,64) -- out of the way of control sectors
     pushpop(movestep(32,32) thing)
 
@@ -46,9 +46,19 @@ waterinit(h, f, m, l) {
 
     set("watertag", newtag)
     !water -- where the next control sector will go
+    water_vanilla(m)
+}
 
-    -- define a texture matching the colormap. This is a hack so that
-    -- the wad doesn't crash vanilla.
+/* convenience function for common water settings */
+waterinit_fwater(h) {
+    waterinit(h, "FWATER1", "WATERMAP", 80)
+}
+
+/*
+ * define a texture matching the colormap. This is a hack so that
+ * the wad doesn't crash vanilla.
+ */
+water_vanilla(m) {
     texture(m,64,128)
     addpatch("BODIES",0,0)
 }
