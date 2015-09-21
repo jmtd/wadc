@@ -394,11 +394,6 @@ class WadRun {
         return n;
     }});
 
-    builtin("newpatch", 1, new Builtin() { Exp eval(Exp s) {
-        wp.newPatch(s.sval());
-        return n;
-    }});
-
     builtin("addpatch", 3, new Builtin() { Exp eval(Exp s, Exp x, Exp y) {
         wp.addPatch(s.sval(), x.ival(), y.ival());
         return n;

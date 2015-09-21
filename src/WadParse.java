@@ -344,9 +344,4 @@ public class WadParse {
           current_texture.patches.add(new Patch(n, x, y));
       }
   }
-
-  void newPatch(String n) {
-      patches.add(n);
-  }
-
 }
