@@ -18,6 +18,7 @@ aardappelatgmaildotcom
   - new built-in die(foo): prints foo, then terminates.
   - new built-in cat(a, b): concatenates a and b
   - new built-in seed(x): seeds the random-number generator for reproducibility
+  - new built-in newtag: generate and return a new unique tag number
   - Texture manipulation with texture / newpatch
 * library additions:
   - lisp.wl, lisp-style lists (broken out from examples/lisp.wl)
@@ -678,7 +679,7 @@ variable "name".
 Go back to the position/orientation stored in "name" and restore the textures.
 
 
-#### Tag Identifiers
+#### Using Tags and Tag Identifiers
 
 These are especially useful in combination with the linetype & sectortype
 commands. Simply use any identifier prefixed by a "$":
@@ -688,6 +689,21 @@ commands. Simply use any identifier prefixed by a "$":
 
 whereever the same tag is used, a unique tag number is automatically generated and
 used.
+
+If you want to generate a new, unique tag without using a tag identifier, you can
+use 'newtag'
+
+    set("myvar", newtag) -- gets a new, unused tag number
+    -- ...
+	linetype(sometime , get("myvar")) -- use it
+    -- ...
+
+##### Caveats
+
+`newtag` nor tag identifiers pull unique tag numbers from the same "pool" so you
+can mix and match them. However, if you use bare numbers as tag arguments and use
+`newtag` or tag identifiers, you run the risk of clashing the generated numbers
+with your hand-chosen ones.
 
 
 #### Auto texturing
