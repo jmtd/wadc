@@ -1,9 +1,12 @@
 /*
- * water.h - routines for working with Boom deep water
+ * water.h - part of WadC
+ * Copyright © 2015 Jonathan Dowland <jon@dow.land>
  *
- * XXX: Things to fix:
-     * de-duplicate control sectors (need to build a map
-       data structure)
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ *
+ * routines for working with Boom deep water (sector type 242)
+ * TODO: de-duplicate control sectors
  */
 
 /*
