@@ -327,6 +327,9 @@ public class Wad {
 
   /*
    * bundle the WadC source into the WAD
+   * XXX: Issues:
+   *    * include directives are expanded, so need to be commented out
+   *    * we might need to insert an extra newline between files
    */
   int writewadcsource() throws IOException {
       int l = 0;
