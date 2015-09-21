@@ -32,7 +32,7 @@ public class Wad {
         findNewPatches();
       }
 
-      int numentries = wr.hexen ? 7 : 6;
+      int numentries = wr.hexen ? 8 : 7;
       if(!w.textures.isEmpty()) numentries++;
       if(write_pnames) numentries++;
 
@@ -48,6 +48,8 @@ public class Wad {
       int bsize = writebehaviour();
       int texsize = writetextures();
       int psize = writepnames();
+      int wlsize = writewadcsource();
+
       long dpos = f.getFilePointer();
       writedir("MAP01",0);
       writedir("THINGS",tsize);
@@ -58,10 +60,13 @@ public class Wad {
       if(wr.hexen) writedir("BEHAVIOR", bsize);
       if(!w.textures.isEmpty()) writedir("TEXTURE2", texsize);
       if(write_pnames) writedir("PNAMES", psize);
+      writedir("WADCSRC", wlsize);
+
       f.seek(8);
       writeInt((int)dpos);
       f.close();
       mf.msg("wrote wad successfully");
+
     } catch(IOException i) {
       mf.msg("saving wad unsuccessful");
     };
@@ -316,6 +321,27 @@ public class Wad {
       string(p);
     }
     return 4 + 8 * pnames.size();
+  }
+
+  /*
+   * bundle the WadC source into the WAD
+   */
+  int writewadcsource() throws IOException {
+      int l = 0;
+
+      // write the current buffer first
+      byte[] b = mf.textArea1.getText().getBytes("UTF-8");
+      l += b.length;
+      f.write(b);
+
+      // append included files
+      for(String s : wp.includes) {
+          b = wp.loadinclude(s).getBytes("UTF-8");
+          l += b.length;
+          f.write(b);
+      }
+
+      return l;
   }
 
 }
