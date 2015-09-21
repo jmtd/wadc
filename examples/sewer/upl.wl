@@ -1,3 +1,0 @@
-#"pipeloop.wl"
-
-main { pipeloop }

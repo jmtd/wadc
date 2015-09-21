@@ -1,5 +1,5 @@
 /*
- * usewater.wl - a demonstration of the Boom water routines
+ * water.wl - a demonstration of the Boom water routines
  */
 
 #"standard.h"

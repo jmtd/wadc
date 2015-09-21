@@ -1,3 +1,12 @@
+/*
+ * This is an unfinished attempt to recreate pipes/usepipes from
+ * memory, started at some point after 2006 but never finished.
+ *
+ * The routines are a lot simpler and cleaner. I didn't do the
+ * deep water stuff (but that's since been reworked into water.h)
+ *                                                 -- jmtd
+ */
+
 #"standard.h"
 #"monsters.h"
 

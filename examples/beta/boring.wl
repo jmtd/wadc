@@ -1,5 +1,8 @@
 /*
  * boring.wl - boring stuff
+ * used by usepipes.wl for the non-sewer pipe areas around
+ * the entrance.
+ *                                                 -- jmtd
  */
 
 room(f,c,l,x,y) {

@@ -1,3 +1,9 @@
+/*
+ * This is part of pipes.wl/usepipes.wl, an "Underhalls" tribute
+ * I started in around 2006 and never finished.
+ *                                                 -- jmtd
+ */
+
 #"standard.h"
 
 slimetype(x,tag) {

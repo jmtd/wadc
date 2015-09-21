@@ -1,3 +1,9 @@
+/*
+ * demo of a looping sewer pipe/corridor, which dips down under
+ * a water level and back up again
+ *                                                 -- jmtd
+ */
+
 #"sewer.h"
 #"water.h"
 
@@ -5,13 +11,16 @@ sewerwater(x) {
         water(x, get("sewerfloor"), get("sewerceil"))
 }
 
+main { pipeloop }
+
 pipeloop {
 
     sewerinit
     waterinit_fwater(-64)
-    movestep(-512,-512) -- XXX: should be handle by sewercontrol really
+    movestep(-512,-512)
 
-    pushpop( movestep(128,128) thing ) -- XXX: put in standard.h or something
+    -- TODO: I write this a lot. Should I put it in standard.h?
+    pushpop( movestep(128,128) thing )
 
     -- stairs down
     for(0,8,
