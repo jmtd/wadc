@@ -2,12 +2,6 @@
 Jonathan Dowland <jon@dow.land>
 :homepage: http://jmtd.net/wadc/
 
-Current maintainer: Jonathan Dowland <jon@dow.land>
-
-Homepage: http://jmtd.net/wadc/
-
-Originally by Aardappel <http://strlen.com/wadc/>
-
 == About
 
 WadC is a programming language and IDE for the construction of Doom maps.
@@ -28,3 +22,10 @@ It's also worth reading the link:examples and link:include/[standard library].
 Downloads are on the https://github.com/jmtd/wadc/releases[releases page].
 
 See also the WadC homepage: <http://jmtd.net/wadc/>.
+
+== Who
+
+Since 2008, WadC is developed by Jonathan Dowland <jon@dow.land>.
+
+WadC was originally written by Wouter van Oortmerssen
+(link:http://strlen.com/wadc/[Aardappel]) in 2001.
