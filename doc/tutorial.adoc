@@ -1,69 +1,71 @@
-wadc tutorial
+= WadC tutorial
+Jonathan Dowland <jon@dow.land>
+:homepage: http://jmtd.net/wadc/
 
 first, basic thing
 
 box room, player start, how to move around w/o drawing a line
 
-    main {
-          pushpop( movestep(32,32) thing)
-          box(128,128,0,128,128)
-    }
+ main {
+     pushpop( movestep(32,32) thing)
+     box(128,128,0,128,128)
+ }
 
 introduce user-defined functions for abstraction/reuse
 
-    boring {
-          box(128,128,0,128,128)
-    }
-    main {
-          pushpop(movestep(32,32) thing)
-            boring
-    }
+ boring {
+     box(128,128,0,128,128)
+ }
+ main {
+     pushpop(movestep(32,32) thing)
+     boring
+ }
 
 try repeating the use of the function:
 
-    main {
-          pushpop(movestep(32,32) thing)
-            boring
-            boring
-    }
+ main {
+     pushpop(movestep(32,32) thing)
+     boring
+     boring
+ }
 
 didn't work: the second box is trying to overdraw on the first. Add a move:
 
-    boring {
-          box(128,128,0,128,128)
-          move(128)
-    }
+ boring {
+     box(128,128,0,128,128)
+     move(128)
+ }
 
 Let's try another routine. bear in mind starting location is bottom-left corner
 
-    corridor {
-          movestep(0,32)
-          box(0,128,128,128,64)
-          move(128)
-    }
+ corridor {
+     movestep(0,32)
+     box(0,128,128,128,64)
+     move(128)
+ }
 
 looks ok on ui but overdraw bug. tweak routine to draw in a different order
 (Backwards)
 
-    corridor {
-          movestep(128,96)
-          turnaround
-          box(0,128,128,128,64)
-          turnaround
-          movestep(0,-96)
-    }
+ corridor {
+     movestep(128,96)
+     turnaround
+     box(0,128,128,128,64)
+     turnaround
+     movestep(0,-96)
+ }
 
 Works now.  Another room type, a bend
 
-    leftturn {
-          movestep(96,96)
-          turnaround
-          box(0,128,128,96,64)
-          movestep(0,64)
-          box(0,128,128,64,32)
-          rotright
-          movestep(32,-96)
-    }
+ leftturn {
+     movestep(96,96)
+     turnaround
+     box(0,128,128,96,64)
+     movestep(0,64)
+     box(0,128,128,64,32)
+     rotright
+     movestep(32,-96)
+ }
 
 dev tip: when developing something like this, if you get lost, 
 try putting straight(64) in places to see where the cursor is
@@ -71,15 +73,15 @@ at that point in time
 
 time for randomroom!
 
-    randomroom {
-          boring | corridor | leftturn
-    }
+ randomroom {
+     boring | corridor | leftturn
+ }
 
 try chaining it!
 
-    main {
-        for(1, 5, randomroom)
-    }
+ main {
+     for(1, 5, randomroom)
+ }
 
 refresh a load of times.  eventually, you will hit a situation where one
 of the rooms tries to draw into the space occupied by another.
