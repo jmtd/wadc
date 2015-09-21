@@ -59,7 +59,7 @@ public class WadParse {
   Hashtable globs = new Hashtable();
   Hashtable tags = new Hashtable();
   MainFrame mf;
-  Hashtable includes = new Hashtable();
+  TreeSet<String> includes = new TreeSet<String>();
 
   TreeMap<String,Texture> textures = new TreeMap<String,Texture>();
   Texture current_texture = null;
@@ -194,8 +194,8 @@ public class WadParse {
   void attachinclude() {
     lex();
     if(token!='\"') error("filename expected");
-    if(includes.get(sinfo)==null) {
-      includes.put(sinfo,sinfo);
+    if(!includes.contains(sinfo)) {
+      includes.add(sinfo);
       buf = buf.substring(0,buf.length()-1) + loadinclude(sinfo) +'\0';
     };
     lex();
