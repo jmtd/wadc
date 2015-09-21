@@ -78,8 +78,8 @@ slimecurve_r(f,l) {
 }
 
 -- a curve to the left
-slimecurve_l() { _slimecurve(get("slimefloor"),get("slimelight")) }
-_slimecurve(f,l) {
+slimecurve_l() { _slimecurve(get("slimefloor"), get("slimeceil"), get("slimelight")) }
+_slimecurve(f,c,l) {
   print("first bit")
   curve(128,mul(-1,128),32,1)
   rotright
@@ -89,7 +89,7 @@ _slimecurve(f,l) {
   curve(add(32,128),add(32,128),32,1)
   rotright
   straight(32)
-  rightsector(add(32,f),add(f,96),l)
+  rightsector(add(32,f),sub(c,32),l)
 
   print("second bit")
   ^secondbit
@@ -102,7 +102,7 @@ _slimecurve(f,l) {
   straight(sub(265,64))
   ^secondbit
   straight(sub(256,64))
-  slimemain( rightsector(f,add(128,f),l) )
+  slimemain( rightsector(f,c,l) )
 
   print("third bit")
   ^thirdbit
@@ -111,7 +111,7 @@ _slimecurve(f,l) {
   curve(add(128,mul(2,128)),add(128,mul(2,128)),32,1)
   rotright
   straight(32)
-  rightsector(add(32,f),add(96,f),l)
+  rightsector(add(32,f),sub(c,32),l)
 
   ^secondbit
   rotleft
@@ -262,14 +262,14 @@ slime_control() {
   move(128)
   triple(left(64))
   linetype(242,$slime1) left(64)
-  leftsector(24,128,88)
+  leftsector(24,get("slimeceil"),88)
   linetype(0,0)
 
   -- $slime2: recessed wall (slimecut)
   move(128)
   triple(left(64))
   linetype(242,$slime2) left(64)
-  leftsector(24,96,88)
+  leftsector(24, sub(get("slimeceil"),32), 88)
   linetype(0,0)
 
   -- $slime3: secret floor
@@ -283,14 +283,11 @@ slime_control() {
   move(128)
   triple(left(64))
   linetype(242,$slime4) left(64)
-  leftsector(24,96,88)
+  leftsector(24, sub(get("slimeceil"), 32), 88)
   linetype(0,0)
 
   ceil("SLIME16")
   ^slimeinit
-
-  --set("slimefloor",f)
-  --set("slimelight",l)
 }
 
 slimesplit(left, centre, right) { 
