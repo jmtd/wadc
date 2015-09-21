@@ -1,8 +1,6 @@
 #"standard.h"
 #"monsters.h"
 
-main { sewermain } 
-
 monsters(num) {
   pushpop(
     movestep(64,64)
@@ -14,13 +12,13 @@ monsters(num) {
 
 sewerinit {
   set("sewerwidth", 192)
-  set("floorheight", 0)
-  set("ceilingheight", 160)
+  set("sewerfloor", 0)
+  set("sewerceil", 160)
   set("sewerbar_spacing", div(sub(get("sewerwidth"), mul(3,24)),4))
 }
 
 sewerpipe(length) {
-  box(get("floorheight"),get("ceilingheight"),160,
+  box(get("sewerfloor"),get("sewerceil"),160,
       length, get("sewerwidth"))
   move(length)
 }
@@ -31,7 +29,7 @@ sewertrigger(length,type,tag) {
   ^sewertrigger
   movestep(8,8)
   linetype(type,tag)
-  ibox(get("floorheight"),get("ceilingheight"),160, 64,
+  ibox(get("sewerfloor"),get("sewerceil"),160, 64,
        sub(get("sewerwidth"),16))
   linetype(0,0)
   popsector
@@ -50,7 +48,7 @@ sewerbars() {
   for(1,3,
     movestep(0,get("sewerbar_spacing"))
     xoff(0)
-    ibox( get("floorheight"), get("floorheight"), 160,24,24)
+    ibox( get("sewerfloor"), get("sewerfloor"), 160,24,24)
     popsector
     movestep(0,24)
   )
@@ -66,7 +64,7 @@ sewerleft {
     add(128,get("sewerwidth")),
     add(128,get("sewerwidth")),
     16, 1)
-  rightsector(get("floorheight"),get("ceilingheight"),160)
+  rightsector(get("sewerfloor"),get("sewerceil"),160)
   ^sewerleft
 }
 
@@ -79,7 +77,7 @@ sewerright {
   right(get("sewerwidth"))
   rotright
   curve(128,-128, 16, 1)
-  rightsector(get("floorheight"),get("ceilingheight"),160)
+  rightsector(get("sewerfloor"),get("sewerceil"),160)
   ^sewerright
 }
 
@@ -94,7 +92,7 @@ sewertee(l,r) {
   right(get("sewerwidth"))
   rotright
   curve(128,-128, 16, 1)
-  rightsector(get("floorheight"),get("ceilingheight"),160)
+  rightsector(get("sewerfloor"),get("sewerceil"),160)
 }
 
 sewermain {
@@ -129,16 +127,16 @@ sewermain {
   ^left
   sewerpipe(128)
   -- change floor height
-  set("floorheight", -512)
+  set("sewerfloor", -512)
   sewerpipe(get("sewerwidth"))
   !floor3
-  set("floorheight", 0)
+  set("sewerfloor", 0)
   sewerbars
   sewerleft sewerpipe(256)
 
   ^floor3
-  set("floorheight", -512)
-  set("ceilingheight", add(192,-512))
+  set("sewerfloor", -512)
+  set("sewerceil", add(192,-512))
   movestep(mul(-1,get("sewerwidth")),0) rotleft
   sewerbars
   sewerpipe(256)
@@ -165,11 +163,11 @@ sewermain {
 }
 
 traproom {
-  box(get("floorheight"),add(128,get("floorheight")),160, 256,512)
+  box(get("sewerfloor"),add(128,get("sewerfloor")),160, 256,512)
   formersergeant
   monsters(4)
   move(256)
   sectortype(0,$traptag) mid("doortrak")
-  box(get("floorheight"),get("floorheight"),160, 8, 512)
+  box(get("sewerfloor"),get("sewerfloor"),160, 8, 512)
   sectortype(0,0)
 }
