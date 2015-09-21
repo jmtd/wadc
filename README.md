@@ -12,16 +12,19 @@ aardappelatgmaildotcom
 
 ### (will be) 2.0 (currently RC)
 
+* program changes:
+  - WadC now writes out the source code for your level to the generated WAD
+    in a `WADCSRC` lump.
 * bug fixes:
   - Fix map view zooming with mouse clicks on non-Windows platforms.
 * language features:
-  - new built-in die(foo): prints foo, then terminates.
-  - new built-in cat(a, b): concatenates a and b
-  - new built-in seed(x): seeds the random-number generator for reproducibility
-  - new built-in newtag: generate and return a new unique tag number
-  - Texture manipulation with texture / newpatch
+  - new built-in `die(foo)`: prints foo, then terminates.
+  - new built-in `cat(a, b)`: concatenates a and b
+  - new built-in `seed(x)`: seeds the random-number generator for reproducibility
+  - new built-in `newtag`: generate and return a new unique tag number
+  - Texture manipulation with `texture` and `newpatch`
 * library additions:
-  - lisp.wl, lisp-style lists (broken out from examples/lisp.wl)
+  - `lisp.wl`, lisp-style lists (broken out from `examples/lisp.wl`)
 
 ### 1.2
 
