@@ -5,6 +5,8 @@ Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 :toclevels: 5
 :homepage: http://jmtd.net/wadc/
 
+toc::[]
+
 == What is it?
 
 A programming language for the construction of Doom maps. Integrated 
@@ -28,9 +30,9 @@ See link:release_notes.adoc[Release notes and version history].
 
 == Requirements
 
-- any computer that runs Java 1.1 or better
+- any computer that runs Java 1.8 or better
 - any version of Doom
-- a Doom nodebuilder (bsp 5.0 recommended)
+- a Doom nodebuilder (bsp 5.2 recommended)
 
 
 == Source code
@@ -53,18 +55,18 @@ the location where you extracted the ZIP, could also run
 
 To play the .wad files you create using WadC in Doom, you also need a
 node builder, such as BSP, available from http://games.moria.org.uk/doom/bsp/
-For a list of other node builders, see http://doomwiki.org/wiki/Category:Node\_builders
+For a list of other node builders, see http://doomwiki.org/wiki/Category:Node_builders
 
 == What else is in the zip?
 
 
 The zip also includes
 
-    examples/ - example WadC files to try out.
-    includes/ - a copy of the WadC "standard library". This is also
-                embedded in the JAR, but is included so you can read
-                it and see how it works. See also "Include files",
-                below.
+`examples/`:: example WadC files to try out.
+`includes/`:: a copy of the WadC "standard library". This is also
+              embedded in the JAR, but is included so you can read
+              it and see how it works. See also "Include files",
+              below.
 
 == Using the GUI
 
@@ -134,7 +136,7 @@ The language just knows two literals, integers (23, 0, -1 etc.) and strings
 ("LITE5"), the latter sofar mainly used for texture names.
 
 Identifiers are made up of lower or upper case characters, and are allowed to 
-contain digits or "\_".
+contain digits or "_".
 
 The source is in free format (i.e. it doesn't matter how you layout your
 code). Single line comments start with "--" and last for the rest of that line,
@@ -152,12 +154,12 @@ same as x+y x-y etc.
     eq(x,y) lessthaneq(x,y)
 
 same as x==y and x<=y, returning 1 if true or 0 if false. To do other comparisons
-simply rearange your code :)
+simply rearrange your code :)
 
     sin(x)
     asin(x)
 
-sin takes an argument in degrees (not radians) *10, i.e. 90 degrees in 900. It
+sin takes an argument in degrees (not radians) *10, i.e. 90 degrees is 900. It
 returns the 1.0 to -1.0 range as 1024 to -1024. asin performs the inverse
 transformation over the same ranges.
 
@@ -283,23 +285,24 @@ WadC's set of standard include files contain a wide range of useful
 language, doom & architectural macros that are very useful and speed
 up editing a lot. You should make sure to get familiar with them:
 
-    standard.h:     very basic language & doom macros for very common
-                    things. Many of the macros here are easier to use
-                    then the builtin features they are based upon.
-                    
-    decoration.h:
-    spawns.h:
-    pickups.h:
-    monsters.h:     constant definitions for all doom things
-    
-    zdoom.h:        things that rely on zdoom features, such as slopes
-                    and sloped arches.
-    
-    basic.h:        a set of higher level architectural building blocks
-                    based on some conventions of composing sectors. good
-                    to work with for bigger maps. Contains common doom map
-                    prefabs for things like starts, end of level, monster
-                    teleporting and placement, and room segments.
+standard.h::    very basic language & doom macros for very common
+                things. Many of the macros here are easier to use
+                then the builtin features they are based upon.
+
+decoration.h, +
+spawns.h, +
+pickups.h, +
+monsters.h::    constant definitions for all doom things
+zdoom.h::       things that rely on zdoom features, such as slopes
+                and sloped arches.
+basic.h::       a set of higher level architectural building blocks
+                based on some conventions of composing sectors. good
+                to work with for bigger maps. Contains common doom map
+                prefabs for things like starts, end of level, monster
+                teleporting and placement, and room segments.
+lisp.h::        Basic lisp-style lists.
+water.h::       Helper routines for using Boom sector transfer effect
+                (linedef type 242) for deep water.
 
 
 === The choice operator
@@ -442,8 +445,9 @@ monsters.h / pickups.h / decoration.h / spawns.h include files instead.
 
 	friendly
 
-toggles the 'friendly' flag of monsters. Friendly monsters are a Boom
-feature. 'friendly' defaults to off.
+toggles the 'friendly' flag of monsters. Friendly monsters are a
+http://doomwiki.org/wiki/Friendly_monster#MBF[MBF feature]. 'friendly' defaults
+to off.
 
 	linetype(type,tag)
 
@@ -784,19 +788,29 @@ There is some basic experimental support for defining new textures.
     texture("name", 64, 128)
     addpatch("RW24_2", 0, 0)
 
-"texture" either starts a new texture definition, with the name "name"
-(first argument), width 64 and height 128.
+`texture` starts a new texture definition, with the name, width and
+height of the arguments you supply.
 
-"addpatch" adds a patch onto the currently selected texture. It must be
-called after at least one call to "texture'. The first argument names
+`addpatch` adds a patch onto the currently selected texture. It must be
+called after at least one call to `texture`. The first argument names
 the patch to be added, and the second two arguments define the x and y
 offsets of the patch inside the texture.
 
-You can switch between texture definitions by calling "texture" with
-the same name again.
+You can switch between texture definitions and back by calling `texture`
+with the same name again.
 
 If you define at least one texture, the output WAD will contain the
-definitions in a TEXTURE2 lump.
+definitions in a `TEXTURE2` lump.
 
-If you have defined any new patch names, a modified PNAMES lump is
-also written to the output WAD.
+If you have defined any new patch names, a `PNAMES` lump is also written
+to the output WAD. For this to work, you have to have configured WadC to
+know where your IWAD is.
+
+The "proper" way to do this is to quit WadC, edit your configuration and
+start it back up.
+
+For now, The quickest way is to add
+
+    iwad("c:\path\to\doom2.wad")
+
+into the currently open WadC file and run it.
