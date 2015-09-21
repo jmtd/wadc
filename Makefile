@@ -14,13 +14,15 @@ clean:
 wadc.zip: wadc.jar
 	zip wadc.zip \
 		wadc.jar \
-		*.cmd \
-		*.sh \
-		readme.txt \
-		tutorial.md \
 		LICENSE.txt \
 		examples/*.wl \
+		examples/*.h \
 		examples/old/*.wl \
+		examples/beta/*.wl \
+		examples/beta/*.h \
+		examples/beta/old/*.wl \
+        doc/* \
+        README.adoc \
 		include/*.h
 
 .PHONY: clean default
