@@ -24,7 +24,7 @@ Since 2008, WadC is developed by Jonathan Dowland <jon@dow.land>.
 WadC was originally written by Wouter van Oortmerssen
 (link:http://strlen.com/wadc/[Aardappel]) in 2001.
 
-== version history
+== Version history
 
 See link:release_notes.adoc[Release notes and version history].
 
