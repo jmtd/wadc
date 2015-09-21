@@ -1,87 +1,8 @@
 = WadC ("Wad Compiler")
+Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 :toc:
 :toc-placement: preamble
-
-Current maintainer: Jonathan Dowland
-jon@dow.land
-http://jmtd.net/wadc/
-
-Originally by Aardappel
-http://strlen.com/wadc/
-aardappelatgmaildotcom
-
-== version history
-
-=== (will be) 2.0 (currently RC)
-
-* program changes:
-  - WadC now writes out the source code for your level to the generated WAD
-    in a `WADCSRC` lump.
-* bug fixes:
-  - Fix map view zooming with mouse clicks on non-Windows platforms.
-* language features:
-  - new built-in `die(foo)`: prints foo, then terminates.
-  - new built-in `cat(a, b)`: concatenates a and b
-  - new built-in `seed(x)`: seeds the random-number generator for reproducibility
-  - new built-in `newtag`: generate and return a new unique tag number
-  - Texture manipulation with `texture` and `newpatch`
-* library additions:
-  - `lisp.wl`, lisp-style lists (broken out from `examples/lisp.wl`)
-
-=== 1.2
-
-* First release by Jon Dowland.
-* Doom features:
-  - friendly flag - toggle boom friendly monsters
-  - impassable flag - toggle impassable 2s lines
-  - midtex flag - toggle middle-textures on 2s lines
-* new examples:
-  - 1.2\_features.wl - demo the new features above
-  - entryway.wl - a recreation of Doom 2 MAP01 in WadC, thanks GreyGhost
-
-=== 1.1
-
-* Doom features:
-  - auto texturing (!)
-  - zdoom/hexen wad format support, slopes etc.
-  - "world coordinates" xoff alignment
-  - explicit sector assignment
-* UI features:
-  - improved mouse editing & preview window
-* language features:
-  - eager evaluation of function arguments
-  - global variables and objects
-  - stacktraces in runtime error messages
-  - new math functions: sin/asin
-* distribution features:
-  - more examples / useful include files
-  - many small enhancements/fixes
-
-=== 1.0: first public release
-
-* UI features:
-  - generating code by drawing lines with the mouse (!)
-  - zooming & panning
-  - map rendering enhancements
-* Doom features:
-  - automatic splitting of overlapping lines (!)
-  - curves with automatic texture alignment
-  - inner sectors
-  - thing/line/sector types
-  - arches (experimental)
-  - tag identifiers
-* language features:
-  - include files (with many Doom constants supplied)
-  - a random choice operator
-* distribution features:
-  - more examples etc.
-  - comes with source (GPL)
-
-=== 0.9: initial beta
-
-some may have seen this.
-
-
+:homepage: http://jmtd.net/wadc/
 
 == What is it?
 
@@ -93,6 +14,16 @@ preprocessor and a lazy functional programming language. Unless you enjoy
 both programming & Doom editing, you are unlikely to be interested in this
 software.
 
+== Who wrote it?
+
+Since 2008, WadC is developed by Jonathan Dowland <jon@dow.land>.
+
+WadC was originally written by Wouter van Oortmerssen
+(link:http://strlen.com/wadc/[Aardappel]) in 2001.
+
+== version history
+
+See link:release_notes.adoc[Release notes and version history].
 
 == Requirements
 

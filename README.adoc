@@ -1,4 +1,6 @@
 = WadC ("Wad Compiler")
+Jonathan Dowland <jon@dow.land>
+:homepage: http://jmtd.net/wadc/
 
 Current maintainer: Jonathan Dowland <jon@dow.land>
 
