@@ -151,8 +151,10 @@ public class WadParse {
     byte[] foo = new byte[4096];
     InputStream input = getClass().getResourceAsStream("/include/"+name);
 
-    if(null == input)
+    if(null == input) {
+      mf.msg("couldn't load " + name);
       return ret;
+    }
 
     try {
       // holy smokes this sucks.
@@ -163,7 +165,7 @@ public class WadParse {
       } while(0 < len);
 
     } catch(IOException e) {
-        mf.msg("couldn't load " + name);
+        mf.msg("couldn't load " + name + " from Jar");
     }
     return ret;
   }
@@ -174,10 +176,9 @@ public class WadParse {
       p = Paths.get(p.toString(), name);
 
       if(! Files.isRegularFile(p)) {
-          mf.msg("trying to resolve " + name + " via jar...");
           return loadIncludeFromJar(name);
       } else {
-          mf.msg("resolving " + name + " as file");
+          mf.msg("loading file " + name);
       }
 
       try {
