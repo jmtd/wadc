@@ -58,7 +58,7 @@ public class WadParse {
   Hashtable funs = new Hashtable();
   Hashtable globs = new Hashtable();
   Hashtable tags = new Hashtable();
-  MainFrame mf;
+  WadCMainFrame mf;
   TreeSet<String> includes = new TreeSet<String>();
 
   TreeMap<String,Texture> textures = new TreeMap<String,Texture>();
@@ -72,7 +72,7 @@ public class WadParse {
   void error(String s) { throw new Error(s); }
   void warn(String s) { mf.msg("parser ["+linenum+"]: "+s); }
 
-  public WadParse(String s, MainFrame m) {
+  public WadParse(String s, WadCMainFrame m) {
     mf = m;
     buf = s+((char)0);
     wr.addbuiltins();
@@ -172,7 +172,7 @@ public class WadParse {
 
   // given a relative file e.g. "foo.h", construct an absolute path
   Path resolveinclude(String name) {
-    Path p = Paths.get(mf.basename).getParent();
+    Path p = Paths.get(mf.prefs.basename).getParent();
     p = Paths.get(p.toString(), name);
     return p;
   }

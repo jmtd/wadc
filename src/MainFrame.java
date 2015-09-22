@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class MainFrame extends Frame {
+public class MainFrame extends Frame implements WadCMainFrame {
   TextArea textArea1 = new TextArea("",15,30);
   GroupLayout borderLayout1 = new GroupLayout(true);
   Panel panel1 = new Panel();
@@ -31,14 +31,9 @@ public class MainFrame extends Frame {
   MenuItem menuItem7 = new MenuItem();
   MenuItem menuItem8 = new MenuItem();
   Canvas cv;
-  String basename;
-  String doomexe = "c:\\doom\\zdoom.exe";
-  String doomargs = "-warp 1 -file";
-  String bspcmd = "c:\\doom2\\bsp";
-  String iwad = "c:\\doom2\\doom2.wad";
-  String twad1 = "";
-  String twad2 = "";
-  String twad3 = "";
+
+  final WadCPrefs prefs = new WadCPrefs();
+
   WadParse lastwp = null;
   boolean changed = false;
 
@@ -161,11 +156,11 @@ public class MainFrame extends Frame {
         if(prefs.err==null) prefs.run();
     }
 
-    String lf = loadtextfile(basename);
+    String lf = loadtextfile(prefs.basename);
     if(lf.length()>0) { textArea1.setText(lf); } else { newfile(null); };
   }
 
-  void msg(String s) {
+  public void msg(String s) {
     textArea2.append(s+"\n");
   }
 
@@ -220,49 +215,37 @@ public class MainFrame extends Frame {
   void newfile(ActionEvent e) {
     textArea1.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
     // XXX: nasty hack to ensure basename is always a FQ path
-    basename = new File(System.getProperty("user.home"), "untitled.wl").toString();
+    prefs.basename = new File(System.getProperty("user.home"), "untitled.wl").toString();
   }
 
   void open(ActionEvent e) {
     FileDialog fd = new FileDialog(this,"select a .wl file to load",FileDialog.LOAD);
-    fd.setDirectory((new File(basename)).getParent());
+    fd.setDirectory((new File(prefs.basename)).getParent());
     fd.show();
     String name = fd.getFile();
     if(name==null) return;
-    basename = (new File(fd.getDirectory(),name)).toString();
-    textArea1.setText(loadtextfile(basename));
+    prefs.basename = (new File(fd.getDirectory(),name)).toString();
+    textArea1.setText(loadtextfile(prefs.basename));
   }
 
   void saveas(ActionEvent e) {
     FileDialog fd = new FileDialog(this,"save program (.wl)",FileDialog.SAVE);
-    fd.setDirectory((new File(basename)).getParent());
-    fd.setFile((new File(basename)).getName()); //File f = new File(); f.
+    fd.setDirectory((new File(prefs.basename)).getParent());
+    fd.setFile((new File(prefs.basename)).getName()); //File f = new File(); f.
     fd.show();
     String name = fd.getFile();
     if(name==null) return;
-    basename = (new File(fd.getDirectory(),name)).toString();
+    prefs.basename = (new File(fd.getDirectory(),name)).toString();
     save(e);
   }
 
   void save(ActionEvent e) {
-    savetextfile(basename,textArea1.getText());
+    savetextfile(prefs.basename,textArea1.getText());
     changed = false;
   }
 
   void savecfg() {
-    setPrefs(
-      "-- wadc config file\n\n" +
-      "main {\n" +
-      "  lastfile(\"" + basename + "\")\n" +
-      "  doomexe(\"" + doomexe + "\")\n" +
-      "  doomargs(\"" + doomargs + "\")\n" +
-      "  bspcmd(\"" + bspcmd + "\")\n" +
-      "  iwad(\"" + iwad + "\")\n" +
-      "  twad1(\"" + twad1 + "\")\n" +
-      "  twad2(\"" + twad2 + "\")\n" +
-      "  twad3(\"" + twad3 + "\")\n" +
-      "}\n"
-    );
+    setPrefs(prefs.toString());
   }
 
   void quit(ActionEvent e) {
@@ -299,7 +282,7 @@ public class MainFrame extends Frame {
       //msg("wadsave: can only save wad after program has been run successfully");
     } else {
       save(e);
-      wadfile = basename.substring(0,basename.lastIndexOf('.'))+".wad";
+      wadfile = prefs.basename.substring(0,prefs.basename.lastIndexOf('.'))+".wad";
       new Wad(lastwp,this,wadfile);
     };
     return wadfile;
@@ -329,16 +312,24 @@ public class MainFrame extends Frame {
   void bspdoom(String wadfile) {
     if(wadfile==null) return;
 
-    subcmd(Arrays.asList(bspcmd, wadfile, "-o", wadfile));
+    subcmd(Arrays.asList(prefs.bspcmd, wadfile, "-o", wadfile));
 
     ArrayList<String> cmd = new ArrayList<String>();
-    cmd.add(doomexe);
-    cmd.addAll(Arrays.asList(doomargs.split("\\s+")));
-    cmd.addAll(Arrays.asList(twad1, twad2, twad3, wadfile).stream()
+    cmd.add(prefs.doomexe);
+    cmd.addAll(Arrays.asList(prefs.doomargs.split("\\s+")));
+    cmd.addAll(Arrays.asList(prefs.twad1, prefs.twad2, prefs.twad3, wadfile).stream()
         .filter(s -> !"".equals(s))
         .collect(Collectors.toList()));
 
     subcmd(cmd);
+  }
+
+  public String getText() {
+      return textArea1.getText();
+  }
+
+  public void insert(String s, int pos) {
+      textArea1.insert(s, pos);
   }
 }
 

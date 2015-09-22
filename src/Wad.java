@@ -14,14 +14,14 @@ import java.nio.file.Files;
 public class Wad {
   WadParse wp;
   WadRun wr;
-  MainFrame mf;
+  WadCMainFrame mf;
   RandomAccessFile f;
   int curlumppos = 12;
   boolean linewarn = true;
   Hashtable<String, Integer> pnames= new Hashtable<String, Integer>();
   boolean write_pnames = false;
 
-  Wad(WadParse w, MainFrame m, String filename) {
+  Wad(WadParse w, WadCMainFrame m, String filename) {
     wp = w;
     wr = w.wr;
     mf = m;
@@ -268,7 +268,7 @@ public class Wad {
         int doffs, dsize;
         int poffs = 0, numps;
 
-        RandomAccessFile iwad = new RandomAccessFile(mf.iwad, "r");
+        RandomAccessFile iwad = new RandomAccessFile(mf.prefs.iwad, "r");
         iwad.seek(4);
         dsize = Integer.reverseBytes(iwad.readInt());
         doffs = Integer.reverseBytes(iwad.readInt());
@@ -338,7 +338,7 @@ public class Wad {
 
       for(String s : Arrays.asList(
         "-- generated with WadC version ", Version.version, "\n",
-        mf.textArea1.getText() )) {
+        mf.getText() )) {
 
         byte[] v = s.getBytes("UTF-8");
         f.write(v);

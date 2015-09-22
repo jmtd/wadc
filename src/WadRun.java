@@ -11,6 +11,7 @@ import java.awt.*;
 
 class WadRun {
   WadParse wp;
+  WadCPrefs prefs;
   // state variables
 
   int xp = 0;
@@ -96,6 +97,7 @@ class WadRun {
 
   WadRun(WadParse p) {
       wp = p;
+      prefs = wp.mf.prefs;
       rnd = new Random();
   }
 
@@ -436,42 +438,42 @@ class WadRun {
     }});
 
     builtin("lastfile", 1, new Builtin() { Exp eval(Exp s) {
-      wp.mf.basename = s.sval();
+      prefs.basename = s.sval();
       return n;
     }});
 
     builtin("doomexe", 1, new Builtin() { Exp eval(Exp s) {
-      wp.mf.doomexe = s.sval();
+      prefs.doomexe = s.sval();
       return n;
     }});
 
     builtin("doomargs", 1, new Builtin() { Exp eval(Exp s) {
-      wp.mf.doomargs = s.sval();
+      prefs.doomargs = s.sval();
       return n;
     }});
 
     builtin("bspcmd", 1, new Builtin() { Exp eval(Exp s) {
-      wp.mf.bspcmd = s.sval();
+      prefs.bspcmd = s.sval();
       return n;
     }});
 
     builtin("iwad", 1, new Builtin() { Exp eval(Exp s) {
-      wp.mf.iwad = s.sval();
+      prefs.iwad = s.sval();
       return n;
     }});
 
     builtin("twad1", 1, new Builtin() { Exp eval(Exp s) {
-      wp.mf.twad1 = s.sval();
+      prefs.twad1 = s.sval();
       return n;
     }});
 
     builtin("twad2", 1, new Builtin() { Exp eval(Exp s) {
-      wp.mf.twad2 = s.sval();
+      prefs.twad2 = s.sval();
       return n;
     }});
 
     builtin("twad3", 1, new Builtin() { Exp eval(Exp s) {
-      wp.mf.twad3 = s.sval();
+      prefs.twad3 = s.sval();
       return n;
     }});
 
@@ -916,7 +918,7 @@ class WadRun {
       s = "  step("+x+","+y+")\n";
     }
     wp.editchanged = 1;
-    wp.mf.textArea1.insert(s,wp.editinsertpos);
+    wp.mf.insert(s,wp.editinsertpos);
     wp.editinsertpos += s.length();
   }
 
