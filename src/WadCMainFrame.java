@@ -11,7 +11,7 @@ public interface WadCMainFrame {
         // could/should they be static?
 
     String getText();
-    final WadCPrefs prefs = new WadCPrefs();
+    static WadCPrefs prefs = new WadCPrefs();
 
     // inserting text into the buffer
     //wp.mf.textArea1.insert(s,wp.editinsertpos);

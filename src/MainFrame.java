@@ -32,8 +32,6 @@ public class MainFrame extends Frame implements WadCMainFrame {
   MenuItem menuItem8 = new MenuItem();
   Canvas cv;
 
-  final WadCPrefs prefs = new WadCPrefs();
-
   WadParse lastwp = null;
   boolean changed = false;
 
