@@ -170,17 +170,20 @@ public class WadParse {
     return ret;
   }
 
+  // given a relative file e.g. "foo.h", construct an absolute path
+  Path resolveinclude(String name) {
+    Path p = Paths.get(mf.basename).getParent();
+    p = Paths.get(p.toString(), name);
+    return p;
+  }
+
   String loadinclude(String name) {
       ArrayList<String> l = new ArrayList<String>();
-      Path p = Paths.get(mf.basename).getParent();
-      p = Paths.get(p.toString(), name);
+      Path p = resolveinclude(name);
 
       if(! Files.isRegularFile(p)) {
           return loadIncludeFromJar(name);
-      } else {
-          mf.msg("loading file " + name);
       }
-
       try {
         Files.lines(p).forEach(line -> l.add(line));
 

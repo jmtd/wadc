@@ -9,6 +9,7 @@
 import java.util.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class Wad {
   WadParse wp;
@@ -332,18 +333,21 @@ public class Wad {
    *    * we might need to insert an extra newline between files
    */
   int writewadcsource() throws IOException {
+      byte[] nl = "\n".getBytes("UTF-8");
       int l = 0;
 
       // write the current buffer first
       byte[] b = mf.textArea1.getText().getBytes("UTF-8");
-      l += b.length;
       f.write(b);
+      l += b.length;
 
-      // append included files
+      // append local included files (not from JAR)
       for(String s : wp.includes) {
-          b = wp.loadinclude(s).getBytes("UTF-8");
-          l += b.length;
-          f.write(b);
+          if(Files.isRegularFile(wp.resolveinclude(s))) {
+              b = wp.loadinclude(s).getBytes("UTF-8");
+              f.write(nl); l += nl.length;
+              f.write(b);  l += b.length;
+          }
       }
 
       return l;
