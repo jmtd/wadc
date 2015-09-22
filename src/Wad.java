@@ -336,7 +336,14 @@ public class Wad {
       byte[] nl = "\n".getBytes("UTF-8");
       int l = 0;
 
-      // write the current buffer first
+      // write out a version string
+      for(String s : Arrays.asList( "-- generated with WadC version ", Version.version, "\n")) {
+        byte[] v = s.getBytes("UTF-8");
+        f.write(v);
+        l += v.length;
+      }
+
+      // write the current buffer
       byte[] b = mf.textArea1.getText().getBytes("UTF-8");
       f.write(b);
       l += b.length;
