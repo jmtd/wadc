@@ -147,27 +147,14 @@ public class WadParse {
    * resolve an include directive to a file inside the Jar.
    */
   String loadIncludeFromJar(String name) {
-    String ret = "";
-    byte[] foo = new byte[4096];
     InputStream input = getClass().getResourceAsStream("/include/"+name);
-
-    if(null == input) {
-      mf.msg("couldn't load " + name);
-      return ret;
+    if(null != input) {
+      java.util.Scanner s = new java.util.Scanner(input, "UTF-8").useDelimiter("\\A");
+      if(s.hasNext())
+        return s.next();
     }
-
-    try {
-      // holy smokes this sucks.
-      int len;
-      do {
-        len = input.read(foo);
-        if(len > 0) ret += new String(Arrays.copyOfRange(foo, 0, len - 1), "UTF-8");
-      } while(0 < len);
-
-    } catch(IOException e) {
-        mf.msg("couldn't load " + name + " from Jar");
-    }
-    return ret;
+    mf.msg("couldn't load " + name);
+    return "";
   }
 
   // given a relative file e.g. "foo.h", construct an absolute path
