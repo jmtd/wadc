@@ -312,7 +312,7 @@ public class Wad {
   }
 
   int writepnames() throws IOException {
-    if(0==pnames.size()) return 0;
+    if(0==pnames.size() || !write_pnames) return 0;
 
     String sPnames [] = new String[pnames.size()];
     for(String key : pnames.keySet()) {
