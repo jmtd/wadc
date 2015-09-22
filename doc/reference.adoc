@@ -57,16 +57,28 @@ To play the .wad files you create using WadC in Doom, you also need a
 node builder, such as BSP, available from http://games.moria.org.uk/doom/bsp/
 For a list of other node builders, see http://doomwiki.org/wiki/Category:Node_builders
 
+=== Sneak-peek: command-line interface
+
+There is a very early-stages command-line interface now available. To
+launch it, you need to run
+
+    java -cp wadc.jar path/to/input.wl
+
+It will attempt to parse, run and write out to path/to/output.wad. Be
+aware that this is alpha quality, consider this a tech preview :)
+
 == What else is in the zip?
 
 
 The zip also includes
 
-`examples/`:: example WadC files to try out.
-`includes/`:: a copy of the WadC "standard library". This is also
-              embedded in the JAR, but is included so you can read
-              it and see how it works. See also "Include files",
-              below.
+examples/:: example WadC files to try out.
+includes/:: a copy of the WadC "standard library". This is also
+            embedded in the JAR, but is included so you can read
+            it and see how it works. See also "Include files",
+            below.
+extra/::    Syntax definition files for editors. Currently only
+            Vim, and that is in an early stage. Patches welcome!
 
 == Using the GUI
 

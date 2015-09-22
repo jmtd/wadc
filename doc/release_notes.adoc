@@ -25,6 +25,16 @@ tested only with
 * java version "1.8.0_45"
 * javac 1.8.0_45
 
+===== Sneak-peek: command-line interface
+
+There is a very early-stages command-line interface now available. To
+launch it, you need to run
+
+    java -cp wadc.jar path/to/input.wl
+
+It will attempt to parse, run and write out to path/to/output.wad. Be
+aware that this is alpha quality, consider this a tech preview :)
+
 ===== configuration file syntax and location
 
 wadc.cfg is no longer written/read from the current working directory. On
