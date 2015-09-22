@@ -21,6 +21,21 @@ public class WadCC implements WadCMainFrame {
     }
 
     // XXX: copied verbatim from MainFrame. should be a static interface method?
+    String getPrefs() {
+        String prefDir = System.getProperty("user.home") + File.separator + ".wadc";
+        return loadtextfile(prefDir + File.separator + "wadc.cfg");
+    }
+
+    void read_in_prefs() {
+        // XXX: copied from MainFrame. should be a static interface method?
+        String cfg = getPrefs();
+        if(!"".equals(cfg)) {
+            WadParse prefs = new WadParse(cfg, this);
+            if(prefs.err==null) prefs.run();
+        }
+    }
+
+    // XXX: copied verbatim from MainFrame. should be a static interface method?
     String loadtextfile(String name) {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(name)));
@@ -45,6 +60,7 @@ public class WadCC implements WadCMainFrame {
     /* do the magic */
     public WadCC(final String infile) {
         String wadfile;
+        read_in_prefs();
         WadParse wp = new WadParse(getText(infile), this);
         wp.run();
         wadfile = prefs.basename.substring(0,prefs.basename.lastIndexOf('.'))+".wad";
