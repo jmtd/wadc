@@ -67,8 +67,10 @@ water(x, floorheight, ceilheight) {
         -- decorate whatever we've been passed
         ^notwater
         sectortype(0, get("watertag") )
+        set("watertmp", getfloor)
         floor(get("waterflat"))
         x
+        floor(get("watertmp"))
         sectortype(0,0)
         set("watertag", newtag)
 
