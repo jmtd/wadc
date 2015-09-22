@@ -335,6 +335,19 @@ class WadRun {
       return n;
     }});
 
+    // accessors for the pen's current texture
+    Arrays.stream( new String [][] {
+        { "getfloor", texfloor },
+        { "getceil",  texceil  },
+        { "gettop",   textop   },
+        { "getbot",   texbot   },
+        { "getmid",   texmid   },
+    }).forEach(p ->
+        builtin(p[0], 0, new Builtin() { Exp eval() {
+          return new Str(p[1]);
+        }})
+    );
+
     builtin("xoff", 1, new Builtin() { Exp eval(Exp s) {
       xoff = s.ival();
       undefx = false;
