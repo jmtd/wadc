@@ -20,6 +20,7 @@ wadc.zip: wadc.jar
 	zip wadc.zip \
 		wadc.jar \
 		LICENSE.txt \
+		extra/* \
 		examples/*.wl \
 		examples/*.h \
 		examples/old/*.wl \
