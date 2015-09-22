@@ -7,7 +7,7 @@ Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 
 toc::[]
 
-== (will be) 2.0 (currently RC)
+== 2.0
 
 === What's new
 
