@@ -167,5 +167,5 @@ main() {
 
   movestep(-128,976)
   quad(linetype(52,0) right(64))
-  innerrightsector(getfloor, getceil, 64)
+  innerrightsector(getfloorheight, getceilheight, 64)
 }

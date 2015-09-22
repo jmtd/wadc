@@ -25,7 +25,7 @@ main {
   segbordplain(512)
   curvebendbord(160,-1)
   right(160)
-  rightsector(128, getceil, 255)
+  rightsector(128, getceilheight, 255)
   movestep(-512,0)
   step(-48,208)
   step(32,112)
@@ -45,5 +45,5 @@ main {
   step(256,112)
   step(32,96)
   floor("LAVA1")
-  leftsector(-16, getceil, 160)
+  leftsector(-16, getceilheight, 160)
 }

@@ -17,26 +17,26 @@
 
 setwidth(n) { set("width", n) }     -- current width of segment
 setlight(n) { set("light", n) }
-setfloor(n) { set("floor", n) }
-setceil(n)  { set("ceil",  n) }
+setfloorheight(n) { set("floor", n) }
+setceilheight(n)  { set("ceil",  n) }
 
 getwidth() { get("width") }
 getlight() { get("light") }
-getfloor() { get("floor") }
-getceil()  { get("ceil")  }
+getfloorheight() { get("floor") }
+getceilheight()  { get("ceil")  }
 
 sectordefaults(f, c, l, w) {      -- needs to be called before all else!
   setwidth(w)
   setlight(l)
-  setfloor(f)
-  setceil(c)
+  setfloorheight(f)
+  setceilheight(c)
 }
 
-defaultsector()  { leftsector(getfloor, getceil, getlight)  } -- default counter clockwise
-defaultsectorr() { rightsector(getfloor, getceil, getlight) }
+defaultsector()  { leftsector(getfloorheight, getceilheight, getlight)  } -- default counter clockwise
+defaultsectorr() { rightsector(getfloorheight, getceilheight, getlight) }
 
-floorup(n) { setfloor(add(getfloor, n)) }
-ceilup(n)  { setceil(add(getceil, n))   }
+floorup(n) { setfloorheight(add(getfloorheight, n)) }
+ceilup(n)  { setceilheight(add(getceilheight, n))   }
 
 
 ------------------------------------------
@@ -124,7 +124,7 @@ bord(wi, wo, h, issect) {  -- inner/outer wall
   rotleft
   wo
   left(getbordw)
-  { issect ? leftsector(add(getfloor,h), getceil, getlight) : 0 }
+  { issect ? leftsector(add(getfloorheight,h), getceilheight, getlight) : 0 }
   rotright
 }
 
@@ -179,7 +179,7 @@ placeoctainner(s,r,w,h,sl,fdelta,cdelta,light) {
   eright(sl)
   straight(h)
   eright(sl)
-  innerrightsector(add(getfloor,fdelta), add(getceil,cdelta), light)
+  innerrightsector(add(getfloorheight,fdelta), add(getceilheight,cdelta), light)
   ^octainner
 }
 
@@ -195,13 +195,13 @@ playerstarts() {                       -- 3 starts in front of standard door
           placeitem3(32, -32, 64, player1start, player2start, player3start))
   unpeg(straight(64))
   pushpop(ceil("flat23")
-          rightsector(getfloor, 72, getlight))
+          rightsector(getfloorheight, 72, getlight))
   straight(div(sub(getwidth,64),2))
   rotleft
 }
 
 keypillar(type, t, tag) {
-  typesector(0, tag, typeline(type, tag, pushpop2(wall(t) xo(0, ibox(getfloor, getfloor, getlight, 16, 16)))))
+  typesector(0, tag, typeline(type, tag, pushpop2(wall(t) xo(0, ibox(getfloorheight, getfloorheight, getlight, 16, 16)))))
   movestep(0,32)
   popsector
 }
@@ -210,8 +210,8 @@ playerstartskeyedexit() {                 -- 3 starts in front of 3 colour pilla
   straight(div(sub(getwidth,64),2))       -- needing 3 keys, leading to sky exit
   pushpop(floor("F_SKY1")
           movestep(0, 96)
-          typeline(52, 0, box(sub(getfloor, 16), getceil, getlight, 64, 64)))
-  box(getfloor, getceil, getlight, 64, 96)
+          typeline(52, 0, box(sub(getfloorheight, 16), getceilheight, getlight, 64, 64)))
+  box(getfloorheight, getceilheight, getlight, 64, 96)
   pushpop(movestep(24, 8)
           keypillar(133, "DOORBLU2", $blueexit)
           keypillar(135, "DOORRED2", $redexit)
@@ -252,7 +252,7 @@ trapwall(tag, h, x, y, z) {
   sectortype(0, 0)
   movestep(0, 16)
   rightdent(64,192)
-  leftsector(getfloor, h, 96)
+  leftsector(getfloorheight, h, 96)
   movestep(-128,0)
   rotright
   placeitem3rev(32, -32, 64, x, y, z)
@@ -260,7 +260,7 @@ trapwall(tag, h, x, y, z) {
 }
 
 segtrap(tag, x, y, z) {    -- use linetype 36, because 109 fucks up wall texturing
-  segtrigger(36, tag, trapwall(tag, add(getfloor, 96), x, y, z))
+  segtrigger(36, tag, trapwall(tag, add(getfloorheight, 96), x, y, z))
 }
 
 
@@ -313,7 +313,7 @@ light(n, d) {
       movestep(mul(n,d),0)
       rotright
       quad(curve(mul(n,d), mul(n,d), 5, 1))
-      innerrightsector(getfloor, getceil, sub(256, mul(n,32)))
+      innerrightsector(getfloorheight, getceilheight, sub(256, mul(n,32)))
       ^lightcentre
       light(sub(n, 1), d)
 }
@@ -329,7 +329,7 @@ light180(n, d) {
       rotleft
       twice(curve(mul(n,d), sub(0, mul(n,d)), 5, 1))
       left(d)
-      leftsector(getfloor, getceil, sub(256, mul(n,32)))
+      leftsector(getfloorheight, getceilheight, sub(256, mul(n,32)))
       ^walllightcentre   
 }
 
@@ -340,7 +340,7 @@ walllight(n, d, s, mid) {
   rotright place(16, -16, mid) rotleft
   rightdent(32,32)
   step(-32,0)
-  leftsector(add(getfloor,16), sub(getceil,16), 255)
+  leftsector(add(getfloorheight,16), sub(getceilheight,16), 255)
   step(16,0)
   light180(n, d)
   movestep(16,0)
