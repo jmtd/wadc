@@ -52,7 +52,8 @@ after your `doomargs`, and before the path to the WAD you are building.
 ===== Embedded WadC code
 
 WadC now writes out the source code for your level to the generated WAD
-in a `WADCSRC` lump.
+in a `WADCSRC` lump. Any locally included files are also included, but
+standard library files (from within the Jar) are not.
 
 If you define any new textures, WadC will write a `TEXTURE2` lump.  If you add
 any patches to new textures which are not in your IWAD, A new `PNAMES` lump
