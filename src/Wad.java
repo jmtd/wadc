@@ -336,22 +336,19 @@ public class Wad {
       byte[] nl = "\n".getBytes("UTF-8");
       int l = 0;
 
-      // write out a version string
-      for(String s : Arrays.asList( "-- generated with WadC version ", Version.version, "\n")) {
+      for(String s : Arrays.asList(
+        "-- generated with WadC version ", Version.version, "\n",
+        mf.textArea1.getText() )) {
+
         byte[] v = s.getBytes("UTF-8");
         f.write(v);
         l += v.length;
       }
 
-      // write the current buffer
-      byte[] b = mf.textArea1.getText().getBytes("UTF-8");
-      f.write(b);
-      l += b.length;
-
       // append local included files (not from JAR)
       for(String s : wp.includes) {
           if(Files.isRegularFile(wp.resolveinclude(s))) {
-              b = wp.loadinclude(s).getBytes("UTF-8");
+              byte[] b = wp.loadinclude(s).getBytes("UTF-8");
               f.write(nl); l += nl.length;
               f.write(b);  l += b.length;
           }
