@@ -1,17 +1,18 @@
 default: wadc.jar
 
 wadc.jar: classes
-	cd src && jar cef MainFrame ../wadc.jar *.class ../include ../LICENSE.txt
+	cd build && jar cef MainFrame ../wadc.jar *.class ../include ../LICENSE.txt
 
 v := $(shell git describe)
 src/Version.java: src/Version.java.in
 	sed 's/VERSION/$(v)/' $< > $@
 
 classes: src/Version.java
-	javac src/*.java
+	mkdir -p build
+	javac src/*.java -d build
 
 clean:
-	rm -f src/*.class wadc.jar wadc.zip
+	rm -f build/*.class wadc.jar wadc.zip
 
 version:
 	git describe > VERSION
