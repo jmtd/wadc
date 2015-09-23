@@ -142,7 +142,7 @@ public class MainFrame extends Frame implements WadCMainFrame {
     //setSize(600,400);
     this.setLocation(50,50);
     pack();
-    show();
+    setVisible(true);
     newfile(null);
 
     String cfg = getPrefs();
@@ -219,7 +219,7 @@ public class MainFrame extends Frame implements WadCMainFrame {
   void open(ActionEvent e) {
     FileDialog fd = new FileDialog(this,"select a .wl file to load",FileDialog.LOAD);
     fd.setDirectory((new File(prefs.basename)).getParent());
-    fd.show();
+    fd.setVisible(true);
     String name = fd.getFile();
     if(name==null) return;
     prefs.basename = (new File(fd.getDirectory(),name)).toString();
@@ -230,7 +230,7 @@ public class MainFrame extends Frame implements WadCMainFrame {
     FileDialog fd = new FileDialog(this,"save program (.wl)",FileDialog.SAVE);
     fd.setDirectory((new File(prefs.basename)).getParent());
     fd.setFile((new File(prefs.basename)).getName()); //File f = new File(); f.
-    fd.show();
+    fd.setVisible(true);
     String name = fd.getFile();
     if(name==null) return;
     prefs.basename = (new File(fd.getDirectory(),name)).toString();
