@@ -2,5 +2,6 @@
 *.wad
 *.swp
 *.gwa
-src/version.java
+src/Version.java
 wadc.jar
+wadc.zip
