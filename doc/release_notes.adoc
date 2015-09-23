@@ -79,11 +79,7 @@ file in your configuration for this to work.
 `texture`::    begins the definition of a new texture, to combine with `addpatch`
 `addpatch`::   adds a patch to the currently defined texture
 `deaf`::       `mute` has been renamed to `deaf`.
-`getbot`,
-`getmid`,
-`gettop`,
-`getfloor`,
-`getceil`::    Accessor functions for the current texture or flat in use
+`getbot`, `getmid`, `gettop`, `getfloor`, `getceil`::    Accessor functions for the current texture or flat in use
 
 ===== Library additions
 
