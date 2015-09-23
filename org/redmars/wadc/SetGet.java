@@ -6,6 +6,8 @@
  * See file LICENSE.txt
  */
 
+package org.redmars.wadc;
+
 class SetGet extends Exp {
   String name;
   boolean set;

@@ -6,6 +6,7 @@
  * See file LICENSE.txt
  */
 
+package org.redmars.wadc;
 import java.awt.*;
 import java.util.*;
 

@@ -6,13 +6,10 @@
  * See file LICENSE.txt
  */
 
-import java.util.*;
+package org.redmars.wadc;
 
-class Fun {
-  String name;
-  Vector args = new Vector();
-  Exp body;
-  Builtin builtin = null;
-  Fun(String s) { name = s; }
+class Variable {
+  int x,y,o;
+  String f,c,t,m,b;
 }
 

@@ -1,4 +1,13 @@
+/*
+ * Copyright © 2015 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 // XXX: should probably use nio
+
+package org.redmars.wadc;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

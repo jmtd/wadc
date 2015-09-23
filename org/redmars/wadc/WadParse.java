@@ -6,6 +6,8 @@
  * See file LICENSE.txt
  */
 
+package org.redmars.wadc;
+
 /*
 potential todos:
 - "autorim" feature: draws an inner sector to the next sector

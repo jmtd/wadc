@@ -1,6 +1,16 @@
 /*
+ * Copyright © 2015 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
+/*
  * an attempt to group together WadC preferences
  */
+
+package org.redmars.wadc;
+
 public class WadCPrefs {
   String basename;
   String bspcmd = "c:\\doom2\\bsp";

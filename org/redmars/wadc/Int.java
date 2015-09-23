@@ -6,6 +6,8 @@
  * See file LICENSE.txt
  */
 
+package org.redmars.wadc;
+
 class Int extends Exp {
   int i;
   Int(int x) { i = x; }

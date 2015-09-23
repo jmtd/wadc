@@ -6,10 +6,14 @@
  * See file LICENSE.txt
  */
 
-class Str extends Exp {
-  String s;
-  Str(String t) { s = t; }
-  String sval() { return s; }
-  String show() { return "\""+s+"\""; };
+package org.redmars.wadc;
+import java.util.*;
+
+class Fun {
+  String name;
+  Vector args = new Vector();
+  Exp body;
+  Builtin builtin = null;
+  Fun(String s) { name = s; }
 }
 

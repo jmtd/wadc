@@ -1,15 +1,16 @@
 default: wadc.jar
 
 wadc.jar: classes
-	cd build && jar cef MainFrame ../wadc.jar *.class ../include ../LICENSE.txt
+	cd build && jar cef org.redmars.wadc.MainFrame ../wadc.jar \
+        org/redmars/wadc/*.class ../include ../LICENSE.txt
 
 v := $(shell git describe)
-src/Version.java: src/Version.java.in
+org/redmars/wadc/Version.java: Version.java.in
 	sed 's/VERSION/$(v)/' $< > $@
 
-classes: src/Version.java
+classes: org/redmars/wadc/Version.java
 	mkdir -p build
-	javac src/*.java -d build
+	javac org/redmars/wadc/*.java -d build
 
 clean:
 	rm -f build/*.class wadc.jar wadc.zip
@@ -32,4 +33,4 @@ wadc.zip: wadc.jar
         README.adoc \
 		include/*.h
 
-.PHONY: clean default version src/Version.java classes
+.PHONY: clean default version org/redmars/wadc/Version.java classes

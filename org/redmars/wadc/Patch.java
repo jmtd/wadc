@@ -6,6 +6,8 @@
  * See file LICENSE.txt
  */
 
+package org.redmars.wadc;
+
 /*
  * A doom texture patch, as represented in a Texture
  */

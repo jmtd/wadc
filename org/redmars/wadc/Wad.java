@@ -6,6 +6,7 @@
  * See file LICENSE.txt
  */
 
+package org.redmars.wadc;
 import java.util.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;

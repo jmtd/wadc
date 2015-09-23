@@ -6,10 +6,12 @@
  * See file LICENSE.txt
  */
 
+package org.redmars.wadc;
+import java.util.*;
+
 /*
  * A doom texture definition
  */
-import java.util.*;
 
 class Texture {
     String name;

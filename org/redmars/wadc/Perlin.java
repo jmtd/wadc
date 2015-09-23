@@ -6,6 +6,8 @@
  * See file LICENSE.txt
  */
 
+package org.redmars.wadc;
+
 class Perlin {
   static final int p1[] = { 15731 };
   static final int p2[] = { 789221 }; 
