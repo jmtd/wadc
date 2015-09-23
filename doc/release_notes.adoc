@@ -9,6 +9,8 @@ toc::[]
 
 == 2.0
 
+Released 22<sup>nd</sup> September 2015.
+
 === What's new
 
 ==== Core program changes
@@ -108,6 +110,8 @@ contain spaces or other special characters.
 
 === 1.2
 
+Released December 2011.
+
 * First release by Jon Dowland.
 * Doom features:
   - `friendly` flag - toggle boom friendly monsters
@@ -118,6 +122,8 @@ contain spaces or other special characters.
   - `entryway.wl` - a recreation of Doom 2 MAP01 in WadC, thanks GreyGhost
 
 === 1.1
+
+Released July 2001.
 
 * Doom features:
   - auto texturing (!)
@@ -136,6 +142,8 @@ contain spaces or other special characters.
   - many small enhancements/fixes
 
 === 1.0: first public release
+
+Released October 2000.
 
 * UI features:
   - generating code by drawing lines with the mouse (!)
@@ -156,5 +164,7 @@ contain spaces or other special characters.
   - comes with source (GPL)
 
 === 0.9: initial beta
+
+Dates from around July 1999.
 
 some may have seen this.
