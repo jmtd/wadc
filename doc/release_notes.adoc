@@ -9,7 +9,7 @@ toc::[]
 
 == 2.0
 
-Released 22<sup>nd</sup> September 2015.
+Released 22^nd^ September 2015.
 
 === What's new
 
