@@ -3,12 +3,11 @@ Section: utils
 Priority: optional
 Maintainer: Jonathan Dowland <jmtd@debian.org>
 Build-Depends: debhelper (>= 9), java-compiler, java8-jdk, javahelper (>=0.25)
-Build-Depends-Indep: default-jdk, libtrove-java
 Standards-Version: 3.9.0
 
 Package: wadc
 Architecture: all
-Depends: ${java:Depends}, ${misc:Depends}, jarwrapper
+Depends: openjdk-8-jre, jarwrapper, ${misc:Depends}
 Recommends: glbsp, ${java:Recommends}
 Suggests: prboom-plus | doom-engine
 Description: programming environment for creating doom levels
