@@ -1,0 +1,5 @@
+wadc (2.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #395364)
+
+ -- Jon Dowland <jmtd@debian.org>  Thu, 24 Sep 2015 21:18:51 +0100

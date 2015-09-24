@@ -1,0 +1,28 @@
+This package was debianized by Jonathan Dowland <jmtd@debian.org>
+starting around Mon, 16 Oct 2006 15:37:35 +0100 and finishing
+Thu, 24 Sep 2015 21:29:37 +0100.
+
+It was downloaded from <http://jmtd.net/wadc/>.
+
+Upstream Authors: Jonathan Dowland,
+    Wouter van Oortmerssen <w v o A T g m x D O T n e t>
+
+Copyright: 2001-2008 Wouter van Oortmerssen,
+           2008-2015 Jonathan Dowland
+
+License:
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; Version 2 of the License.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+On Debian GNU/Linux systems, the complete text of the GNU General Public
+License can be found in ‘/usr/share/common-licenses/GPL-2’.
+
+The Debian packaging is (C) 2006-2015, Jonathan Dowland
+and also licensed under the GPL-2.

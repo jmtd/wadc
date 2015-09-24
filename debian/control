@@ -1,0 +1,25 @@
+Source: wadc
+Section: utils
+Priority: optional
+Maintainer: Jonathan Dowland <jmtd@debian.org>
+Build-Depends: debhelper (>= 9), java-compiler, java8-jdk, javahelper (>=0.25)
+Build-Depends-Indep: default-jdk, libtrove-java
+Standards-Version: 3.9.0
+
+Package: wadc
+Architecture: all
+Depends: ${java:Depends}, ${misc:Depends}
+Recommends: glbsp, ${java:Recommends}
+Suggests: prboom-plus | doom-engine
+Description: programming environment for creating doom levels
+ WadC (Wad Compiler) is an integrated development environment and
+ functional programming language for developing Doom-style
+ levels. It can be used to generate complex levels which
+ can be saved out in Doom's WAD format.
+ .
+ The IDE includes a text-editor component; a debug output
+ pane and a 2D drawing pane which previews the current
+ script's output.
+ .
+ An external nodes builder (such as glbsp) is required before
+ the resulting WAD file can be played by a doom-engine.

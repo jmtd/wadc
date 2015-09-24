@@ -1,0 +1,12 @@
+JAVA_HOME=/usr/lib/jvm/default-java
+# ?
+export CLASSPATH=/usr/share/java/trove.jar
+
+%:
+	dh $@ --with javahelper
+
+override_dh_link:
+	dh_link usr/share/wadc/wadc.jar usr/bin/wadc
+
+override_jh_build:
+	jh_build -morg.redmars.wadc.WadC
