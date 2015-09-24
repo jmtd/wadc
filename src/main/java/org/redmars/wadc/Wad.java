@@ -327,6 +327,13 @@ public class Wad {
     return 4 + 8 * pnames.size();
   }
 
+  // figure out the version of WadC this is from a property
+  String getVersion() throws java.io.IOException {
+    Properties properties = new Properties();
+    properties.load(getClass().getClassLoader().getResourceAsStream("git.properties"));
+    return properties.get("git.commit.id.describe").toString();
+  }
+
   /*
    * bundle the WadC source into the WAD
    * XXX: Issues:
@@ -338,7 +345,7 @@ public class Wad {
       int l = 0;
 
       for(String s : Arrays.asList(
-        "-- generated with WadC version ", Version.version, "\n",
+        "-- generated with WadC version ", getVersion(), "\n",
         mf.getText() )) {
 
         byte[] v = s.getBytes("UTF-8");

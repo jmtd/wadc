@@ -2,6 +2,6 @@
 *.wad
 *.swp
 *.gwa
-src/Version.java
 wadc.jar
 wadc.zip
+src/main/resources/git.properties
