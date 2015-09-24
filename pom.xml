@@ -11,6 +11,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <build>
+    <sourceDirectory>${project.basedir}</sourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -22,6 +23,28 @@
         </configuration>
       </plugin>
       <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.7</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}/include</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>include</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <version>2.4</version>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -31,6 +54,10 @@
               <mainClass>org.redmars.wadc.WadC</mainClass>
             </manifest>
           </archive>
+          <includes>
+            <include>../../include</include>
+            <include>**</include>
+          </includes>
         </configuration>
       </plugin>
       <plugin>
@@ -46,7 +73,7 @@
         </executions>
         <configuration>
           <generateGitPropertiesFile>true</generateGitPropertiesFile>
-          <generateGitPropertiesFilename>src/main/resources/git.properties</generateGitPropertiesFilename>
+          <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
           <includeOnlyProperties>
             <includeOnlyProperty>^git.commit.id.describe$</includeOnlyProperty>
           </includeOnlyProperties>
@@ -56,7 +83,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.5.3</version>
         <configuration>
-          <descriptor>src/assembly/zip.xml</descriptor>
+          <descriptor>zip.xml</descriptor>
         </configuration>
         <executions>
           <execution>

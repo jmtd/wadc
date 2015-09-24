@@ -15,6 +15,7 @@
         <include>extra/**</include>
         <include>doc/*</include>
         <include>examples/**</include>
+        <include>include/*</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -23,10 +24,6 @@
       <includes>
         <include>*.jar</include>
       </includes>
-    </fileSet>
-    <fileSet>
-      <directory>${project.basedir}/src/main/resources/include</directory>
-      <outputDirectory>include</outputDirectory>
     </fileSet>
   </fileSets>
 </assembly>
