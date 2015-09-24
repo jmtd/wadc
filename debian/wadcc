@@ -4,7 +4,7 @@ set -e
 
 extra=
 # CLI mode
-if [ "$0" -eq "wadcc" ]; then
+if [ "$(basename "$0")" = "wadcc" ]; then
     extra="org.redmars.wadc.WadCC"
 fi
 
