@@ -1,7 +1,7 @@
 default: wadc.jar
 
 wadc.jar: classes
-	cd build && jar cef org.redmars.wadc.MainFrame ../wadc.jar \
+	cd build && jar cef org.redmars.wadc.WadC ../wadc.jar \
         org/redmars/wadc/*.class ../include ../LICENSE.txt
 
 v := $(shell git describe)

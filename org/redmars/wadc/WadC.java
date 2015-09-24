@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class MainFrame extends Frame implements WadCMainFrame {
+public class WadC extends Frame implements WadCMainFrame {
   TextArea textArea1 = new TextArea("",15,30);
   GroupLayout borderLayout1 = new GroupLayout(true);
   Panel panel1 = new Panel();
@@ -36,7 +36,7 @@ public class MainFrame extends Frame implements WadCMainFrame {
   WadParse lastwp = null;
   boolean changed = false;
 
-  public MainFrame() {
+  public WadC() {
     try  {
       jbInit();
     }
@@ -46,7 +46,7 @@ public class MainFrame extends Frame implements WadCMainFrame {
   }
 
   public static void main(String[] args) {
-    MainFrame mainFrame1 = new MainFrame();
+    WadCMainFrame mainFrame1 = new WadC();
   }
 
   private void jbInit() throws Exception {
@@ -333,7 +333,7 @@ public class MainFrame extends Frame implements WadCMainFrame {
 }
 
 class MyCanvas extends Canvas {
-  MainFrame mf;
+  WadC mf;
   boolean dragged;
   int startx, starty;
   MyCanvas c = this;
@@ -342,7 +342,7 @@ class MyCanvas extends Canvas {
     if(mf.lastwp!=null) mf.lastwp.wr.render(g);
   }
 
-  MyCanvas(MainFrame m) {
+  MyCanvas(WadC m) {
     mf = m;
     setBackground(Color.black);
     enableEvents(AWTEvent.MOUSE_EVENT_MASK);
