@@ -8,7 +8,7 @@ Standards-Version: 3.9.0
 
 Package: wadc
 Architecture: all
-Depends: ${java:Depends}, ${misc:Depends}
+Depends: ${java:Depends}, ${misc:Depends}, jarwrapper
 Recommends: glbsp, ${java:Recommends}
 Suggests: prboom-plus | doom-engine
 Description: programming environment for creating doom levels

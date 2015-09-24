@@ -1,0 +1,11 @@
+#!/bin/sh
+set -u
+set -e
+
+extra=
+# CLI mode
+if [ "$0" -eq "wadcc" ]; then
+    extra="org.redmars.wadc.WadCC"
+fi
+
+java -cp /usr/share/wadc/wadc.jar "$extra" "$@"
