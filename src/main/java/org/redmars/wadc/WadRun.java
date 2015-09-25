@@ -23,8 +23,9 @@ class WadRun {
   Vertex lastvertex = null;
   Vertex beforelastvertex = null;
   Line lastline = null;
-  int lastsector = -1;
-  int lastlastsector = -1;
+
+  ArrayDeque<Integer> sectorStack = new ArrayDeque<Integer>();
+
   int curthingtype = 1;
   int skill = 7;
   boolean deaf = false;
@@ -215,12 +216,12 @@ class WadRun {
     }});
 
     builtin("innerleftsector", 3, new Builtin() { Exp eval(Exp a, Exp b, Exp c) {
-      makesector(false,lastsector,a.ival(),b.ival(),c.ival());
+      makesector(false,sectorStack.peek(),a.ival(),b.ival(),c.ival());
       return n;
     }});
 
     builtin("innerrightsector", 3, new Builtin() { Exp eval(Exp a, Exp b, Exp c) {
-      makesector(true,lastsector,a.ival(),b.ival(),c.ival());
+      makesector(true,sectorStack.peek(),a.ival(),b.ival(),c.ival());
       return n;
     }});
 
@@ -547,12 +548,16 @@ class WadRun {
     }});
 
     builtin("popsector", 0, new Builtin() { Exp eval() {
-      lastsector = lastlastsector;
+      if(sectorStack.size() <= 1) {
+          wp.error("error: can't pop the last sector");
+      } else {
+          sectorStack.pop();
+      }
       return n;
     }});
 
     builtin("lastsector", 0, new Builtin() { Exp eval() {
-      return new Int(lastsector);
+      return new Int(sectorStack.peek());
     }});
 
     builtin("forcesector", 1, new Builtin() { Exp eval(Exp a) {
@@ -803,8 +808,7 @@ class WadRun {
     lightlevel = ll;
     Sector sec = newsector();
     forcesec = -1;
-    lastlastsector = lastsector;
-    lastsector = sec.idx;
+    sectorStack.push(sec.idx);
     Vertex v = beforelastvertex;
     Line l = lastline;
     main: for(;;) {
