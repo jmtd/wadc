@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class WadC extends Frame implements WadCMainFrame {
   TextArea textArea1 = new TextArea("",15,30);
@@ -36,8 +38,25 @@ public class WadC extends Frame implements WadCMainFrame {
   WadParse lastwp = null;
   boolean changed = false;
 
+  // i18n
+  Locale locale;
+  ResourceBundle messages;
+
+  void initI18n() {
+    locale = Locale.getDefault();
+    // XXX: hack to test
+    locale = new Locale.Builder().setLanguage("fr").setRegion("FR").build();
+    messages = ResourceBundle.getBundle("MessagesBundle", locale);
+  }
+
+  String __(String s) {
+    if(messages.containsKey(s)) return messages.getString(s);
+    return s;
+  }
+
   public WadC() {
     try  {
+      initI18n();
       jbInit();
     }
     catch(Exception e) {
@@ -69,55 +88,55 @@ public class WadC extends Frame implements WadCMainFrame {
         quit(null);
       }
     });
-    menu1.setLabel("File");
-    menuItem1.setLabel("New");
+    menu1.setLabel(__("File"));
+    menuItem1.setLabel(__("New"));
     menuItem1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         newfile(e);
       }
     });
-    menuItem2.setLabel("Open");
+    menuItem2.setLabel(__("Open"));
     menuItem2.setShortcut(new MenuShortcut(79));
     menuItem2.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         open(e);
       }
     });
-    menuItem3.setLabel("Save As");
+    menuItem3.setLabel(__("Save As"));
     menuItem3.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         saveas(e);
       }
     });
-    menuItem4.setLabel("Save");
+    menuItem4.setLabel(__("Save"));
     menuItem4.setShortcut(new MenuShortcut(83));
     menuItem4.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         save(e);
       }
     });
-    menuItem5.setLabel("Quit");
+    menuItem5.setLabel(__("Quit"));
     menuItem5.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         quit(e);
       }
     });
-    menu2.setLabel("Program");
-    menuItem6.setLabel("Run");
+    menu2.setLabel(__("Program"));
+    menuItem6.setLabel(__("Run"));
     menuItem6.setShortcut(new MenuShortcut(82));
     menuItem6.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         run(e);
       }
     });
-    menuItem7.setLabel("Run / Save / Save Wad");
+    menuItem7.setLabel(__("Run / Save / Save Wad"));
     menuItem7.setShortcut(new MenuShortcut(87));
     menuItem7.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         savewad(e);
       }
     });
-    menuItem8.setLabel("Run / Save / Save Wad / BSP / DOOM");
+    menuItem8.setLabel(__("Run / Save / Save Wad / BSP / DOOM"));
     menuItem8.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         bspdoom(savewad(e));
@@ -171,9 +190,9 @@ public class WadC extends Frame implements WadCMainFrame {
       dos.flush();
       dos.close();
       prj.close();
-      msg("wrote file "+name);
+      msg(__("wrote file "+name));
     } catch(IOException i) {
-      msg("saving file "+name+" unsuccessful");
+      msg(__("saving file unsuccessful: ") + name);
     };
   }
 
@@ -184,10 +203,10 @@ public class WadC extends Frame implements WadCMainFrame {
       String t;
       while((t = in.readLine())!=null) c+=t+"\n";
       in.close();
-      msg("file "+name+" read");
+      msg(__("file read: ") + name);
       return c;
     } catch(IOException i) {
-      msg("couldn't load file "+name);
+      msg(__("couldn't load file ") + name);
     };
     return "";
   }
@@ -202,10 +221,12 @@ public class WadC extends Frame implements WadCMainFrame {
       File f = new File(prefDir);
 
       if(!f.exists() && !f.mkdir()) {
-          msg("couldn't create " + prefDir + ", saving configuration unsuccessful");
+          msg(__("couldn't create ") + prefDir);
+          msg(__("saving configuration unsuccessful"));
       }
       if(f.exists() && !f.isDirectory()) {
-          msg(prefDir + " exists but is not a directory, saving configuration unsuccessful");
+          msg(prefDir + __(" exists but is not a directory"));
+          msg(__("saving configuration unsuccessful"));
       }
 
       savetextfile(prefDir + File.separator + "wadc.cfg", prefs);
@@ -218,7 +239,7 @@ public class WadC extends Frame implements WadCMainFrame {
   }
 
   void open(ActionEvent e) {
-    FileDialog fd = new FileDialog(this,"select a .wl file to load",FileDialog.LOAD);
+    FileDialog fd = new FileDialog(this, __("select a .wl file to load"), FileDialog.LOAD);
     fd.setDirectory((new File(prefs.basename)).getParent());
     fd.setVisible(true);
     String name = fd.getFile();
@@ -228,7 +249,7 @@ public class WadC extends Frame implements WadCMainFrame {
   }
 
   void saveas(ActionEvent e) {
-    FileDialog fd = new FileDialog(this,"save program (.wl)",FileDialog.SAVE);
+    FileDialog fd = new FileDialog(this, __("save program (.wl)"), FileDialog.SAVE);
     fd.setDirectory((new File(prefs.basename)).getParent());
     fd.setFile((new File(prefs.basename)).getName()); //File f = new File(); f.
     fd.setVisible(true);
@@ -259,9 +280,9 @@ public class WadC extends Frame implements WadCMainFrame {
     if(wp.err!=null) {
       textArea1.setCaretPosition(wp.pos);
     } else {
-      msg("parsed successfully, evaluating...");
+      msg(__("parsed successfully, evaluating..."));
       wp.run();
-      msg("done.");
+      msg(__("done."));
       if(lastwp!=null && lastwp.wr.zoomed && (lastwp.wr.basescale<0.99f || lastwp.wr.basescale>1.01f)) {
         wp.wr.zoomed = true;
         wp.wr.basescale = lastwp.wr.basescale;
@@ -299,12 +320,12 @@ public class WadC extends Frame implements WadCMainFrame {
   void subcmd(List<String> cmd) {
     ProcessBuilder pb = new ProcessBuilder(cmd);
     pb.inheritIO();
-    msg("launching: "+ String.join(" ", cmd));
+    msg(__("launching: ") + String.join(" ", cmd));
 
     try {
-      if(pb.start().waitFor() != 0) msg(cmd.get(0) +" cmd failed?");
+      if(pb.start().waitFor() != 0) msg(__("cmd failed? ") + cmd.get(0));
     } catch(Exception e) {
-      msg(cmd.get(0) + " command interrupted!");
+      msg(__("command interrupted! ") + cmd.get(0));
     };
   }
 
