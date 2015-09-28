@@ -365,8 +365,10 @@ slime_downpipe {
   xoff(0)
 
   -- draw the outside of the pipe first
-  quad( curve(64, 64, 8, 1) )
-  innerrightsector(24, 64, get("slimelight")) -- XXX: needs sliming/watering
+  water(
+    quad(curve(64, 64, 8, 1)) innerrightsector(0, 64, get("slimelight")),
+    0, 64
+  )
 
   -- contortion to add linedefs to the donut
   movestep(0,120)
