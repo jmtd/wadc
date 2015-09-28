@@ -14,6 +14,12 @@
 usepipes {
   slimeinit(0, 128, 120)
 
+  -- control sectors can extend from here
+  pushpop(
+    move(-64) rotright
+    slimeinit_once
+  )
+
   /*
    * beginning rooms; preamble to pipes
    */

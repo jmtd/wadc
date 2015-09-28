@@ -5,6 +5,7 @@
  */
 
 #"standard.h"
+#"water.h"
 
 slimetype(x,tag) {
   sectortype(0,tag)
@@ -18,12 +19,16 @@ slimemain(x) { slimetype(x,$slime1) }
 -- normal corridor
 slimecorridor(y) { _slimecorridor(y, get("slimefloor"), get("slimeceil"), get("slimelight")) }
 _slimecorridor(y,f,c,l) {
-  box(add(32,f),sub(c,32),l,y,32)
-  movestep(0,sub(256,32))
-  box(add(32,f),sub(c,32),l,y,32)
+
+  water(
+    box(add(32,f),sub(c,32),l,y,32)
+    movestep(0,sub(256,32))
+    box(add(32,f),sub(c,32),l,y,32),
+  add(32,f), sub(c,32))
+
   movestep(0,mul(-1,sub(256,64)))
 
-  slimemain( box(f,c,l,y,sub(256,64)) )
+  water( box(f,c,l,y,sub(256,64)), f, c )
 
   movestep(y,-32)
 }
@@ -255,6 +260,11 @@ slimeinit(f,c,l) {
   set("slimefloor",f)
   set("slimeceil", c) -- XXX very little uses this yet
   set("slimelight",l)
+}
+
+-- XXX: we need a control sector helper
+slimeinit_once {
+  waterinit_fwater(add(24,get("slimefloor")))
 }
 
 slimesplit(left, centre, right) { 
