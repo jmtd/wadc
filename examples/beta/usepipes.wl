@@ -62,7 +62,7 @@ usepipes {
 
     slimebars(0)
     slimefade
-    twice( _slimecurve(0,0) )
+    twice( slimecurve_l )
   )
 
 
