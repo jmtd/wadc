@@ -18,15 +18,15 @@ import java.io.FileInputStream;
  * an initial, very hacky CLI for WadC
  */
 
-public class WadCC implements WadCMainFrame {
+public class WadCCLI implements WadCMainFrame {
 
     public static void main(String [] args) {
 
         if (args.length < 1) {
-            System.err.println("usage: wadcc <infile>");
+            System.err.println("usage: WadCCLI <infile>");
             System.exit(1);
         }
-        WadCC w = new WadCC(args[0]);
+        WadCCLI w = new WadCCLI(args[0]);
     }
 
     // XXX: copied verbatim from MainFrame. should be a static interface method?
@@ -67,7 +67,7 @@ public class WadCC implements WadCMainFrame {
     }
 
     /* do the magic */
-    public WadCC(final String infile) {
+    public WadCCLI(final String infile) {
         String wadfile;
         read_in_prefs();
         WadParse wp = new WadParse(getText(infile), this);

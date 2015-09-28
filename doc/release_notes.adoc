@@ -38,6 +38,7 @@ Not yet released.
 
 === Development stuff
 
+ * The tech-preview CLI has been renamed to WadCCLI.
  * WadC is now built using Maven. This has some implications:
 
    * The source has all moved around and we have an obsence number
