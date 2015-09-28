@@ -50,7 +50,6 @@ _slimeopening(y,f,l) {
   movestep(0,sub(256,96))
   right(32) left(sub(y,32)) left(32) left(sub(y,32)) 
   slimemain(leftsector(add(16,f),add(128,f),l))
-  print("got this far")
   turnaround movestep(0,32)
   box(add(32,f),add(96,f),l,sub(y,32),32)
   movestep(0,mul(-1,sub(256,96)))
@@ -91,7 +90,6 @@ slimecurve_r(f,l) {
 -- a curve to the left
 slimecurve_l() { _slimecurve(get("slimefloor"), get("slimeceil"), get("slimelight")) }
 _slimecurve(f,c,l) {
-  print("first bit")
   curve(128,mul(-1,128),32,1)
   rotright
   straight(32)
@@ -102,7 +100,6 @@ _slimecurve(f,c,l) {
   straight(32)
   rightsector(add(32,f),sub(c,32),l)
 
-  print("second bit")
   ^secondbit
   move(sub(256,64))
   !thirdbit
@@ -115,7 +112,6 @@ _slimecurve(f,c,l) {
   straight(sub(256,64))
   slimemain( rightsector(f,c,l) )
 
-  print("third bit")
   ^thirdbit
   straight(32)
   rotright
