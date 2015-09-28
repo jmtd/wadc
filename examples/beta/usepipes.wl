@@ -13,7 +13,6 @@
 
 usepipes {
   slimeinit(0, 128, 120)
-  slime_control
 
   /*
    * beginning rooms; preamble to pipes

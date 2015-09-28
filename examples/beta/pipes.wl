@@ -257,45 +257,6 @@ slimeinit(f,c,l) {
   set("slimelight",l)
 }
 
--- boom 242 control sectors
--- XXX: this actually needs to be in slimeinit, but needs reworking so
--- it can be called more than once.
-slime_control() {
-  turnaround
-  ceil("SLIME01")
-
-  -- $slime1: main sector bit
-  move(128)
-  triple(left(64))
-  linetype(242,$slime1) left(64)
-  leftsector(24,get("slimeceil"),88)
-  linetype(0,0)
-
-  -- $slime2: recessed wall (slimecut)
-  move(128)
-  triple(left(64))
-  linetype(242,$slime2) left(64)
-  leftsector(24, sub(get("slimeceil"),32), 88)
-  linetype(0,0)
-
-  -- $slime3: secret floor
-  move(128)
-  triple(left(64))
-  linetype(242,$slime3) left(64)
-  leftsector(24,24,88)
-  linetype(0,0)
-
-  -- $slime4: choke ceiling
-  move(128)
-  triple(left(64))
-  linetype(242,$slime4) left(64)
-  leftsector(24, sub(get("slimeceil"), 32), 88)
-  linetype(0,0)
-
-  ceil("SLIME16")
-  ^slimeinit
-}
-
 slimesplit(left, centre, right) { 
   _slimesplit(get("slimefloor"),get("slimelight"),
               left, centre, right)
