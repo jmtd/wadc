@@ -62,7 +62,7 @@ For a list of other node builders, see http://doomwiki.org/wiki/Category:Node_bu
 There is a very early-stages command-line interface now available. To
 launch it, you need to run
 
-    java -cp wadc.jar path/to/input.wl
+    java -cp wadc.jar org.redmars.wadc.WadCC path/to/input.wl
 
 It will attempt to parse, run and write out to path/to/output.wad. Be
 aware that this is alpha quality, consider this a tech preview :)
