@@ -329,6 +329,8 @@ _slimesplit(f,l, left, centre, right) {
 
 	straight(192) 
   slimemain( rightsector(f,add(128,f),l) )
+
+  -- centre hook, for detailing
   centre
 
   straight(32)
@@ -344,10 +346,7 @@ _slimesplit(f,l, left, centre, right) {
 	rotright
 	right
 
-    -- centre hook, for detailing
     ^slimesplitmarker
-    popsector
-    centre
 
 }
 
@@ -387,11 +386,33 @@ slimebarcurve(f,l) {
 -- need to rework slimesplit so that we can safely put inner sectors in the
 -- middle bit, by re-ordering the drawing/sector creation
 slime_downpipe {
+  !slime_downpipe
+  turnaround
+  movestep(32, -320)
 
-  turnaround turnaround
-  -- movestep(32, -320)
   -- WIP downpipe
-  --thing quad(curve(72,72,8,0))
-  --innerleftsector(0,64,140) -- something funny with control sectors?
+  xoff(0)
 
+  -- draw the outside of the pipe first
+  quad( curve(64, 64, 8, 1) )
+  innerrightsector(24, 64, get("slimelight")) -- XXX: needs sliming/watering
+
+  -- contortion to add linedefs to the donut
+  movestep(0,120)
+
+  mid("SFALL1")
+  xoff(0) yoff(-1)
+   -- simple static scroller. Major drawback: we lose control of texture
+   -- offsets for their primary purpose. Solution: use one of the more
+   -- complex scrollers, with a control linedef.
+   linetype(255,0)
+    quad( curve(56, -56, 8, 0) )
+   linetype(0,0)
+  xoff(0) yoff(0)
+
+  -- trick to create a donut-shaped sector with the sidedefs pointing out
+  forcesector(lastsector)
+  rightsector(0,0,0)
+
+  ^slime_downpipe
 }
