@@ -60,6 +60,7 @@ water(x, floorheight, ceilheight) {
           linetype(242, get("watertag") ) left(8)
           bot(get("watermap"))
           leftsector(get("water"), ceilheight, 140)
+          popsector
           linetype(0,0)
           move(16)
         !water
