@@ -42,19 +42,36 @@ _slimeopening(y,f,l) {
   slimechoke
   move(mul(-1,y))
 
+  water(
+      box(add(32,f),add(96,f),l,sub(y,32),32),
+      add(32,f), add(96,f)
+  )
 
-  box(add(32,f),add(96,f),l,sub(y,32),32)
   movestep(0,32)
-  slimemain(box(add(16,f),add(128,f),l,sub(y,32),32))
 
-  movestep(0,sub(256,96))
-  right(32) left(sub(y,32)) left(32) left(sub(y,32)) 
-  slimemain(leftsector(add(16,f),add(128,f),l))
+  water(
+    box(add(16,f),add(128,f),l,sub(y,32),32)
+
+    movestep(0,sub(256,96))
+
+    right(32) left(sub(y,32)) left(32) left(sub(y,32))
+    leftsector(add(16,f),add(128,f),l),
+    add(16,f), add(128,f)
+  )
+
   turnaround movestep(0,32)
-  box(add(32,f),add(96,f),l,sub(y,32),32)
+
+  water(
+    box(add(32,f),add(96,f),l,sub(y,32),32),
+    add(32,f), add(96,f)
+  )
+
   movestep(0,mul(-1,sub(256,96)))
 
-  slimemain( box(f,add(128,f),l,sub(y,32),sub(256,64)) )
+  water(
+    box(f,add(128,f),l,sub(y,32),sub(256,64)),
+    f, add(128,f)
+  )
 
   movestep(y,-64)
 }
@@ -323,7 +340,10 @@ _slimechoke(f,l) {
   !slimechoke
   movestep(0,32)
   mid("METAL") top("METAL") bot("METAL")
-  slimetype(box(f,add(72,f),l,32,sub(256,64)),$slime4 )
+  water(
+      box(f,add(72,f),l,32,sub(256,64)),
+      f, add(72, f)
+  )
   movestep(0,-32)
   right(256)
   rotleft movestep(32,-256)
