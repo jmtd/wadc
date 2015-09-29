@@ -77,10 +77,11 @@ _slimeopening(y,f,l) {
 }
 
 -- a curve to the right
-slimecurve_r(f,l) {
+slimecurve_r { _slimecurve_r(get("slimefloor"), get("slimeceil"), get("slimelight")) }
+_slimecurve_r(f,c,l) {
   !omglol
   right(32) straight(192) straight(32)
-  ^omglol 
+  ^omglol
   curve(add(128,mul(2,128)),add(128,mul(2,128)),64,1)
   ^omglol
   movestep(0,32)
@@ -95,17 +96,26 @@ slimecurve_r(f,l) {
   rotleft
 
   straight(32)
-  leftsector(add(f,32),add(f,96),l)
-  straight(sub(256,64))
-  slimemain( leftsector(f,add(128,f),l) )
-  straight(32)
-  leftsector(add(f,32),add(f,96),l)
+  water(
+      leftsector(add(f,32),sub(c,32),l),
+      add(f,32), sub(c,32)
+  )
+  water(
+      straight(sub(256,64))
+      leftsector(f,c,l),
+      f, c
+  )
+  water(
+      straight(32)
+      leftsector(add(f,32),sub(c,32),l),
+      add(f,32), sub(c,32)
+  )
 
   rotright
 }
 
 -- a curve to the left
-slimecurve_l() { _slimecurve(get("slimefloor"), get("slimeceil"), get("slimelight")) }
+slimecurve_l { _slimecurve(get("slimefloor"), get("slimeceil"), get("slimelight")) }
 _slimecurve(f,c,l) {
   curve(128,mul(-1,128),32,1)
   rotright
@@ -114,9 +124,11 @@ _slimecurve(f,c,l) {
   rotright
   curve(add(32,128),add(32,128),32,1)
   rotright
-  straight(32)
-  rightsector(add(32,f),sub(c,32),l)
-
+  water(
+    straight(32)
+    rightsector(add(32,f),sub(c,32),l),
+    add(32,f), sub(c,32)
+  )
   ^secondbit
   move(sub(256,64))
   !thirdbit
@@ -126,23 +138,27 @@ _slimecurve(f,c,l) {
   rotright
   straight(sub(265,64))
   ^secondbit
-  straight(sub(256,64))
-  slimemain( rightsector(f,c,l) )
+  water(
+    straight(sub(256,64))
+    rightsector(f,c,l)
+    , f,c
+  )
 
   ^thirdbit
   straight(32)
   rotright
   curve(add(128,mul(2,128)),add(128,mul(2,128)),32,1)
   rotright
-  straight(32)
-  rightsector(add(32,f),sub(c,32),l)
+  water(
+    straight(32)
+    rightsector(add(32,f),sub(c,32),l)
+    , add(32,f), sub(c,32)
+  )
 
   ^secondbit
   rotleft
   movestep(0,-32)
 }
-
-scurve(f,c,l) { slimecurve_l | slimecurve_r(f,l) }
 
 slimebars(tag) { 
   _slimebars(get("slimefloor"), get("slimeceil"),
@@ -301,18 +317,27 @@ _slimesplit(f,l, left, centre, right) {
 	movestep(0,32)
   curve(add(32,128),mul(-1,add(32,128)),32,1)
 	rotright
-	straight(-32)
-  leftsector(add(f,32),add(f,96),l)
+  water(
+    straight(-32)
+    leftsector(add(f,32),add(f,96),l)
+    , add(f,32), add(f,96)
+  )
 	movestep(32,0)
 
 	straight(192) straight(32)
 
 	rotright 
-	box(add(32,f),add(96,f),l,512,32)
+    water(
+      box(add(32,f),add(96,f),l,512,32)
+      , add(32,f), add(96,f)
+    )
 	movestep(512,32) rotright
 
-	straight(192) 
-  slimemain( rightsector(f,add(128,f),l) )
+    water(
+      straight(192)
+      rightsector(f,add(128,f),l)
+      , f, add(128,f)
+    )
 
   -- centre hook, for detailing
   centre
@@ -366,7 +391,7 @@ _slimefade(f,c,l) {
 slimebarcurve(f,l) {
   slimebars(0)
   slimefade
-  twice( slimecurve_r(0,0) )
+  twice( slimecurve_r )
 }
 
 -- WIP
