@@ -50,8 +50,6 @@ Not yet released.
 
 Released 22^nd^ September 2015.
 
-== What's new
-
 === Core program changes
 
 ==== Distribution and runtime requirements
