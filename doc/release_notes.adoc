@@ -141,7 +141,7 @@ The paths to the file you are editing, the corresponding generated WAD file,
 your preferred Doom executable and any texture WADs you have defined can now
 contain spaces or other special characters.
 
-=== 1.2
+== 1.2
 
 Released December 2011.
 
@@ -154,7 +154,7 @@ Released December 2011.
   - `1.2_features.wl` - demo the new features above
   - `entryway.wl` - a recreation of Doom 2 MAP01 in WadC, thanks GreyGhost
 
-=== 1.1
+== 1.1
 
 Released July 2001.
 
@@ -174,7 +174,7 @@ Released July 2001.
   - more examples / useful include files
   - many small enhancements/fixes
 
-=== 1.0: first public release
+== 1.0: first public release
 
 Released October 2000.
 
@@ -196,7 +196,7 @@ Released October 2000.
   - more examples etc.
   - comes with source (GPL)
 
-=== 0.9: initial beta
+== 0.9: initial beta
 
 Dates from around July 1999.
 
