@@ -7,6 +7,34 @@ Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 
 toc::[]
 
+== Dev
+
+Not yet released.
+
+=== Example scripts
+
+ * `logo.wl` - draws the letters "WadC".
+ * The "pipes" stuff in examples/beta has had a lot of revising.
+
+=== Bug fixes
+
+ * You can now use `popsector` more than once. This means you
+   can have an inner sector within an inner sector within an
+   outer one, to an arbitrary depth.
+ * `water.h` can now be used with inner-sectors.
+ * The GUI is now listed as "WadC" rather than "MainFrame" in
+   various places such as the Mac OS X menu bar.
+
+=== Development stuff
+
+ * WadC is now built using Maven. This has some implications:
+
+   * The source has all moved around and we have an obsence number
+     of subdirectories. Sigh. There are a few convenience symlinks
+     to make life easier.
+   * The program's version is now embedded as a property rather
+     than being an auto-generated Java class.
+
 == 2.0
 
 Released 22^nd^ September 2015.
