@@ -5,6 +5,9 @@ Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 :toclevels: 5
 :homepage: http://jmtd.net/wadc/
 
+This lists changes made in each release. For a description of all
+current features, see link:reference.adoc[the Reference].
+
 toc::[]
 
 == Dev
@@ -44,11 +47,11 @@ Not yet released.
 
 Released 22^nd^ September 2015.
 
-=== What's new
+== What's new
 
-==== Core program changes
+=== Core program changes
 
-===== Distribution and runtime requirements
+==== Distribution and runtime requirements
 
 The WadC binary distribution is now a JAR file. On most platforms,
 simply double-clicking on the JAR should launch the program. WadC
@@ -60,7 +63,7 @@ tested only with
 * java version "1.8.0_45"
 * javac 1.8.0_45
 
-===== Sneak-peek: command-line interface
+==== Sneak-peek: command-line interface
 
 There is a very early-stages command-line interface now available. To
 launch it, you need to run
@@ -70,7 +73,7 @@ launch it, you need to run
 It will attempt to parse, run and write out to path/to/output.wad. Be
 aware that this is alpha quality, consider this a tech preview :)
 
-===== configuration file syntax and location
+==== configuration file syntax and location
 
 wadc.cfg is no longer written/read from the current working directory. On
 Windows, it's found at `%USERHOME%/.wadc/wadc.cfg`, on UNIX platforms it
@@ -94,7 +97,7 @@ If you have defined any of `twad1`, `twad2` or `twad3` in your
 configuration, they will be added to the doom command line, immediately
 after your `doomargs`, and before the path to the WAD you are building.
 
-===== Embedded WadC code
+==== Embedded WadC code
 
 WadC now writes out the source code for your level to the generated WAD
 in a `WADCSRC` lump. Any locally included files are also included, but
@@ -105,7 +108,7 @@ any patches to new textures which are not in your IWAD, A new `PNAMES` lump
 will be generated and written. You need to have specified a path to an IWAD
 file in your configuration for this to work.
 
-==== Language features
+=== Language features
 
 `die(foo)`::   prints foo, then terminates.
 `cat(a, b)`::  concatenates a and b
@@ -116,7 +119,7 @@ file in your configuration for this to work.
 `deaf`::       `mute` has been renamed to `deaf`.
 `getbot`, `getmid`, `gettop`, `getfloor`, `getceil`::    Accessor functions for the current texture or flat in use
 
-===== Library additions
+==== Library additions
 
 `lisp.h`::  lisp-style lists (broken out from `examples/lisp.wl`)
 `water.h`:: Boom deep water tools
@@ -126,14 +129,14 @@ within `standard.h`:
  * `inc` and `dec`, convenient for increment/decrementing a variable
  * `fori` and `i`, the `for` loop but you can read the value of the iterator
 
-===== New examples
+==== New examples
 
 `textures.wl`:: demonstrating the texture features
 `llevels.wl`::  test WAD using texture features
 `water.wl`::    demonstrating the Boom water helpers
 "beta"::        directory containing my unfinished stuff
 
-==== Bug fixes
+=== Bug fixes
 
 Fix map view zooming with mouse clicks on non-Windows platforms.
 
