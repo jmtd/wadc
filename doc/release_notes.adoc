@@ -11,6 +11,11 @@ toc::[]
 
 Not yet released.
 
+=== Core program changes
+
+ * Internationalisation support.
+   * Partial french translation adapted from @nekrofage. Thanks!
+
 === Example scripts
 
  * `logo.wl` - draws the letters "WadC".
