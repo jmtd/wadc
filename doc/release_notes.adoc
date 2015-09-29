@@ -8,6 +8,8 @@ Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 This lists changes made in each release. For a description of all
 current features, see link:reference.adoc[the Reference].
 
+== Table of Contents
+
 toc::[]
 
 == Dev
