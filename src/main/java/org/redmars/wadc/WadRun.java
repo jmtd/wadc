@@ -60,8 +60,6 @@ class WadRun {
   int xoff = 0, yoff = 0;
   int lineflags = 0;
 
-  Random rnd;
-
   // generated data
 
   Vector vertices = new Vector();
@@ -97,10 +95,11 @@ class WadRun {
 
   Vector collect;
 
+  static Random rnd = new Random();
+
   WadRun(WadParse p) {
       wp = p;
       prefs = wp.mf.prefs;
-      rnd = new Random();
   }
 
   void dep() { wp.mf.msg("north east west south are deprecated commands (you shouldn't need them).");}
@@ -566,8 +565,8 @@ class WadRun {
     }});
 
     builtin("seed", 1, new Builtin() { Exp eval(Exp a) {
-      long seed = a.ival();
-      rnd.setSeed(seed);
+      Choice.setSeed(a.ival());
+      wp.mf.msg("random seed set to " + Choice.seed);
       return n;
     }});
 
@@ -1058,6 +1057,8 @@ class WadRun {
 
   void run() {
     try {
+      Choice.setSeed((int)System.currentTimeMillis());
+      wp.mf.msg("random seed set to " + Choice.seed);
       makevertex();
       call(new Id("main"));
       for(int i = 0; i<vertices.size(); i++) {

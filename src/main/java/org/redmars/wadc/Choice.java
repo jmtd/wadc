@@ -10,10 +10,15 @@ package org.redmars.wadc;
 import java.util.*;
 
 class Choice extends Exp {
-  static Random rnd;
-  public Choice(Random r) {
-    rnd = r;
+
+  static long seed;
+  static Random rnd = new Random();
+
+  static void setSeed(int s) {
+      seed = s;
+      rnd.setSeed(s);
   }
+
   Vector v = new Vector();
   void add(Exp e) { v.addElement(e); }
   Exp replace(Vector n, Vector r) {

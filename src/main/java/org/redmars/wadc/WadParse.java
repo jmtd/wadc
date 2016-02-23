@@ -245,7 +245,7 @@ public class WadParse {
   Exp parsechoice() {
     Exp e = parseseq();
     if(token=='|') {
-      Choice c = new Choice(wr.rnd);
+      Choice c = new Choice();
       c.add(e);
       while(token=='|') {
         lex();
