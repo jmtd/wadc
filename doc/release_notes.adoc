@@ -1,4 +1,4 @@
-= Release Notes
+= WadC Release Notes
 Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 :toc:
 :toc-placement!:
