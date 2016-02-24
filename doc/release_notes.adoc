@@ -46,12 +46,12 @@ Not yet released.
 
  * The tech-preview CLI has been renamed to WadCCLI.
  * WadC is now built using Maven. This has some implications:
-
-   * The source has all moved around and we have an obsence number
-     of subdirectories. Sigh. There are a few convenience symlinks
-     to make life easier.
-   * The program's version is now embedded as a property rather
-     than being an auto-generated Java class.
+ 
+  ** The source has all moved around and we have an obsence number
+      of subdirectories. Sigh. There are a few convenience symlinks
+      to make life easier.
+  ** The program's version is now embedded as a property rather
+      than being an auto-generated Java class.
 
 == 2.0
 
