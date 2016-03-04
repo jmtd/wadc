@@ -79,16 +79,19 @@ usepipes {
   slimebars(1)
   pushpop( movestep(128,-128) rotleft slimechoke )
   slimecurve_l
+
   move(32)
   slimesecret(256,doublebarreled thing)
+
+  slimecorridor(896)
+  -- monsters for the upper corridor
   pushpop(
-    movestep(512,128)
+    movestep(-256,128)
     turnaround
     demon deaf
     triple( thing move(128) )
     deaf
   )
-  slimecorridor(896)
 
   pushpop(movestep(384,384) rotright slimechoke )
   slimesplit( !tempmain, !donothing, !tempmain2 )
