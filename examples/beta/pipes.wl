@@ -209,72 +209,115 @@ _slimeswitch(y,f,c,l,tag) {
 
 /*
  * slimecut - cut out a section of wall for adjoining a corridor to
+ * y  - length of corridor
+ * nf - destination floor height
  */
-slimecut(y,f,l) {
-  box(add(32,f),add(96,f),l,y,32)   -- left-hand ledge
-  movestep(0,sub(256,32))
+biggest(a,b) { lessthaneq(a,b) ? b : a }
+smallest(a,b){ lessthaneq(a,b) ? a : b }
 
-  -- recessed wall
-  floor("SLIME01")
-  sectortype(0,$slime2)
-  box(sub(f,add(48,24)),add(96,f),l,y,32)
+-- return a floor height that moves towards nf from f in increments of 24
+nextstep(f,nf) {
+    eq(f,nf) ? f : { -- obvious case
 
-  -- two steps
-  sectortype(0,$slime1)
-  floor("SLIME01")
-  left(32) right(y) right(32) right(y)
-  rightsector(sub(f,48),add(f,128),l)
-  rotright
+        lessthaneq(f,nf) ? {
+            -- f < nf
+            smallest(nf, add(f,24))
+
+        } : {
+            -- f > nf
+            biggest(nf, sub(f,24))
+        }
+
+    }
+}
+
+slimecut(y,nf) { _slimecut(y,nf,get("slimefloor"),get("slimelight")) }
+_slimecut(y,nf,f,l) {
+  move(y) !slimecut rotright
+
+  -- left-hand ledge/rail
+  water(
+    box(add(32,f),add(96,f),l,32,y),
+    add(32,f), sub(get("slimeceil"),32)
+  )
   move(32)
-  straight(32) right(y) right(32) right(y)
-  rightsector(sub(f,24),add(f,128),l)
-  turnaround
-  movestep(64,32)
-  floor("SLIME16")
-  sectortype(0,0)
 
-  movestep(-64,-192)
+  -- normal corridor floor, but shorter
+  water(
+    box(f,get("slimeceil"), l, 128, y),
+    f,get("slimeceil")
+  )
+  move(128)
 
-  -- main corridor
-  sectortype(0,$slime1)
-  floor("SLIME01")
-  box(f,add(128,f),l,y,128)
-  floor("SLIME16")
-  sectortype(0,0)
-  movestep(y,-32)
+  -- three steps down/up: two in corridor, one in ledge/rail
+  water(
+    set("slimecut_stepheight", nextstep(f,nf))
+    box(get("slimecut_stepheight"), get("slimeceil"),l,32,y) move(32)
+    set("slimecut_stepheight", nextstep(get("slimecut_stepheight"),nf))
+    box(get("slimecut_stepheight"), get("slimeceil"),l,32,y) move(32),
+    f, get("slimeceil")
+  )
+  water(
+    set("slimecut_stepheight", nextstep(get("slimecut_stepheight"),nf))
+    box(get("slimecut_stepheight"), sub(get("slimeceil"),32),l,32,y) move(32),
+    sub(f,72), sub(get("slimeceil"),32)
+  )
+  ^slimecut
 }
 
 /*
  * slimesecret: puts a secret corridor on the side
+ * secret corridor is 96 units lower than base
  */
-slimesecret(y,whatever) { 
+slimesecret_backup {
+    set("slimefloor", sub(get("slimefloor"), 96))
+    set("slimeceil", sub(get("slimeceil"), 96))
+}
+slimesecret_restore {
+    set("slimefloor", add(get("slimefloor"), 96))
+    set("slimeceil", add(get("slimeceil"), 96))
+}
+slimesecret(y,whatever) {
   _slimesecret(y,get("slimefloor"),get("slimelight"),whatever)
 }
 _slimesecret(y,f,l,whatever) {
-  slimecut(64,f,l)
-  !slimesecretjump
-  sectortype(0,$slime3)
-  floor("SLIME01")
+  slimecut(64,sub(f,96)) -- tunnel will be -96
+  !slimesecret_orig
+  slimesecret_backup
 
-  -- thin bit
-  movestep(-64,256) 
-  unpegged straight(64) unpegged
-  right(128) right(64) right(128)
-  rightsector(sub(f,96), add(f,24), l)
+  -- joining tunnel
+  movestep(-64,256)
+  water(
+      unpegged straight(64) unpegged
+      right(128) right(64) right(128)
+      rightsector(f, get("slimeceil"), l),
+      f, sub(get("slimeceil"), 8)
+  )
 
-  -- fat bit
-  rotright
-  movestep(-64,128)
-  sectortype(0,$slime1)
-  floor("SLIME01")
-  box(sub(f,96),add(f,24), l, 256, 128)
-  sectortype(0,0)
+  rotleft
+  movestep(-64,-384) -- tunnel + width of corridor
+  slimecut(64,f)
+  turnaround movestep(64,-256)
 
-  pushpop( movestep(192,64) whatever )
-  floor("SLIME16")
-  sectortype(0,0)
-  ^slimesecretjump
+  -- north detailing
+  !slimesecret
+  slimecorridor(256)
+  slimebars(0)
+  slimefade
 
+  -- the treat
+  ^slimesecret movestep(128,128) whatever
+
+  -- south detailing
+  ^slimesecret
+  turnaround movestep(64,-256)
+  slimecurve_l
+  slimebars(0)
+  slimecurve_l
+  slimefade
+
+  slimesecret_restore
+  ^slimesecret_orig
 }
 
 /*
