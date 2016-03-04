@@ -73,6 +73,7 @@ usepipes {
 
   impassable
   ^beginning_detail_left
+  water_carriage_return
 
   slimeopening(928) -- TODO: a less random figure
   slimeswitch(128,1)
@@ -82,6 +83,7 @@ usepipes {
 
   move(32)
   slimesecret(256,doublebarreled thing)
+  water_carriage_return
 
   slimecorridor(896)
   -- monsters for the upper corridor

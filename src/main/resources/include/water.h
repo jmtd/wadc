@@ -24,6 +24,7 @@ waterinit(h, f, m, l) {
 
     set("watertag", newtag)
     !water -- where the next control sector will go
+    !watermargin
     water_vanilla(m)
 }
 
@@ -77,4 +78,17 @@ water(x, floorheight, ceilheight) {
 
       -- pass-through if no decoration necessary
       : x
+}
+
+/*
+ * water_carriage_return - temporary measure for performing a 'carriage return'
+ * for control sector placement
+ */
+water_carriage_return {
+  !water_carriage_return
+  ^watermargin
+  movestep(0,16)
+  !watermargin
+  !water
+  ^water_carriage_return
 }
