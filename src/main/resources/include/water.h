@@ -6,6 +6,12 @@
  * See file LICENSE.txt
  *
  * routines for working with Boom deep water (sector type 242)
+ *
+ * the water* routines operate on a global object and are useful for
+ * maps that only need/want one deep water type
+ * the owater* routines operate on a user-supplied object, meaning you
+ * can mix multiple water levels/types in the same map
+ *
  * TODO: de-duplicate control sectors
  */
 
@@ -17,12 +23,16 @@
  * of the pen location when this is called.
  */
 waterinit(h, f, m, l) {
-    set("water",     h) -- height of the water
-    set("waterflat", f) -- what flat to use e.g. FWATER1
-    set("watermap",  m) -- COLORMAP to use for underwater e.g. WATERMAP
-    set("waterlight",l) -- how bright it is underwater
+    set("owater", onew)
+    owaterinit(get("owater"), h, f, m, l)
+}
+owaterinit(o, h, f, m, l) {
+    oset(o, "water",     h) -- height of the water
+    oset(o, "waterflat", f) -- what flat to use e.g. FWATER1
+    oset(o, "watermap",  m) -- COLORMAP to use for underwater e.g. WATERMAP
+    oset(o, "waterlight",l) -- how bright it is underwater
 
-    set("watertag", newtag)
+    oset(o, "watertag", newtag)
     !water -- where the next control sector will go
     !watermargin
     water_vanilla(m)
@@ -47,20 +57,23 @@ water_vanilla(m) {
  * have water in them.
  */
 water(x, floorheight, ceilheight) {
+    owater(get("owater"), x, floorheight, ceilheight)
+}
+owater(o, x, floorheight, ceilheight) {
     -- we only want to set the floor of *this* sector to waterflat if the
     -- water level is above the floor. (TODO: consider moving water.)
-    lessthaneq(floorheight, get("water"))
+    lessthaneq(floorheight, oget(o, "water"))
       ?
         !notwater
 
         -- the control sector
         ^water
-          ceil(get("waterflat"))
+          ceil(oget(o, "waterflat"))
           move(8)
           triple(left(8))
-          linetype(242, get("watertag") ) left(8)
-          bot(get("watermap"))
-          leftsector(get("water"), ceilheight, 140)
+          linetype(242, oget(o, "watertag") ) left(8)
+          bot(oget(o, "watermap"))
+          leftsector(oget(o, "water"), ceilheight, 140)
           popsector
           linetype(0,0)
           move(16)
@@ -68,13 +81,13 @@ water(x, floorheight, ceilheight) {
 
         -- decorate whatever we've been passed
         ^notwater
-        sectortype(0, get("watertag") )
-        set("watertmp", getfloor)
-        floor(get("waterflat"))
+        sectortype(0, oget(o, "watertag") )
+        oset(o, "watertmp", getfloor)
+        floor(oget(o, "waterflat"))
         x
-        floor(get("watertmp"))
+        floor(oget(o, "watertmp"))
         sectortype(0,0)
-        set("watertag", newtag)
+        oset(o, "watertag", newtag)
 
       -- pass-through if no decoration necessary
       : x
