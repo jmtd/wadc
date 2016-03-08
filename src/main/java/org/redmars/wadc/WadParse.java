@@ -160,6 +160,8 @@ public class WadParse {
   }
 
   // given a relative file e.g. "foo.h", construct an absolute path
+  // XXX: fails in WadCCLI. in  GUI usage, mf.prefs.basename is an
+  // absolute path. in WadCCLI, it's not.
   Path resolveinclude(String name) {
     Path p = Paths.get(mf.prefs.basename).getParent();
     p = Paths.get(p.toString(), name);
