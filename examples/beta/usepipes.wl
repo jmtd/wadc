@@ -95,38 +95,14 @@ usepipes {
     deaf
   )
 
-  pushpop(movestep(384,384) rotright slimechoke )
-  slimesplit( !tempmain, !donothing, !tempmain2 )
-  ^tempmain2
-  move(32) -- ?
-  slimebarcurve(0,120)
-
-  ^tempmain
+  pushpop(movestep(-128,64) player1start thing)
+  _slimequad(
+    !east,
+    /*west*/ slimebars(0) slimefade _slimecurve_r(get("slimefloor"), get("slimeceil"), 0),
+    -256, get("slimeceil"),get("slimelight")
+  )
+  /*north*/ slimebars(0) slimefade _slimecurve(get("slimefloor"), get("slimeceil"), 0)
+  ^east
   slimecorridor(128)
-
-  -- we're going to drop down 192 units here, but first
-  -- some detailing on the top-level
-  !tempmain
-
-  -- inaccessible area
-  move(256)
-  slimebars(0)
-  slimecorridor(512)
-  slimecurve_l
-  slimecorridor(128)
-
-  -- the lower floors. temp low ceiling for trail-off
-  slimeinit(-192, add(-192,32), 120)
-
-  ^tempmain
-  movestep(256,256) rotleft !tempmain
-  straight(256) left(256)
-  !tempmain2
-  rotright slimebars(0) slimefade popsector
-  ^tempmain2
-  left(256) left(256)
-  leftsector(-192,128,120) rotright
-
-  -- slimecorridor(128) fucksake.
 
 }

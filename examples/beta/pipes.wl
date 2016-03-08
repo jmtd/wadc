@@ -473,3 +473,27 @@ slime_downpipe {
 
   ^slime_downpipe
 }
+
+/*
+ * slimequad - a four-way split for corridors
+ * orientations assuming we're drawing northwards
+ *   e,w - hooks for corridors to east and west
+ *   s is assumed to be drawn prior to slimequad
+ *   n is assumed to be handled after slimequad
+ */
+slimequad(e,w) { _slimequad(e,w,
+  get("slimefloor"), get("slimeceil"), get("slimelight"))
+}
+_slimequad(east,west,f,c,l) {
+  water(
+    -- XXX: quad(...) fails; moving rotright before rightsector fails.
+    triple( straight(32) straight(192) straight(32) rotright)
+    straight(32) straight(192) straight(32)
+    rightsector(f,c,l)
+    rotright,
+    f, c
+  )
+  !slimequad movestep(256,256) rotright east
+  ^slimequad rotleft west
+  ^slimequad movestep(256,0)
+}
