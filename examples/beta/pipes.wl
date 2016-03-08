@@ -34,6 +34,8 @@ _slimecorridor(y,f,c,l) {
 }
 
 -- corridor with exit ramps
+-- XXX: we rely on the last sector drawn here being the main floor
+-- XXX: move the choke stuff out of here
 slimeopening(y) { _slimeopening(y,get("slimefloor"),get("slimelight")) }
 _slimeopening(y,f,l) {
 
@@ -496,4 +498,49 @@ _slimequad(east,west,f,c,l) {
   !slimequad movestep(256,256) rotright east
   ^slimequad rotleft west
   ^slimequad movestep(256,0)
+}
+
+slimetrap { _slimetrap(get("slimefloor"), get("slimeceil"), get("slimelight")) }
+_slimetrap(f,c,l) {
+  !slimetrap
+  slimeopening(512)
+  ^slimetrap
+  movestep(48,72)
+  water(
+    linetype(109,$slimetrap)
+    ibox(f,c,l,112,112),
+    f,c
+  )
+  linetype(0,0)
+
+  ^slimetrap
+  movestep(add(512,32),0) -- past choke
+  slimebars(0) -- tmp stuff
+  slimecorridor(128) -- tmp stuff
+
+  ^slimetrap
+  movestep(64,-32) -- past choke
+  slimetrap_sideroom(f,c,l)
+}
+slimetrap_sideroom(f,c,l) {
+  -- the trap-door
+  box(add(f,32),sub(c,32),l, 384, 12)
+  movestep(0,12)
+  sectortype(0, $slimetrap) mid("doortrak")
+  box(add(f,32),add(f,32),l, 384, 8)
+  sectortype(0,0)
+  movestep(0,8)
+  box(add(f,32),sub(c,32),l, 384, 12)
+
+  -- the trap-room
+  ^slimetrap
+  movestep(0,-32) rotleft
+  box(add(f,32),c,l, 256, 512)
+  pushpop(
+    movestep(128,128) turnaround
+    for(0, 3,
+      formersergeant thing
+      movestep(0,-64)
+    )
+  )
 }

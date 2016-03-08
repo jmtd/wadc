@@ -102,7 +102,15 @@ usepipes {
     -256, get("slimeceil"),get("slimelight")
   )
   /*north*/ slimebars(0) slimefade _slimecurve(get("slimefloor"), get("slimeceil"), 0)
+
+  -- XXX: we need to handle multiple pipe types at onces, a la water
+  -- this is hacky stuff in the meantime
+  slimeinit(-256, -128, 150)
+  water_carriage_return ^water
+  waterinit_fwater(add(24,get("slimefloor")))
+
   ^east
   slimecorridor(128)
+  slimetrap
 
 }
