@@ -15,13 +15,21 @@
  *
  * caller should ensure unpegged is set
  */
-slimeinit(o,f,c,l) {
+slimeinit(o,
+    f, -- floor level
+    c, -- ceiling level
+    l, -- base light level
+    wh,-- water height above floor
+    wf,-- water flat
+    wm,-- COLORMAP for underwater
+    wl -- base light level underwater
+    ) {
     oset(o,"floor",f)
     oset(o,"ceil", c)
     oset(o,"light",l)
     oset(o,"whandle",onew)
     slimeset(o)
-    owaterinit(oget(o,"whandle"), add(24, f), "NUKAGE1", "WATERMAP", 80)
+    owaterinit(oget(o,"whandle"), add(wh, f), wf, wm, wl)
     o
 }
 /*

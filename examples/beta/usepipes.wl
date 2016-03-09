@@ -16,7 +16,7 @@ usepipes {
   !usepipes
   move(-64) rotright -- control sectors can extend from here
   set("slime1", onew)
-  slimeinit(get("slime1"), 0, 128, 120)
+  slimeinit(get("slime1"), 0, 128, 120, 24, "NUKAGE1", "WATERMAP", 80)
   ^usepipes
   _usepipes(get("slime1"))
 }
@@ -110,8 +110,7 @@ _usepipes(o) {
   -- lower corridors
   water_carriage_return ^water
   set("slime2", onew)
-  slimeinit(get("slime2"), -256, -128, 150)
-
+  slimeinit(get("slime2"), -256, -128, 150, 24, "NUKAGE1", "WATERMAP", 80)
   ^east
   slimecorridor(128)
   slimetrap
