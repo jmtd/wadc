@@ -13,17 +13,16 @@
 
 -- hack to avoid sprinkling get("slime1") all over _usepipes
 usepipes {
+  !usepipes
+  move(-64) rotright -- control sectors can extend from here
   set("slime1", onew)
+  slimeinit(get("slime1"), 0, 128, 120)
+  ^usepipes
   _usepipes(get("slime1"))
 }
 _usepipes(o) {
-  slimeinit(o, 0, 128, 120)
-
-  -- control sectors can extend from here
-  pushpop(
-    move(-64) rotright
-    slimeinit_once
-  )
+  unpegged
+  set("slime1", o)
 
   /*
    * beginning rooms; preamble to pipes
@@ -108,14 +107,12 @@ _usepipes(o) {
   )
   /*north*/ slimebars(0) slimefade slimecurve_l -- XXX: slimecurve will be wrong brightness
 
-  -- XXX: we need to handle multiple pipe types at onces, a la water
-  -- this is hacky stuff in the meantime
-  slimeinit(o, -256, -128, 150)
+  -- lower corridors
   water_carriage_return ^water
-  waterinit_fwater(add(24, oget(o, "floor")))
+  set("slime2", onew)
+  slimeinit(get("slime2"), -256, -128, 150)
 
   ^east
   slimecorridor(128)
   slimetrap
-
 }

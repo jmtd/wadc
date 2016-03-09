@@ -7,6 +7,36 @@
 #"standard.h"
 #"water.h"
 
+/*
+ * initialise the slime stuff
+ * return a slime handle, configured with the supplied parameters
+ * slimeinit must be called in a position where control sectors can
+ * be drawn forward/right (restriction inherited from water.h)
+ *
+ * caller should ensure unpegged is set
+ */
+slimeinit(o,f,c,l) {
+    oset(o,"floor",f)
+    oset(o,"ceil", c)
+    oset(o,"light",l)
+    oset(o,"whandle",onew)
+    slimeset(o)
+    owaterinit(oget(o,"whandle"), add(24, f), "NUKAGE1", "WATERMAP", 80)
+    o
+}
+/*
+ * slimeset - set our slime object handle
+ */
+slimeset(o) {
+  set("slime", o)
+}
+/*
+ * convenience function
+ */
+swater(x, fh, ch) {
+  owater(oget(get("slime"),"whandle"), x, fh, ch)
+}
+
 slimetype(x,tag) {
   sectortype(0,tag)
   floor("SLIME01")
@@ -20,7 +50,7 @@ slimemain(x) { slimetype(x,$slime1) }
 slimecorridor(y) { _slimecorridor(y, oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
 _slimecorridor(y,f,c,l) {
 
-  water(
+  swater(
     box(add(32,f),sub(c,32),l,y,32)
     movestep(0,sub(256,32))
     box(add(32,f),sub(c,32),l,y,32),
@@ -28,7 +58,7 @@ _slimecorridor(y,f,c,l) {
 
   movestep(0,mul(-1,sub(256,64)))
 
-  water( box(f,c,l,y,sub(256,64)), f, c )
+  swater( box(f,c,l,y,sub(256,64)), f, c )
 
   movestep(y,-32)
 }
@@ -44,14 +74,14 @@ _slimeopening(y,f,l) {
   slimechoke
   move(mul(-1,y))
 
-  water(
+  swater(
       box(add(32,f),add(96,f),l,sub(y,32),32),
       add(32,f), add(96,f)
   )
 
   movestep(0,32)
 
-  water(
+  swater(
     box(add(16,f),add(128,f),l,sub(y,32),32)
 
     movestep(0,sub(256,96))
@@ -63,14 +93,14 @@ _slimeopening(y,f,l) {
 
   turnaround movestep(0,32)
 
-  water(
+  swater(
     box(add(32,f),add(96,f),l,sub(y,32),32),
     add(32,f), add(96,f)
   )
 
   movestep(0,mul(-1,sub(256,96)))
 
-  water(
+  swater(
     box(f,add(128,f),l,sub(y,32),sub(256,64)),
     f, add(128,f)
   )
@@ -98,16 +128,16 @@ _slimecurve_r(f,c,l) {
   rotleft
 
   straight(32)
-  water(
+  swater(
       leftsector(add(f,32),sub(c,32),l),
       add(f,32), sub(c,32)
   )
-  water(
+  swater(
       straight(sub(256,64))
       leftsector(f,c,l),
       f, c
   )
-  water(
+  swater(
       straight(32)
       leftsector(add(f,32),sub(c,32),l),
       add(f,32), sub(c,32)
@@ -126,7 +156,7 @@ _slimecurve(f,c,l) {
   rotright
   curve(add(32,128),add(32,128),32,1)
   rotright
-  water(
+  swater(
     straight(32)
     rightsector(add(32,f),sub(c,32),l),
     add(32,f), sub(c,32)
@@ -140,7 +170,7 @@ _slimecurve(f,c,l) {
   rotright
   straight(sub(265,64))
   ^secondbit
-  water(
+  swater(
     straight(sub(256,64))
     rightsector(f,c,l)
     , f,c
@@ -151,7 +181,7 @@ _slimecurve(f,c,l) {
   rotright
   curve(add(128,mul(2,128)),add(128,mul(2,128)),32,1)
   rotright
-  water(
+  swater(
     straight(32)
     rightsector(add(32,f),sub(c,32),l)
     , add(32,f), sub(c,32)
@@ -238,28 +268,28 @@ _slimecut(y,nf,f,c,l) {
   move(y) !slimecut rotright
 
   -- left-hand ledge/rail
-  water(
+  swater(
     box(add(32,f),sub(c,32),l,32,y),
     add(32,f), sub(c,32)
   )
   move(32)
 
   -- normal corridor floor, but shorter
-  water(
+  swater(
     box(f,c, l, 128, y),
     f,c
   )
   move(128)
 
   -- three steps down/up: two in corridor, one in ledge/rail
-  water(
+  swater(
     set("slimecut_stepheight", nextstep(f,nf))
     box(get("slimecut_stepheight"), c, l, 32, y) move(32)
     set("slimecut_stepheight", nextstep(get("slimecut_stepheight"),nf))
     box(get("slimecut_stepheight"), c, l, 32, y) move(32),
     f, c
   )
-  water(
+  swater(
     set("slimecut_stepheight", nextstep(get("slimecut_stepheight"),nf))
     box(get("slimecut_stepheight"), c, l, 32, y) move(32),
     sub(f,72), sub(c,32)
@@ -292,7 +322,7 @@ _slimesecret(y,f,c,l,whatever) {
 
   -- joining tunnel
   movestep(-64,256)
-  water(
+  swater(
       unpegged straight(64) unpegged
       right(128) right(64) right(128)
       rightsector(f, c, l),
@@ -325,26 +355,6 @@ _slimesecret(y,f,c,l,whatever) {
   ^slimesecret_orig
 }
 
-/*
- * initialise the slime stuff
- * TODO: parameterize the floor/ceiling heights
- *       into globals and use them for above fns
- */
-slimeinit(o,f,c,l) {
-  unpegged
-  !slimeinit
-
-  oset(o,"floor",f)
-  oset(o,"ceil", c) -- XXX very little uses this yet
-  oset(o,"light",l)
-  set("slime", o)
-}
-
--- XXX: we need a control sector helper
-slimeinit_once {
-  waterinit_fwater(add(24,oget(get("slime"),"floor")))
-}
-
 slimesplit(left, centre, right) {
   _slimesplit(oget(get("slime"), "floor"), oget(get("slime"), "light"),
               left, centre, right)
@@ -366,7 +376,7 @@ _slimesplit( f,l, left, centre, right) {
 	movestep(0,32)
   curve(add(32,128),mul(-1,add(32,128)),32,1)
 	rotright
-  water(
+  swater(
     straight(-32)
     leftsector(add(f,32),add(f,96),l)
     , add(f,32), add(f,96)
@@ -376,13 +386,13 @@ _slimesplit( f,l, left, centre, right) {
 	straight(192) straight(32)
 
 	rotright 
-    water(
+    swater(
       box(add(32,f),add(96,f),l,512,32)
       , add(32,f), add(96,f)
     )
 	movestep(512,32) rotright
 
-    water(
+    swater(
       straight(192)
       rightsector(f,add(128,f),l)
       , f, add(128,f)
@@ -414,7 +424,7 @@ _slimechoke(f,l) {
   !slimechoke
   movestep(0,32)
   mid("METAL") top("METAL") bot("METAL")
-  water(
+  swater(
       box(f,add(72,f),l,32,sub(256,64)),
       f, add(72, f)
   )
@@ -427,7 +437,6 @@ _slimechoke(f,l) {
 }
 
 -- slimebarcurve: just bars with curves after out of sight
--- XXX: floor/ceil needs parameterizing
 slimefade { _slimefade(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
 _slimefade(f,c,l) {
   set("slimefade",0)
@@ -455,7 +464,7 @@ slime_downpipe {
   xoff(0)
 
   -- draw the outside of the pipe first
-  water(
+  swater(
     quad(curve(64, 64, 8, 1)) innerrightsector(0, 64, oget(get("slime"), "light")),
     0, 64
   )
@@ -491,7 +500,7 @@ slimequad(o,e,w) { _slimequad(e,w,
   oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
 }
 _slimequad(east,west,f,c,l) {
-  water(
+  swater(
     -- XXX: quad(...) fails; moving rotright before rightsector fails.
     triple( straight(32) straight(192) straight(32) rotright)
     straight(32) straight(192) straight(32)
@@ -510,7 +519,7 @@ _slimetrap(f,c,l) {
   slimeopening(512)
   ^slimetrap
   movestep(48,72)
-  water(
+  swater(
     linetype(109,$slimetrap)
     ibox(f,c,l,112,112),
     f,c
