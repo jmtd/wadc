@@ -1079,7 +1079,7 @@ class WadRun {
         int st = stacktrace.size()-10;
         if(st<0) st = 0;
         for(int i = stacktrace.size()-1; i>=st; i--) {
-          s += ((String)stacktrace.elementAt(i))+" ";
+          s += ((String)stacktrace.elementAt(i))+"\n";
         };
         wp.mf.msg(s);
       };
