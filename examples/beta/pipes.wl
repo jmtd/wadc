@@ -17,7 +17,7 @@ slimetype(x,tag) {
 slimemain(x) { slimetype(x,$slime1) }
 
 -- normal corridor
-slimecorridor(y) { _slimecorridor(y, get("slimefloor"), get("slimeceil"), get("slimelight")) }
+slimecorridor(y) { _slimecorridor(y, oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
 _slimecorridor(y,f,c,l) {
 
   water(
@@ -36,7 +36,7 @@ _slimecorridor(y,f,c,l) {
 -- corridor with exit ramps
 -- XXX: we rely on the last sector drawn here being the main floor
 -- XXX: move the choke stuff out of here
-slimeopening(y) { _slimeopening(y,get("slimefloor"),get("slimelight")) }
+slimeopening(y) { _slimeopening(y,oget(get("slime"), "floor"),oget(get("slime"), "light")) }
 _slimeopening(y,f,l) {
 
   slimechoke
@@ -79,7 +79,7 @@ _slimeopening(y,f,l) {
 }
 
 -- a curve to the right
-slimecurve_r { _slimecurve_r(get("slimefloor"), get("slimeceil"), get("slimelight")) }
+slimecurve_r { _slimecurve_r(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
 _slimecurve_r(f,c,l) {
   !omglol
   right(32) straight(192) straight(32)
@@ -117,7 +117,7 @@ _slimecurve_r(f,c,l) {
 }
 
 -- a curve to the left
-slimecurve_l { _slimecurve(get("slimefloor"), get("slimeceil"), get("slimelight")) }
+slimecurve_l { _slimecurve(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
 _slimecurve(f,c,l) {
   curve(128,mul(-1,128),32,1)
   rotright
@@ -162,9 +162,9 @@ _slimecurve(f,c,l) {
   movestep(0,-32)
 }
 
-slimebars(tag) { 
-  _slimebars(get("slimefloor"), get("slimeceil"),
-             get("slimelight"), tag)
+slimebars(tag) {
+  _slimebars(oget(get("slime"), "floor"), oget(get("slime"), "ceil"),
+             oget(get("slime"), "light"), tag)
 }
 _slimebars(f,c,l,tag) {
   slimecorridor(32)
@@ -187,9 +187,9 @@ _slimebars(f,c,l,tag) {
   ^slimebars
   sectortype(0,0)
 }
-slimeswitch(y,tag) { 
-  _slimeswitch(y,get("slimefloor"),add(128,get("slimefloor")),
-               get("slimelight"),tag)
+slimeswitch(y,tag) {
+  _slimeswitch(y, oget(get("slime"), "floor"), oget(get("slime"), "ceil"),
+               oget(get("slime"), "light"), tag)
 }
 _slimeswitch(y,f,c,l,tag) {
   slimecorridor(y)
@@ -233,36 +233,36 @@ nextstep(f,nf) {
     }
 }
 
-slimecut(y,nf) { _slimecut(y,nf,get("slimefloor"),get("slimelight")) }
-_slimecut(y,nf,f,l) {
+slimecut(y,nf) { _slimecut(y, nf, oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
+_slimecut(y,nf,f,c,l) {
   move(y) !slimecut rotright
 
   -- left-hand ledge/rail
   water(
-    box(add(32,f),add(96,f),l,32,y),
-    add(32,f), sub(get("slimeceil"),32)
+    box(add(32,f),sub(c,32),l,32,y),
+    add(32,f), sub(c,32)
   )
   move(32)
 
   -- normal corridor floor, but shorter
   water(
-    box(f,get("slimeceil"), l, 128, y),
-    f,get("slimeceil")
+    box(f,c, l, 128, y),
+    f,c
   )
   move(128)
 
   -- three steps down/up: two in corridor, one in ledge/rail
   water(
     set("slimecut_stepheight", nextstep(f,nf))
-    box(get("slimecut_stepheight"), get("slimeceil"),l,32,y) move(32)
+    box(get("slimecut_stepheight"), c, l, 32, y) move(32)
     set("slimecut_stepheight", nextstep(get("slimecut_stepheight"),nf))
-    box(get("slimecut_stepheight"), get("slimeceil"),l,32,y) move(32),
-    f, get("slimeceil")
+    box(get("slimecut_stepheight"), c, l, 32, y) move(32),
+    f, c
   )
   water(
     set("slimecut_stepheight", nextstep(get("slimecut_stepheight"),nf))
-    box(get("slimecut_stepheight"), sub(get("slimeceil"),32),l,32,y) move(32),
-    sub(f,72), sub(get("slimeceil"),32)
+    box(get("slimecut_stepheight"), c, l, 32, y) move(32),
+    sub(f,72), sub(c,32)
   )
   ^slimecut
 }
@@ -271,18 +271,21 @@ _slimecut(y,nf,f,l) {
  * slimesecret: puts a secret corridor on the side
  * secret corridor is 96 units lower than base
  */
+-- XXX get rid of these
 slimesecret_backup {
-    set("slimefloor", sub(get("slimefloor"), 96))
-    set("slimeceil", sub(get("slimeceil"), 96))
+    oset(get("slime"), "floor", sub(oget(get("slime"), "floor"), 96))
+    oset(get("slime"), "ceil", sub(oget(get("slime"), "ceil"), 96))
 }
+-- XXX get rid of these
 slimesecret_restore {
-    set("slimefloor", add(get("slimefloor"), 96))
-    set("slimeceil", add(get("slimeceil"), 96))
+    oset(get("slime"), "floor", add(oget(get("slime"), "floor"), 96))
+    oset(get("slime"), "ceil", add(oget(get("slime"), "ceil"), 96))
 }
 slimesecret(y,whatever) {
-  _slimesecret(y,get("slimefloor"),get("slimelight"),whatever)
+  _slimesecret(y, oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"), whatever)
 }
-_slimesecret(y,f,l,whatever) {
+-- XXX: take 2 objects, main and secret settings
+_slimesecret(y,f,c,l,whatever) {
   slimecut(64,sub(f,96)) -- tunnel will be -96
   !slimesecret_orig
   slimesecret_backup
@@ -292,8 +295,8 @@ _slimesecret(y,f,l,whatever) {
   water(
       unpegged straight(64) unpegged
       right(128) right(64) right(128)
-      rightsector(f, get("slimeceil"), l),
-      f, sub(get("slimeceil"), 8)
+      rightsector(f, c, l),
+      f, sub(c, 8)
   )
 
   rotleft
@@ -327,25 +330,26 @@ _slimesecret(y,f,l,whatever) {
  * TODO: parameterize the floor/ceiling heights
  *       into globals and use them for above fns
  */
-slimeinit(f,c,l) {
+slimeinit(o,f,c,l) {
   unpegged
   !slimeinit
 
-  set("slimefloor",f)
-  set("slimeceil", c) -- XXX very little uses this yet
-  set("slimelight",l)
+  oset(o,"floor",f)
+  oset(o,"ceil", c) -- XXX very little uses this yet
+  oset(o,"light",l)
+  set("slime", o)
 }
 
 -- XXX: we need a control sector helper
 slimeinit_once {
-  waterinit_fwater(add(24,get("slimefloor")))
+  waterinit_fwater(add(24,oget(get("slime"),"floor")))
 }
 
-slimesplit(left, centre, right) { 
-  _slimesplit(get("slimefloor"),get("slimelight"),
+slimesplit(left, centre, right) {
+  _slimesplit(oget(get("slime"), "floor"), oget(get("slime"), "light"),
               left, centre, right)
 }
-_slimesplit(f,l, left, centre, right) {
+_slimesplit( f,l, left, centre, right) {
   !slimesplitmarker
   right(32) straight(192) straight(32)
 
@@ -405,7 +409,7 @@ _slimesplit(f,l, left, centre, right) {
 }
 
 -- slimechoke: walls move in a bit
-slimechoke() { _slimechoke(get("slimefloor"),get("slimelight")) }
+slimechoke { _slimechoke(oget(get("slime"), "floor"), oget(get("slime"), "light")) }
 _slimechoke(f,l) {
   !slimechoke
   movestep(0,32)
@@ -424,7 +428,7 @@ _slimechoke(f,l) {
 
 -- slimebarcurve: just bars with curves after out of sight
 -- XXX: floor/ceil needs parameterizing
-slimefade() { _slimefade(get("slimefloor"), get("slimeceil"), get("slimelight")) }
+slimefade { _slimefade(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
 _slimefade(f,c,l) {
   set("slimefade",0)
   for(1,15,
@@ -452,7 +456,7 @@ slime_downpipe {
 
   -- draw the outside of the pipe first
   water(
-    quad(curve(64, 64, 8, 1)) innerrightsector(0, 64, get("slimelight")),
+    quad(curve(64, 64, 8, 1)) innerrightsector(0, 64, oget(get("slime"), "light")),
     0, 64
   )
 
@@ -483,8 +487,8 @@ slime_downpipe {
  *   s is assumed to be drawn prior to slimequad
  *   n is assumed to be handled after slimequad
  */
-slimequad(e,w) { _slimequad(e,w,
-  get("slimefloor"), get("slimeceil"), get("slimelight"))
+slimequad(o,e,w) { _slimequad(e,w,
+  oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
 }
 _slimequad(east,west,f,c,l) {
   water(
@@ -500,7 +504,7 @@ _slimequad(east,west,f,c,l) {
   ^slimequad movestep(256,0)
 }
 
-slimetrap { _slimetrap(get("slimefloor"), get("slimeceil"), get("slimelight")) }
+slimetrap { _slimetrap(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
 _slimetrap(f,c,l) {
   !slimetrap
   slimeopening(512)

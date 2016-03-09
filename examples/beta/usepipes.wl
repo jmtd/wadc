@@ -11,8 +11,13 @@
 #"pipes.wl"
 #"boring.wl"
 
+-- hack to avoid sprinkling get("slime1") all over _usepipes
 usepipes {
-  slimeinit(0, 128, 120)
+  set("slime1", onew)
+  _usepipes(get("slime1"))
+}
+_usepipes(o) {
+  slimeinit(o, 0, 128, 120)
 
   -- control sectors can extend from here
   pushpop(
@@ -98,16 +103,16 @@ usepipes {
   pushpop(movestep(-128,64) player1start thing)
   _slimequad(
     !east,
-    /*west*/ slimebars(0) slimefade _slimecurve_r(get("slimefloor"), get("slimeceil"), 0),
-    -256, get("slimeceil"),get("slimelight")
+    /*west*/ slimebars(0) slimefade slimecurve_r, -- XXX: slimecurve_r will be wrong brightness
+    -256, oget(o, "ceil"), oget(o, "light")
   )
-  /*north*/ slimebars(0) slimefade _slimecurve(get("slimefloor"), get("slimeceil"), 0)
+  /*north*/ slimebars(0) slimefade slimecurve_l -- XXX: slimecurve will be wrong brightness
 
   -- XXX: we need to handle multiple pipe types at onces, a la water
   -- this is hacky stuff in the meantime
-  slimeinit(-256, -128, 150)
+  slimeinit(o, -256, -128, 150)
   water_carriage_return ^water
-  waterinit_fwater(add(24,get("slimefloor")))
+  waterinit_fwater(add(24, oget(o, "floor")))
 
   ^east
   slimecorridor(128)
