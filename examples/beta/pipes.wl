@@ -341,7 +341,7 @@ _slimesecret(y,f,c,l,whatever) {
   !slimesecret
   slimecorridor(256)
   slimebars(0)
-  slimefade
+  slimefade(0)
 
   -- the treat
   ^slimesecret movestep(128,128) whatever
@@ -351,8 +351,7 @@ _slimesecret(y,f,c,l,whatever) {
   turnaround movestep(64,-256)
   slimecurve_l
   slimebars(0)
-  slimecurve_l
-  slimefade
+  slimefade(slimecurve_l)
 
   set("slime", get("slimebackup"))
   ^slimesecret_orig
@@ -439,20 +438,19 @@ _slimechoke(f,l) {
   move(32)
 }
 
--- slimebarcurve: just bars with curves after out of sight
-slimefade { _slimefade(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
-_slimefade(f,c,l) {
-  set("slimefade",0)
-  for(1,15,
-    _slimecorridor(16, f, c, sub(mul(8,15),mul(get("slimefade"),8)))
-    set("slimefade",add(1,get("slimefade")))
-  )
+-- slimefade: light level fade-off
+slimefade(after) {
+    set("slimefade", oget(get("slime"), "light"))
+    _slimefade(16)
+    after
+    oset(get("slime"), "light", get("slimefade"))
 }
-
-slimebarcurve(f,l) {
-  slimebars(0)
-  slimefade
-  twice( slimecurve_r )
+_slimefade(i) {
+    lessthaneq(i,0) ? 0 : {
+        oset(get("slime"), "light", sub(oget(get("slime"), "light"), 8))
+        slimecorridor(16)
+        _slimefade(sub(i,1))
+    }
 }
 
 -- WIP
@@ -533,6 +531,7 @@ _slimetrap(f,c,l) {
   movestep(add(512,32),0) -- past choke
   slimebars(0) -- tmp stuff
   slimecorridor(128) -- tmp stuff
+  slimefade(slimecurve_r)
 
   ^slimetrap
   movestep(64,-32) -- past choke

@@ -65,13 +65,12 @@ _usepipes(o) {
   impassable
   slimebars(0)
   slimesplit(
-    slimebarcurve(0,120),
+    slimefade( twice( slimecurve_r )),
 
     slime_downpipe,
 
     slimebars(0)
-    slimefade
-    twice( slimecurve_l )
+    slimefade( twice( slimecurve_l ))
   )
 
 
@@ -102,10 +101,10 @@ _usepipes(o) {
   pushpop(movestep(-128,64) player1start thing)
   _slimequad(
     !east,
-    /*west*/ slimebars(0) slimefade slimecurve_r, -- XXX: slimecurve_r will be wrong brightness
+    /*west*/ slimebars(0) slimefade(slimecurve_r),
     -256, oget(o, "ceil"), oget(o, "light")
   )
-  /*north*/ slimebars(0) slimefade slimecurve_l -- XXX: slimecurve will be wrong brightness
+  /*north*/ slimebars(0) slimefade(slimecurve_l)
 
   -- lower corridors
   water_carriage_return ^water
