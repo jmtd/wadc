@@ -319,7 +319,6 @@ _slimesecret(y,f,c,l,whatever) {
 
   slimecut(64,sub(f,96)) -- tunnel will be -96
   !slimesecret_orig
-  ^water
   slimeinit(get("slimesecret"), -96, 32, 120, 120, "NUKAGE1", "WATERMAP", 80)
   ^slimesecret_orig
 

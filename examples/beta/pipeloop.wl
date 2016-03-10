@@ -16,8 +16,9 @@ main { pipeloop }
 pipeloop {
 
     sewerinit
-    waterinit_fwater(-64)
+    controlinit
     movestep(-512,-512)
+    waterinit_fwater(-64)
 
     -- TODO: I write this a lot. Should I put it in standard.h?
     pushpop( movestep(128,128) thing )

@@ -15,9 +15,11 @@
 usepipes {
   !usepipes
   move(-64) rotright -- control sectors can extend from here
+  controlinit
+  ^usepipes
+
   set("slime1", onew)
   slimeinit(get("slime1"), 0, 128, 120, 24, "NUKAGE1", "WATERMAP", 80)
-  ^usepipes
   _usepipes(get("slime1"))
 }
 _usepipes(o) {
@@ -76,7 +78,7 @@ _usepipes(o) {
 
   impassable
   ^beginning_detail_left
-  water_carriage_return
+  control_carriage_return
 
   slimeopening(928) -- TODO: a less random figure
   slimeswitch(128,1)
@@ -86,7 +88,7 @@ _usepipes(o) {
 
   move(32)
   slimesecret(256,doublebarreled thing)
-  water_carriage_return
+  control_carriage_return
 
   slimecorridor(896)
   -- monsters for the upper corridor
@@ -107,7 +109,7 @@ _usepipes(o) {
   /*north*/ slimebars(0) slimefade(slimecurve_l)
 
   -- lower corridors
-  water_carriage_return ^water
+  control_carriage_return ^control
   set("slime2", onew)
   slimeinit(get("slime2"), -256, -128, 150, 24, "NUKAGE1", "WATERMAP", 80)
   ^east

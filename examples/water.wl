@@ -3,11 +3,13 @@
  */
 
 #"standard.h"
+#"control.h"
 #"water.h"
 
 main {
-    waterinit_fwater(-16)
+    controlinit
     movestep(0,64) -- out of the way of control sectors
+    waterinit_fwater(-16)
     pushpop(movestep(32,32) thing)
 
     -- a ramp of rooms, descending in floor and ceiling height
