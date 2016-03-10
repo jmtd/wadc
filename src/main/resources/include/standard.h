@@ -7,7 +7,7 @@
  * See file LICENSE.txt
  */
 
--- standard usefull functions
+-- standard useful functions
 
 turnaround { rotleft rotleft }
 
