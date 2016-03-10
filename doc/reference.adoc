@@ -295,27 +295,9 @@ in any program really.
 
 WadC's set of standard include files contain a wide range of useful
 language, doom & architectural macros that are very useful and speed
-up editing a lot. You should make sure to get familiar with them:
-
-standard.h::    very basic language & doom macros for very common
-                things. Many of the macros here are easier to use
-                then the builtin features they are based upon.
-
-decoration.h, +
-spawns.h, +
-pickups.h, +
-monsters.h::    constant definitions for all doom things
-zdoom.h::       things that rely on zdoom features, such as slopes
-                and sloped arches.
-basic.h::       a set of higher level architectural building blocks
-                based on some conventions of composing sectors. good
-                to work with for bigger maps. Contains common doom map
-                prefabs for things like starts, end of level, monster
-                teleporting and placement, and room segments.
-lisp.h::        Basic lisp-style lists.
-water.h::       Helper routines for using Boom sector transfer effect
-                (linedef type 242) for deep water.
-
+up editing a lot. You should make sure to get familiar with them.
+See <<standard-library,Standard Library>> for descriptions of them
+all.
 
 === The choice operator
 
@@ -789,18 +771,6 @@ than global variables.
 See lisp.wl for an example of how to use these functions to create an
 actual datatype, and a caveat on the usage of "onew".
 
-=== Pitfalls
-
-Here are some common things that can go wrong, and which can result in
-runtime errors:
-
-- if you get a "sidedef already assigned" error, and it is not obvious
-  why (the current sector looks fine), it may be the case that for a
-  previously constructed sector you accidentally made a sector out of
-  the whole outside of the level (by choosing the wrong side). WadC doesn't
-  detect wether something is inside or outside, and this will only show
-  up when defining an adjoining sector.
-
 === Custom textures
 
 
@@ -835,3 +805,48 @@ For now, The quickest way is to add
     iwad("c:\path\to\doom2.wad")
 
 into the currently open WadC file and run it.
+
+== Pitfalls
+
+Here are some common things that can go wrong, and which can result in
+runtime errors:
+
+- if you get a "sidedef already assigned" error, and it is not obvious
+  why (the current sector looks fine), it may be the case that for a
+  previously constructed sector you accidentally made a sector out of
+  the whole outside of the level (by choosing the wrong side). WadC doesn't
+  detect whether something is inside or outside, and this will only show
+  up when defining an adjoining sector.
+
+[[standard-library]]
+== Standard Library
+
+We really should document the standard library in this document. This is
+a work in progress. The best thing to do would be to read the comments in
+the `.h` files within link:../src/main/resources/include[src/main/resources/include]
+to see the finer detail.
+
+== Basic/generic
+
+standard.h::   very basic language & doom macros for very common
+               things. Many of the macros here are easier to use
+               then the builtin features they are based upon.
+basic.h::      a set of higher level architectural building blocks
+               based on some conventions of composing sectors. good
+               to work with for bigger maps. Contains common doom map
+               prefabs for things like starts, end of level, monster
+               teleporting and placement, and room segments.
+lisp.h::       lisp-style cons lists
+
+=== Doom-specific
+
+decoration.h:: macros for Doom decorations
+monsters.h::   macros for Doom monsters
+pickups.h::    macros for Doom pick-ups (weapons, ammo, power-ups)
+spawns.h::     macros for Doom player and deathmatch starts, and teleports
+
+=== Port/post-vanilla
+
+control.h::    control sector macros, for e.g. Boom special effects
+water.h::      macros for Boom-deep water special effects
+zdoom.h::      macros for Zdoom-specific special effects (slopes, mirrors)

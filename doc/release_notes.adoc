@@ -24,13 +24,24 @@ Not yet released.
  * The random seed is printed when you first execute a script. This
    means if something cool happens, you can make a note of the seed
    and reproduce it.
+ * Stack traces are now divided by newlines rather than space characters.
 
 === Example scripts
 
  * `logo.wl` - draws the letters "WadC".
- * The "pipes" stuff in examples/beta has had a lot of revising.
+ * The "pipes" stuff in examples/beta continues to evolve and drive
+   WadC development.
 
-=== Bug fixes
+==== Library additions
+
+ * `water.h` has been enhanced so that you can manage multiple water-effects
+   in the same map.
+
+===== New libraries
+
+`control.h`::  control sector management (broken out from `water.h`)
+
+==== Bug fixes
 
  * You can now use `popsector` more than once. This means you
    can have an inner sector within an inner sector within an
@@ -52,6 +63,8 @@ Not yet released.
       to make life easier.
   ** The program's version is now embedded as a property rather
       than being an auto-generated Java class.
+ * There's a very hacky, experimental regression test suite in
+   `tests/`.
 
 == 2.0
 
