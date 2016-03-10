@@ -309,24 +309,19 @@ _slimecut(y,nf,f,c,l) {
  * slimesecret: puts a secret corridor on the side
  * secret corridor is 96 units lower than base
  */
--- XXX get rid of these
-slimesecret_backup {
-    oset(get("slime"), "floor", sub(oget(get("slime"), "floor"), 96))
-    oset(get("slime"), "ceil", sub(oget(get("slime"), "ceil"), 96))
-}
--- XXX get rid of these
-slimesecret_restore {
-    oset(get("slime"), "floor", add(oget(get("slime"), "floor"), 96))
-    oset(get("slime"), "ceil", add(oget(get("slime"), "ceil"), 96))
-}
 slimesecret(y,whatever) {
   _slimesecret(y, oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"), whatever)
 }
--- XXX: take 2 objects, main and secret settings
 _slimesecret(y,f,c,l,whatever) {
+    -- new temporary slime object
+    set("slimesecret", onew)
+    set("slimebackup", get("slime"))
+
   slimecut(64,sub(f,96)) -- tunnel will be -96
   !slimesecret_orig
-  slimesecret_backup
+  ^water
+  slimeinit(get("slimesecret"), -96, 32, 120, 120, "NUKAGE1", "WATERMAP", 80)
+  ^slimesecret_orig
 
   -- joining tunnel
   movestep(-64,256)
@@ -359,7 +354,7 @@ _slimesecret(y,f,c,l,whatever) {
   slimecurve_l
   slimefade
 
-  slimesecret_restore
+  set("slime", get("slimebackup"))
   ^slimesecret_orig
 }
 
