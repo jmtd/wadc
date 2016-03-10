@@ -826,7 +826,7 @@ a work in progress. The best thing to do would be to read the comments in
 the `.h` files within link:../src/main/resources/include[src/main/resources/include]
 to see the finer detail.
 
-== Basic/generic
+=== Basic/generic
 
 standard.h::   very basic language & doom macros for very common
                things. Many of the macros here are easier to use
