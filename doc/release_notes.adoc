@@ -25,12 +25,24 @@ Not yet released.
    means if something cool happens, you can make a note of the seed
    and reproduce it.
  * Stack traces are now divided by newlines rather than space characters.
+ * It is now much more convenient to generate maps for the original Doom,
+   Heretic and Hexen, in addition to Doom II.
 
 === Example scripts
 
  * `logo.wl` - draws the letters "WadC".
  * The "pipes" stuff in examples/beta continues to evolve and drive
    WadC development.
+ * `doom_ex.wl`, `htic_ex.wl`, `hexen_ex.wl`: very simple test maps that
+    demonstrate Doom #1/Heretic/Hexen support
+
+=== Language features
+
+`hexenformat`:: forces the output map to be in Hexen format (suitable for
+                use with either Hexen or ZDoom)
+`mapname`::     sets the map name to be generated. The default is `MAP01`.
+                New libraries included in this release set sensible defaults
+                for other doom-engine games.
 
 ==== Library additions
 
@@ -40,6 +52,8 @@ Not yet released.
 ===== New libraries
 
 `control.h`::  control sector management (broken out from `water.h`)
+`doom.h`, `heretic.h`, `hexen.h`:: sensible defaults and thing definitions
+                                   for Doom (#1), Heretic and Hexen
 
 ==== Bug fixes
 

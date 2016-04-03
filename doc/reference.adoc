@@ -806,6 +806,31 @@ For now, The quickest way is to add
 
 into the currently open WadC file and run it.
 
+=== Map type output
+
+By default, WadC targets Doom II. Amongst other things, this means the
+output map is labelled `MAP01`. To change it, use
+
+    mapname("E1M1")
+
+The default output format is traditional Doom format, suitable for Doom,
+Doom II and Heretic. To switch to Hexen-format (also useful for Zdoom),
+use
+
+    hexenformat
+
+This will happen automatically if you use one of `linetypehexen` or
+`setthinghexen` as described earlier.
+
+If you you are working on a map for a game other than Doom II, you might
+find the libraries `doom.h`, `heretic.h` and `hexen.h` useful. They contain
+the following helper routines to set up sensible defaults for textures, flats
+and map format:
+
+    doomdefaults
+    hereticdefaults
+    hexendefaults
+
 == Pitfalls
 
 Here are some common things that can go wrong, and which can result in
@@ -844,6 +869,12 @@ decoration.h:: macros for Doom decorations
 monsters.h::   macros for Doom monsters
 pickups.h::    macros for Doom pick-ups (weapons, ammo, power-ups)
 spawns.h::     macros for Doom player and deathmatch starts, and teleports
+
+=== Other games
+
+doom.h::       Settings and defaults for Doom/Ultimate Doom
+heretic.h::    Settings and defaults for Heretic
+hexen.h::      Settings and defaults for Heretic
 
 === Port/post-vanilla
 

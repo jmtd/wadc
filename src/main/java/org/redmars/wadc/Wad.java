@@ -53,7 +53,8 @@ public class Wad {
       int wlsize = writewadcsource();
 
       long dpos = f.getFilePointer();
-      writedir("MAP01",0);
+
+      writedir(wr.mapname,0);
       writedir("THINGS",tsize);
       writedir("LINEDEFS",lsize);
       writedir("SIDEDEFS",dsize);
@@ -95,7 +96,7 @@ public class Wad {
   }
 
   void string(String s) throws IOException {
-    f.writeBytes(s);
+    f.writeBytes(s); // XXX: ensure s.length() <= 8?
     for(int i = 0;i<(8-s.length());i++) f.writeByte(0);
   }
 

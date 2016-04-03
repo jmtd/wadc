@@ -56,6 +56,7 @@ class WadRun {
   String textop = "BRICK7";
   String texbot = "BRICK7";
   String texmid = "BRICK7";
+  String mapname = "MAP01";
 
   int xoff = 0, yoff = 0;
   int lineflags = 0;
@@ -305,6 +306,11 @@ class WadRun {
       curthingarg[4] = f.ival();
       hexen = true;
       return n;
+    }});
+
+    builtin("hexenformat", 0, new Builtin() { Exp eval() {
+        hexen = true;
+        return n;
     }});
 
     builtin("sectortype", 2, new Builtin() { Exp eval(Exp a, Exp b) {
@@ -574,6 +580,10 @@ class WadRun {
       return new Int(wp.curtag++);
     }});
 
+    builtin("mapname", 1, new Builtin() { Exp eval(Exp a) {
+      mapname = a.sval();
+      return n;
+    }});
   }
 
   void builtin(String s, int nargs, Builtin b) {
