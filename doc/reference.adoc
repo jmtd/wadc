@@ -863,7 +863,16 @@ basic.h::      a set of higher level architectural building blocks
                teleporting and placement, and room segments.
 lisp.h::       lisp-style cons lists
 
-=== Doom-specific
+=== Thing definitions
+
+hereticthings.h:: Thing definitions for Heretic
+hexenthings.h::   Thing definitions for Hexen
+strifethings.h::  Thing definitions for Strife
+
+==== Doom-specific
+
+Note that Doom and Doom II things are not yet separated out. You will need
+to be careful if you are writing Doom #1 maps.
 
 decoration.h:: macros for Doom decorations
 monsters.h::   macros for Doom monsters
@@ -874,7 +883,8 @@ spawns.h::     macros for Doom player and deathmatch starts, and teleports
 
 doom.h::       Settings and defaults for Doom/Ultimate Doom
 heretic.h::    Settings and defaults for Heretic
-hexen.h::      Settings and defaults for Heretic
+hexen.h::      Settings and defaults for Hexen
+strife.h::     Settings and defaults for Strife
 
 === Port/post-vanilla
 
