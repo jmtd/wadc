@@ -323,7 +323,9 @@ public class WadParse {
     return null;
   }
 
-  void run() { wr.run(); };
+  void run() throws Error {
+      wr.run();
+  };
 
   void setTexture(String s, int w, int h) {
       Texture t = textures.get(s);

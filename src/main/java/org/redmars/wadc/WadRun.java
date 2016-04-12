@@ -1065,8 +1065,7 @@ class WadRun {
     renderxtraverts(g);
   }
 
-  void run() {
-    try {
+  void run() throws Error {
       Choice.setSeed((int)System.currentTimeMillis());
       wp.mf.msg("random seed set to " + Choice.seed);
       makevertex();
@@ -1081,19 +1080,6 @@ class WadRun {
         };
       };
       wp.mf.msg(vertices.size()+" vertices, "+lines.size()+" lines, "+sectors.size()+" sectors.");
-    } catch(Error e) {
-      wp.err = "eval: "+e.getMessage();
-      wp.mf.msg(wp.err);
-      if(stacktrace.size()>0) {
-        String s = "stacktrace: ";
-        int st = stacktrace.size()-10;
-        if(st<0) st = 0;
-        for(int i = stacktrace.size()-1; i>=st; i--) {
-          s += ((String)stacktrace.elementAt(i))+"\n";
-        };
-        wp.mf.msg(s);
-      };
-    };
   }
 
   void varerr(String s) { wp.error("variable "+s+" never set"); }

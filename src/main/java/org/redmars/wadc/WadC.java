@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 public class WadC extends Frame implements WadCMainFrame {
   TextArea textArea1 = new TextArea("",15,30);
@@ -279,7 +280,24 @@ public class WadC extends Frame implements WadCMainFrame {
       textArea1.setCaretPosition(wp.pos);
     } else {
       msg(__("parsed successfully, evaluating..."));
-      wp.run();
+
+      try {
+          wp.run();
+      } catch(Error err) {
+          wp.mf.msg("eval: "+err.getMessage());
+
+          Vector stacktrace = wp.wr.stacktrace;
+          if(stacktrace.size()>0) {
+            String s = "stacktrace: ";
+            int st = stacktrace.size()-10;
+            if(st<0) st = 0;
+            for(int i = stacktrace.size()-1; i>=st; i--) {
+              s += ((String)stacktrace.elementAt(i))+"\n";
+            }
+            wp.mf.msg(s);
+          }
+      }
+
       msg(__("done."));
       if(lastwp!=null && lastwp.wr.zoomed && (lastwp.wr.basescale<0.99f || lastwp.wr.basescale>1.01f)) {
         wp.wr.zoomed = true;
