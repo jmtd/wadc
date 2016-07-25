@@ -100,21 +100,28 @@ zwingedstatuenoskull            { setthing(9011) }
                table9           { setthing(8508) }
                table10          { setthing(8509) }
          teleportman            { setthing(14) }
-                  fw            { setthing(8010) }
-                  fw2           { setthing(123) }
-                  cw            { setthing(10) }
-                  cw2           { setthing(8009) }
-                  mw            { setthing(8040) }
-                  fw3           { setthing(12) }
-                  fw4           { setthing(13) }
-                  fw5           { setthing(16) }
-                  cw3           { setthing(18) }
-                  cw4           { setthing(19) }
-                  cw5           { setthing(20) }
-                  mw2           { setthing(21) }
-                  mw3           { setthing(22) }
-                  mw4           { setthing(23) }
-                  mw5           { setthing(53) }
+
+-- fighter weapons
+                  axe           { setthing(8010) }
+               hammer           { setthing(123) }
+             quietus1           { setthing(12) }
+             quietus2           { setthing(13) }
+             quietus3           { setthing(16) }
+
+-- cleric weapons
+         serpentstaff           { setthing(10) }
+            firestorm           { setthing(8009) }
+         wraithverge1           { setthing(18) }
+         wraithverge2           { setthing(19) }
+         wraithverge3           { setthing(20) }
+
+-- mage weapons
+          frostshards           { setthing(8040) }
+           arcofdeath           { setthing(21) }
+        bloodscourge1           { setthing(22) }
+        bloodscourge2           { setthing(23) }
+        bloodscourge3           { setthing(53) }
+
              centaur            { setthing(107) }
        centaurleader            { setthing(115) }
                demon            { setthing(31) }

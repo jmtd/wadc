@@ -25,7 +25,9 @@
           weredragon            { setthing(70) }
            sabreclaw            { setthing(90) }
            maulotaur            { setthing(9) }
+
             d_sparil            { setthing(7) }
+            bossspot            { setthing(56) }
 
 -- weapons
 
