@@ -156,9 +156,9 @@ zwingedstatuenoskull            { setthing(9011) }
                ettin            { setthing(10030) }
            firedemon            { setthing(10060) }
               iceguy            { setthing(8020) }
-             fighter            { setthing(10100) }
-              cleric            { setthing(10101) }
-                mage            { setthing(10102) }
-            sorcboss            { setthing(10080) }
+         evilfighter            { setthing(10100) }
+          evilcleric            { setthing(10101) }
+            evilmage            { setthing(10102) }
+          heresiarch            { setthing(10080) }
                korax            { setthing(10200) }
                  bat            { setthing(10225) }
