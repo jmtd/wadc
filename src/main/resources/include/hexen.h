@@ -10,6 +10,7 @@
 
 -- I might merge these two
 #"hexenthings.h"
+#"flags.h"
 
 /*
  * some suitable default values for flats etc.
@@ -21,4 +22,11 @@ hexendefaults {
     mid("CAVE02")
     bot("CAVE02")
     hexenformat
+
+    setflag(fighter)
+    setflag(cleric)
+    setflag(mage)
+    setflag(hexen_appears_sp)
+    setflag(hexen_appears_coop)
+    setflag(hexen_appears_dm)
 }

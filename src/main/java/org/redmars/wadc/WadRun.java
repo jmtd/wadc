@@ -27,9 +27,8 @@ class WadRun {
   ArrayDeque<Integer> sectorStack = new ArrayDeque<Integer>();
 
   int curthingtype = 1;
-  int skill = 7;
-  boolean deaf = false;
-  boolean friendly = false;
+  int thingflags = 7; // all skill levels
+
   int curlinetype = 0;
   int curlinetag = 0;
   int cursectortype = 0;
@@ -245,23 +244,27 @@ class WadRun {
       return n;
     }});
 
+    // to be moved into WadC standard.h or similar
     builtin("deaf", 0, new Builtin() { Exp eval() {
-      deaf = !deaf;
+      thingflags ^= 0x08;
       return n;
     }});
 
+    // to be moved into WadC standard.h or similar
     builtin("easy", 0, new Builtin() { Exp eval() {
-      skill = 7;
+      thingflags |= 7;
       return n;
     }});
 
+    // to be moved into WadC standard.h or similar
     builtin("hurtmeplenty", 0, new Builtin() { Exp eval() {
-      skill = 6;
+      thingflags = (6 | (thingflags & ~7));
       return n;
     }});
 
+    // to be moved into WadC standard.h or similar
     builtin("ultraviolence", 0, new Builtin() { Exp eval() {
-      skill = 4;
+      thingflags = (4 | (thingflags & ~7));
       return n;
     }});
 
@@ -275,9 +278,19 @@ class WadRun {
       return n;
     }});
 
+    // to be moved into WadC standard.h or similar
     builtin("friendly", 0, new Builtin() { Exp eval() {
-	  friendly = !friendly;
+      thingflags ^= 0x80;
       return n;
+    }});
+
+    // thing flags
+    builtin("setthingflags", 1, new Builtin() { Exp eval(Exp a) {
+        thingflags = a.ival();
+        return n;
+    }});
+    builtin("getthingflags", 0, new Builtin() { Exp eval() {
+        return new Int(thingflags);
     }});
 
     builtin("linetype", 2, new Builtin() { Exp eval(Exp a, Exp b) {
@@ -409,6 +422,18 @@ class WadRun {
     builtin("div", 2, new Builtin() { Exp eval(Exp a, Exp b) {
       if(b.ival()==0) wp.error("division by zero");
       return new Int(a.ival()/b.ival());
+    }});
+
+    builtin("and", 2, new Builtin() { Exp eval(Exp a, Exp b) {
+      return new Int(a.ival() & b.ival());
+    }});
+
+    builtin("not", 1, new Builtin() { Exp eval(Exp a) {
+      return new Int(~ a.ival());
+    }});
+
+    builtin("or", 2, new Builtin() { Exp eval(Exp a, Exp b) {
+      return new Int(a.ival() | b.ival());
     }});
 
     builtin("texture", 3, new Builtin() { Exp eval(Exp s, Exp w, Exp h) {
@@ -786,7 +811,7 @@ class WadRun {
     t.x = xp;
     t.y = yp;
     t.type = curthingtype;
-    t.opt = skill+(deaf?8:0)+(friendly?0x80:0);
+    t.opt = thingflags;
     t.idx = things.size();
     t.angle = (-orient+3)*90;
     for(int i = 0; i<5; i++) t.specialargs[i] = curthingarg[i];
