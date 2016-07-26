@@ -2,39 +2,130 @@
 Jonathan Dowland <jon@dow.land>
 :homepage: http://jmtd.net/wadc/
 
-first, basic thing
+This tutorial hopes to walk you through WadC. We start with the very basics
+and drawing some very simple, boring square rooms. By the end I hope we are
+generating some intricate dungeons in the style of an old board game I used
+to love called "Warhammer Quest", complete with some randomness to make the
+resulting map different every time you build it.
 
-box room, player start, how to move around w/o drawing a line
+== Set up
 
- main {
-     pushpop( movestep(32,32) thing)
-     box(128,128,0,128,128)
- }
+Make sure you have the WadC JAR somewhere and have Java installed. You need
+at least version 8. To test, try double-clicking on the JAR: If WadC appears,
+success! If not, you probably haven't got Java on properly.
 
-introduce user-defined functions for abstraction/reuse
+You will also need a Doom engine, a Doom IWAD (game data), and a nodes
+builder. Use your favourite, otherwise I recommend:
 
- boring {
-     box(128,128,0,128,128)
- }
- main {
-     pushpop(movestep(32,32) thing)
-     boring
- }
+Java JRE:: link:http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html[via Oracle]
+Engine:: link:https://www.chocolate-doom.org/wiki/index.php/Crispy_Doom#Download[Crispy Doom]
+IWAD:: link:https://www.gog.com/game/doom_ii_final_doom[Doom 2 via GOG.com]
+Node builder:: link:http://glbsp.sourceforge.net[glbsp]
 
-try repeating the use of the function:
+Put them all somewhere and let WadC know where they are by either editing
+`wadc.cfg` in any editor of your choice, or in WadC itself, or simply write
+something like the following into the open WadC window and Run the result
+(adjust the paths to reflect where you put the stuff):
 
- main {
-     pushpop(movestep(32,32) thing)
-     boring
-     boring
- }
+ doomexe("/Users/jon/git/crispy-doom/src/crispy-doom")
+ doomargs("-iwad /Users/jon/games/doom2.wad -warp 1 -file")
+ bspcmd("/Users/jon/Downloads/glbsp-2.24-source/glbsp")
+ iwad("/Users/jon/games/doom2/doom2.wad")
 
-didn't work: the second box is trying to overdraw on the first. Add a move:
+Evaluating the above updates WadC's in-memory configuration, which is saved
+out to `wadc.cfg` when you close the program.
 
- boring {
-     box(128,128,0,128,128)
-     move(128)
- }
+== Hello world
+
+The very first thing we will try is perhaps the simplest possible functional
+WadC level: a box with the player in it. Consider this the WadC equivalent of
+"Hello world":
+
+include::tutorial/1.wl[]
+
+The very first line tells WadC to include the library file "standard.h". If you
+have ever programmed in a mainstream language before, you may have seen things
+like this elsewhere, such as C's `#include` or `import` in Python, etc.
+
+We have defined a function called "main". This is the entry point into your
+WadC program. We call three functions within it: box, which draws a box room;
+movestep, which moves the "pen", and thing, which creates a thing wherever the
+cursor is.
+
+Try it out. You can probably figure out what the arguments to box and movestep
+are, especially if you run the resulting WAD.
+
+`box` and `movestep` are all defined within `standard.h`, by the way.
+
+== User-defined functions, pushpop
+
+Where do we go from here? Let's make a few tweaks to this boring level.
+
+include::tutorial/2.wl[]
+
+Here we've defined a second function called `boring`. We've moved the call to
+`box` into it, and we're now calling boring from within main.
+
+If you try building this, you will end up with exactly the same map as before.
+Not too exciting yet!
+
+What happens if we try calling `boring` twice?
+
+include::tutorial/3.wl[]
+
+It didn't work: the second box is trying to overdraw on the first. We can fix
+this by adding a `move`, to move the cursor onwards after the `box`:
+
+include::tutorial/4.wl[]
+
+Et voila, two boring rooms instead of one! However, where is the player start?
+It's a bit weird to be putting the player start in last. Instead, let's place
+it first
+
+include::tutorial/5.wl[]
+
+The player is now stuck in the corner of the first room. We're moving the
+cursor, placing the player, but then drawing onwards from that same point. We
+need to temporarily move into the space the room will occupy, place the player,
+and move back.
+
+include::tutorial/6.wl[]
+
+Great, that works. This is something that has to be done so frequently,
+there's a function in `standard.h` to help you do it:
+
+include::tutorial/7.wl[]
+
+If you've ever programmed in a C or C-like language, this may look a bit
+strange to you. What argument are we passing `pushpop`? Where did the second
+`movestep` go? This demonstrates two things
+
+ * After it has been evaluated, `pushpop` returns the cursor to the position
+   it was in when it started. So the second `movestep` isn't necessary. We
+   could move the cursor wherever we liked and it would be back at the
+   beginning after `pushpop` was done.
+
+ * Any function argument in WadC can contain multiple expressions. Any sequence
+   of expressions next to each other are concatenated into one.
+
+== Things to do
+
+Let's liven up the box a bit: let's double its size, put a pedestal in the
+middle and add something to do (or shoot).
+
+include::tutorial/8.wl[]
+
+Increasing the size is easy, that's just changing the last two numerical
+arguments to `box`. We introduce a new function `ibox`, which works just
+like `box`, except it creates an _inner_ box.
+
+We see `thing` again, but this time preceded by `formerhuman`. The first
+time we used `thing`, a player 1 start was created: that's the default
+thing if nothing else is specified. `formerhuman` changes the thing type
+to a zombieman.
+
+
+== Now for a corridor
 
 Let's try another routine. bear in mind starting location is bottom-left corner
 
