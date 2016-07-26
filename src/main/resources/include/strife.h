@@ -10,6 +10,14 @@
 
 -- I might merge these two
 #"strifethings.h"
+#"thingflags.h"
+
+/* thingflags */
+stands_still        { 8 }
+strife_ambush       { 32 }
+strife_friendly     { 64 }
+translucent         { 256 } /* 25% translucent */
+invisible           { 512 } /* or 75% translucent if on with above */
 
 /*
  * some suitable default values for flats etc.

@@ -5,9 +5,12 @@
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
+ *
+ * standard useful functions
+ * Nearly every WadC program will need these
  */
 
--- standard useful functions
+#"thingflags.h"
 
 turnaround { rotleft rotleft }
 

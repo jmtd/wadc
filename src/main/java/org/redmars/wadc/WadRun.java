@@ -244,30 +244,6 @@ class WadRun {
       return n;
     }});
 
-    // to be moved into WadC standard.h or similar
-    builtin("deaf", 0, new Builtin() { Exp eval() {
-      thingflags ^= 0x08;
-      return n;
-    }});
-
-    // to be moved into WadC standard.h or similar
-    builtin("easy", 0, new Builtin() { Exp eval() {
-      thingflags |= 7;
-      return n;
-    }});
-
-    // to be moved into WadC standard.h or similar
-    builtin("hurtmeplenty", 0, new Builtin() { Exp eval() {
-      thingflags = (6 | (thingflags & ~7));
-      return n;
-    }});
-
-    // to be moved into WadC standard.h or similar
-    builtin("ultraviolence", 0, new Builtin() { Exp eval() {
-      thingflags = (4 | (thingflags & ~7));
-      return n;
-    }});
-
     builtin("thing", 0, new Builtin() { Exp eval() {
       makething();
       return n;
@@ -275,12 +251,6 @@ class WadRun {
 
     builtin("setthing", 1, new Builtin() { Exp eval(Exp a) {
       curthingtype = a.ival();
-      return n;
-    }});
-
-    // to be moved into WadC standard.h or similar
-    builtin("friendly", 0, new Builtin() { Exp eval() {
-      thingflags ^= 0x80;
       return n;
     }});
 

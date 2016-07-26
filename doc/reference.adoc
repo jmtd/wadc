@@ -175,6 +175,14 @@ sin takes an argument in degrees (not radians) *10, i.e. 90 degrees is 900. It
 returns the 1.0 to -1.0 range as 1024 to -1024. asin performs the inverse
 transformation over the same ranges.
 
+=== Bitwise operators
+
+Three bitwise operators are provided. These are mostly useful for setting flags:
+
+    and(a,b) or(c,d) not(e)
+
+equivalent to A · B, C + D, ¬E.
+
 === If Then Else
 
 is an expression of the form "exp ? exp : exp" as in C/Java. For example
@@ -437,11 +445,12 @@ thing being added by using
 where type you have to take from uds.txt, or better still use
 monsters.h / pickups.h / decoration.h / spawns.h include files instead.
 
-	friendly
+    setthingflags(flags)
+    getthingflags
 
-toggles the 'friendly' flag of monsters. Friendly monsters are a
-http://doomwiki.org/wiki/Friendly_monster#MBF[MBF feature]. 'friendly' defaults
-to off.
+Fetch or adjust the flags used for creating new things. Useful in conjunction
+with the bitwise operators. See the `thingtypes.h` library for useful
+definitions.
 
 	linetype(type,tag)
 
@@ -546,17 +555,6 @@ value with together with forcesector, to add sides to a sector which is not
 spacially adjoining it. forcesector will force the next makesector command
 to add sidedefs to the sector specified instead of creating a new one. The
 properties specified in the makesector command (floor level etc) are ignored.
-
-    deaf
-
-any following monsters will be deaf. Calling it again switches it off again.
-
-    easy
-    hurtmeplenty
-    ultraviolence
-
-any following monsters (calls to "thing") are available only from the said skill
-and upwards
 
     popsector
 
@@ -878,6 +876,37 @@ decoration.h:: macros for Doom decorations
 monsters.h::   macros for Doom monsters
 pickups.h::    macros for Doom pick-ups (weapons, ammo, power-ups)
 spawns.h::     macros for Doom player and deathmatch starts, and teleports
+
+=== Thing flags
+
+`thingflags.h` contains definitions for thing flags common to all four games
+(as well as Boom and MBF additions) and some routines to manipulate them. Some
+of these routines were built-in commands in earlier versions of WadC:
+
+    deaf
+
+toggles the 'ambush' flag. Any following monsters will be in 'ambush' mode.
+Calling it again switches it off again.
+
+    easy
+    hurtmeplenty
+    ultraviolence
+
+any following things are available only from the said skill and upwards
+
+    friendly
+
+toggles the 'friendly' flag of monsters. Friendly monsters are a
+http://doomwiki.org/wiki/Friendly_monster#MBF[MBF feature] and will require
+an MBF-supporting port to work. It will not work for Hexen.
+'friendly' defaults to off.
+
+    setflag(x)
+    clearflag(x)
+
+Sets or clears the given flag value, e.g. `setflag(multiplayer)`
+
+
 
 === Other games
 

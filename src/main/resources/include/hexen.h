@@ -10,7 +10,17 @@
 
 -- I might merge these two
 #"hexenthings.h"
-#"flags.h"
+#"thingflags.h"
+
+/* hexen thing flags */
+
+dormant             { 16 }
+fighter             { 32 }
+cleric              { 64 }
+mage                { 128 }
+hexen_appears_sp    { 256 }
+hexen_appears_coop  { 512 }
+hexen_appears_dm    { 1024 }
 
 /*
  * some suitable default values for flats etc.

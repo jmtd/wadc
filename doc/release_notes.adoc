@@ -43,17 +43,25 @@ Not yet released.
 `mapname`::     sets the map name to be generated. The default is `MAP01`.
                 New libraries included in this release set sensible defaults
                 for other doom-engine games.
+`and`, `or`, `not`:: bitwise operators
+`setthingflags`, `getthingflags`:: get and set the flags used for new things
 
-==== Library additions
+==== Library additions/deletions
 
  * `water.h` has been enhanced so that you can manage multiple water-effects
    in the same map.
+ * Some built-ins have been removed from the language and converted into
+   WadC library routines: `deaf`, `easy`, `hurtmeplenty`, `ultraviolence`
+   and `friendly` (see `thingflags.h`)
 
 ===== New libraries
 
 `control.h`::  control sector management (broken out from `water.h`)
 `doom.h`, `heretic.h`, `hexen.h`, `strife.h`:: sensible defaults and
        thing definitions for Doom (#1), Heretic, Hexen and Strife
+`thingflags.h`:: Definitions for common flag values for all four games
+                 as well as implementations of `deaf`, `easy`,
+                 `hurtmeplenty`, `ultraviolence` and `friendly`.
 
 ==== Bug fixes
 
