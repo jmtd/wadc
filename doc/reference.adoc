@@ -175,13 +175,19 @@ sin takes an argument in degrees (not radians) *10, i.e. 90 degrees is 900. It
 returns the 1.0 to -1.0 range as 1024 to -1024. asin performs the inverse
 transformation over the same ranges.
 
-=== Bitwise operators
+=== Bitwise expressions
 
 Three bitwise operators are provided. These are mostly useful for setting flags:
 
     and(a,b) or(c,d) not(e)
 
 equivalent to A · B, C + D, ¬E.
+
+=== String expressions
+
+    cat(a,b)
+
+Just one: `cat` concatenates two expressions into one string.
 
 === If Then Else
 
@@ -787,6 +793,9 @@ offsets of the patch inside the texture.
 
 You can switch between texture definitions and back by calling `texture`
 with the same name again.
+
+Hint: you can generate patch names using `cat`; see the file "llevels.wl"
+in the WadC examples directory.
 
 If you define at least one texture, the output WAD will contain the
 definitions in a `TEXTURE2` lump.
