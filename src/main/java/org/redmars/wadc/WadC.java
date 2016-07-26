@@ -319,7 +319,8 @@ public class WadC extends Frame implements WadCMainFrame {
     } else {
       save(e);
       wadfile = prefs.basename.substring(0,prefs.basename.lastIndexOf('.'))+".wad";
-      new Wad(lastwp,this,wadfile);
+      Wad wad = new Wad(lastwp,this,wadfile,true);
+      wad.run();
     };
     return wadfile;
   }

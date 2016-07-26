@@ -21,13 +21,32 @@ import java.util.Vector;
 
 public class WadCCLI implements WadCMainFrame {
 
+    public static void usage() {
+        System.err.println("usage: WadCCLI <infile>");
+        System.exit(1);
+    }
+
     public static void main(String [] args) {
 
+        String infile = "";
+        boolean writesrc = true;
+
         if (args.length < 1) {
-            System.err.println("usage: WadCCLI <infile>");
-            System.exit(1);
+            usage();
+
+        // presently undocumented hack
+        } else if(args.length == 2) {
+            if(!"-nosrc".equals(args[0])) {
+                usage();
+            }
+            writesrc = false;
+            infile = args[1];
+
+        } else {
+            infile = args[0];
         }
-        WadCCLI w = new WadCCLI(args[0]);
+
+        WadCCLI w = new WadCCLI(infile, writesrc);
     }
 
     // XXX: copied verbatim from MainFrame. should be a static interface method?
@@ -61,6 +80,7 @@ public class WadCCLI implements WadCMainFrame {
       return "";
     }
 
+    // XXX: rename, we have a private getText method below!
     String getText(final String name) {
         if(name==null) return "";
         this.prefs.basename = (new File(name)).toString();
@@ -68,7 +88,7 @@ public class WadCCLI implements WadCMainFrame {
     }
 
     /* do the magic */
-    public WadCCLI(final String infile) {
+    public WadCCLI(final String infile, boolean writesrc) {
         String wadfile;
         read_in_prefs();
         WadParse wp = new WadParse(getText(infile), this);
@@ -77,7 +97,8 @@ public class WadCCLI implements WadCMainFrame {
             wadfile = prefs.basename.substring(0,prefs.basename.lastIndexOf('.'))+".wad";
             // XXX: we haven't initialised the prefs properly, so this will fail if
             // if it needs doom2.wad.
-            new Wad(wp,this,wadfile);
+            Wad wad = new Wad(wp,this,wadfile,writesrc);
+            wad.run();
 
         } catch(Error e) {
             System.err.println("eval: "+e.getMessage());
@@ -96,9 +117,14 @@ public class WadCCLI implements WadCMainFrame {
         }
     }
 
+    // XXX: consider appending the output of this to the WADCSRC lump too.
+    // why? to capture the initial random seed, for when one wasn't specified.
     public void msg(String m) {
         System.out.println(m);
     }
+    // XXX: this means that when using WadCCLI the WadC source is not written intp
+    // the PWAD. Having said that, neither is "--" so I'm not sure what's going on
+    // here.
     public String getText() {
         return "--";
     }

@@ -21,11 +21,18 @@ public class Wad {
   boolean linewarn = true;
   Hashtable<String, Integer> pnames= new Hashtable<String, Integer>();
   boolean write_pnames = false;
+  boolean write_source = true;
+  String filename;
 
-  Wad(WadParse w, WadCMainFrame m, String filename) {
+  Wad(WadParse w, WadCMainFrame m, String fn, boolean write_wadsrc) {
     wp = w;
     wr = w.wr;
     mf = m;
+    write_source = write_wadsrc;
+    filename = fn;
+  }
+
+  public void run() {
     mf.msg("writing wad to "+filename);
     try {
 
@@ -34,9 +41,10 @@ public class Wad {
         findNewPatches();
       }
 
-      int numentries = wr.hexen ? 8 : 7;
-      if(!w.textures.isEmpty()) numentries++;
+      int numentries = wr.hexen ? 7 : 6;
+      if(!wp.textures.isEmpty()) numentries++;
       if(write_pnames) numentries++;
+      if(write_source) numentries++;
 
       f = new RandomAccessFile(filename,"rw");
       f.writeBytes("PWAD");
@@ -50,7 +58,8 @@ public class Wad {
       int bsize = writebehaviour();
       int texsize = writetextures();
       int psize = writepnames();
-      int wlsize = writewadcsource();
+      int wlsize = 0;
+      if(write_source) wlsize = writewadcsource();
 
       long dpos = f.getFilePointer();
 
@@ -61,9 +70,9 @@ public class Wad {
       writedir("VERTEXES",vsize);
       writedir("SECTORS",ssize);
       if(wr.hexen) writedir("BEHAVIOR", bsize);
-      if(!w.textures.isEmpty()) writedir("TEXTURE2", texsize);
+      if(!wp.textures.isEmpty()) writedir("TEXTURE2", texsize);
       if(write_pnames) writedir("PNAMES", psize);
-      writedir("WADCSRC", wlsize);
+      if(write_source) writedir("WADCSRC", wlsize);
 
       f.seek(8);
       writeInt((int)dpos);
