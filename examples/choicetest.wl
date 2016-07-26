@@ -3,6 +3,7 @@
 -- random hallway, press ctrl-R multiple times
 
 main {
+  seed (1337)
   thing
   movestep(-32,-32)
   for(1,32,room2)      
