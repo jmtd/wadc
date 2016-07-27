@@ -117,10 +117,10 @@ zwingedstatuenoskull            { setthing(9011) }
 
 -- mage weapons
           frostshards           { setthing(8040) }
-           arcofdeath           { setthing(21) }
+           arcofdeath           { setthing(53) }
         bloodscourge1           { setthing(22) }
         bloodscourge2           { setthing(23) }
-        bloodscourge3           { setthing(53) }
+        bloodscourge3           { setthing(21) }
 
              centaur            { setthing(107) }
        centaurleader            { setthing(115) }
