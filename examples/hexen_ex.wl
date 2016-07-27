@@ -11,11 +11,41 @@
 #"hexen.h"
 #"standard.h"
 
+thingstep(x) {
+      movestep(64,0)
+      x thing
+}
+
 main {
     hexendefaults
     pushpop(
       movestep(64,64)
       thing
+
+      clearflag(or(cleric,mage))
+      thingstep(quietus1)
+      thingstep(quietus2)
+      thingstep(quietus3)
+
+      setflag(cleric)
+      clearflag(or(fighter,mage))
+      thingstep(wraithverge1)
+      thingstep(wraithverge2)
+      thingstep(wraithverge3)
+
+      setflag(mage)
+      clearflag(or(fighter,cleric))
+      thingstep(bloodscourge1)
+      thingstep(bloodscourge2)
+      thingstep(bloodscourge3)
+
     )
-    box(0,128,160,512,512)
+    box(0,256,160,1024,1024)
+
+    setflag(or(cleric,fighter))
+    pushpop(
+        movestep(512,512)
+        iceguy
+        for(1,5, thing movestep(0,64))
+    )
 }
