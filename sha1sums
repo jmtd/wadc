@@ -3,8 +3,11 @@ ff6fbb1c7df2e49d55b1cb68a1224fdb31a4f134 *examples/archtest.wad
 17bee025cd24442fc2370a48c87dbd6637665232 *examples/choicetest.wad
 23578fc56328c433b4f2d74f104b9f6acc29afb6 *examples/choz.wad
 5336d1329661b640b96bce22065d763f58fdcff4 *examples/curvetest.wad
+643b46d3e824a8f5a369a5f939c3f203f8058c8b *examples/doom_ex.wad
 506fc6963789e0fdafaf2d7638c57b8e05a7c7b1 *examples/entryway.wad
 0915789284e329fc57019df7793b236a22098a3e *examples/hexagon.wad
+1a9a0e84b489fc14c410bab601ba732a7934e709 *examples/hexen_ex.wad
+fa2ebdab91a336eaee0b054afb68c513400ef669 *examples/htic_ex.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *examples/lisp.wad
 88a5975d23034f5d643936a8efd76cbb20cac469 *examples/llevels.wad
 cc1e8fced0262e55da6b1ed33dbe98b5cf37a40c *examples/logo.wad
@@ -17,6 +20,5 @@ cc58f0999320d40fccd5c9f1b547f59666d24324 *examples/pipes.wad
 689f8997d8bdc945c06d12ac94e1eca7c825cf19 *examples/triangle.wad
 97e0f15c5b03c1773acc48d38e06602211d3ce5a *examples/tulip.wad
 c50e5401a86541097ee111bbe3d90ca5fd078f87 *examples/water.wad
-663568da5e2008b6af01315167c18d6d3228fbe6 *tests/1.2_features.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/randcheck.wad
-199718525ebf220eac28cb50fb419afde24ca018 *tests/skills.wad
+5dd3d3bf64b55d5b324bfdb0e148dfd64d0f3c7b *tests/skills.wad
