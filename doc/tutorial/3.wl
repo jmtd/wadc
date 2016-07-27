@@ -1,6 +1,6 @@
 #"standard.h"
 boring {
-    box(0,128,160,128,128)
+    box(0,128,160,256,256)
 }
 main {
     boring

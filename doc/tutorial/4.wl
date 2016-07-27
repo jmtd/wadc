@@ -1,8 +1,8 @@
 #"standard.h"
 
 boring {
-    box(0,128,160,128,128)
-    move(128)
+    box(0,128,160,256,256)
+    move(256)
 }
 
 main {

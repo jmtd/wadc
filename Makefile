@@ -26,4 +26,8 @@ sha1sums: $(WADS)
 clean:
 	rm -f $(WADS)
 
-.PHONY: default clean check wads
+# helpers for the tutorial
+TUTORIALWADS := $(patsubst %.wl,%.wad, $(wildcard doc/tutorial/*.wl))
+tutorial: $(TUTORIALWADS)
+
+.PHONY: default clean check wads tutorial
