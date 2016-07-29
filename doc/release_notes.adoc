@@ -45,6 +45,7 @@ Not yet released.
                 for other doom-engine games.
 `and`, `or`, `not`:: bitwise operators
 `setthingflags`, `getthingflags`:: get and set the flags used for new things
+`thingangle`:: create a thing with a supplied angle value
 
 ==== Library additions/deletions
 
@@ -53,6 +54,9 @@ Not yet released.
  * Some built-ins have been removed from the language and converted into
    WadC library routines: `deaf`, `easy`, `hurtmeplenty`, `ultraviolence`
    and `friendly` (see `thingflags.h`)
+ * Angle constants have been added to `standard.h`: `angle_east`, `angle_ne`,
+   `angle_north`, `angle_nw`, `angle_west`, `angle_sw`, `angle_south` and
+   `angle_se`.
 
 ===== New libraries
 

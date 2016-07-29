@@ -88,3 +88,14 @@ erightdent(r,s) { eright(r) left(s) eleft(r) rotright }
 eleftdent(l,s) { eleft(l) right(s) eright(l) rotleft }
 rightdent(r,s) { right(r) left(s) left(r) rotright }
 leftdent(l,s) { left(l) right(s) right(l) rotleft }
+
+-- angle constants for use with thingangle(x)
+
+angle_west  { 0 }
+angle_sw    { 45 }
+angle_south { 90 }
+angle_se    { 135 }
+angle_east  { 180 }
+angle_ne    { 225 }
+angle_north { 270 }
+angle_nw    { 315 }
