@@ -8,6 +8,10 @@
  * hexenthings.h - thing IDs for Hexen (needs work)
  */
 
+          polyanchor            { setthing(3000) }
+          polynormal            { setthing(3001) }
+          polycrush             { setthing(3002) }
+
              mapspot            { setthing(9001) }
       mapspotgravity            { setthing(9013) }
                flame            { setthing(10500) }
