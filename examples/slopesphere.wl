@@ -29,7 +29,7 @@ slopedarc_8(x, y, y2, off, n, h, cur, floor, ceil, light) {
       linetypehexen(181, 1, 1, 0, 0 ,0)
       rotright
       step(sub(x,y2),sub(off,2))
-      linetypehexen(0,0,0,0,0,0)
+      linetype(0,0)
       unpeg(right(y))
       rightsector(sub(floor, delta(cur, n, h)), add(ceil, delta(cur, n, h)), light)
       rotright
@@ -45,7 +45,7 @@ slopedarc_8b(x, y, y2, off, n, h, cur, floor, ceil, light) {
       linetypehexen(181, 1, 1, 0, 0 ,0)
       rotright
       step(sub(x,y2),sub(0,sub(off,2)))
-      linetypehexen(0,0,0,0,0,0)
+      linetype(0,0)
       unpeg(eright(y2))
       rightsector(sub(floor, delta(cur, n, h)), add(ceil, delta(cur, n, h)), light)
       rotright
