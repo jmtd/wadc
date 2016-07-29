@@ -274,8 +274,12 @@ class WadRun {
     }});
 
     builtin("linetype", 2, new Builtin() { Exp eval(Exp a, Exp b) {
+      int i;
       curlinetype = a.ival();
       curlinetag = b.ival();
+      for(i = 0; i < 5; ++i) {
+          curlinearg[0] = 0;
+      }
       return n;
     }});
 
