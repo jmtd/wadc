@@ -9,8 +9,8 @@
 
 -- some zdoom specific macros
 
-sloped(f,c,x) { linetypehexen(181, f, c, 0, 0, 0) x linetype(0,0,0,0,0,0) }
-mirror(x)     { linetypehexen(182, 0, 0, 0, 0, 0) x linetype(0,0,0,0,0,0) }
+sloped(f,c,x) { linetypehexen(181, f, c, 0, 0, 0) x linetype(0,0) }
+mirror(x)     { linetypehexen(182, 0, 0, 0, 0, 0) x linetype(0,0) }
 
 -- arches! weeee!
 
