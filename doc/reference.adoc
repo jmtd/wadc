@@ -443,7 +443,8 @@ to the current one (rather than inside it).
     thing
 
 Creates a thing of the current thingtype, with the current vertex
-as position (default is playerstart). You can change the type of
+as position (default is playerstart) and the current orientation as
+the things facing angle. You can change the type of
 thing being added by using
 
 	setthing(type)
@@ -451,12 +452,31 @@ thing being added by using
 where type you have to take from uds.txt, or better still use
 monsters.h / pickups.h / decoration.h / spawns.h include files instead.
 
+If you need to fine-tune the angle that the thing is created facing,
+use
+
+    thingangle(angle)
+    angle_east
+    angle_ne
+    angle_north
+    angle_nw
+    angle_west
+    angle_sw
+    angle_south
+    angle_se
+
+The angle value is a 32 bit integer value as used by the Doom engine.
+(See link:http://doomwiki.org/wiki/Angle[The Doom Wiki] for more information).
+The constants `angle_east`, etc are defined in `standard.h` for your
+convenience.
+
+To fetch or adjust the flags used for creating new things, use
+
     setthingflags(flags)
     getthingflags
 
-Fetch or adjust the flags used for creating new things. Useful in conjunction
-with the bitwise operators. See the `thingtypes.h` library for useful
-definitions.
+Useful in conjunction with the bitwise operators. See the `thingtypes.h`
+library for useful definitions.
 
 	linetype(type,tag)
 
