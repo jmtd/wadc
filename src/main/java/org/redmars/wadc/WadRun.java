@@ -273,7 +273,7 @@ class WadRun {
       curlinetype = a.ival();
       curlinetag = b.ival();
       for(i = 0; i < 5; ++i) {
-          curlinearg[0] = 0;
+          curlinearg[i] = 0;
       }
       return n;
     }});
