@@ -281,7 +281,7 @@ class WadRun {
 
     builtin("linetypehexen", 6, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f) {
       curlinetype = a.ival();
-      curlinetag = b.ival();
+      curlinearg[0] = b.ival();
       curlinearg[1] = c.ival();
       curlinearg[2] = d.ival();
       curlinearg[3] = e.ival();
@@ -685,6 +685,7 @@ class WadRun {
 
   void makeline_really(Vertex from, Vertex to) {
     Line l = makeline_minimal(from,to);
+    // XXX: use Line.copyattrs?
     lastline = l;
     l.t = textop;
     l.m = texmid;

@@ -165,8 +165,7 @@ public class Wad {
           writeShort(a.tag); // trigger
         } else {
           writeByte(a.type);
-          writeByte(a.tag);
-          for(int j = 1; j<5; j++) writeByte(a.specialargs[j]);
+          for(int j = 0; j<5; j++) writeByte(a.specialargs[j]);
         };
         writeShort(a.left.idx);
         writeShort(a.right==null?-1:a.right.idx);
