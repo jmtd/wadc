@@ -65,7 +65,7 @@ polyobj(number, mirror, sound, firstline, restlines, spawn) {
     !polyobj
     control(
         -- force thing angle to reference polyobj 1
-        forceangle(number) setthing(3000) thing
+        setthing(3000) thingangle(number)
 
         -- PolyObj_StartLine (polyobj num; mirror; sound)
         linetypehexen(1, number, mirror, sound, 0, 0)
@@ -75,7 +75,7 @@ polyobj(number, mirror, sound, firstline, restlines, spawn) {
         leftsector(0,0,0) -- deliberately inside-out!
     )
     spawn
-    forceangle(number) setthing(3001) thing
+    setthing(3001) thingangle(number)
 
     ^polyobj
 }

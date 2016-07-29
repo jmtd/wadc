@@ -43,9 +43,6 @@ class WadRun {
   int curlinearg[] = new int[5];
   int curthingarg[] = new int[5];
 
-  boolean manual_angle = false;
-  int angle = 0;
-
   Hashtable gvars = new Hashtable();
   Vector objects = new Vector();
   Vector stacktrace = new Vector();
@@ -248,7 +245,12 @@ class WadRun {
     }});
 
     builtin("thing", 0, new Builtin() { Exp eval() {
-      makething();
+      makething((-orient+3)*90);
+      return n;
+    }});
+
+    builtin("thingangle", 1, new Builtin() { Exp eval(Exp a) {
+      makething(a.ival());
       return n;
     }});
 
@@ -264,13 +266,6 @@ class WadRun {
     }});
     builtin("getthingflags", 0, new Builtin() { Exp eval() {
         return new Int(thingflags);
-    }});
-
-    // XXX: need a way to stop overriding the angles, too!
-    builtin("forceangle", 1, new Builtin() { Exp eval(Exp a) {
-        manual_angle = true;
-        angle = a.ival();
-        return n;
     }});
 
     builtin("linetype", 2, new Builtin() { Exp eval(Exp a, Exp b) {
@@ -791,20 +786,14 @@ class WadRun {
     return fromto ? sec : l;
   };
 
-  void makething() {
+  void makething(int angle) {
     Thing t = new Thing();
     t.x = xp;
     t.y = yp;
     t.type = curthingtype;
     t.opt = thingflags;
     t.idx = things.size();
-
-    if(manual_angle) {
-        // XXX: ??
-        t.angle = angle;
-    } else {
-        t.angle = (-orient+3)*90;
-    }
+    t.angle = angle;
 
     for(int i = 0; i<5; i++) t.specialargs[i] = curthingarg[i];
     things.addElement(t);
