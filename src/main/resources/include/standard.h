@@ -89,11 +89,11 @@ eleftdent(l,s) { eleft(l) right(s) eright(l) rotleft }
 rightdent(r,s) { right(r) left(s) left(r) rotright }
 leftdent(l,s) { left(l) right(s) right(l) rotleft }
 
-angle_east  { 0 }
-angle_ne    { 536870912 }
-angle_north { 1073741824 }
-angle_nw    { 1610612736 }
-angle_west  { 2147483648 }
-angle_sw    { 2684354560 }
-angle_south { 3221225472 }
-angle_se    { 3758096384 }
+angle_west  { 0 }
+angle_sw    { 45 }
+angle_south { 90 }
+angle_se    { 135 }
+angle_east  { 180 }
+angle_ne    { 225 }
+angle_north { 270 }
+angle_nw    { 315 }
