@@ -1,6 +1,7 @@
 #"standard.h"
 
--- random hallway, press ctrl-R multiple times
+-- random hallway, delete the 'seed' instruction below and 
+-- press ctrl-R multiple times
 
 main {
   seed (1337)
