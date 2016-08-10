@@ -47,6 +47,7 @@ public class Wad {
       if(write_source) numentries++;
 
       f = new RandomAccessFile(filename,"rw");
+      f.setLength(0);
       f.writeBytes("PWAD");
       writeInt(numentries);
       writeInt(12); // dir offset
