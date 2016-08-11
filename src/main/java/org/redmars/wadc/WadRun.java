@@ -40,7 +40,7 @@ class WadRun {
   int forcesec = -1;
   boolean hexen = false;
   boolean midtex = false;
-  int curlinearg[] = new int[5];
+  int curlinearg[] = new int[4];
   int curthingarg[] = new int[5];
 
   Hashtable gvars = new Hashtable();
@@ -271,16 +271,19 @@ class WadRun {
     builtin("linetype", 2, new Builtin() { Exp eval(Exp a, Exp b) {
       curlinetype = a.ival();
       curlinetag = b.ival();
+      for(int i = 0; i < curlinearg.length; ++i) {
+          curlinearg[i] = 0;
+      }
       return n;
     }});
 
     builtin("linetypehexen", 6, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f) {
       curlinetype = a.ival();
       curlinetag = b.ival();
-      curlinearg[1] = c.ival();
-      curlinearg[2] = d.ival();
-      curlinearg[3] = e.ival();
-      curlinearg[4] = f.ival();
+      curlinearg[0] = c.ival();
+      curlinearg[1] = d.ival();
+      curlinearg[2] = e.ival();
+      curlinearg[3] = f.ival();
       hexen = true;
       return n;
     }});
@@ -691,7 +694,7 @@ class WadRun {
     l.type = curlinetype;
     l.tag = curlinetag;
     l.flags |= lineflags;
-    for(int i = 0; i<5; i++) l.specialargs[i] = curlinearg[i];
+    for(int i = 0; i < curlinearg.length; i++) l.specialargs[i] = curlinearg[i];
   };
 
   Line makeline_minimal(Vertex from, Vertex to) {
@@ -790,7 +793,7 @@ class WadRun {
     t.idx = things.size();
     t.angle = angle;
 
-    for(int i = 0; i<5; i++) t.specialargs[i] = curthingarg[i];
+    for(int i = 0; i < curthingarg.length; i++) t.specialargs[i] = curthingarg[i];
     things.addElement(t);
   }
 

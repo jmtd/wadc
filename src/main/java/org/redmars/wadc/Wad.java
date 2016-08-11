@@ -167,7 +167,7 @@ public class Wad {
         } else {
           writeByte(a.type);
           writeByte(a.tag);
-          for(int j = 1; j<5; j++) writeByte(a.specialargs[j]);
+          for(int j : a.specialargs) writeByte(j);
         };
         writeShort(a.left.idx);
         writeShort(a.right==null?-1:a.right.idx);
@@ -227,7 +227,7 @@ public class Wad {
       writeShort(a.opt);
       if(wr.hexen) {
         writeByte(a.special);
-        for(int j = 0; j<5; j++) writeByte(a.specialargs[j]);
+        for(int j : a.specialargs) writeByte(j);
       };
     };
     return v.size()*(wr.hexen ? 20 : 10);

@@ -19,9 +19,9 @@ public class Line {
   int flags = 0;
   int type = 0;
   int tag = 0;
-  int specialargs[] = new int[5];
+  int specialargs[] = new int[4];
   boolean midtex = false;
-  Line() { for(int i = 0; i<5; i++) specialargs[i] = 0; }
+  Line() { for(int i = 0; i < specialargs.length; i++) specialargs[i] = 0; }
   Line(boolean mt) { this(); midtex = mt; }
   void copyattrs(Line l, Vector sidesv) {
     if(l.right!=null) right = l.right.cloneadd(this,sidesv);
@@ -36,7 +36,7 @@ public class Line {
     undefy = l.undefy;
     type = l.type;
     tag = l.tag;
-    for(int i = 0; i<5; i++) specialargs[i] = l.specialargs[i];
+    for(int i = 0; i < specialargs.length; i++) specialargs[i] = l.specialargs[i];
   };
   int width() {
     int xs = Math.abs(from.x-to.x);

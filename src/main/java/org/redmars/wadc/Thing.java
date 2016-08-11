@@ -17,5 +17,5 @@ public class Thing {
   int opt;
   int special = 0;
   int specialargs[] = new int[5];
-  Thing() { for(int i = 0; i<5; i++) specialargs[i] = 0; }
+  Thing() { for(int i = 0; i < specialargs.length; i++) specialargs[i] = 0; }
 }
