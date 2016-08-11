@@ -1,6 +1,6 @@
 = WadC tutorial
 Jonathan Dowland <jon@dow.land>
-:homepage: http://jmtd.net/wadc/
+:homepage: https://jmtd.net/wadc/
 
 This tutorial hopes to walk you through WadC. We start with the very basics
 and drawing some very simple, boring square rooms. By the end I hope we are

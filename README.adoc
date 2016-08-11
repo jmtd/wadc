@@ -1,6 +1,6 @@
 = WadC ("Wad Compiler")
 Jonathan Dowland <jon@dow.land>
-:homepage: http://jmtd.net/wadc/
+:homepage: https://jmtd.net/wadc/
 
 == About
 
@@ -23,11 +23,11 @@ link:include/[standard library].
 
 Downloads are on the https://github.com/jmtd/wadc/releases[releases page].
 
-See also the WadC homepage: <http://jmtd.net/wadc/>.
+See also the WadC homepage: <https://jmtd.net/wadc/>.
 
 == Who
 
-Since 2008, WadC is developed by link:http://jmtd.net[Jonathan Dowland].
+Since 2008, WadC is developed by link:https://jmtd.net[Jonathan Dowland].
 
 WadC was originally written by Wouter van Oortmerssen
 (link:http://strlen.com/wadc/[Aardappel]) in 2001.

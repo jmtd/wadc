@@ -3,7 +3,7 @@ Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 :toc:
 :toc-placement: preamble
 :toclevels: 5
-:homepage: http://jmtd.net/wadc/
+:homepage: https://jmtd.net/wadc/
 
 toc::[]
 

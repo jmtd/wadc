@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:     WadC
 " Author:       Jonatan Dowland <jon@dow.land>
-" URL:          http://jmtd.net/wadc/
+" URL:          https://jmtd.net/wadc/
 " Licence:      GPL-2 (http://www.gnu.org)
 " Remarks:      Vim 6 or greater
 
