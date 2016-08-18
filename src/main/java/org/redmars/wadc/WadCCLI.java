@@ -8,12 +8,9 @@
 // XXX: should probably use nio
 
 package org.redmars.wadc;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
-import java.util.Vector;
+
+import java.io.*;
+import java.util.List;
 
 /*
  * an initial, very hacky CLI for WadC
@@ -86,13 +83,13 @@ public class WadCCLI implements WadCMainFrame {
         } catch(Error e) {
             System.err.println("eval: "+e.getMessage());
 
-            Vector stacktrace = wp.wr.stacktrace;
+            List<String> stacktrace = wp.wr.stacktrace;
             if(stacktrace.size()>0) {
               System.err.println("stacktrace: ");
               int st = stacktrace.size()-10;
               if(st<0) st = 0;
               for(int i = stacktrace.size()-1; i>=st; i--) {
-                System.err.println((String)stacktrace.elementAt(i));
+                System.err.println(stacktrace.get(i));
               }
             }
 

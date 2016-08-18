@@ -51,11 +51,11 @@ public class Wad {
       f.writeBytes("PWAD");
       writeInt(numentries);
       writeInt(12); // dir offset
-      int tsize = writethings();
+      int tsize = writeThings();
       int lsize = writelines();
       int dsize = writesides();
       int vsize = writevertices();
-      int ssize = writesectors();
+      int ssize = writeSectors();
       int bsize = writebehaviour();
       int texsize = writetextures();
       int psize = writepnames();
@@ -111,9 +111,9 @@ public class Wad {
   }
 
   int writevertices() throws IOException {
-    Vector v = wr.vertices;
+    List<Vertex> v = wr.vertices;
     for(int i = 0;i<v.size();i++) {
-      Vertex a = (Vertex)v.elementAt(i);
+      Vertex a = v.get(i);
       writeShort(-a.x);
       writeShort(a.y);
     };
@@ -122,115 +122,118 @@ public class Wad {
 
   int writelines() throws IOException {
     //swapped roles of left and right to account for mirroring bug (see -a.x in vertices/things)
-    Vector<Line> v = wr.lines;
+    List<Line> lines = wr.lines;
     int numlines = 0;
-    for(Line a : v) {
-      if(a.left==null) {
+    for (Line a : lines) {
+      if (a.left == null) {
         a.left = a.right;
         a.right = null;
         Vertex x = a.from;
         a.from = a.to;
         a.to = x;
-        if(a.left==null) {
-          if(wr.prunelines) {
-          } else {
-            if(linewarn) mf.msg("warning: found line not part of any sector, assigned sector 0, & line 0 properties");
+        if (a.left == null) {
+          if (wr.prunelines) {} else {
+            if (linewarn) mf.msg("warning: found line not part of any sector, assigned sector 0, & line 0 properties");
             linewarn = false;
-            a.left = new Side((Line)wr.lines.elementAt(0),wr.sides);
-            a.left.s = (Sector)wr.sectors.elementAt(0);
-          };
-        };
-      };
-      if(!(wr.prunelines && ((a.right!=null && a.left.s==a.right.s && a.type==0)
-                          || (a.right==null && a.left==null)))) {
+            a.left = new Side(wr.lines.get(0), wr.sides);
+            a.left.s = wr.sectors.get(0);
+          }
+        }
+      }
+
+      if (!(wr.prunelines && ((a.right != null && a.left.s == a.right.s && a.type == 0)
+              || (a.right == null && a.left == null)))) {
         numlines++;
-        if(a.undefx) {
+        if (a.undefx) {
           Vertex from = a.from;
           Vertex to = a.to;
-          a.xoff = from.x==to.x
-               ? (from.y<to.y ? from.y : -from.y)
-               : (from.y==to.y
-                    ? (from.x<to.x ? from.x : -from.x)
-                    : a.xoff);
-        };
+          a.xoff = from.x == to.x
+                  ? (from.y < to.y ? from.y : -from.y)
+                  : (from.y == to.y
+                  ? (from.x < to.x ? from.x : -from.x)
+                  : a.xoff);
+        }
+
         writeShort(a.from.idx);
         writeShort(a.to.idx);
-        if(a.right!=null) {
+        if (a.right != null) {
           a.flags |= 4;
-          if(!a.midtex) a.m = "-";
-        };
+          if (!a.midtex) a.m = "-";
+        }
+        ;
         writeShort(a.flags); // flags
-        if(!wr.hexen) {
+        if (!wr.hexen) {
           writeShort(a.type); // type
           writeShort(a.tag); // trigger
         } else {
           writeByte(a.type);
           writeByte(a.tag);
           for(int j : a.specialargs) writeByte(j);
-        };
+        }
+
         writeShort(a.left.idx);
-        writeShort(a.right==null?-1:a.right.idx);
-      };
-    };
+        writeShort(a.right == null ? -1 : a.right.idx);
+      }
+    }
+
     return numlines*(wr.hexen ? 16 : 14);
-  };
+  }
 
   int writesides() throws IOException {
-    Vector v = wr.sides;
+    List<Side> v = wr.sides;
     int numsides = 0;
-    for(int i = 0;i<v.size();i++) {
-      Side a = (Side)v.elementAt(i);
-        numsides++;
-        writeShort(a.l.xoff);
-        writeShort(a.l.yoff);
-        int w = a.l.width();
-        Side os = a.l.left==a ? a.l.right : a.l.left;
-        if(os==null) os = a;
-        string(lookup("U", a.l.t, a.s.ceil-os.s.ceil, w, a.s.floor+1000));
-        string(lookup("L", a.l.b, os.s.floor-a.s.floor, w, a.s.floor+1000));
-        string(lookup("N", a.l.m, a.s.ceil-a.s.floor, w, a.s.floor+1000));
-        writeShort(a.s.idx);
-    };
+    for (Side a : v) {
+      numsides++;
+      writeShort(a.l.xoff);
+      writeShort(a.l.yoff);
+      int w = a.l.width();
+      Side os = a.l.left == a ? a.l.right : a.l.left;
+      if (os == null) os = a;
+      string(lookup("U", a.l.t, a.s.ceil - os.s.ceil, w, a.s.floor + 1000));
+      string(lookup("L", a.l.b, os.s.floor - a.s.floor, w, a.s.floor + 1000));
+      string(lookup("N", a.l.m, a.s.ceil - a.s.floor, w, a.s.floor + 1000));
+      writeShort(a.s.idx);
+    }
+
     return numsides*30;
-  };
+  }
 
   String lookup(String t, String tex, int h, int w, int f) {
     return (tex.equals("?") ? wr.texrules.retexture(t, h, w, f) : tex).toUpperCase();
   };
 
-  int writesectors() throws IOException {
-    Vector v = wr.sectors;
-    for(int i = 0;i<v.size();i++) {
-      Sector a = (Sector)v.elementAt(i);
+  private int writeSectors() throws IOException {
+    List<Sector> sectors = wr.sectors;
+    for (Sector a : sectors) {
       writeShort(a.floor);
       writeShort(a.ceil);
-      string(lookup("F", a.ftex, a.ceil-a.floor, a.floor+1000, a.boundlen));
-      string(lookup("C", a.ctex, a.ceil-a.floor, a.ceil+1000, a.boundlen));
+      string(lookup("F", a.ftex, a.ceil - a.floor, a.floor + 1000, a.boundlen));
+      string(lookup("C", a.ctex, a.ceil - a.floor, a.ceil + 1000, a.boundlen));
       writeShort(a.light);
       writeShort(a.type);
       writeShort(a.tag);
-    };
-    return v.size()*26;
-  };
+    }
+    return sectors.size()*26;
+  }
 
-  int writethings() throws IOException {
-    Vector v = wr.things;
-    for(int i = 0;i<v.size();i++) {
-      Thing a = (Thing)v.elementAt(i);
-      if(wr.hexen) writeShort(0);   // thingid?
+  private int writeThings() throws IOException {
+    List<Thing> v = wr.things;
+    for (Thing a : v) {
+      if (wr.hexen) writeShort(0);   // thingid?
       writeShort(-a.x);
       writeShort(a.y);
-      if(wr.hexen) writeShort(0);   // z pos?
+      if (wr.hexen) writeShort(0);   // z pos?
       writeShort(a.angle);
       writeShort(a.type);
       writeShort(a.opt);
-      if(wr.hexen) {
+      if (wr.hexen) {
         writeByte(a.special);
         for(int j : a.specialargs) writeByte(j);
-      };
-    };
+      }
+    }
+
     return v.size()*(wr.hexen ? 20 : 10);
-  };
+  }
 
   int writebehaviour() throws IOException {
     byte data[] = { 65, 67, 0x53, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

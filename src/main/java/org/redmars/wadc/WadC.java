@@ -401,13 +401,13 @@ public class WadC extends JFrame implements WadCMainFrame {
       } catch(Error err) {
           wp.mf.msg("eval: "+err.getMessage());
 
-          Vector stacktrace = wp.wr.stacktrace;
+          List<String> stacktrace = wp.wr.stacktrace;
           if(stacktrace.size()>0) {
             String s = "stacktrace: ";
             int st = stacktrace.size()-10;
             if(st<0) st = 0;
             for(int i = stacktrace.size()-1; i>=st; i--) {
-              s += ((String)stacktrace.elementAt(i))+"\n";
+              s += (stacktrace.get(i))+"\n";
             }
             wp.mf.msg(s);
           }

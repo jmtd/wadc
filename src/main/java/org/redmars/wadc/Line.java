@@ -23,7 +23,7 @@ public class Line {
   boolean midtex = false;
   Line() { for(int i = 0; i < specialargs.length; i++) specialargs[i] = 0; }
   Line(boolean mt) { this(); midtex = mt; }
-  void copyattrs(Line l, Vector sidesv) {
+  void copyattrs(Line l, List<Side> sidesv) {
     if(l.right!=null) right = l.right.cloneadd(this,sidesv);
     if(l.left!=null) left = l.left.cloneadd(this,sidesv);
     t = l.t;

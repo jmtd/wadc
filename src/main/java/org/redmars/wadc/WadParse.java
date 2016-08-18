@@ -8,15 +8,12 @@
 
 package org.redmars.wadc;
 
-import java.awt.*;
 import java.util.*;
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
-import java.nio.file.LinkOption;
 
 public class WadParse {
   int linenum = 1;
@@ -33,13 +30,13 @@ public class WadParse {
   Hashtable globs = new Hashtable();
   Hashtable tags = new Hashtable();
   WadCMainFrame mf;
-  TreeSet<String> includes = new TreeSet<String>();
+  TreeSet<String> includes = new TreeSet<>();
 
-  TreeMap<String,Texture> textures = new TreeMap<String,Texture>();
+  TreeMap<String,Texture> textures = new TreeMap<>();
   Texture current_texture = null;
 
   // new patch definitions
-  ArrayList<String> patches = new ArrayList<String>();
+  ArrayList<String> patches = new ArrayList<>();
 
   WadRun wr = new WadRun(this);
 
@@ -52,7 +49,7 @@ public class WadParse {
   public WadParse(String s, WadCMainFrame m) {
     mf = m;
     buf = s+((char)0);
-    wr.addbuiltins();
+    wr.addBuiltins();
     try {
       lex();
       while(token!=0) {

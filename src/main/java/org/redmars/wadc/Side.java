@@ -13,12 +13,12 @@ public class Side {
   int idx;
   Sector s = null;
   Line l;
-  Side(Line x, Vector addto) {
+  Side(Line x, List<Side> addto) {
     l = x;
     idx = addto.size();
-    addto.addElement(this);
+    addto.add(this);
   }
-  Side cloneadd(Line l, Vector sides) {
+  Side cloneadd(Line l, List<Side> sides) {
     Side s = new Side(l,sides);
     s.s = this.s;
     return s;
