@@ -43,7 +43,10 @@ public class WadParse {
 
   WadRun wr = new WadRun(this);
 
-  void error(String s) { throw new Error(s); }
+  void error(String s) {
+    throw new Error(s);
+  }
+
   void warn(String s) { mf.msg("parser ["+linenum+"]: "+s); }
 
   public WadParse(String s, WadCMainFrame m) {
@@ -68,7 +71,9 @@ public class WadParse {
 
   void lex() {
     for(;;) switch(token = buf.charAt(pos++)) {
-      case '\n': linenum++; case '\t': case ' ': continue;
+      case '\n':
+        linenum++;
+      case '\t': case ' ': case '\r': continue;
       case 0: pos--; return;
       case '\"': {
         String s = "";
@@ -188,7 +193,9 @@ public class WadParse {
   }
 
   String expectid() {
-    if(token!='a') error("identifier expected");
+    if(token!='a') {
+      error("identifier expected");
+    }
     String s = sinfo;
     lex();
     return s;

@@ -5,3 +5,5 @@
 wadc.jar
 wadc.zip
 src/main/resources/git.properties
+.idea/
+*.iml
