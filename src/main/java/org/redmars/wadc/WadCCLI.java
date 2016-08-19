@@ -20,7 +20,7 @@ public class WadCCLI implements WadCMainFrame {
 
     String src = "";
 
-    public static void usage() {
+    private static void usage() {
         System.err.println("usage: WadCCLI <infile>");
         System.exit(1);
     }
@@ -45,11 +45,11 @@ public class WadCCLI implements WadCMainFrame {
             infile = args[0];
         }
 
-        WadCCLI w = new WadCCLI(infile, writesrc);
+        new WadCCLI(infile, writesrc);
     }
 
     // XXX: copied verbatim from MainFrame. should be a static interface method?
-    String loadtextfile(String name) {
+    private String loadTextFile(String name) {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(name)));
         String c = "";
@@ -60,11 +60,11 @@ public class WadCCLI implements WadCMainFrame {
         return c;
       } catch(IOException i) {
         msg("couldn't load file "+name);
-      };
+      }
       return "";
     }
 
-    void readSource(final String name) {
+    private void readSource(final String name) {
         if(name==null) return;
         this.src = loadtextfile((new File(name)).toString());
     }

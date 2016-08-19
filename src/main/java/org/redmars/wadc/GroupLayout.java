@@ -93,8 +93,8 @@ public class GroupLayout implements LayoutManager2 {
     for(int a = 0;a<n;a++) {
       Component c = p.getComponent(a);
       if(c.isVisible()) {
-        int res = ((Integer)resizing.elementAt(a)).intValue();
-        int w = ((Integer)weights.elementAt(a)).intValue();
+        int res = (Integer) resizing.elementAt(a);
+        int w = (Integer) weights.elementAt(a);
         Dimension d = c.getPreferredSize();
         if(horiz) {
           xs += d.width;
@@ -126,8 +126,8 @@ public class GroupLayout implements LayoutManager2 {
     for(int a = 0;a<p.getComponentCount();a++) {
       Component c = p.getComponent(a);
       if(c.isVisible()) {
-        int res = ((Integer)resizing.elementAt(a)).intValue();
-        int rw = ((Integer)weights.elementAt(a)).intValue();
+        int res = (Integer) resizing.elementAt(a);
+        int rw = (Integer) weights.elementAt(a);
         Dimension d = c.getPreferredSize();
         if(horiz) {
           int w = d.width;
@@ -136,7 +136,7 @@ public class GroupLayout implements LayoutManager2 {
             usedx -= w;
             if((usedw -=rw)==0) w += usedx;
             w = Math.max(minresize,w);
-          };
+          }
           c.setBounds(sx,sy,w,ys-is.top-is.bottom);
           sx += w+cspace;
         } else {
@@ -146,7 +146,7 @@ public class GroupLayout implements LayoutManager2 {
             usedy -= h;
             if((usedw -=rw)==0) h += usedy;
             h = Math.max(minresize,h);
-          };
+          }
           c.setBounds(sx,sy,xs-is.left-is.right,h);
           sy += h+cspace;
         }

@@ -15,28 +15,25 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 
-public class WadParse {
-  int linenum = 1;
+class WadParse {
+  private int linenum = 1;
   int pos = 0;
-  char token = 0;
-  String buf;
+  private char token = 0;
+  private String buf;
   String err = null;
-  String sinfo = "";
-  int iinfo = 0;
+  private String sinfo = "";
+  private int iinfo = 0;
   int curtag = 10;
   int editinsertpos = 0;
   int editchanged = 0;
-  Hashtable funs = new Hashtable();
+  Hashtable<String, Fun> funs = new Hashtable<>();
   Hashtable globs = new Hashtable();
-  Hashtable tags = new Hashtable();
+  private Hashtable<String, Int> tags = new Hashtable<>();
   WadCMainFrame mf;
   TreeSet<String> includes = new TreeSet<>();
 
   TreeMap<String,Texture> textures = new TreeMap<>();
-  Texture current_texture = null;
-
-  // new patch definitions
-  ArrayList<String> patches = new ArrayList<>();
+  private Texture currentTexture = null;
 
   WadRun wr = new WadRun(this);
 
@@ -44,9 +41,7 @@ public class WadParse {
     throw new Error(s);
   }
 
-  void warn(String s) { mf.msg("parser ["+linenum+"]: "+s); }
-
-  public WadParse(String s, WadCMainFrame m) {
+  WadParse(String s, WadCMainFrame m) {
     mf = m;
     buf = s+((char)0);
     wr.addBuiltins();
@@ -54,19 +49,19 @@ public class WadParse {
       lex();
       while(token!=0) {
         if(token=='#') {
-          attachinclude();
+          attachInclude();
         } else {
-          Fun f = parsefun();
+          Fun f = parseFun();
           if(funs.put(f.name,f)!=null) error("function "+f.name+" defined twice");
-        };
-      };
+        }
+      }
     } catch(Error e) {
       err = "parser ["+linenum+"]: "+e.getMessage();
       mf.msg(err);
-    };
+    }
   }
 
-  void lex() {
+  private void lex() {
     for(;;) switch(token = buf.charAt(pos++)) {
       case '\n':
         linenum++;
@@ -78,8 +73,8 @@ public class WadParse {
           token = buf.charAt(pos++);
           if(token=='\"' || token==0) break;
           s+=token;
-        };
-        if(token==0) { pos--; return; };
+        }
+        if(token==0) { pos--; return; }
         sinfo = s;
         return;
       }
@@ -90,7 +85,7 @@ public class WadParse {
           } while(token!='\n' && token!=0);
 
           continue;
-        };
+        }
         parseint("-", 10); // XXX: no negative hex digits yet
         return;
       case '/':
@@ -99,10 +94,10 @@ public class WadParse {
           while(buf.charAt(pos)!='*' || buf.charAt(pos+1)!='/') {
             pos++;
             if(pos+1==buf.length()) error("multiline comment not closed");
-          };
+          }
           pos += 2;
           continue;
-        };
+        }
       case '0': /* possibly hex digit */
         if(buf.charAt(pos)=='x') {
             pos++;
@@ -112,16 +107,19 @@ public class WadParse {
         // deliberately fall-through
       default:
         if(Character.isLetter(token) || token=='_') {
-          String s = ""+token;
-          while(Character.isLetterOrDigit(token = buf.charAt(pos)) || token=='_') { pos++; s+=token; };
+          String s = "" + token;
+          while(Character.isLetterOrDigit(token = buf.charAt(pos)) || token=='_') {
+            pos++;
+            s += token;
+          }
           sinfo = s;
           token = 'a';
           return;
-        };
+        }
         if(Character.isDigit(token)) {
           parseint(""+token, 10);
           return;
-        };
+        }
         return;
     }
   }
@@ -129,7 +127,7 @@ public class WadParse {
   /*
    * resolve an include directive to a file inside the Jar.
    */
-  String loadIncludeFromJar(String name) {
+  private String loadIncludeFromJar(String name) {
     InputStream input = getClass().getResourceAsStream("/include/"+name);
     if(null != input) {
       java.util.Scanner s = new java.util.Scanner(input, "UTF-8").useDelimiter("\\A");
@@ -149,34 +147,36 @@ public class WadParse {
   }
 
   String loadinclude(String name) {
-      ArrayList<String> l = new ArrayList<String>();
+      ArrayList<String> l = new ArrayList<>();
       Path p = resolveinclude(name);
 
       if(! Files.isRegularFile(p)) {
           return loadIncludeFromJar(name);
       }
       try {
-        Files.lines(p).forEach(line -> l.add(line));
+        Files.lines(p).forEach(l::add);
 
       } catch(IOException i) {
         mf.msg("couldn't load file "+name);
-      };
+      }
 
-      String ret = String.join("\n", l);
-      return ret;
+    return String.join("\n", l);
   }
 
-  void attachinclude() {
+  private void attachInclude() {
     lex();
-    if(token!='\"') error("filename expected");
-    if(!includes.contains(sinfo)) {
+
+    if (token!='\"') error("filename expected");
+
+    if (!includes.contains(sinfo)) {
       includes.add(sinfo);
       buf = buf.substring(0,buf.length()-1) + loadinclude(sinfo) +'\0';
-    };
+    }
+
     lex();
   }
 
-  void parseint(String s, int base) {
+  private void parseint(String s, int base) {
     while(Character.digit(token = buf.charAt(pos), base) >= 0) {
         pos++; s+=token;
     }
@@ -184,96 +184,96 @@ public class WadParse {
     token = '1';
   }
 
-  void expect(char c) {
+  private void expect(char c) {
     if(token!=c) error(c+" expected");
     lex();
   }
 
-  String expectid() {
+  private String expectId() {
     if(token!='a') {
       error("identifier expected");
     }
     String s = sinfo;
     lex();
     return s;
-  };
+  }
 
-  Fun parsefun() {
-    Fun f = new Fun(expectid());
+  private Fun parseFun() {
+    Fun f = new Fun(expectId());
     if(token=='(') {
       lex();
       while(token!=')') {
-        f.args.addElement(expectid());
+        f.args.addElement(expectId());
         if(token!=')') expect(',');
-      };
+      }
       lex();
-    };
+    }
     expect('{');
-    f.body = parseexp();
+    f.body = parseExp();
     if(f.name.compareTo("main")==0 && token=='}') editinsertpos = pos-1;
     expect('}');
     return f;
   }
 
-  Exp parseexp() {
-    Exp e = parsechoice();
+  private Exp parseExp() {
+    Exp e = parseChoice();
     if(token=='?') {
       lex();
       If i = new If(e);
-      i.then = parsechoice();
+      i.then = parseChoice();
       expect(':');
-      i.els = parsechoice();
+      i.els = parseChoice();
       return i;
-    };
+    }
     return e;
-  };
+  }
 
-  Exp parsechoice() {
-    Exp e = parseseq();
+  private Exp parseChoice() {
+    Exp e = parseSeq();
     if(token=='|') {
       Choice c = new Choice();
       c.add(e);
       while(token=='|') {
         lex();
-        c.add(parseseq());
-      };
+        c.add(parseSeq());
+      }
       return c;
-    };
-    return e;
-  };
-
-  Exp parseseq() {
-    Exp e = parsefact();
-    if(token!='?' && token!=':' && token!='}' && token !=')' && token!=',' && token!='|') {
-      return new Seq(e,parseseq());
-    };
+    }
     return e;
   }
 
-  Exp parsefact() {
+  private Exp parseSeq() {
+    Exp e = parseFact();
+    if(token!='?' && token!=':' && token!='}' && token !=')' && token!=',' && token!='|') {
+      return new Seq(e, parseSeq());
+    }
+    return e;
+  }
+
+  private Exp parseFact() {
     switch(token) {
       case '!':
       case '^': {
         boolean set = token=='!';
         lex();
         SetGet sg = new SetGet();
-        sg.name = expectid();
+        sg.name = expectId();
         sg.set = set;
         return sg;
       }
       case '$': {
         lex();
-        String name = expectid();
-        Int i = (Int)tags.get(name);
+        String name = expectId();
+        Int i = tags.get(name);
         if(i==null) {
           i = new Int(curtag++);
           tags.put(name,i);
-        };
+        }
         return i;
       }
       case '{': {
         lex();
-        Exp e = parseexp();
+        Exp e = parseExp();
         expect('}');
         return e;
       }
@@ -293,23 +293,23 @@ public class WadParse {
         if(token=='(') {
           lex();
           while(token!=')') {
-            if(i.v==null) i.v = new Vector();
-            i.v.addElement(parseexp());
+            if(i.v==null) i.v = new Vector<>();
+            i.v.addElement(parseExp());
             if(token!=')') expect(',');
-          };
+          }
           lex();
-        };
+        }
         return i;
       }
 
       default: error("expression expected");
-    };
+    }
     return null;
   }
 
   void run() throws Error {
       wr.run();
-  };
+  }
 
   void setTexture(String s, int w, int h) {
       Texture t = textures.get(s);
@@ -317,12 +317,12 @@ public class WadParse {
           t = new Texture(s,w,h);
           textures.put(s,t);
       }
-      current_texture = t;
+      currentTexture = t;
   }
 
   void addPatch(String n, int x, int y) {
-      if(null != current_texture) {
-          current_texture.patches.add(new Patch(n, x, y));
+      if(null != currentTexture) {
+          currentTexture.patches.add(new Patch(n, x, y));
       }
   }
 }

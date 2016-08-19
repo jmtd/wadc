@@ -12,29 +12,34 @@ class SetGet extends Exp {
   String name;
   boolean set;
   static Exp n = new Int(0);
+
   Exp eval(WadRun wr) {
-    Variable v = (Variable)wr.wp.globs.get(name);
+    Variable variable = (Variable)wr.wp.globs.get(name);
     if(set) {
-      if(v==null) v = new Variable();
-      v.x = wr.xp;
-      v.y = wr.yp;
-      v.o = wr.orient;
-      v.f = wr.texfloor;
-      v.c = wr.texceil;
-      v.t = wr.textop;
-      v.m = wr.texmid;
-      v.b = wr.texbot;
-      wr.wp.globs.put(name,v);
+      if (variable==null) {
+        variable = new Variable();
+      }
+      variable.x = wr.xp;
+      variable.y = wr.yp;
+      variable.o = wr.orient;
+      variable.f = wr.texfloor;
+      variable.c = wr.texceil;
+      variable.t = wr.textop;
+      variable.m = wr.texmid;
+      variable.b = wr.texbot;
+
+      wr.wp.globs.put(name,variable);
+
     } else {
-      if(v==null) wr.varerr(name);
-      wr.xp = v.x;
-      wr.yp = v.y;
-      wr.orient = v.o;
-      wr.texfloor = v.f;
-      wr.texceil = v.c;
-      wr.textop = v.t;
-      wr.texmid = v.m;
-      wr.texbot = v.b;
+      if(variable==null) wr.varerr(name);
+      wr.xp = variable.x;
+      wr.yp = variable.y;
+      wr.orient = variable.o;
+      wr.texfloor = variable.f;
+      wr.texceil = variable.c;
+      wr.textop = variable.t;
+      wr.texmid = variable.m;
+      wr.texbot = variable.b;
       wr.makevertex();
     };
     return n;

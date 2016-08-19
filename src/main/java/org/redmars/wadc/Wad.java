@@ -13,16 +13,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public class Wad {
-  WadParse wp;
+  private WadParse wp;
   WadRun wr;
-  WadCMainFrame mf;
+  private WadCMainFrame mf;
   RandomAccessFile f;
-  int curlumppos = 12;
-  boolean linewarn = true;
-  Hashtable<String, Integer> pnames= new Hashtable<String, Integer>();
-  boolean write_pnames = false;
-  boolean write_source = true;
-  String filename;
+  private int curlumppos = 12;
+  private boolean linewarn = true;
+  private Hashtable<String, Integer> pnames= new Hashtable<>();
+  private boolean write_pnames = false;
+  private boolean write_source = true;
+  private String filename;
 
   Wad(WadParse w, WadCMainFrame m, String fn, boolean write_wadsrc) {
     wp = w;
@@ -52,28 +52,28 @@ public class Wad {
       writeInt(numentries);
       writeInt(12); // dir offset
       int tsize = writeThings();
-      int lsize = writelines();
-      int dsize = writesides();
-      int vsize = writevertices();
+      int lsize = writeLines();
+      int dsize = writeSides();
+      int vsize = writeVertices();
       int ssize = writeSectors();
-      int bsize = writebehaviour();
-      int texsize = writetextures();
-      int psize = writepnames();
+      int bsize = writeBehaviour();
+      int texsize = writeTextures();
+      int psize = writePnames();
       int wlsize = 0;
-      if(write_source) wlsize = writewadcsource();
+      if(write_source) wlsize = writeWadCSource();
 
       long dpos = f.getFilePointer();
 
-      writedir(wr.mapname,0);
-      writedir("THINGS",tsize);
-      writedir("LINEDEFS",lsize);
-      writedir("SIDEDEFS",dsize);
-      writedir("VERTEXES",vsize);
-      writedir("SECTORS",ssize);
-      if(wr.hexen) writedir("BEHAVIOR", bsize);
-      if(!wp.textures.isEmpty()) writedir("TEXTURE2", texsize);
-      if(write_pnames) writedir("PNAMES", psize);
-      if(write_source) writedir("WADCSRC", wlsize);
+      writeDir(wr.mapname,0);
+      writeDir("THINGS",tsize);
+      writeDir("LINEDEFS",lsize);
+      writeDir("SIDEDEFS",dsize);
+      writeDir("VERTEXES",vsize);
+      writeDir("SECTORS",ssize);
+      if(wr.hexen) writeDir("BEHAVIOR", bsize);
+      if(!wp.textures.isEmpty()) writeDir("TEXTURE2", texsize);
+      if(write_pnames) writeDir("PNAMES", psize);
+      if(write_source) writeDir("WADCSRC", wlsize);
 
       f.seek(8);
       writeInt((int)dpos);
@@ -82,25 +82,25 @@ public class Wad {
 
     } catch(IOException i) {
       mf.msg("saving wad unsuccessful");
-    };
+    }
   }
 
-  void writedir(String name, int size) throws IOException {
+  private void writeDir(String name, int size) throws IOException {
     writeInt(curlumppos);
     writeInt(size);
     curlumppos += size;
     string(name);
-  };
+  }
 
-  void writeByte(int i) throws IOException {
+  private void writeByte(int i) throws IOException {
     f.writeByte(i);
   }
-  void writeShort(int i) throws IOException {
+  private void writeShort(int i) throws IOException {
     f.writeByte(i&0xFF);
     f.writeByte((i&0xFF00)>>8);
   }
 
-  void writeInt(int i) throws IOException {
+  private void writeInt(int i) throws IOException {
     writeShort(i&0xFFFF);
     writeShort((i&0xFFFF0000)>>16);
   }
@@ -110,17 +110,16 @@ public class Wad {
     for(int i = 0;i<(8-s.length());i++) f.writeByte(0);
   }
 
-  int writevertices() throws IOException {
+  private int writeVertices() throws IOException {
     List<Vertex> v = wr.vertices;
-    for(int i = 0;i<v.size();i++) {
-      Vertex a = v.get(i);
+    for (Vertex a : v) {
       writeShort(-a.x);
       writeShort(a.y);
-    };
+    }
     return v.size()*4;
-  };
+  }
 
-  int writelines() throws IOException {
+  int writeLines() throws IOException {
     //swapped roles of left and right to account for mirroring bug (see -a.x in vertices/things)
     List<Line> lines = wr.lines;
     int numlines = 0;
@@ -179,7 +178,7 @@ public class Wad {
     return numlines*(wr.hexen ? 16 : 14);
   }
 
-  int writesides() throws IOException {
+  private int writeSides() throws IOException {
     List<Side> v = wr.sides;
     int numsides = 0;
     for (Side a : v) {
@@ -198,9 +197,9 @@ public class Wad {
     return numsides*30;
   }
 
-  String lookup(String t, String tex, int h, int w, int f) {
+  private String lookup(String t, String tex, int h, int w, int f) {
     return (tex.equals("?") ? wr.texrules.retexture(t, h, w, f) : tex).toUpperCase();
-  };
+  }
 
   private int writeSectors() throws IOException {
     List<Sector> sectors = wr.sectors;
@@ -235,14 +234,14 @@ public class Wad {
     return v.size()*(wr.hexen ? 20 : 10);
   }
 
-  int writebehaviour() throws IOException {
+  private int writeBehaviour() throws IOException {
     byte data[] = { 65, 67, 0x53, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     if(wr.hexen) f.write(data);
     return 16;
-  };
+  }
 
-  int writetextures() throws IOException {
-    int size, offset = 0;
+  private int writeTextures() throws IOException {
+    int size, offset;
     if(wp.textures.isEmpty()) return 0;
 
     writeInt(wp.textures.size());
@@ -277,7 +276,7 @@ public class Wad {
     return size;
   }
 
-  void readPnames() throws IOException {
+  private void readPnames() throws IOException {
         byte[] pnamestr = "PNAMES\0\0".getBytes();
         int doffs, dsize;
         int poffs = 0, numps;
@@ -315,7 +314,7 @@ public class Wad {
     }
 
   // check for any patches used not in the IWAD
-  void findNewPatches() {
+  private void findNewPatches() {
     for( Texture tex : wp.textures.values() ) {
       for( Patch p : tex.patches ) {
         if(null == pnames.get(p.name)) {
@@ -326,7 +325,7 @@ public class Wad {
     }
   }
 
-  int writepnames() throws IOException {
+  private int writePnames() throws IOException {
     if(0==pnames.size() || !write_pnames) return 0;
 
     String sPnames [] = new String[pnames.size()];
@@ -353,7 +352,7 @@ public class Wad {
    *    * include directives are expanded, so need to be commented out
    *    * we might need to insert an extra newline between files
    */
-  int writewadcsource() throws IOException {
+  int writeWadCSource() throws IOException {
       byte[] nl = "\n".getBytes("UTF-8");
       int l = 0;
 
@@ -377,5 +376,4 @@ public class Wad {
 
       return l;
   }
-
 }

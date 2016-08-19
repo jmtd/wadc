@@ -9,15 +9,17 @@
 package org.redmars.wadc;
 import java.util.*;
 
-public class Side {
+class Side {
   int idx;
   Sector s = null;
   Line l;
+
   Side(Line x, List<Side> addto) {
     l = x;
     idx = addto.size();
     addto.add(this);
   }
+
   Side cloneadd(Line l, List<Side> sides) {
     Side s = new Side(l,sides);
     s.s = this.s;

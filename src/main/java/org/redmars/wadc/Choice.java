@@ -10,19 +10,25 @@ package org.redmars.wadc;
 import java.util.*;
 
 class Choice extends Exp {
-
   static long seed;
-  static Random rnd = new Random();
+  private static Random rnd = new Random();
 
   static void setSeed(int s) {
       seed = s;
       rnd.setSeed(s);
   }
 
-  Vector v = new Vector();
-  void add(Exp e) { v.addElement(e); }
-  Exp replace(Vector n, Vector r) {
-    return ((Exp)v.elementAt(Math.abs(rnd.nextInt())%v.size())).replace(n,r);
+  List<Exp> v = new ArrayList<>();
+
+  void add(Exp e) {
+    v.add(e);
   }
-  String show() { return "[choice]"; };
+
+  Exp replace(Vector n, Vector r) {
+    return (v.get(Math.abs(rnd.nextInt()) % v.size())).replace(n,r);
+  }
+
+  String show() {
+    return "[choice]";
+  }
 }

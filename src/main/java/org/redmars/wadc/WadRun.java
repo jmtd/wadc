@@ -1556,7 +1556,7 @@ class WadRun {
   }
 
   private int prnd(int x, int y, int seed, float scale) {
-    return (int)(Perlin.perlinnoise_2D(x/scale+seed,y/scale+seed,1000,0.01f)*3.5f+100.0f);
+    return (int)(Perlin.perlinnoise_2D(x/scale+seed,y/scale+seed, 0.01f)*3.5f+100.0f);
   }
 
   int simplex(int x, int y) {

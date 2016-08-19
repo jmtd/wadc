@@ -9,7 +9,7 @@
 package org.redmars.wadc;
 import java.util.*;
 
-public class Line {
+class Line {
   int idx;
   Vertex from, to;
   Side right = null, left = null;
@@ -21,26 +21,42 @@ public class Line {
   int tag = 0;
   int specialargs[] = new int[4];
   boolean midtex = false;
-  Line() { for(int i = 0; i < specialargs.length; i++) specialargs[i] = 0; }
-  Line(boolean mt) { this(); midtex = mt; }
-  void copyattrs(Line l, List<Side> sidesv) {
-    if(l.right!=null) right = l.right.cloneadd(this,sidesv);
-    if(l.left!=null) left = l.left.cloneadd(this,sidesv);
-    t = l.t;
-    m = l.m;
-    b = l.m;
-    xoff = l.xoff;
-    yoff = l.yoff;
-    flags = l.flags;
-    undefx = l.undefx;
-    type = l.type;
-    tag = l.tag;
-    for(int i = 0; i < specialargs.length; i++) specialargs[i] = l.specialargs[i];
-  };
+
+  Line() {
+    for(int i = 0; i<5; i++) specialargs[i] = 0;
+  }
+
+  Line(boolean mt) {
+    this();
+    midtex = mt;
+  }
+
+  void copyattrs(Line line, List<Side> sidesv) {
+    if (line.right != null) {
+      right = line.right.cloneadd(this,sidesv);
+    }
+
+    if (line.left != null) {
+      left = line.left.cloneadd(this,sidesv);
+    }
+
+    t = line.t;
+    m = line.m;
+    b = line.m;
+    xoff = line.xoff;
+    yoff = line.yoff;
+    flags = line.flags;
+    undefx = line.undefx;
+    undefy = line.undefy;
+    type = line.type;
+    tag = line.tag;
+    System.arraycopy(line.specialargs, 0, specialargs, 0, 5);
+  }
+
   int width() {
     int xs = Math.abs(from.x-to.x);
     int ys = Math.abs(from.y-to.y);
     return xs>ys ? xs : ys;
-  };
+  }
 }
 

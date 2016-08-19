@@ -9,13 +9,14 @@
 package org.redmars.wadc;
 import java.util.*;
 
-public class Sector {
+class Sector {
   int idx;
   int ceil, floor;
   String ctex, ftex;
   int light;
   int type, tag;
   int boundlen;
+
   Sector(String c, String f, int h, int l, int ll, List<Sector> addto, int type, int tag) {
     ctex = c; ftex = f;
     ceil = h; floor = l;

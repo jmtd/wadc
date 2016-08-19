@@ -7,11 +7,9 @@
  */
 
 package org.redmars.wadc;
-import java.util.*;
 
 class Builtin {
   static Exp n = new Int(0);
-  Vector args = null;
   int nargs;
   Exp eval() { return null; }
   Exp eval(Exp a) { return null; }
