@@ -898,9 +898,9 @@ lisp.h::       lisp-style cons lists
 
 === Thing definitions
 
-hereticthings.h:: Thing definitions for Heretic
+heretic/things.h:: Thing definitions for Heretic
 hexen/things.h::  Thing definitions for Hexen
-strifethings.h::  Thing definitions for Strife
+strife/things.h::  Thing definitions for Strife
 
 ==== Doom-specific
 

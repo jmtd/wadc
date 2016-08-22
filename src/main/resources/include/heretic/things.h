@@ -1,11 +1,11 @@
 /*
- * hereticthings.h - part of WadC
+ * heretic/things.h - part of WadC
  * Copyright © 2016 Jonathan Dowland <jon@dow.land>
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
  * 
- * hereticthings.h - thing IDs for Hexen (needs work)
+ * heretic/things.h - thing IDs for Hexen (needs work)
  */
 
 -- monsters
