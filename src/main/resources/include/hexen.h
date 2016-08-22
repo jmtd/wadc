@@ -8,19 +8,10 @@
  * hexen.h - sensible defaults for Heretic maps
  */
 
--- I might merge these two
-#"hexenthings.h"
 #"thingflags.h"
 
-/* hexen thing flags */
-
-dormant             { 16 }
-fighter             { 32 }
-cleric              { 64 }
-mage                { 128 }
-hexen_appears_sp    { 256 }
-hexen_appears_coop  { 512 }
-hexen_appears_dm    { 1024 }
+#"hexen/things.h"
+#"hexen/lines.h"
 
 /*
  * some suitable default values for flats etc.
@@ -36,7 +27,7 @@ hexendefaults {
     setflag(fighter)
     setflag(cleric)
     setflag(mage)
-    setflag(hexen_appears_sp)
-    setflag(hexen_appears_coop)
-    setflag(hexen_appears_dm)
+    setflag(singleplayer)
+    setflag(coop)
+    setflag(deathmatch)
 }
