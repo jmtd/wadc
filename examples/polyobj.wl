@@ -13,24 +13,17 @@ main {
     /*
      * first doorway: big sliding door
      */
- 
-    pushpop( -- temporary button
-      movestep(64,64)
-      button(polyobj_doorslide, 2, 100, byteangle_e, 120, 100)
-    )
 
     movestep(256, 64)
-
-    linetypehexen(polyobj_doorslide, 2, 100, byteangle_e, 120, 100)
     doorway
-    linetype(0,0)
-    
+
     polyobj(2, 0, 0,
         mid("DOOR51") movestep(-16,-64) straight(32),
 
-        linetypehexen(polyobj_doorslide, 2, 100, byteangle_e, 48, 100)
+        setlineflags(or(getlineflags, or(repeat, use))) -- XXX: repeat not working
+        linetypehexen(polyobj_doorslide, 2, 100, byteangle_e, 120, 100)
         right(128) right(32) right(128)
-        linetypehexen(0,0,0,0,0,0),
+        linetypehexen(0,0,0,0,0,0) setlineflags(0),
 
         ^doorway movestep(32,64)
     )
@@ -44,13 +37,6 @@ main {
     box(0,190,160,256,256)
 
     movestep(256,0) rotright
-
-    -- temp button
-    pushpop(
-      movestep(64,64)
-      button(polyobj_doorslide, 3, 100, byteangle_s, 60, 50)
-    )
-
     movestep(256, 64)
 
     split_doorway
@@ -60,9 +46,10 @@ main {
         mid("D_WD09")
         movestep(-16,0) straight(32),
 
-        linetypehexen(polyobj_doorslide, 3, 100, byteangle_s, 60, 100)
+        setlineflags(or(getlineflags, or(repeat, use)))
+        linetypehexen(polyobj_doorslide, 3, 100, byteangle_s, 60, 50)
         right(64) right(32) right(64)
-        linetypehexen(0,0,0,0,0,0),
+        linetypehexen(0,0,0,0,0,0) setlineflags(0),
 
         ^split_doorway movestep(32,0)
     )
@@ -73,14 +60,14 @@ main {
         rotright mid("D_WD10")
         movestep(-16,-64) straight(32),
 
-        linetypehexen(polyobj_doorslide, 3, 100, byteangle_n, 60, 100)
+        setlineflags(or(getlineflags, or(repeat, use)))
+        linetypehexen(polyobj_doorslide, 3, 100, byteangle_s, 60, 50)
         right(64) right(32) right(64)
-        linetypehexen(0,0,0,0,0,0),
+        linetypehexen(0,0,0,0,0,0) setlineflags(0),
 
         ^split_doorway movestep(32,128)
     )
     polyobj_space
-
 
     /*
      * third doorway: split rotating doors
@@ -89,12 +76,6 @@ main {
 
     box(0,190,160,256,256)
     movestep(256,0) rotright
-    
-    -- temp button
-    pushpop(
-      movestep(64,64)
-      button(polyobj_doorswing, 5, 100, byteangle_n, 100, 0)
-    )
     movestep(256, 64)
 
     split_doorway
@@ -105,9 +86,10 @@ main {
         mid("D_WD09")
         movestep(-16,0) straight(32),
 
-        linetypehexen(polyobj_doorswing, 5, 100, byteangle_e, 100, 0)
+        setlineflags(or(getlineflags, or(repeat, use)))
+        linetypehexen(polyobj_doorswing, 5, 100, byteangle_n, 100, 0)
         right(64) right(32) right(64)
-        linetypehexen(0,0,0,0,0,0),
+        linetypehexen(0,0,0,0,0,0) setlineflags(0),
 
         ^split_doorway movestep(32,0)
     )
@@ -118,13 +100,15 @@ main {
         rotright mid("D_WD10")
         movestep(-16,-64) straight(32),
 
-        linetypehexen(polyobj_doorswing, 5, 100, byteangle_e, 100, 0)
+        setlineflags(or(getlineflags, or(repeat, use)))
+        linetypehexen(polyobj_doorswing, 5, 100, byteangle_n, 100, 0)
         right(64) right(32) right(64)
-        linetypehexen(0,0,0,0,0,0),
+        linetypehexen(0,0,0,0,0,0) setlineflags(0),
 
         ^split_doorway movestep(32,128)
     )
     polyobj_space
+
 
     /*
      * rotating column in the last room
@@ -134,13 +118,19 @@ main {
 
     pushpop(
       movestep(64,64)
-      button(polyobj_rotateleft, 1, 8, byteangle_se, 0, 0)
       movestep(64,64) -- centre
       !column
 
       polyobj(1, 0, 0,                   -- polyobj number, mirror, sound
+
           movestep(-32,-32) straight(32),-- first line, relative to anchor
-          right(32) right(32) right(32), -- remaining lines
+
+          -- remaining lines
+          linetypehexen(polyobj_rotateleft, 1, 8, byteangle_se, 0, 0)
+          setlineflags(or(getlineflags, or(repeat, use)))
+          right(32) right(32) right(32)
+          linetype(0,0) setlineflags(0),
+
           ^column                        -- spawn point in map
       )
     )
@@ -174,20 +164,6 @@ split_doorway {
   )
     movestep(64,-64)
 }
-
-/*
- * simple box button
- */
-button(type, arg1, arg2, arg3, arg4, arg5) {
-  setlineflags(or(getlineflags, or(repeat, use)))
-  linetypehexen(type, arg1, arg2, arg3, arg4, arg5)
-  bot("SW52_OFF")
-  rotleft quad(right(32)) rotright
-  innerrightsector(32,190,160)
-  linetypehexen(0,0,0,0,0,0)
-  setlineflags(0)
-}
-
 
 /* stuff that should probably go to polyobj.h *********************************************************/
 
