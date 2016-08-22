@@ -2,6 +2,15 @@
 #"hexen.h"
 #"control.h"
 
+hexen_lineflag_repeatable { 256 }
+
+hexen_lineflag_activate_walk              { 0 } -- default
+hexen_lineflag_activate_use               { 1024 }
+hexen_lineflag_activate_monster_walk      { 2048 }
+hexen_lineflag_activate_projectile_impact { 3072 }
+hexen_lineflag_activate_push              { 4096 }
+hexen_lineflag_activate_projectile_cross  { 5120 }
+
 main {
 
     hexendefaults
@@ -179,11 +188,14 @@ split_doorway {
  * simple box button
  */
 button(type, arg1, arg2, arg3, arg4, arg5) {
+  setlineflags(or(getlineflags, hexen_lineflag_activate_use))
+  setlineflags(or(getlineflags, hexen_lineflag_repeatable))
   linetypehexen(type, arg1, arg2, arg3, arg4, arg5)
   bot("SW52_OFF")
   rotleft quad(right(32)) rotright
   innerrightsector(32,190,160)
   linetypehexen(0,0,0,0,0,0)
+  setlineflags(0)
 }
 
 

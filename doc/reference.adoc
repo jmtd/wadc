@@ -495,6 +495,14 @@ Note that arg1 in linetypehexen() is the same as tag in linetype(). To compile
 maps produced this way, recommended is the version of bsp that comes with
 "zeth". Check out zdoom.h for some useful macros.
 
+    setlineflags(flags)
+    getlineflags
+
+Similar to the thing equivalents: fine control over linedef flag values.
+Useful in conjunction with the bitwise operators.
+
+
+
     getfloor
     getceil
     gettop
