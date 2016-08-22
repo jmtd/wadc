@@ -1,11 +1,11 @@
 /*
- * strife.h - part of WadC
+ * strife/things.h - part of WadC
  * Copyright © 2016 Jonathan Dowland <jon@dow.land>
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
  *
- * strifethings.h - thing definitions for Strife
+ * strife/things.h - thing definitions for Strife
  *
  * NOTE: this is very rough. It's derived from chocolate-strife's info.c with
  * a first-pass at de-duplicating some things by adding '2' or 'b' to the names

@@ -45,6 +45,7 @@ Not yet released.
                 for other doom-engine games.
 `and`, `or`, `not`:: bitwise operators
 `setthingflags`, `getthingflags`:: get and set the flags used for new things
+`setlineflags`, `getlineflags`:: as above, but for lines
 `thingangle`:: create a thing with a supplied angle value
 
 ==== Library additions/deletions

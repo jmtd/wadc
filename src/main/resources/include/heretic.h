@@ -9,7 +9,7 @@
  */
 
 -- I might merge these two
-#"hereticthings.h"
+#"heretic/things.h"
 
 /*
  * some suitable default values for flats etc.

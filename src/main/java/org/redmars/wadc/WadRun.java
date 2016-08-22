@@ -288,6 +288,15 @@ class WadRun {
       return n;
     }});
 
+    // line flags
+    builtin("setlineflags", 1, new Builtin() { Exp eval(Exp a) {
+        lineflags = a.ival();
+        return n;
+    }});
+    builtin("getlineflags", 0, new Builtin() { Exp eval() {
+        return new Int(lineflags);
+    }});
+
     builtin("setthinghexen", 6, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f) {
       curthingtype = a.ival();
       curthingarg[0] = b.ival();

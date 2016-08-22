@@ -1,11 +1,11 @@
 /*
- * hexenthings.h - part of WadC
+ * hexen/things.h - part of WadC
  * Copyright © 2016 Jonathan Dowland <jon@dow.land>
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
  *
- * hexenthings.h - thing IDs for Hexen (needs work)
+ * hexen/things.h - thing IDs for Hexen (needs work)
  */
 
           polyanchor            { setthing(3000) }
@@ -166,3 +166,13 @@ zwingedstatuenoskull            { setthing(9011) }
           heresiarch            { setthing(10080) }
                korax            { setthing(10200) }
                  bat            { setthing(10225) }
+
+/* hexen thing flags */
+
+dormant                         { 16 }
+fighter                         { 32 }
+cleric                          { 64 }
+mage                            { 128 }
+singleplayer                    { 256 }
+coop                            { 512 }
+deathmatch                      { 1024 }

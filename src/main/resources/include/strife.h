@@ -9,7 +9,8 @@
  */
 
 -- I might merge these two
-#"strifethings.h"
+#"strife/things.h"
+
 #"thingflags.h"
 
 /* thingflags */

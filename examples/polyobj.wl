@@ -179,11 +179,13 @@ split_doorway {
  * simple box button
  */
 button(type, arg1, arg2, arg3, arg4, arg5) {
+  setlineflags(or(getlineflags, or(repeat, use)))
   linetypehexen(type, arg1, arg2, arg3, arg4, arg5)
   bot("SW52_OFF")
   rotleft quad(right(32)) rotright
   innerrightsector(32,190,160)
   linetypehexen(0,0,0,0,0,0)
+  setlineflags(0)
 }
 
 
