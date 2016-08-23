@@ -87,6 +87,9 @@ Not yet released.
  * If you use the choice operator before a `seed` operation,
    that seed value affected the choice operator when re-running
    the script.
+ * You can freely mix `linetype` and `linetypehexen` in Zdoom
+   Hexen-format maps. Previously, some of the argument flags set
+   with `linetypehexen` were not cleared by `linetype`.
 
 === Development stuff
 
