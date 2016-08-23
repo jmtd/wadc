@@ -18,17 +18,17 @@ main {
     doorway
 
     polyobj(2, 0, 0,
-        mid("DOOR51") movestep(-16,-64) straight(32),
+        mid("D_END2") movestep(-16,-64) straight(32),
 
+        mid("DOOR51")
         setlineflags(or(getlineflags, or(repeat, use))) -- XXX: repeat not working
         linetypehexen(polyobj_doorslide, 2, 100, byteangle_e, 120, 100)
-        right(128) right(32) right(128)
+        right(128) mid("D_END2") right(32) mid("DOOR51") right(128)
         linetypehexen(0,0,0,0,0,0) setlineflags(0),
 
         ^doorway movestep(32,64)
     )
     polyobj_space
-
 
     /*
      * second doorway: split sliding doors
@@ -43,12 +43,13 @@ main {
 
     -- left door
     polyobj(3, 4, 0,
-        mid("D_WD09")
+        mid("D_END2")
         movestep(-16,0) straight(32),
 
+        mid("D_WD09")
         setlineflags(or(getlineflags, or(repeat, use)))
         linetypehexen(polyobj_doorslide, 3, 100, byteangle_s, 60, 50)
-        right(64) right(32) right(64)
+        right(64) mid("D_END2") right(32) mid("D_WD09") right(64)
         linetypehexen(0,0,0,0,0,0) setlineflags(0),
 
         ^split_doorway movestep(32,0)
@@ -57,12 +58,14 @@ main {
 
     -- right door (mirrored)
     polyobj(4, 0, 0,
-        rotright mid("D_WD10")
+        rotright
+        mid("D_END2")
         movestep(-16,-64) straight(32),
 
+        mid("D_WD10")
         setlineflags(or(getlineflags, or(repeat, use)))
         linetypehexen(polyobj_doorslide, 3, 100, byteangle_s, 60, 50)
-        right(64) right(32) right(64)
+        right(64) mid("D_END2") right(32) mid("D_WD10") right(64)
         linetypehexen(0,0,0,0,0,0) setlineflags(0),
 
         ^split_doorway movestep(32,128)
@@ -73,7 +76,6 @@ main {
      * third doorway: split rotating doors
      */
 
-
     box(0,190,160,256,256)
     movestep(256,0) rotright
     movestep(256, 64)
@@ -83,12 +85,13 @@ main {
     -- left door
     polyobj(5, 6, 0,
         turnaround
-        mid("D_WD09")
-        movestep(-16,0) straight(32),
+        mid("D_END2")
+        movestep(-16,0) straight(16),
 
+        mid("D_WD09")
         setlineflags(or(getlineflags, or(repeat, use)))
         linetypehexen(polyobj_doorswing, 5, 100, byteangle_n, 100, 0)
-        right(64) right(32) right(64)
+        right(64) mid("D_END2") right(16) mid("D_WD09") right(64)
         linetypehexen(0,0,0,0,0,0) setlineflags(0),
 
         ^split_doorway movestep(32,0)
@@ -97,18 +100,18 @@ main {
 
     -- right door
     polyobj(6, 0, 0,
-        rotright mid("D_WD10")
-        movestep(-16,-64) straight(32),
+        rotright mid("D_END2")
+        movestep(-16,-64) straight(16),
 
+        mid("D_WD10")
         setlineflags(or(getlineflags, or(repeat, use)))
         linetypehexen(polyobj_doorswing, 5, 100, byteangle_n, 100, 0)
-        right(64) right(32) right(64)
+        right(64) mid("D_END2") right(16) mid("D_WD10") right(64)
         linetypehexen(0,0,0,0,0,0) setlineflags(0),
 
         ^split_doorway movestep(32,128)
     )
     polyobj_space
-
 
     /*
      * rotating column in the last room
