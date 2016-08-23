@@ -8,7 +8,7 @@
  * hexen/lines.h - hexen linedef definitions (flags etc.)
  */
 
-repeat            { 256 }
+repeat            { 512 }
 
 /* activity flags (how action is triggered) */
 walk              { 0 } -- default

@@ -21,7 +21,7 @@ main {
         mid("D_END2") movestep(-16,-64) straight(32),
 
         mid("DOOR51")
-        setlineflags(or(getlineflags, or(repeat, use))) -- XXX: repeat not working
+        setlineflags(or(getlineflags, or(repeat, use)))
         linetypehexen(polyobj_doorslide, 2, 100, byteangle_e, 120, 100)
         right(128) mid("D_END2") right(32) mid("DOOR51") right(128)
         linetypehexen(0,0,0,0,0,0) setlineflags(0),
