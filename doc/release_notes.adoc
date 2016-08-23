@@ -35,6 +35,14 @@ Not yet released.
    WadC development.
  * `doom_ex.wl`, `htic_ex.wl`, `hexen_ex.wl`, `strife.wl`: very simple
     test maps that demonstrate Doom #1/Heretic/Hexen/Strife support
+ * `polyobj.wl`: example of Hexen polyobjects (swinging doors, etc.)
+
+=== Documentation
+
+ * The beginnings of a link:tutorial.adoc[proper tutorial].
+ * A basic link:https://redmars.org/wadc/examples.html[gallery of WadC examples]
+ * WAD files of the examples are periodically generated, nodes built and uploaded
+   to <https://redmars.org/wadc/examples/>
 
 === Language features
 
