@@ -83,7 +83,7 @@ main {
     split_doorway
 
     -- left door
-    polyobj(5, 6, 0,
+    polyobj(5, 6, snd_creak,
         turnaround
         mid("D_END2")
         movestep(-16,0) straight(16),
@@ -230,3 +230,13 @@ byteangle_sw   { 160 }
 byteangle_s    { 192 }
 byteangle_se   { 224 }
 
+
+snd_heavy { 1 }
+snd_metal { 2 }
+snd_creak { 3 }
+snd_silence { 4 }
+snd_lava { 5 }
+snd_water { 6 }
+snd_ice { 7 }
+snd_earth { 8 }
+snd_metal2 { 9 }
