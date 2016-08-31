@@ -62,8 +62,8 @@ class WadRun {
 
   // generated data
 
-  Vector vertices = new Vector();
-  Vector lines = new Vector();
+  Vector<Vertex> vertices = new Vector<Vertex>();
+  Vector<Line> lines = new Vector<Line>();
   Vector sides = new Vector();
   Vector sectors = new Vector();
   Vector things = new Vector();
@@ -1005,7 +1005,7 @@ class WadRun {
   void render(Graphics g) {
     r = g.getClip().getBounds();
     for(int i = 0;i<vertices.size();i++) {
-      Vertex v = (Vertex)vertices.elementAt(i);
+      Vertex v = vertices.elementAt(i);
       if(v.x>maxx) maxx = v.x;
       if(v.x<minx) minx = v.x;
       if(v.y>maxy) maxy = v.y;
@@ -1039,7 +1039,7 @@ class WadRun {
                    (int)((y-ymid)/scale)+gymid);
     };
     for(int i = 0;i<lines.size();i++) {
-      Line l = (Line)lines.elementAt(i);
+      Line l = lines.elementAt(i);
       if(l.right!=null) {
         g.setColor(l.left!=null?Color.gray:Color.white);
       } else {
@@ -1056,7 +1056,7 @@ class WadRun {
                  (int)((l.to.y-ymid)/scale)+gymid);
     };
     if(renderverts) for(int i = 0;i<vertices.size();i++) {
-      Vertex v = (Vertex)vertices.elementAt(i);
+      Vertex v = vertices.elementAt(i);
       int d = 2;
       g.setColor(Color.green);
       if(v==lastvertex) { d=5; g.setColor(Color.magenta); };
@@ -1084,7 +1084,7 @@ class WadRun {
       makevertex();
       call(new Id("main"));
       for(int i = 0; i<vertices.size(); i++) {
-        Vertex v = (Vertex)vertices.elementAt(i);
+        Vertex v = vertices.elementAt(i);
         if(v.v.size()==0) {
           vertices.remove(v);
           i--;
@@ -1162,7 +1162,7 @@ class WadRun {
     int ystart = yp;
     for(int i = 0; i<density; i++) makevertex(xstart+rnd(width),ystart+rnd(height));
     for(int i = 0; i<vertices.size(); i++) {
-      Vertex v = (Vertex)vertices.elementAt(i);
+      Vertex v = vertices.elementAt(i);
       if(v.v.size()>=3) continue;
       Vertex closest = null;
       Vertex nextclosest = null;
@@ -1171,7 +1171,7 @@ class WadRun {
       float distnextclose = 999999;
       float distthirdclose = 999999;
       for(int j = 0; j<vertices.size(); j++) {
-        Vertex t = (Vertex)vertices.elementAt(j);
+        Vertex t = vertices.elementAt(j);
         if(t==v) continue;
         float dist = dist(v,t);
         if(dist<distclose) {
@@ -1287,7 +1287,7 @@ class WadRun {
     for(int i = gridx*2-4; i>2; i--) tryline(step,i*step,step,(i-1)*step);
 
     for(int i = 0; i<gridx*gridy; i++) {
-      Line l = (Line)lines.elementAt(rnd(lines.size()));
+      Line l = lines.elementAt(rnd(lines.size()));
       int fbound = (gridx-2)*gridsize;
       int nbound = 1*gridsize;
       if(l.from.x<=nbound || l.from.x>=fbound) continue;

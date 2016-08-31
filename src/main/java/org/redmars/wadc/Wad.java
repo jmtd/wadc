@@ -122,10 +122,11 @@ public class Wad {
 
   int writelines() throws IOException {
     //swapped roles of left and right to account for mirroring bug (see -a.x in vertices/things)
-    Vector v = wr.lines;
+    Vector<Line> v = wr.lines;
     int numlines = 0;
-    for(int i = 0;i<v.size();i++) {
-      Line a = (Line)v.elementAt(i);
+    for(Line a : v) {
+    //for(int i = 0;i<v.size();i++) {
+      //Line a = (Line)v.elementAt(i);
       if(a.left==null) {
         a.left = a.right;
         a.right = null;
