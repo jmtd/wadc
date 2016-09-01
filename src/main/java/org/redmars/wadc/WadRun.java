@@ -68,17 +68,17 @@ class WadRun {
   Vector sectors = new Vector();
   Vector things = new Vector();
 
-  Vector vcoord = new Vector();
-  Vector vlists = new Vector();
+  Vector<Integer> vcoord = new Vector<Integer>();
+  Vector<Vector<Vertex>> vlists = new Vector<Vector<Vertex>>();
 
   AutoRule texrules = null;
 
   // merging and splitting
 
-  Vector xcoord = new Vector();
-  Vector ycoord = new Vector();
-  Vector xlists = new Vector();
-  Vector ylists = new Vector();
+  Vector<Integer> xcoord = new Vector<Integer>();
+  Vector<Integer> ycoord = new Vector<Integer>();
+  Vector<Vector<Line>> xlists = new Vector<Vector<Line>>();
+  Vector<Vector<Line>> ylists = new Vector<Vector<Line>>();
 
   // rendering
 
@@ -722,25 +722,25 @@ class WadRun {
     return l;
   };
 
-  void addcoordlists(Object o, int coord, Vector coords, Vector lists) {
+  <T> void addcoordlists(T o, int coord, Vector<Integer> coords, Vector<Vector<T>> lists) {
     int i = 0;
-    for(;i<coords.size();i++) if(((Integer)coords.elementAt(i)).intValue()==coord) break;
-    Vector v;
+    for(;i<coords.size();i++) if(coords.elementAt(i)==coord) break;
+    Vector<T> v;
     if(i<coords.size()) {
-      v = (Vector)lists.elementAt(i);
+      v = lists.elementAt(i);
     } else {
-      coords.addElement(new Integer(coord));
-      lists.addElement(v = new Vector());
+      coords.addElement(coord);
+      lists.addElement(v = new Vector<T>());
     };
     v.addElement(o);
   }
 
-  Vector coordlookup(int coord, Vector coords, Vector lists) {
+  <T> Vector<T> coordlookup(int coord, Vector<Integer> coords, Vector<Vector<T>> lists) {
     for(int i = 0; i<coords.size(); i++) {
-      if(((Integer)coords.elementAt(i)).intValue()==coord) {
-        return (Vector)lists.elementAt(i);
-      };
-    };
+      if(coords.elementAt(i) == coord) {
+        return lists.elementAt(i);
+      }
+    }
     return null;
   }
 
