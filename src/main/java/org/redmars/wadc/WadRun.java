@@ -24,7 +24,7 @@ class WadRun {
   Vertex beforelastvertex = null;
   Line lastline = null;
 
-  ArrayDeque<Integer> sectorStack = new ArrayDeque<Integer>();
+  ArrayDeque<Integer> sectorStack = new ArrayDeque<>();
 
   int curthingtype = 1;
   int thingflags = 7; // all skill levels
@@ -62,23 +62,23 @@ class WadRun {
 
   // generated data
 
-  Vector<Vertex> vertices = new Vector<Vertex>();
-  Vector<Line> lines = new Vector<Line>();
+  Vector<Vertex> vertices = new Vector<>();
+  Vector<Line> lines = new Vector<>();
   Vector sides = new Vector();
   Vector sectors = new Vector();
   Vector things = new Vector();
 
-  Vector<Integer> vcoord = new Vector<Integer>();
-  Vector<Vector<Vertex>> vlists = new Vector<Vector<Vertex>>();
+  Vector<Integer> vcoord = new Vector<>();
+  Vector<Vector<Vertex>> vlists = new Vector<>();
 
   AutoRule texrules = null;
 
   // merging and splitting
 
-  Vector<Integer> xcoord = new Vector<Integer>();
-  Vector<Integer> ycoord = new Vector<Integer>();
-  Vector<Vector<Line>> xlists = new Vector<Vector<Line>>();
-  Vector<Vector<Line>> ylists = new Vector<Vector<Line>>();
+  Vector<Integer> xcoord = new Vector<>();
+  Vector<Integer> ycoord = new Vector<>();
+  Vector<Vector<Line>> xlists = new Vector<>();
+  Vector<Vector<Line>> ylists = new Vector<>();
 
   // rendering
 
@@ -93,7 +93,7 @@ class WadRun {
   Vector xtraverts = new Vector();
   Sector errsec = null;
 
-  Vector collect;
+  LinkedHashSet<Vertex> collect = new LinkedHashSet<>();
 
   static Random rnd = new Random();
 
@@ -646,10 +646,6 @@ class WadRun {
     return v;
   }
 
-  void add(Vertex v) {
-    if(!collect.contains(v)) collect.addElement(v);
-  };
-
   void makeline(Vertex a, Vertex b) {
     beforelastvertex = a;
     lastvertex = b;
@@ -657,17 +653,18 @@ class WadRun {
   };
 
   void makeline() {
-    Vector v = lastvertex.v;
-    for(int i = 0;i<v.size();i++) {
-      Line l = (Line)v.elementAt(i);
+    Vector<Line> v = lastvertex.v;
+    for(int i = 0; i < v.size(); i++) {
+      Line l = v.elementAt(i);
       if((l.from==lastvertex && l.to==beforelastvertex) ||
          (l.to==lastvertex && l.from==beforelastvertex)) {
         lastline = l;
         return;
-      };
-    };
-    collect = new Vector();
-    collect.addElement(beforelastvertex);
+      }
+    }
+    collect.clear();
+    collect.add(beforelastvertex);
+
     if(beforelastvertex.x==lastvertex.x) {
       splitlines(beforelastvertex, lastvertex, true, lastvertex.x);
     } else if(beforelastvertex.y==lastvertex.y) {
@@ -675,18 +672,17 @@ class WadRun {
     } else {
       makeline_really(beforelastvertex, lastvertex);
     };
-    for(int i = 0; i<lastvertex.v.size(); i++) {
-      Line l = (Line)lastvertex.v.elementAt(i);
+    for(int i = 0; i < lastvertex.v.size(); i++) {
+      Line l = lastvertex.v.elementAt(i);
       Vertex other = lastvertex==l.from ? l.to : l.from;
-      for(int j = 0; j<collect.size(); j++) {
-        Vertex o = (Vertex)collect.elementAt(j);
+      for(Vertex o : collect) {
         if(other==o) {
           lastline = l;
           beforelastvertex = o;
           return;
-        };
-      };
-    };
+        }
+      }
+    }
     wp.error("could not locate last line?");
   }
 
@@ -745,12 +741,12 @@ class WadRun {
   }
 
   void splitlines(Vertex a, Vertex b, boolean eqx, int coord) {
-    Vector v = coordlookup(coord, eqx ? xcoord : ycoord,
+    Vector<Line> v = coordlookup(coord, eqx ? xcoord : ycoord,
                                   eqx ? xlists : ylists);
     if(v!=null) for(int i = 0; i<v.size(); i++) {
       int c1 = eqx ? a.y : a.x;
       int c2 = eqx ? b.y : b.x;
-      Line l = (Line)v.elementAt(i);
+      Line l = v.elementAt(i);
       int lc1 = eqx ? l.from.y : l.from.x;
       int lc2 = eqx ? l.to.y : l.to.x;
       Vertex ca = a;
@@ -760,10 +756,10 @@ class WadRun {
       if(c1>c2) { int temp = c2; c2 = c1; c1 = temp; ca = b; cb = a; };
       if(lc1>lc2) { int temp = lc2; lc2 = lc1; lc1 = temp; lca = l.to; lcb = l.from; };
       if(c2<=lc1 || c1>=lc2) continue;       // no overlap
-      add(lca);
-      add(lcb);
-      add(ca);
-      add(cb);
+      collect.add(lca);
+      collect.add(lcb);
+      collect.add(ca);
+      collect.add(cb);
       v.removeElementAt(i);
       if(c1<lc1) {    // overlap on the left
         splitlines((ca==a ? ca : lca), (ca==a ? lca : ca), eqx, coord);
@@ -864,13 +860,13 @@ class WadRun {
       if(v==lastvertex) return;
       //for(int i = 0;i<v.v.size();i++) { Line m = (Line)v.v.elementAt(i); wp.mf.msg("line: "+v.angle(m)); };
       for(int i = 0;i<v.v.size();i++) {
-        Line m = (Line)v.v.elementAt(i);
+        Line m = v.v.elementAt(i);
         if(m==l) {
           //wp.mf.msg("pick: "+i);
           if(rightside) { i--; } else { i++; };
           if(i<0) i = v.v.size()-1;
           if(i>=v.v.size()) i = 0;
-          m = (Line)v.v.elementAt(i);
+          m = v.v.elementAt(i);
           if(m==l) { errsec = sec; wp.error("trying to make sector on unconnected line"); };
           l = m;
           v = l.from==v?l.to:l.from;

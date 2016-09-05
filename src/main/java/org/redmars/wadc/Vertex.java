@@ -12,18 +12,21 @@ import java.util.*;
 public class Vertex {
   int idx;
   int x,y;
-  Vector v = new Vector();
+  Vector<Line> v = new Vector<>();
+
   public int hashCode() { return (x*y)>>8; }
+
   void insert(Line l) {
     int ang = angle(l);
-    for(int i = 0;i<v.size();i++) {
-      if(ang<angle((Line)v.elementAt(i))) {
+    for(int i = 0; i < v.size(); i++) {
+      if(ang < angle(v.elementAt(i))) {
         v.insertElementAt(l,i);
         return;
-      };
-    };
+      }
+    }
     v.addElement(l);
-  };
+  }
+
   void remove(Line l) {
     v.removeElement(l);
     /*for(int i = 0;i<v.size();i++) {
