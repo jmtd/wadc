@@ -66,11 +66,10 @@ owater(o, x, floorheight, ceilheight) {
         -- the control sector
         control(
           ceil(oget(o, "waterflat"))
-          --move(8)
           triple(left(8))
           linetype(242, oget(o, "watertag") ) left(8)
           bot(oget(o, "watermap"))
-          leftsector(oget(o, "water"), ceilheight, 140)
+          leftsector(oget(o, "water"), ceilheight, oget(o, "waterlight"))
           popsector
           linetype(0,0)
         )
