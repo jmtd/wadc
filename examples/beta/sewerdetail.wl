@@ -8,16 +8,20 @@ main {
 
 unpegged
 
-  doomexe("chocolate-doom")
+  corridor(256)
+
+}
+
+corridor(y) {
 
   fori(0,3,
 
-    box(0, add(mul(i,16),72), 140, 256, 16)
+    box(0, add(mul(i,16),72), 140, y, 16)
     movestep(0,16)
     xoff(mul(add(1,i),16))
   )
  
-  box(0, 136, 140, 256, 128)
+  box(0, 136, 140, y, 128)
 
   pushpop(
     top("METAL")
@@ -36,7 +40,7 @@ unpegged
   movestep(0,128)
 
   fori(0,3,
-    box(0, sub(120,mul(i,16)), 140, 256, 16)
+    box(0, sub(120,mul(i,16)), 140, y, 16)
 
     movestep(0,16)
     xoff(mul(add(1,i),16))
