@@ -672,6 +672,19 @@ class WadRun {
     } else {
       makeline_really(beforelastvertex, lastvertex);
     };
+
+    // This fixes the case where a line is split by a second linedef
+    // which has the opposite direction to the overdrawn one
+    for(int i = 0; i < lastvertex.v.size(); i++) {
+      Line l = lastvertex.v.elementAt(i);
+      Vertex other = lastvertex==l.from ? l.to : l.from;
+
+      if(other == beforelastvertex) {
+          lastline = l;
+          return;
+      }
+    }
+    // no exact line found above; use collect
     for(int i = 0; i < lastvertex.v.size(); i++) {
       Line l = lastvertex.v.elementAt(i);
       Vertex other = lastvertex==l.from ? l.to : l.from;
