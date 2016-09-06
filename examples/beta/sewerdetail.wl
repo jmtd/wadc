@@ -4,11 +4,10 @@
 main {
 
   place(64,64,thing)
-  movestep(0,32)
 
 unpegged
 
-  corridor(256)
+  corridor(512)
 
 }
 
@@ -21,23 +20,25 @@ corridor(y) {
     xoff(mul(add(1,i),16))
   )
  
-  box(0, 136, 140, y, 128)
+  box(0, 136, 140, y, 192)
 
   pushpop(
-    top("METAL")
-    movestep(128,26)
 
+    movestep(128,56)
+
+    top("-")
     quad(
       straight(64)
       curve(8,8,5,0)
     )
-    innerrightsector(0,136,150)
+    innerrightsector(0,1036,150)
 
+    top("METAL")
     movestep(0,8)
     ceil("CEIL1_2")
     ibox(0,112,160, 64,64)
   )
-  movestep(0,128)
+  movestep(0,192)
 
   fori(0,3,
     box(0, sub(120,mul(i,16)), 140, y, 16)
