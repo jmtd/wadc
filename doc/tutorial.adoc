@@ -113,7 +113,7 @@ What happens if we try calling `boring` twice?
 
 .tutorial/3.wl
 ----
-include::tutorial/3.wl[]
+include::tutorial/3.wll[]
 ----
 
 It didn't work: the second box is trying to overdraw on the first. We can fix
@@ -264,7 +264,7 @@ We've also re-arranged the order of the boring rooms slightly. You may notice
 that the starting room is now in the "West" position rather than the "South
 West".
 
-== Now for a corridor (and an annoying bug)
+== Now for a corridor
 
 Let's try another routine. First of all, can you remember where the cursor is?
 I can't. If you are using the WadC GUI, a quick way to find out is to put a
@@ -282,27 +282,11 @@ the square room.
 ----
 include::tutorial/13.wl[]
 ----
+image::tutorial/13.png[title="13.wad"]
 
-Hmm it didn't work. Why? Well, this is a long standing bug/behaviour in WadC
-that I haven't managed to fix or replace yet. When trying to define the sector,
-it's looking at a segment of a previously drawn line and complaining that it
-has already assigned that segment to a previously drawn sector (the last boring
-room).
-
-Until I've fixed this, the workaround is to tweak our corridor routine to draw
-things in a different order.
-
-.tutorial/14.wl
-----
-include::tutorial/14.wl[]
-----
-image::tutorial/14.png[title="14.wad"]
-
-So here we are drawing the corridor backwards. We first move inwards a bit,
-because we want the corridor inset; just as before. We then move to where the
-opposite corner of the corridor will be; turn around, and draw the corner.
-Finally we move around again so that we're positioned correctly for future
-calls to `corridor`, or to `boring2`.
+Before drawing the corridor, we first move inwards a bit, because we want the
+corridor inset. Just as with the `boring` routine, we then move outwards again,
+so we're positioned ready to call one of our routines straight away.
 
 I've tacked a final `boring2` on the end just so you can see that things all
 line up.
