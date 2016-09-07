@@ -106,6 +106,17 @@ _usepipes(o) {
     -256, oget(o, "ceil"), oget(o, "light"),
     $sometag
   )
+
+  -- last sector was the ibox...
+  control(
+    forcesector(lastsector)
+    movestep(0,-8)
+    box(0,0,0, 8,8) -- dummy
+    move(8)
+    box(0,128,0, 8,8) -- floor height key
+    movestep(16,8)
+  )
+
   /*north*/ slimebars(0) slimefade(slimecurve_l)
 
   -- lower corridors
@@ -114,5 +125,5 @@ _usepipes(o) {
   slimeinit(get("slime2"), -256, -128, 150, 24, "SLIME05", "WATERMAP", 80)
   ^east
   slimecorridor(128)
-  slimetrap
+  slimetrap(102, $sometag)
 }

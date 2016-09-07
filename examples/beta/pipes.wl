@@ -542,8 +542,8 @@ _slimelift(east,west,f,c,l,tag) {
   )
 }
 
-slimetrap { _slimetrap(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
-_slimetrap(f,c,l) {
+slimetrap(type,tag) { _slimetrap(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"),type,tag) }
+_slimetrap(f,c,l,type,tag) {
   !slimetrap
   slimeopening(512)
   ^slimetrap
@@ -563,9 +563,9 @@ _slimetrap(f,c,l) {
 
   ^slimetrap
   movestep(64,-32) -- past choke
-  slimetrap_sideroom(f,c,l)
+  slimetrap_sideroom(f,c,l,type,tag)
 }
-slimetrap_sideroom(f,c,l) {
+slimetrap_sideroom(f,c,l,type,tag) {
   -- the trap-door
   box(add(f,32),sub(c,32),l, 384, 12)
   movestep(0,12)
@@ -586,4 +586,14 @@ slimetrap_sideroom(f,c,l) {
       movestep(0,-64)
     )
   )
+
+  -- switch
+  movestep(240, 384)
+  unpegged
+  linetype(type,tag)
+  bot("SW1BRIK") xoff(16) yoff(40) right(32)
+  linetype(0,0) xoff(0) yoff(0)
+  bot("SHAWN2") left(8) left(32) left(8)
+  floor("FLAT23")
+  innerleftsector(add(f,64),c,l)
 }
