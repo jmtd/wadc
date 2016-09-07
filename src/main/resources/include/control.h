@@ -19,15 +19,21 @@
  * TODO: de-duplicate control sectors, possibly using a map data structure
  */
 
+#"lineflags.h"
+
 controlinit {
     !control -- where the next control sector will go
     !controlmargin
 }
+
 control(x) {
   !control_return
   ^control
+  set("control_lineflags_backup", getlineflags)
+  setlineflags(or(getlineflags, never_automap))
   x
   up step(16,0) down
+  setlineflags(get("control_lineflags_backup"))
   !control
   ^control_return
 }
