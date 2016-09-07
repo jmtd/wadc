@@ -225,11 +225,11 @@ _slimebars(f,c,l,tag) {
   ^slimebars
   sectortype(0,0)
 }
-slimeswitch(y,tag) {
+slimeswitch(y,type,tag) {
   _slimeswitch(y, oget(get("slime"), "floor"), oget(get("slime"), "ceil"),
-               oget(get("slime"), "light"), tag)
+               oget(get("slime"), "light"), type, tag)
 }
-_slimeswitch(y,f,c,l,tag) {
+_slimeswitch(y,f,c,l,type,tag) {
   slimecorridor(y)
   popsector
   popsector
@@ -238,7 +238,7 @@ _slimeswitch(y,f,c,l,tag) {
   pushpop(
     movestep(-64,24)
     rotleft
-    linetype(103,tag)
+    linetype(type,tag)
     bot("SW1BRIK") xoff(16) yoff(40) right(32)
     linetype(0,0)
     bot("SHAWN2") left(8) left(32) left(8)
@@ -472,7 +472,7 @@ slime_downpipe {
   -- contortion to add linedefs to the donut
   movestep(0,120)
 
-  mid("SFALL1")
+  mid("SLIME")
   xoff(0) yoff(-1)
    -- simple static scroller. Major drawback: we lose control of texture
    -- offsets for their primary purpose. Solution: use one of the more
@@ -496,20 +496,34 @@ slime_downpipe {
  *   s is assumed to be drawn prior to slimequad
  *   n is assumed to be handled after slimequad
  */
-slimequad(o,e,w) { _slimequad(e,w,
-  oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
+slimequad(o,e,w,tag) { _slimequad(e,w,
+  oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"),tag)
 }
-_slimequad(east,west,f,c,l) {
-  swater(
-    -- XXX: quad(...) fails; moving rotright before rightsector fails.
-    triple( straight(32) straight(192) straight(32) rotright)
-    straight(32) straight(192) straight(32)
-    rightsector(f,c,l)
-    rotright,
-    f, c
-  )
+_slimequad(east,west,f,c,l,tag) {
   !slimequad movestep(256,256) rotright east
   ^slimequad rotleft west
+  ^slimequad
+  swater(
+    quad( straight(32) straight(192) straight(32) rotright)
+    rightsector(f,c,l),
+    f, c
+  )
+  pushpop(
+    movestep(64,64)
+    swater(
+      sectortype(0,tag) -- XXX: actually breaks the control sector
+      bot("PLAT1") linetype(62,tag)
+      unpegged
+      --rotleft quad(right(128))
+      right(128) left(128) left(128) left(128)
+      unpegged
+      innerleftsector(f,c,l) -- inside out
+      sectortype(0,0)
+      linetype(0,0),
+      f,c
+    )
+  )
+
   ^slimequad movestep(256,0)
 }
 
