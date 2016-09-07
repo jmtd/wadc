@@ -27,6 +27,7 @@ Not yet released.
  * Stack traces are now divided by newlines rather than space characters.
  * It is now much more convenient to generate maps for the original Doom,
    Heretic, Hexen and Strife, in addition to Doom II.
+ * The GUI now has basic undo/redo support for text editing.
 
 === Example scripts
 
@@ -78,10 +79,16 @@ Not yet released.
 
 ==== Bug fixes
 
+ * A long-standing bug with splitting lines has been fixed,
+   where one line is drawn in the opposite direction to the
+   first. When this happened you got the misleading error
+   "Sidedef already assigned to sector". Various example maps
+   had contortions to avoid this situation which now works.
  * You can now use `popsector` more than once. This means you
    can have an inner sector within an inner sector within an
    outer one, to an arbitrary depth.
- * `water.h` can now be used with inner-sectors.
+ * `water.h` can now be used with inner-sectors and the water
+    light level value is honoured.
  * The GUI is now listed as "WadC" rather than "MainFrame" in
    various places such as the Mac OS X menu bar.
  * If you use the choice operator before a `seed` operation,
