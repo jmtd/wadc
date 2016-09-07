@@ -17,7 +17,7 @@ main {
 
   pushpop(movestep(64,64) thing)
   slimecorridor(128)
-  slimequad(
+  slimelift(
 	get("slime1"),
 	0, -- east
 	0, -- west

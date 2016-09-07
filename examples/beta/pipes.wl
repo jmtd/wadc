@@ -513,13 +513,25 @@ _slimequad(east,west,f,c,l,tag) {
     rightsector(f,c,l),
     f, c
   )
+
+  ^slimequad movestep(256,0)
+}
+
+/*
+ * slimelift - a slimequad with a lift in it
+ */
+slimelift(o,e,w,tag) { _slimelift(e,w,
+  oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"),tag)
+}
+_slimelift(east,west,f,c,l,tag) {
+  _slimequad(east,west,f,c,l,tag)
   pushpop(
+    movestep(-256,0)
     movestep(64,64)
     swater(
-      sectortype(0,tag) -- XXX: actually breaks the control sector
+      sectortype(0,tag)
       bot("PLAT1") linetype(62,tag)
       unpegged
-      --rotleft quad(right(128))
       right(128) left(128) left(128) left(128)
       unpegged
       innerleftsector(f,c,l) -- inside out
@@ -528,8 +540,6 @@ _slimequad(east,west,f,c,l,tag) {
       f,c
     )
   )
-
-  ^slimequad movestep(256,0)
 }
 
 slimetrap { _slimetrap(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }

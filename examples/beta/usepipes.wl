@@ -100,7 +100,7 @@ _usepipes(o) {
     deaf
   )
 
-  _slimequad(
+  _slimelift(
     !east,
     /*west*/ slimebars(0) slimefade(slimecurve_r),
     -256, oget(o, "ceil"), oget(o, "light"),
