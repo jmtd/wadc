@@ -6,6 +6,7 @@
 
 #"standard.h"
 #"water.h"
+#"lineflags.h"
 
 /*
  * initialise the slime stuff
@@ -322,6 +323,9 @@ _slimesecret(y,f,c,l,whatever) {
   slimeinit(get("slimesecret"), -96, 32, 120, 120, "NUKAGE1", "WATERMAP", 80)
   ^slimesecret_orig
 
+  set("slimesecret_lineflags_backup", getlineflags)
+  setlineflags(or(getlineflags, secret_line))
+
   -- joining tunnel
   movestep(-64,256)
   swater(
@@ -353,6 +357,7 @@ _slimesecret(y,f,c,l,whatever) {
   slimefade(slimecurve_l)
 
   set("slime", get("slimebackup"))
+  setlineflags(get("slimesecret_lineflags_backup"))
   ^slimesecret_orig
 }
 
