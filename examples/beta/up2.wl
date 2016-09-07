@@ -19,7 +19,6 @@ main {
 
    fix freedoom flat light level for first graphic
    downpipe x offs by using more complex scroller type
-   lift in 4-way corridor
    remove/rework square room
     lower flats on bars
    doortrack on trap area
