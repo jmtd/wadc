@@ -90,7 +90,7 @@ _usepipes(o) {
   slimesecret(256,doublebarreled thing)
   control_carriage_return
 
-  slimecorridor(896)
+  slimecorridor(864)
   -- monsters for the upper corridor
   pushpop(
     movestep(-256,128)
@@ -100,6 +100,9 @@ _usepipes(o) {
     deaf
   )
 
+  set("slime2", onew)
+  slimeinit(get("slime2"), -256, -128, 150, 16, "SLIME05", "WATERMAP", 80)
+
   _slimelift(
     !east,
     /*west*/ slimebars(0) slimefade(slimecurve_r),
@@ -108,11 +111,15 @@ _usepipes(o) {
   )
 
   -- last sector was the ibox...
+  -- XXX some of the step shenanigans here need tidying up
   control(
+    move(8)
     forcesector(lastsector)
     movestep(0,-8)
     box(0,0,0, 8,8) -- dummy
-    move(8)
+    move(-8)
+    box(-232,128,0, 8,8) -- lift bottom height desired
+    move(16)
     box(0,128,0, 8,8) -- floor height key
     movestep(16,8)
   )
@@ -120,9 +127,7 @@ _usepipes(o) {
   /*north*/ slimebars(0) slimefade(slimecurve_l)
 
   -- lower corridors
-  control_carriage_return ^control
-  set("slime2", onew)
-  slimeinit(get("slime2"), -256, -128, 150, 24, "SLIME05", "WATERMAP", 80)
+  control_carriage_return
   ^east
   slimecorridor(128)
   slimetrap(102, $sometag)

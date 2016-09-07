@@ -530,11 +530,14 @@ _slimelift(east,west,f,c,l,tag) {
     movestep(64,64)
     swater(
       sectortype(0,tag)
-      bot("PLAT1") linetype(62,tag)
+      -- boom generalised linedef type. lift, SR, normal speed, next lowest neighbour
+      -- XXX: we need to add a calculator for this to WadC :->
+      bot("PLAT1") linetype(13643,tag)
       unpegged
       right(128) left(128) left(128) left(128)
       unpegged
-      innerleftsector(f,c,l) -- inside out
+      floor("STEP1")
+      innerleftsector(add(f,24),c,l) -- inside out
       sectortype(0,0)
       linetype(0,0),
       f,c
