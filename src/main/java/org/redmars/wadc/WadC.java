@@ -18,23 +18,34 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-public class WadC extends Frame implements WadCMainFrame {
-  TextArea textArea1 = new TextArea("",15,30);
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+import javax.swing.event.DocumentEvent;
+import javax.swing.undo.UndoManager;
+
+public class WadC extends JFrame implements WadCMainFrame {
+  JTextArea textArea1 = new JTextArea("",15,30);
   GroupLayout borderLayout1 = new GroupLayout(true);
   Panel panel1 = new Panel();
   TextArea textArea2 = new TextArea("",5,20);
   MenuBar menuBar1 = new MenuBar();
-  Menu menu1 = new Menu();
-  MenuItem menuItem1 = new MenuItem();
-  MenuItem menuItem2 = new MenuItem();
-  MenuItem menuItem3 = new MenuItem();
-  MenuItem menuItem4 = new MenuItem();
-  MenuItem menuItem5 = new MenuItem();
-  Menu menu2 = new Menu();
-  MenuItem menuItem6 = new MenuItem();
-  MenuItem menuItem7 = new MenuItem();
-  MenuItem menuItem8 = new MenuItem();
+  Menu menu1 = new Menu(); // file
+  MenuItem menuItem1 = new MenuItem(); // new
+  MenuItem menuItem2 = new MenuItem(); // open
+  MenuItem menuItem3 = new MenuItem(); // save
+  MenuItem menuItem4 = new MenuItem(); // save as
+  MenuItem menuItem5 = new MenuItem(); // quit
+
+  Menu editMenu = new Menu();
+  MenuItem undoItem = new MenuItem();
+  MenuItem redoItem = new MenuItem();
+
+  Menu menu2 = new Menu(); // program
+  MenuItem menuItem6 = new MenuItem(); // run
+  MenuItem menuItem7 = new MenuItem(); // run / save
+  MenuItem menuItem8 = new MenuItem(); // ... / bsp / doom
   Canvas cv;
+  UndoManager manager = new UndoManager();
 
   WadParse lastwp = null;
   boolean changed = false;
@@ -70,12 +81,19 @@ public class WadC extends Frame implements WadCMainFrame {
   private void jbInit() throws Exception {
     setTitle("wadc");
     textArea1.setFont(new Font("Monospaced",0,12));
-    textArea1.addTextListener(new java.awt.event.TextListener() {
-
-      public void textValueChanged(TextEvent e) {
-        textArea1_textValueChanged(e);
+    textArea1.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+      public void insertUpdate(DocumentEvent e) {
+        textArea1_textValueChanged();
+      }
+      public void removeUpdate(DocumentEvent e) {
+          textArea1_textValueChanged();
+      }
+      public void changedUpdate(DocumentEvent e) {
+          textArea1_textValueChanged();
       }
     });
+    textArea1.getDocument().addUndoableEditListener(manager);
+
     panel1.setLayout(new GroupLayout(false));
     textArea1.setBackground(Color.white);
     this.setLayout(borderLayout1);
@@ -120,6 +138,22 @@ public class WadC extends Frame implements WadCMainFrame {
         quit(e);
       }
     });
+
+    editMenu.setLabel(__("Edit"));
+    undoItem.setLabel(__("Undo"));
+    undoItem.setShortcut(new MenuShortcut(KeyEvent.VK_Z)); // VK_UNDO?
+    undoItem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            manager.undo();
+        }
+    });
+    redoItem.setLabel(__("Redo")); // XXX: shortcuts
+    redoItem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            manager.redo();
+        }
+    });
+
     menu2.setLabel(__("Program"));
     menuItem6.setLabel(__("Run"));
     menuItem6.setShortcut(new MenuShortcut(82));
@@ -143,12 +177,15 @@ public class WadC extends Frame implements WadCMainFrame {
     });
     add(textArea1, "b");
     menuBar1.add(menu1);
+    menuBar1.add(editMenu);
     menuBar1.add(menu2);
     menu1.add(menuItem1);
     menu1.add(menuItem2);
     menu1.add(menuItem3);
     menu1.add(menuItem4);
     menu1.add(menuItem5);
+    editMenu.add(undoItem);
+    editMenu.add(redoItem);
     menu2.add(menuItem6);
     menu2.add(menuItem7);
     menu2.add(menuItem8);
@@ -325,7 +362,7 @@ public class WadC extends Frame implements WadCMainFrame {
     return wadfile;
   }
 
-  void textArea1_textValueChanged(TextEvent e) {
+  void textArea1_textValueChanged() {
     changed = true;
     if(lastwp!=null) {
       if(lastwp.editchanged==0) lastwp.editchanged = 2;
