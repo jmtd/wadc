@@ -12,11 +12,6 @@
 #"standard.h"
 #"boom.h"
 
-trigger_sr { 3 }
-lift_delay_1s { 0 }
-lift_speed_turbo { 3 }
-floor_speed_turbo { 3 }
-
 main {
 
   pushpop (movestep(64,64) thing)

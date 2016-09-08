@@ -12,7 +12,7 @@
         monster activation Y = 1 N = 0
         Speed: 0=Slow, 1=Normal, 2=Fast, 3=Turbo
 
-        Direction up=1 down=2
+        Direction up=1 down=0
         Floor/Ceiling changes:
         0=none, 1=zero type 2=texture only 3=texture & type
 
@@ -25,6 +25,11 @@
 */
 
 #"math.h"
+
+trigger_sr { 3 }
+lift_delay_1s { 0 }
+lift_speed_turbo { 3 }
+floor_speed_turbo { 3 }
 
 GenFloorBase    { 0x6000 }
 GenCeilingBase  { 0x4000 }
