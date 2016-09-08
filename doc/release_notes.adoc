@@ -28,6 +28,9 @@ Not yet released.
  * It is now much more convenient to generate maps for the original Doom,
    Heretic, Hexen and Strife, in addition to Doom II.
  * The GUI now has basic undo/redo support for text editing.
+ * You can now write numbers in hexidecimal by prefixing them with '0x'.
+   Only positive numbers are supported at the moment (use `mul(-1,0xabc)`
+   as a workaround if you must)
 
 === Example scripts
 

@@ -117,7 +117,7 @@ public class WadParse {
 
           continue;
         };
-        parseint("-");
+        parseint("-", 10); // XXX: no negative hex digits yet
         return;
       case '/':
         if(buf.charAt(pos)=='*') {
@@ -129,6 +129,13 @@ public class WadParse {
           pos += 2;
           continue;
         };
+      case '0': /* possibly hex digit */
+        if(buf.charAt(pos)=='x') {
+            pos++;
+            parseint("", 16);
+            return;
+        }
+        // deliberately fall-through
       default:
         if(Character.isLetter(token) || token=='_') {
           String s = ""+token;
@@ -138,7 +145,7 @@ public class WadParse {
           return;
         };
         if(Character.isDigit(token)) {
-          parseint(""+token);
+          parseint(""+token, 10);
           return;
         };
         return;
@@ -196,9 +203,11 @@ public class WadParse {
     lex();
   }
 
-  void parseint(String s) {
-    while(Character.isDigit(token = buf.charAt(pos))) { pos++; s+=token; };
-    iinfo = Integer.parseInt(s);
+  void parseint(String s, int base) {
+    while(Character.digit(token = buf.charAt(pos), base) >= 0) {
+        pos++; s+=token;
+    }
+    iinfo = Integer.parseInt(s, base);
     token = '1';
   }
 
