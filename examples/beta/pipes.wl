@@ -501,14 +501,15 @@ slime_downpipe {
  *   s is assumed to be drawn prior to slimequad
  *   n is assumed to be handled after slimequad
  */
-slimequad(o,e,w,tag) { _slimequad(e,w,
-  oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"),tag)
+slimequad(o,e,w) { _slimequad(e,w, oget(o,"whandle"),
+  oget(o, "floor"), oget(o, "ceil"), oget(o, "light"))
 }
-_slimequad(east,west,f,c,l,tag) {
+_slimequad(east,west,whandle,f,c,l) {
   !slimequad movestep(256,256) rotright east
   ^slimequad rotleft west
   ^slimequad
-  swater(
+
+  owater(whandle,
     quad( straight(32) straight(192) straight(32) rotright)
     rightsector(f,c,l),
     f, c
@@ -520,24 +521,25 @@ _slimequad(east,west,f,c,l,tag) {
 /*
  * slimelift - a slimequad with a lift in it
  */
-slimelift(o,e,w,tag) { _slimelift(e,w,
-  oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"),tag)
+slimelift(o,e,w,liftheight,tag) {
+  slimequad(o,e,w)
+  _slimelift(oget(o, "whandle"),
+  oget(o, "floor"), oget(o, "ceil"), oget(o, "light"), liftheight, tag)
 }
-_slimelift(east,west,f,c,l,tag) {
-  _slimequad(east,west,f,c,l,tag)
+_slimelift(whandle,f,c,l,lh,tag) {
   pushpop(
     movestep(-256,0)
-    movestep(64,64)
-    swater(
+    movestep(32,32)
+    owater(whandle,
       sectortype(0,tag)
       -- boom generalised linedef type. lift, SR, normal speed, next lowest neighbour
       -- XXX: we need to add a calculator for this to WadC :->
       bot("PLAT1") linetype(13643,tag)
       unpegged
-      right(128) left(128) left(128) left(128)
+      right(192) left(192) left(192) left(192)
       unpegged
       floor("STEP1")
-      innerleftsector(add(f,24),c,l) -- inside out
+      innerleftsector(add(f,lh),c,l) -- inside out
       sectortype(0,0)
       linetype(0,0),
       f,c
