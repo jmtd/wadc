@@ -27,7 +27,7 @@ import javax.swing.undo.UndoManager;
 public class WadC extends JFrame implements WadCMainFrame {
   JTextArea textArea1 = new JTextArea("",15,30);
   JScrollPane sp = new JScrollPane(textArea1);
-  GroupLayout borderLayout1 = new GroupLayout(true);
+  GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
   Panel panel1 = new Panel();
   TextArea textArea2 = new TextArea("",5,20);
   MenuBar menuBar1 = new MenuBar();
