@@ -14,6 +14,7 @@
  * the owater* routines operate on a user-supplied object, meaning you
  * can mix multiple water levels/types in the same map
  */
+#"standard.h"
 #"control.h"
 
 /*
@@ -35,6 +36,12 @@ owaterinit(o, h, f, m, l) {
 
     oset(o, "watertag", newtag)
     water_vanilla(m)
+
+    -- this is a workaround for a bug which stops you using water() on
+    -- the first sector in the map: the control sector gets drawn first
+    -- (so it's the real first sector), but then the popsector command
+    -- fails (since you can't pop the last sector).
+    control( box(0,0,0,8,8) )
 }
 
 /* convenience function for common water settings */
