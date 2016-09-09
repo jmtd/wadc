@@ -20,11 +20,13 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.undo.UndoManager;
 
 public class WadC extends JFrame implements WadCMainFrame {
   JTextArea textArea1 = new JTextArea("",15,30);
+  JScrollPane sp = new JScrollPane(textArea1);
   GroupLayout borderLayout1 = new GroupLayout(true);
   Panel panel1 = new Panel();
   TextArea textArea2 = new TextArea("",5,20);
@@ -175,7 +177,7 @@ public class WadC extends JFrame implements WadCMainFrame {
         bspdoom(savewad(e));
       }
     });
-    add(textArea1, "b");
+    add(sp, "b");
     menuBar1.add(menu1);
     menuBar1.add(editMenu);
     menuBar1.add(menu2);
