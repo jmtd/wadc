@@ -21,6 +21,8 @@ import java.util.Vector;
 
 public class WadCCLI implements WadCMainFrame {
 
+    String src = "";
+
     public static void usage() {
         System.err.println("usage: WadCCLI <infile>");
         System.exit(1);
@@ -55,7 +57,7 @@ public class WadCCLI implements WadCMainFrame {
         return loadtextfile(prefDir + File.separator + "wadc.cfg");
     }
 
-    void read_in_prefs() {
+    void readPrefs() {
         // XXX: copied from MainFrame. should be a static interface method?
         String cfg = getPrefs();
         if(!"".equals(cfg)) {
@@ -80,18 +82,18 @@ public class WadCCLI implements WadCMainFrame {
       return "";
     }
 
-    // XXX: rename, we have a private getText method below!
-    String getText(final String name) {
-        if(name==null) return "";
+    void readSource(final String name) {
+        if(name==null) return;
         this.prefs.basename = (new File(name)).toString();
-        return loadtextfile(this.prefs.basename);
+        this.src = loadtextfile(this.prefs.basename);
     }
 
     /* do the magic */
     public WadCCLI(final String infile, boolean writesrc) {
         String wadfile;
-        read_in_prefs();
-        WadParse wp = new WadParse(getText(infile), this);
+        readPrefs();
+        readSource(infile);
+        WadParse wp = new WadParse(this.src, this);
         try {
             wp.run();
             wadfile = prefs.basename.substring(0,prefs.basename.lastIndexOf('.'))+".wad";
@@ -122,12 +124,11 @@ public class WadCCLI implements WadCMainFrame {
     public void msg(String m) {
         System.out.println(m);
     }
-    // XXX: this means that when using WadCCLI the WadC source is not written intp
-    // the PWAD. Having said that, neither is "--" so I'm not sure what's going on
-    // here.
+
     public String getText() {
-        return "--";
+        return this.src;
     }
+
     public void insert(String s, int pos) {
         // not implemented
     }
