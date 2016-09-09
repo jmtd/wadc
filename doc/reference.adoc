@@ -896,6 +896,7 @@ basic.h::      a set of higher level architectural building blocks
                prefabs for things like starts, end of level, monster
                teleporting and placement, and room segments.
 lisp.h::       lisp-style cons lists
+math::         some math routines (bit shifts and `pow` so far)
 
 === Thing definitions
 
@@ -953,8 +954,13 @@ heretic.h::    Settings and defaults for Heretic
 hexen.h::      Settings and defaults for Hexen
 strife.h::     Settings and defaults for Strife
 
+The above headers are one-size-fits all for inclusion in maps for those
+ports; they, in turn, pull in some smaller files in `include/<gamename>`
+in some cases.
+
 === Port/post-vanilla
 
+boom.h::       Boom generalised linedef function and related constants
 control.h::    control sector macros, for e.g. Boom special effects
 water.h::      macros for Boom-deep water special effects
 zdoom.h::      macros for Zdoom-specific special effects (slopes, mirrors)
