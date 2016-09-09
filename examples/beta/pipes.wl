@@ -602,3 +602,28 @@ slimetrap_sideroom(f,c,l,type,tag) {
   floor("FLAT23")
   innerleftsector(add(f,64),c,l)
 }
+
+/*
+ * new stuff designed to replace slimetrap and start
+ * room
+ */
+
+slimeramp { _slimeramp(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
+_slimeramp(f,c,l) {
+  -- for now, assume corridor will be drawn separately
+
+  -- north side
+  !slimeramp
+  move(64)
+  rotleft print(add(320,64))
+  box( add(f,32), c, l, 128, 384)
+
+  -- south side
+  ^slimeramp
+  move(64)
+  movestep(384, 256)
+  rotright
+  box( add(f,32), c, l, 128, 384)
+
+  ^slimeramp
+}
