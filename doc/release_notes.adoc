@@ -17,6 +17,11 @@ toc::[]
 
 Not yet released.
 
+== 2.1
+
+Version 2.1 of WadC is dedicated to the memory of Professor Seymour Papert
+(1928-2016), co-inventor of the LOGO programming language.
+
 === Core program changes
 
  * Internationalisation support.
