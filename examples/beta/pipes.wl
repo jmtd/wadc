@@ -6,6 +6,7 @@
 
 #"standard.h"
 #"water.h"
+#"lineflags.h"
 
 /*
  * initialise the slime stuff
@@ -225,11 +226,11 @@ _slimebars(f,c,l,tag) {
   ^slimebars
   sectortype(0,0)
 }
-slimeswitch(y,tag) {
+slimeswitch(y,type,tag) {
   _slimeswitch(y, oget(get("slime"), "floor"), oget(get("slime"), "ceil"),
-               oget(get("slime"), "light"), tag)
+               oget(get("slime"), "light"), type, tag)
 }
-_slimeswitch(y,f,c,l,tag) {
+_slimeswitch(y,f,c,l,type,tag) {
   slimecorridor(y)
   popsector
   popsector
@@ -238,7 +239,7 @@ _slimeswitch(y,f,c,l,tag) {
   pushpop(
     movestep(-64,24)
     rotleft
-    linetype(103,tag)
+    linetype(type,tag)
     bot("SW1BRIK") xoff(16) yoff(40) right(32)
     linetype(0,0)
     bot("SHAWN2") left(8) left(32) left(8)
@@ -322,6 +323,9 @@ _slimesecret(y,f,c,l,whatever) {
   slimeinit(get("slimesecret"), -96, 32, 120, 120, "NUKAGE1", "WATERMAP", 80)
   ^slimesecret_orig
 
+  set("slimesecret_lineflags_backup", getlineflags)
+  setlineflags(or(getlineflags, secret_line))
+
   -- joining tunnel
   movestep(-64,256)
   swater(
@@ -353,6 +357,7 @@ _slimesecret(y,f,c,l,whatever) {
   slimefade(slimecurve_l)
 
   set("slime", get("slimebackup"))
+  setlineflags(get("slimesecret_lineflags_backup"))
   ^slimesecret_orig
 }
 
@@ -472,7 +477,7 @@ slime_downpipe {
   -- contortion to add linedefs to the donut
   movestep(0,120)
 
-  mid("SFALL1")
+  mid("SLIME")
   xoff(0) yoff(-1)
    -- simple static scroller. Major drawback: we lose control of texture
    -- offsets for their primary purpose. Solution: use one of the more
@@ -496,25 +501,54 @@ slime_downpipe {
  *   s is assumed to be drawn prior to slimequad
  *   n is assumed to be handled after slimequad
  */
-slimequad(o,e,w) { _slimequad(e,w,
-  oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
+slimequad(o,e,w) { _slimequad(e,w, oget(o,"whandle"),
+  oget(o, "floor"), oget(o, "ceil"), oget(o, "light"))
 }
-_slimequad(east,west,f,c,l) {
-  swater(
-    -- XXX: quad(...) fails; moving rotright before rightsector fails.
-    triple( straight(32) straight(192) straight(32) rotright)
-    straight(32) straight(192) straight(32)
-    rightsector(f,c,l)
-    rotright,
-    f, c
-  )
+_slimequad(east,west,whandle,f,c,l) {
   !slimequad movestep(256,256) rotright east
   ^slimequad rotleft west
+  ^slimequad
+
+  owater(whandle,
+    quad( straight(32) straight(192) straight(32) rotright)
+    rightsector(f,c,l),
+    f, c
+  )
+
   ^slimequad movestep(256,0)
 }
 
-slimetrap { _slimetrap(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
-_slimetrap(f,c,l) {
+/*
+ * slimelift - a slimequad with a lift in it
+ */
+slimelift(o,e,w,liftheight,tag) {
+  slimequad(o,e,w)
+  _slimelift(oget(o, "whandle"),
+  oget(o, "floor"), oget(o, "ceil"), oget(o, "light"), liftheight, tag)
+}
+_slimelift(whandle,f,c,l,lh,tag) {
+  pushpop(
+    movestep(-256,0)
+    movestep(32,32)
+    owater(whandle,
+      sectortype(0,tag)
+      -- boom generalised linedef type. lift, SR, normal speed, next lowest neighbour
+      -- XXX: we need to add a calculator for this to WadC :->
+      bot("PLAT1") linetype(13643,tag)
+      unpegged
+      right(192) left(192) left(192) left(192)
+      unpegged
+      floor("STEP1")
+      innerleftsector(add(f,lh),c,l) -- inside out
+      sectortype(0,0)
+      linetype(0,0),
+      f,c
+    )
+  )
+}
+
+slimetrap(type,tag) { _slimetrap(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"),type,tag) }
+_slimetrap(f,c,l,type,tag) {
   !slimetrap
   slimeopening(512)
   ^slimetrap
@@ -534,9 +568,9 @@ _slimetrap(f,c,l) {
 
   ^slimetrap
   movestep(64,-32) -- past choke
-  slimetrap_sideroom(f,c,l)
+  slimetrap_sideroom(f,c,l,type,tag)
 }
-slimetrap_sideroom(f,c,l) {
+slimetrap_sideroom(f,c,l,type,tag) {
   -- the trap-door
   box(add(f,32),sub(c,32),l, 384, 12)
   movestep(0,12)
@@ -557,4 +591,39 @@ slimetrap_sideroom(f,c,l) {
       movestep(0,-64)
     )
   )
+
+  -- switch
+  movestep(240, 384)
+  unpegged
+  linetype(type,tag)
+  bot("SW1BRIK") xoff(16) yoff(40) right(32)
+  linetype(0,0) xoff(0) yoff(0)
+  bot("SHAWN2") left(8) left(32) left(8)
+  floor("FLAT23")
+  innerleftsector(add(f,64),c,l)
+}
+
+/*
+ * new stuff designed to replace slimetrap and start
+ * room
+ */
+
+slimeramp { _slimeramp(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
+_slimeramp(f,c,l) {
+  -- for now, assume corridor will be drawn separately
+
+  -- north side
+  !slimeramp
+  move(64)
+  rotleft print(add(320,64))
+  box( add(f,32), c, l, 128, 384)
+
+  -- south side
+  ^slimeramp
+  move(64)
+  movestep(384, 256)
+  rotright
+  box( add(f,32), c, l, 128, 384)
+
+  ^slimeramp
 }

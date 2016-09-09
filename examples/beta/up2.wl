@@ -13,3 +13,17 @@
 main {
   usepipes
 }
+
+
+/* TODO list
+
+   fix freedoom flat light level for first graphic
+   downpipe x offs by using more complex scroller type
+   remove/rework square room
+    lower flats on bars
+   doortrack on trap area
+
+
+
+
+ */
