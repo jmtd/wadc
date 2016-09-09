@@ -68,4 +68,7 @@ main {
     slimechoke
     slimecurve_l
     slimechoke
+
+    print(get("controlstats"))
+    print("control sectors")
 }
