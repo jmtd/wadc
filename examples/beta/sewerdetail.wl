@@ -1,63 +1,248 @@
 #"standard.h"
 #"basic.h"
+#"pipes.wl"
+#"monsters.h"
+
+sbox(f,c,l,w,h) {
+    swater(box(f,c,l,w,h),f,c)
+}
 
 main {
+  pushpop(rotright controlinit)
+  move(1024)
+  unpegged
+  set("slime1", onew) -- upper sewers
+  slimeinit(get("slime1"), 0, 128, 160, 16, "SLIME04", "WATERMAP", 80, "BRICK7")
+  set("slime1_5", onew) -- quads between upper/middle
+  slimeinit(get("slime1_5"), -256, 128, 160, 16, "SLIME04", "WATERMAP", 80, "BRICK7")
 
-  place(64,64,thing)
+  set("slime2", onew) -- middle sewers
+  slimeinit(get("slime2"), -256, add(-256,128), 140, 16, "SLIME04", "WATERMAP", 80, "GRAY1")
 
-unpegged
+  set("slime2_5", onew) -- quads between middle/bottom
+  slimeinit(get("slime2_5"), -512, add(-256,128), 140, 16, "SLIME04", "WATERMAP", 80, "GRAY1")
 
+  set("slime3", onew) -- bottom sewers
+  slimeinit(get("slime3"), -512, add(-512,128), 120, 32, "SLIME04", "WATERMAP", 80, "ICKWALL3")
+
+  slimeset(get("slime1"))
+
+  unpegged -- ?
+
+  -- upper loop
+  !start
+  rotright
+  entrance_area(player1start)
+  curveleft
+  corridor(64)
+  !quad1
+  sewerquad
+  corridor(128)
+  curveleft
+  corridor(128)
+  !quad2
+  sewerquad
+  corridor(64)
+  curveleft
   corridor(512)
+  curveleft
 
+  -- middle loop
+  ^quad1
+  move(320)
+  rotright
+  slimeset(get("slime2"))
+  move(320) -- skip slimequad
+  corridor(64)
+  curveleft
+  corridor(512)
+  curveleft
+  entrance_area(formersergeant)
+  curveleft
+  corridor(64)
+  move(320) -- skip slimequad
+  sewerfade
+
+  print(cat(get("controlstats")," control sectors"))
+}
+
+entrance_area(x) {
+  !entrance
+  corridor(512)
+  ^entrance
+  movestep(64,-128)
+  box(24,160,140,384,128)
+  ^entrance
+  movestep(64,320)
+  box(24,160,140,384,128)
+  place(128,64, rotleft x thing)
+  ^entrance
+  move(512)
+}
+
+sewerquad {
+  corridor(320)
+}
+
+sewerfade {
+  corridor(128)
+}
+
+-- like fori but you must increment i yourself
+fori_(from, to, body) {
+  set("i", from)
+  lessthaneq(i,to) ? body for(i,to,body) : 0
+}
+
+-- corridor bit with conduit
+pipebit(y) {
+      sbox(0, 136, 140, y, 80)
+      movestep(0, 80)
+      ceil("CEIL5_2") sbox(0, 124, 140, y, 32)
+      movestep(0, 32)
+      ceil("RROCK10") sbox(0, 136, 140, y, 80)
+      movestep(y, -112)
+}
+
+/* draws a diamond pattern of side-length x and creates
+   an inner sector with properties f,c,l */
+idiamond(x,f,c,l) {
+    down
+    step(x,x)
+    step(mul(-1,x),x)
+    step(mul(-1,x),mul(-1,x))
+    step(x,mul(-1,x))
+    innerrightsector(f,c,l)
+}
+
+lightbox {
+      ceil("TLITE6_1") sbox(-16, 116, 140, 64, 64)
+      pushpop(
+        -- light cone
+        movestep(32,8) swater(quad(curve(24,24,4,0)) innerrightsector(-16,116,170),-16,116)
+        -- diamond light cut-out
+        movestep(0,8) swater(idiamond(16,-16,108,200),-16,108)
+      )
 }
 
 corridor(y) {
-
+  !corridor
   fori(0,3,
 
-    box(0, add(mul(i,16),72), 140, y, 16)
+    sbox(16, add(mul(i,16),72), 140, y, 16)
     movestep(0,16)
     xoff(mul(add(1,i),16))
   )
  
   top("METAL")
 
-  -- cut out space for a light every 128px
-  pushpop(
-    fori(0, div(y,192),
-      box(-16, 136, 140, 128, 80)
-      move(128)
-      box(-16, 136, 140, 64, 64)
-      move(64)
-    )
+  fori_(0, y,
+    -- headroom will be sub(y, i)
+
+    -- if we have 192px or more, we'll have a light
+    lessthaneq(192, sub(y,i)) ? {
+
+      pipebit(128)
+
+      ceil("RROCK10") sbox(0, 136, 140, 64, 64)
+      movestep(0,64)
+      lightbox
+      movestep(0, 64)
+      ceil("RROCK10") sbox(0, 136, 140, 64, 64)
+      movestep(64,-128)
+
+      inc("i", 192)
+
+    } : { eq(i,y) ? 0 : { -- no room for a light
+
+      pipebit(sub(y,i))
+      inc("i", sub(y, i))
+    }}
   )
-  movestep(0,80)
 
-   
-  ceil("CEIL5_2")
-
-  pushpop(
-    fori(0, div(y,192),
-      box(-16, 116, 140, 128, 32)
-      movestep(128,-16)
-      box(-16, 116, 140, 64, 32)
-      movestep(64,16)
-    )
-  )
-  movestep(0,32)
-
-
-  ceil("RROCK10")
-  box(-16, 136, 140, y, 80) movestep(0,80)
-  top("BRICK7")
-
-  -- TLITE6_1
+  ^corridor
+  movestep(0,256)
 
   fori(0,3,
-    box(0, sub(120,mul(i,16)), 140, y, 16)
+    sbox(16, sub(120,mul(i,16)), 140, y, 16)
 
     movestep(0,16)
     xoff(mul(add(1,i),16))
   )
+  
+  ^corridor move(y)
 }
 
+-- you can't superimpose curves unless they are drawn exactly the same
+-- direction, so we draw all the curves first and define sectors after
+
+curveleft {
+  corridor(32) -- gives us more favourable alignment for lights
+  !curveleft
+
+  -- inner-curves
+  fori(0,4,
+      ^curveleft
+      movestep(0,mul(i,16))
+      curve(add(mul(i,16),160), add(mul(i,-16),-160), 24, 1)
+  )
+  ^curveleft
+  movestep(160,-160)
+  fori(0,3,
+    swater(straight(16) rightsector(0, add(mul(i,16),72), 140),
+      0, add(mul(i,16),72))
+  )
+
+  -- middle curves
+  ^curveleft
+  movestep(0, 144)
+  ceil("CEIL5_2") sbox(-16, 124, 140, 32, 32) -- first bit of conduit
+  movestep(32,-16)
+  lightbox
+
+  move(64)
+  !curveleft2 swater(
+    curve(128, -96, 32, 1)
+    rotright
+    step(0,32)
+    step(16,0)
+    rotright
+    curve(96, 144, 32, 1)
+    right(32) ceil("CEIL5_2") 
+    rightsector(-16, 124, 140)
+  , -16, 124)
+
+  ^curveleft
+  move(224)
+  lightbox
+
+  !curveleft2
+   move(32)
+   curve(48, -160, 32, 1)
+   ^curveleft2
+   swater(
+
+    move(64)
+    step(0,16)
+    ceil("CEIL5_2") 	
+    curve(48, -176, 32, 1) left(32) leftsector(0, 124, 140)
+  , 0, 124)
+
+  -- outer curves
+  fori(0,4,
+    ^curveleft
+    movestep(0,add(256,mul(i,16)))
+    curve(add(mul(i,16),416), add(mul(i,-16),-416), 48, 1)
+  )
+  rotleft
+  fori(0,3, swater(straight(16) leftsector(16, add(mul(i,16),72), 140),
+      16, add(mul(i,16),72)))
+
+  -- middle sectors
+  swater( straight(80) ceil("RROCK10") leftsector(0, 124, 140), 0, 136)
+  move(32)
+  swater( straight(80) ceil("RROCK10") leftsector(0, 124, 140), 0, 136)
+
+  move(64) rotright
+  corridor(32)
+}

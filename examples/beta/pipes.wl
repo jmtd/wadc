@@ -7,6 +7,7 @@
 #"standard.h"
 #"water.h"
 #"lineflags.h"
+#"basic.h"
 
 /*
  * initialise the slime stuff
@@ -23,12 +24,14 @@ slimeinit(o,
     wh,-- water height above floor
     wf,-- water flat
     wm,-- COLORMAP for underwater
-    wl -- base light level underwater
+    wl,-- base light level underwater
+    t  -- texture top/mid/bot
     ) {
     oset(o,"floor",f)
     oset(o,"ceil", c)
     oset(o,"light",l)
     oset(o,"whandle",onew)
+    oset(o,"texture",t)
     slimeset(o)
     owaterinit(oget(o,"whandle"), add(wh, f), wf, wm, wl)
     o
@@ -38,6 +41,9 @@ slimeinit(o,
  */
 slimeset(o) {
   set("slime", o)
+  top(oget(o, "texture"))
+  mid(oget(o, "texture"))
+  bot(oget(o, "texture"))
 }
 /*
  * convenience function
@@ -314,7 +320,7 @@ slimesecret(y,whatever) {
   _slimesecret(y, oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"), whatever)
 }
 _slimesecret(y,f,c,l,whatever) {
-    -- new temporary slime object
+    -- new temporary slime object -- XXX: why?
     set("slimesecret", onew)
     set("slimebackup", get("slime"))
 
@@ -359,6 +365,44 @@ _slimesecret(y,f,c,l,whatever) {
   set("slime", get("slimebackup"))
   setlineflags(get("slimesecret_lineflags_backup"))
   ^slimesecret_orig
+}
+
+/*
+ * re-implementing slimesecret, or some of it. With the present layout of
+ * up3, I can't fit the old secret layout on the RHS. Considering putting
+ * it on the LHS instead, but might move other aspects of the map around
+ * anyway, so just leave it like this for the short term.
+ */
+
+slimesecret2 { _slimesecret2(64, oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
+_slimesecret2(y,f,c,l) {
+    !slimesecret2
+
+    swater(box(add(32,f), sub(c,32), l, y, 32), add(32,f), sub(c,32))
+    movestep(0,32)
+    swater(box(f,c,l,y,128), f, c)
+    movestep(0,128)
+
+    -- steps down
+    fori(1,2,
+      swater(box(sub(f,mul(i,24)), c, l, y, 32), sub(f,mul(i,24)), c)
+      movestep(0,32)
+    )
+    -- step at ledge
+    swater(box(sub(f,mul(i,24)), sub(c,32), l, y, 32), sub(f,mul(i,24)), sub(c,32))
+    inc("i", 1)
+    movestep(0,32)
+
+    -- underneath
+    set("slimesecret_lineflags", getlineflags)
+    setlineflags(or(getlineflags, secret_line))
+    swater(box(sub(f,mul(i,24)), 24/*XXX slime height*/, l, 64, 64), sub(f,mul(i,24)), 24)
+    
+    movestep(32,32) doublebarreled thing
+
+    ^slimesecret2
+    setlineflags(get("slimesecret_lineflags"))
+    move(y)
 }
 
 slimesplit(left, centre, right) {
@@ -497,25 +541,56 @@ slime_downpipe {
 /*
  * slimequad - a four-way split for corridors
  * orientations assuming we're drawing northwards
+ * n,s,e,w: objects that match the corridors attached to each
  *   e,w - hooks for corridors to east and west
  *   s is assumed to be drawn prior to slimequad
  *   n is assumed to be handled after slimequad
  */
-slimequad(o,e,w) { _slimequad(e,w, oget(o,"whandle"),
+slimequad(o,n,s,e,w) { _slimequad(n,s,e,w, oget(o,"whandle"),
   oget(o, "floor"), oget(o, "ceil"), oget(o, "light"))
 }
-_slimequad(east,west,whandle,f,c,l) {
-  !slimequad movestep(256,256) rotright east
-  ^slimequad rotleft west
-  ^slimequad
+slimespill(o,f,c,l) {
+  owater(oget(o,"whandle"),
+    movestep(0,32)
+    bot("SFALL1")
+    mid("-")
+    curve(32,96,8,1)
+    curve(96,32,8,1)
+    left(-192)
+    rightsector(f,c,l)
+  , f, c)
+}
+_slimequad(n,s,e,w,whandle,f,c,l) {
+  !slimequad
 
+  /*
+  -- new slime object to cover combination of quad object and water height
+  -- of south corridor redundant?
+  set("slimequad", onew)
+  owaterinit(get("slimequad"),
+    oget(oget(s,"whandle"), "water"),
+    oget(whandle, "waterflat"),
+    oget(whandle, "watermap"),
+    oget(whandle, "waterlight")
+  )*/
+
+  slimespill(s,f,c,l)
+
+  ^slimequad move(256) rotright
+  slimespill(w,f,c,l)
+  ^slimequad movestep(256,256) turnaround
+  slimespill(n,f,c,l)
+  ^slimequad movestep(0,256) rotleft
+  slimespill(e,f,c,l)
+
+  ^slimequad
   owater(whandle,
-    quad( straight(32) straight(192) straight(32) rotright)
+    straight(32) straight(192) straight(32) rotright
+    triple( straight(32) straight(192) straight(32) rotright)
     rightsector(f,c,l),
     f, c
   )
-
-  ^slimequad movestep(256,0)
+  movestep(256,0)
 }
 
 /*
@@ -534,7 +609,14 @@ _slimelift(whandle,f,c,l,lh,tag) {
       sectortype(0,tag)
       -- boom generalised linedef type. lift, SR, normal speed, next lowest neighbour
       -- XXX: we need to add a calculator for this to WadC :->
-      bot("PLAT1") linetype(13643,tag)
+      bot("PLAT1") linetype(/*13643*/ genlift(
+        trigger_sr,
+        lift_target_NnF,
+        lift_delay_1s,
+        0, -- monster no
+        speed_turbo,
+      ) ,tag)
+
       unpegged
       right(192) left(192) left(192) left(192)
       unpegged
@@ -604,26 +686,71 @@ slimetrap_sideroom(f,c,l,type,tag) {
 }
 
 /*
+ * attempt to make a general door
+ */
+slimedoor(doortex,f,c,l) {
+  !door
+
+  left(12)
+  top(doortex) right(128)
+  ^door movestep(12, 128) turnaround
+  straight(12)
+  right(128) rightsector(f, c, l)
+
+  ^door move(32)
+  mid("DOORSTOP") straight(8) right(128) right(8)
+  right(128) rightsector(add(f,32), add(f,32), l) rotright
+
+  ^door move(24)
+  straight(12) right(128) right(12) right(128)
+  rotright
+
+}
+
+/*
  * new stuff designed to replace slimetrap and start
  * room
  */
 
-slimeramp { _slimeramp(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
-_slimeramp(f,c,l) {
-  -- for now, assume corridor will be drawn separately
+slimeramp(
+    y, -- length of corridor
+    door_open -- is door open?
+) { _slimeramp(y, door_open,
+    oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light")) }
+
+_slimeramp(y,door_open, f,c,l) {
+
+  !slimeramp
+  swater(box(add(32,f), sub(c,32), l, y, 32), add(32,f), sub(c,32))
+  movestep(0,32)
+  swater(box(f,c,l,y,192), f, c)
+  movestep(0,192)
+  swater(box(add(32,f), sub(c,32), l, y, 32), add(32,f), sub(c,32))
 
   -- north side
-  !slimeramp
+  ^slimeramp
   move(64)
-  rotleft print(add(320,64))
-  box( add(f,32), c, l, 128, 384)
+
+  /* XXX: parameterize into doorway fn? */
+  left(12) top("BIGDOOR1") right(sub(y,128)) top("BRICK7") /*XXX*/
+  right(12) right(sub(y,128)) rightsector(add(f,32), c, l) rotright
+
+  move(12) mid("DOORSTOP") straight(8) right(sub(y,128)) right(8)
+  right(sub(y,128)) rightsector(add(f,32), add(f,32), l) rotright
+  mid("BRICK7") /*XXX*/
+
+  move(8) straight(12) right(sub(y,128))
+  right(12) right(sub(y,128)) rightsector(add(f,32), c, l) rotright
+
+  movestep(12,-64)
+  box( add(f,32), c, l, 128, y)
 
   -- south side
   ^slimeramp
-  move(64)
-  movestep(384, 256)
+  movestep(sub(y,64), 256)
   rotright
-  box( add(f,32), c, l, 128, 384)
+  box( add(f,32), c, l, 128, sub(y,128))
 
   ^slimeramp
+  move(y)
 }
