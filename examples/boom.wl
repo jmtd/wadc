@@ -23,14 +23,14 @@ main {
 	0, -- target
 	lift_delay_1s,
 	0, -- no monster
-	lift_speed_turbo),
+	speed_turbo),
 	$genlift)
   straight(64)
 
   -- generalised floor
   linetype(genfloor(
 	trigger_sr,
-	floor_speed_turbo,
+	speed_turbo,
 	0, -- model XXX ?
 	0, -- down/up
 	1, -- target
@@ -64,7 +64,10 @@ main {
   linetype(0,0) mid("BRICK7")
   straight(128)
   right(64) top("BIGDOOR1") straight(128) top("BRICK7") straight(64)
-  right(512) right(256) right(128) rightsector(0, 160, 160)
+  linetype(enable_wind, $wind1) right(512) linetype(0,0)
+
+  linetype(enable_friction, $friction1) right(256) linetype(0,0)
+  right(128) rightsector(0, 160, 160)
 
   sectortype(0,$genlift)
   movestep(-64, 128)
@@ -89,5 +92,37 @@ main {
 
   sectortype(0,0)
   movestep(16, -64)
-  box(0, 160, 160, 256,256)
+  box(0, 160, 160, 256,512)
+  
+  /*
+   * generalised floors
+   */
+
+  movestep(112,64)
+
+  sectortype(gen_sector(
+      light_flicker,
+      damage_10pers,
+      0, 0, 0),
+    0)
+  ibox(24, 160, 160, 64, 64)
+  movestep(0,128) popsector
+
+  -- slippy sector
+  sectortype(gen_sector(
+      light_oscillate, 0,
+      0, 1 /* friction */, 0),
+    $friction1)
+  ibox(16, 160, 255, 64, 64)
+  movestep(-64,128) popsector
+
+
+  -- windy sector
+  sectortype(gen_sector(
+      0, 0,
+      0, 0, 1 /* wind */),
+    $wind1)
+  ibox(-16, 160, 160, 128, 128)
+
+
 }
