@@ -7,6 +7,7 @@
  */
 
 package org.redmars.wadc;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -23,6 +24,9 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.undo.UndoManager;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class WadC extends JFrame implements WadCMainFrame {
   JTextArea textArea1 = new JTextArea("",15,30);
@@ -222,12 +226,7 @@ public class WadC extends JFrame implements WadCMainFrame {
 
   void savetextfile(String name, String contents) {
     try {
-      FileOutputStream prj = new FileOutputStream(name);
-      DataOutputStream dos = new DataOutputStream(prj);
-      dos.writeBytes(contents);
-      dos.flush();
-      dos.close();
-      prj.close();
+      Files.write(Paths.get(name), contents.getBytes("UTF-8"));
       msg(__("wrote file "+name));
     } catch(IOException i) {
       msg(__("saving file unsuccessful: ") + name);
