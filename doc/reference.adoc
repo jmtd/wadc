@@ -48,7 +48,7 @@ You need a Java runtime environment installed to use WadC. Get one from
 https://java.com/download if you don't have it already.
 
 Unpack the whole zip to any directory you like. On most systems, just
-double-click or activate the "wadc.jar" file. From a command line in
+double-click or activate the "wadc-2.1.jar" file. From a command line in
 the location where you extracted the ZIP, could also run
 
     java -jar wadc.jar
@@ -73,7 +73,7 @@ aware that this is alpha quality, consider this a tech preview :)
 The zip also includes
 
 examples/:: example WadC files to try out.
-includes/:: a copy of the WadC "standard library". This is also
+include/::  a copy of the WadC "standard library". This is also
             embedded in the JAR, but is included so you can read
             it and see how it works. See also "Include files",
             below.
@@ -377,23 +377,23 @@ to "east".
 
     up down
 
-control wether the "pen" is up or down. If it is down (default)
+control whether the "pen" is up or down. If it is down (default)
 moving about will create linedefs (hint, use macros from standard.h
 instead of these).
 
     step(forwards_backwards,sideways)
 
 This is the main drawing command. It draws a line from the current
-vertex to a new postion which will become the new current vertex.
+vertex to a new position which will become the new current vertex.
 The first value determines how many units to go forwards in the
 direction you are looking, if it is negative you will go backwards.
 The second parameter determines a sidestep from this, 0 means
-straight ahead, positive numbers step towards the left, and negative
-ones to the right. For example, if you were looking north, and wanted
+straight ahead, positive numbers step towards the right, and negative
+ones to the left. For example, if you were looking north, and wanted
 to draw a line that goes 45 degrees across a 64 unit square towards
 the north-east, you would write:
 
-    step(64,-64)
+    step(64,64)
 
 Here you see why that 4 direction system is useful: if you were using
 arbitrary angles you would have needed to write something like 
@@ -452,8 +452,7 @@ thing being added by using
 where type you have to take from uds.txt, or better still use
 monsters.h / pickups.h / decoration.h / spawns.h include files instead.
 
-If you need to fine-tune the angle that the thing is created facing,
-use
+If you need to fine-tune the angle that things are facing, use
 
     thingangle(angle)
     angle_east
@@ -465,6 +464,7 @@ use
     angle_south
     angle_se
 
+`thingangle` takes a value in degrees, with 0 degrees facing West.
 The constants `angle_east`, etc are defined in `standard.h` for your
 convenience.
 
@@ -502,8 +502,6 @@ Similar to the thing equivalents: fine control over linedef flag values.
 Useful in conjunction with the bitwise operators. There are some linedef
 flag constants defined in `include/lineflags.h`.
 
-
-
     getfloor
     getceil
     gettop
@@ -530,7 +528,7 @@ a priority. bot/top/mid get assigned to both sidedefs upon creation of the
 linedef (using step), floor/ceil are assigned when leftsector/rightsector is 
 executed.
 
-By default, WadC automatically removes textures on doublesided linedefs.
+By default, WadC automatically removes mid-textures on doublesided linedefs.
 You can toggle this on and off using the 'midtex' command:
 
     midtex
@@ -589,11 +587,8 @@ spacially adjoining it. forcesector will force the next makesector command
 to add sidedefs to the sector specified instead of creating a new one. The
 properties specified in the makesector command (floor level etc) are ignored.
 
-    popsector
-
 Clearly there are a few Doom specific types and flags missing, this will
 come in future versions.
-
 
 ==== Line splitting/merging
 
@@ -675,7 +670,7 @@ use 'newtag'
 
 ===== Caveats
 
-`newtag` nor tag identifiers pull unique tag numbers from the same "pool" so you
+`newtag` and tag identifiers pull unique tag numbers from the same "pool" so you
 can mix and match them. However, if you use bare numbers as tag arguments and use
 `newtag` or tag identifiers, you run the risk of clashing the generated numbers
 with your hand-chosen ones.
@@ -686,8 +681,8 @@ with your hand-chosen ones.
 This is a very powerful feature which lets you create "rules" that say
 how a map should be textured, instead of doing it by hand.
 
-Only surfaces that have the "?" texture assigned to them, will be auto textured
-this has the advantage that you can still perform manual texturing in those cases
+Only surfaces that have the "?" texture assigned to them, will be auto textured.
+This has the advantage that you can still perform manual texturing in those cases
 where you can't write a rule to express what you want. You can easily use
 autotexall() to set all texture to "?".
 
