@@ -52,13 +52,10 @@ waterinit_fwater(h) {
 /*
  * define a texture matching the colormap. This is a hack so that
  * the wad doesn't crash vanilla.
- * SKY1 is in doom/doom2/heretic/hexen, but not strife, which seems
- * to have no patches in common with any other game. More work will
- * be needed for anyone wanting to use this with Strife.
  */
 water_vanilla(m) {
     texture(m,64,128)
-    addpatch("SKY1",0,0)
+    addpatch("BODIES",0,0)
 }
 
 /*
