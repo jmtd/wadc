@@ -28,6 +28,7 @@ Not yet released.
  * It is now much more convenient to generate maps for the original Doom,
    Heretic, Hexen and Strife, in addition to Doom II.
  * The GUI now has basic undo/redo support for text editing.
+ * The GUI's default size is now twice as large.
  * You can now write numbers in hexidecimal by prefixing them with '0x'.
    Only positive numbers are supported at the moment (use `mul(-1,0xabc)`
    as a workaround if you must)
@@ -40,7 +41,7 @@ Not yet released.
  * `doom_ex.wl`, `htic_ex.wl`, `hexen_ex.wl`, `strife.wl`: very simple
     test maps that demonstrate Doom #1/Heretic/Hexen/Strife support
  * `polyobj.wl`: example of Hexen polyobjects (swinging doors, etc.)
- * `boom.wl`: Examples of Boom generalised linedef types.
+ * `boom.wl`: Examples of Boom generalised linedef and sector types.
 
 === Documentation
 
@@ -81,8 +82,8 @@ Not yet released.
                  as well as implementations of `deaf`, `easy`,
                  `hurtmeplenty`, `ultraviolence` and `friendly`.
 `math.h`:: some mathematic routines (bit shifts and `pow` so far)
-`boom.h`:: Routines for building Boom generalised linedefs and some
-           constants for use with these routines.
+`boom.h`:: Routines for building Boom generalised linedefs and sectors,
+           some constants for use with these routines.
 
 ==== Bug fixes
 
@@ -98,6 +99,9 @@ Not yet released.
     light level value is honoured.
  * `water.h` can be used to decorate the very first sector you
     draw.
+ * The control sectors that `water.h` draws are now properly
+   to the right of the cursor, rather than to the left, so it
+   plays nicely with other `control.h` users.
  * The GUI is now listed as "WadC" rather than "MainFrame" in
    various places such as the Mac OS X menu bar.
  * If you use the choice operator before a `seed` operation,
@@ -108,6 +112,10 @@ Not yet released.
    with `linetypehexen` were not cleared by `linetype`.
  * The tech-preview CLI will correctly embed the WadC source in
    generated WADs, just like the GUI.
+ * The GUI code to write-out WadC files when you save has been
+   changed to write UTF-8. Previously it was writing the first
+   byte of UTF-8 only, so any multibyte characters were getting
+   corrupted.
 
 === Development stuff
 
