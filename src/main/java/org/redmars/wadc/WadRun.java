@@ -675,8 +675,7 @@ class WadRun {
 
     // This fixes the case where a line is split by a second linedef
     // which has the opposite direction to the overdrawn one
-    for(int i = 0; i < lastvertex.v.size(); i++) {
-      Line l = lastvertex.v.elementAt(i);
+    for(Line l : lastvertex.v) {
       Vertex other = lastvertex==l.from ? l.to : l.from;
 
       if(other == beforelastvertex) {

@@ -125,8 +125,6 @@ public class Wad {
     Vector<Line> v = wr.lines;
     int numlines = 0;
     for(Line a : v) {
-    //for(int i = 0;i<v.size();i++) {
-      //Line a = (Line)v.elementAt(i);
       if(a.left==null) {
         a.left = a.right;
         a.right = null;
