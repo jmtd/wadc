@@ -54,8 +54,8 @@ waterinit_fwater(h) {
  * the wad doesn't crash vanilla.
  */
 water_vanilla(m) {
-    texture(m,64,128)
-    addpatch("BODIES",0,0)
+    texture(m,32,128)
+    addpatch("SW12_1",0,0)
 }
 
 /*
