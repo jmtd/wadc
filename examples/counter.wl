@@ -75,7 +75,7 @@ counters(x) {
     linetype(gendoor(trigger_sr,
       speed_turbo,
       door_open_delay_close,
-      door_open_delay_close,
+      0,
       door_delay_1s), get("current"))
     mid("SW1STRTN")
     straight(64)
@@ -152,7 +152,7 @@ guard(tag,carry) {
           trigger_wr,
           speed_turbo,
           door_open_delay_close,
-          door_open_delay_close,
+          0,
           door_delay_1s), carry) } left(64) linetype(0,0)
     left(8)
     left(64)
