@@ -73,6 +73,11 @@ door_open   { 1 }
 door_close_delay_open { 2 }
 door_close  { 3 }
 
+door_delay_1s  { 0 }
+door_delay_4s  { 1 }
+door_delay_9s  { 2 }
+door_delay_30s { 3 }
+
 -- constants for locked doors
 lock_any          { 0 }
 lock_red_card     { 1 }
