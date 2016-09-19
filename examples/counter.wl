@@ -12,6 +12,7 @@
 
 #"control.h"
 #"basic.h"
+#"boom.h"
 
 main {
     -- control lines for scrolling
@@ -71,7 +72,7 @@ counters(x) {
     right(mul(x,256))
     !digits
 
-    linetype(15387, get("current"))
+    linetype(gendoor(trigger_sr, speed_turbo, 0, door_open_delay_close, 0), get("current"))
     mid("SW1STRTN")
     straight(64)
     mid("BRICK7")
@@ -143,7 +144,7 @@ guard(tag,carry) {
   !guard
     movestep(72,100)
     left(8)
-    { eq(0,carry) ? 0 : linetype(15385, carry) } left(64) linetype(0,0)
+    { eq(0,carry) ? 0 : linetype(gendoor(trigger_wr, speed_turbo, 0, door_open_delay_close, 0), carry) } left(64) linetype(0,0)
     left(8)
     left(64)
     sectortype(0,tag) innerleftsector(16,16,0) sectortype(0,0)
