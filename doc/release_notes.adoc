@@ -42,6 +42,7 @@ Not yet released.
     test maps that demonstrate Doom #1/Heretic/Hexen/Strife support
  * `polyobj.wl`: example of Hexen polyobjects (swinging doors, etc.)
  * `boom.wl`: Examples of Boom generalised linedef and sector types.
+ * `counter.wl`: a binary ripple counter for Boom
 
 === Documentation
 
