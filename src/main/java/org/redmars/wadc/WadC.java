@@ -308,7 +308,7 @@ public class WadC extends JFrame implements WadCMainFrame {
   void quit(ActionEvent e) {
     if(changed) saveas(e);
     savecfg();
-    System.exit(1);
+    System.exit(0);
   }
 
   void run(ActionEvent e) {
