@@ -13,7 +13,6 @@
         <include>README*</include>
         <include>LICENSE*</include>
         <include>extra/**</include>
-        <include>doc/*</include>
         <include>examples/**</include>
       </includes>
     </fileSet>
@@ -21,6 +20,7 @@
       <directory>${project.build.directory}</directory>
       <outputDirectory>.</outputDirectory>
       <includes>
+        <include>docs/**</include>
         <include>*.jar</include>
       </includes>
     </fileSet>
