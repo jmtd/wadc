@@ -10,7 +10,7 @@ toc::[]
 == Introduction
 
 WadC is an old program, with roots in around 2000, and was originally written
-as a semi-private experiment and an opportunity to learn Java.
+(I think) as a semi-private experiment and an opportunity to learn Java.
 
 I have deliberately avoided refactoring or reworking the Java unless I had to
 as part of achieving something else, so things can be a bit messy.
