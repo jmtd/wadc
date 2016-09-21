@@ -96,11 +96,14 @@ fori_(from, to, body) {
 
 -- corridor bit with conduit
 pipebit(y) {
-      sbox(0, 136, 140, y, 80)
+  _pipebit(y,oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
+}
+_pipebit(y,f,c,l) {
+      sbox(f, add(f,136), l, y, 80)
       movestep(0, 80)
-      ceil("CEIL5_2") sbox(0, 124, 140, y, 32)
+      ceil("CEIL5_2") sbox(f, add(f,124), l, y, 32)
       movestep(0, 32)
-      ceil("RROCK10") sbox(0, 136, 140, y, 80)
+      ceil("RROCK10") sbox(f, add(f,136), l, y, 80)
       movestep(y, -112)
 }
 
@@ -116,20 +119,27 @@ idiamond(x,f,c,l) {
 }
 
 lightbox {
-      ceil("TLITE6_1") sbox(-16, 116, 140, 64, 64)
+  _lightbox(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
+}
+_lightbox(f,c,l) {
+      ceil("TLITE6_1") sbox(f, add(f,116), l, 64, 64)
       pushpop(
         -- light cone
-        movestep(32,8) swater(quad(curve(24,24,4,0)) innerrightsector(-16,116,170),-16,116)
+        movestep(32,8) swater(quad(curve(24,24,4,0)) innerrightsector(f,add(f,116),add(l,30)),-16,116)
         -- diamond light cut-out
-        movestep(0,8) swater(idiamond(16,-16,108,200),-16,108)
+        movestep(0,8) swater(idiamond(16,f,add(f,108),add(l,60)),f,add(f,108))
       )
 }
 
 corridor(y) {
+
+  _corridor(y,oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
+}
+_corridor(y,f,c,l) {
   !corridor
   fori(0,3,
 
-    sbox(16, add(mul(i,16),72), 140, y, 16)
+    sbox(add(f,16), add(mul(i,16),add(f,72)), l, y, 16)
     movestep(0,16)
     xoff(mul(add(1,i),16))
   )
@@ -144,11 +154,11 @@ corridor(y) {
 
       pipebit(128)
 
-      ceil("RROCK10") sbox(0, 136, 140, 64, 64)
+      ceil("RROCK10") sbox(f, add(f,136), l, 64, 64)
       movestep(0,64)
       lightbox
       movestep(0, 64)
-      ceil("RROCK10") sbox(0, 136, 140, 64, 64)
+      ceil("RROCK10") sbox(f, add(f,136), l, 64, 64)
       movestep(64,-128)
 
       inc("i", 192)
@@ -164,7 +174,7 @@ corridor(y) {
   movestep(0,256)
 
   fori(0,3,
-    sbox(16, sub(120,mul(i,16)), 140, y, 16)
+    sbox(add(f,16), sub(add(f,120),mul(i,16)), l, y, 16)
 
     movestep(0,16)
     xoff(mul(add(1,i),16))
