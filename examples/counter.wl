@@ -6,7 +6,7 @@
  * See file LICENSE.txt
  *
  * an 8-bit binary ripple counter
- * implementaton based on Fraggle's by-hand version
+ * implementation based on Fraggle's by-hand version
  * https://www.doomworld.com/idgames/levels/doom2/Ports/a-c/counter
  */
 
