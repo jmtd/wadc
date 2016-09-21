@@ -23,6 +23,14 @@ WadC is now built using Maven. Assuming you have maven installed, simply issue
 
 To build both a `.jar` and a `.zip` bundle in the `target/` directory.
 
+=== Docs
+
+The documentation is built using link:http://asciidoctor.org[Asciidoctor].
+The Maven POM will attempt to build the documentation when you issue
+`mvn package`.  If you do not have Asciidoctor installed, this will not
+work, but you can probably avoid building the docs if you don't use the
+`package` target.
+
 == Regression test suite
 
 The top-level `Makefile` is used as a rough-and-ready regression test tool.
