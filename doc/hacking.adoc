@@ -91,3 +91,25 @@ Some things are hardcoded in water.h, or not possible to manipulate easily from 
 caller. For example, modifying the height of the control sectors to adjust the fake
 flat height; setting a sector type for either the control sector or the decorated
 sector.
+
+== Internationalisation
+
+WadC has basic internationalisation support. Within .java files, strings that might be
+translated are wrapped in `__()`, e.g. `msg(__("wrote file ")+name)`. Any such strings
+are looked up in `MessagesBundle.properties` files within the WadC JAR. These are at
+the location `src/main/resources` within the source. For example, the French translations
+are defined in `MessagesBundle_fr_FR.properties`.
+
+=== Adding translations
+
+Add or edit the `MessagesBundle_xx_XX.properties` files. The syntax is basically
+
+ lookup_string = translated_string
+
+Spaces in either string need to be backslash escaped.
+
+=== Adding words to be looked up
+
+For any strings in the `WadC.java` file,  wrap them in `__()`. For other Java source
+files, some extension work is necessary to define a `__()` method in that context. I
+would love patches to extend this.

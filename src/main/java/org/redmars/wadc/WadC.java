@@ -227,7 +227,7 @@ public class WadC extends JFrame implements WadCMainFrame {
   void savetextfile(String name, String contents) {
     try {
       Files.write(Paths.get(name), contents.getBytes("UTF-8"));
-      msg(__("wrote file "+name));
+      msg(__("wrote file ")+name);
     } catch(IOException i) {
       msg(__("saving file unsuccessful: ") + name);
     };
