@@ -82,6 +82,7 @@
           </execution>
         </executions>
         <configuration>
+          <sourceDirectory>${basedir}/doc</sourceDirectory>
           <outputDirectory>${project.build.directory}/docs</outputDirectory>
           <backend>html</backend>
           <imagesDir>./</imagesDir>
