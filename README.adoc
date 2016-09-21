@@ -2,6 +2,8 @@
 Jonathan Dowland <jon@dow.land>
 :homepage: https://jmtd.net/wadc/
 
+image::logo/logo.png[float="right"]
+
 == About
 
 WadC is a programming language and IDE for the construction of Doom maps.
