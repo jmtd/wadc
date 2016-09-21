@@ -3,6 +3,7 @@ ff6fbb1c7df2e49d55b1cb68a1224fdb31a4f134 *examples/archtest.wad
 d38b9f4fa863e50b001dd431026ba32962df1711 *examples/boom.wad
 17bee025cd24442fc2370a48c87dbd6637665232 *examples/choicetest.wad
 23578fc56328c433b4f2d74f104b9f6acc29afb6 *examples/choz.wad
+69998baaf5826fe7941979f029e832c240738ee5 *examples/counter.wad
 5336d1329661b640b96bce22065d763f58fdcff4 *examples/curvetest.wad
 643b46d3e824a8f5a369a5f939c3f203f8058c8b *examples/doom_ex.wad
 506fc6963789e0fdafaf2d7638c57b8e05a7c7b1 *examples/entryway.wad
@@ -18,10 +19,11 @@ b63e61550d0232e4d983e145be0e939ad9d30709 *examples/slopesphere.wad
 5cd04f50fec9a7ac9fce693521987e6c30eb91fd *examples/slopetest.wad
 55cc6b5a230b3b6117b4216cc1c7db179af3d51a *examples/spd2_aard.wad
 381f85e419f678bfdf067aa1d98db643303d69e3 *examples/spd5_aard.wad
+b69b16f8abe1f8138d2ce4b7842e684d80788957 *examples/strife_ex.wad
 50c341b5f59a16cf0a8fb6de9ce2f550b1a1dd43 *examples/textures.wad
 689f8997d8bdc945c06d12ac94e1eca7c825cf19 *examples/triangle.wad
 cef9f4f41be09635673c661e14261c063f71450d *examples/tulip.wad
-779deb43a436ec174550a1e091612c81288abf44 *examples/water.wad
+1b0d1f9dfb828f4708afec301c2e7e68f4b1c0d4 *examples/water.wad
 facb596891725a41171fb29023304c5a2c16a900 *tests/angles.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/hex.wad
 f7e27018715d91faa910cdb34789f8fc61ed656f *tests/mixtypes.wad
