@@ -84,8 +84,19 @@ sewerquad {
   corridor(320)
 }
 
+
+-- sewerfade: light level fade-off
 sewerfade {
-  corridor(128)
+    set("slimefade", oget(get("slime"), "light"))
+    _sewerfade(16)
+    oset(get("slime"), "light", get("slimefade"))
+}
+_sewerfade(i) {
+    lessthaneq(i,0) ? 0 : {
+        oset(get("slime"), "light", sub(oget(get("slime"), "light"), 8))
+        corridor(16)
+        _sewerfade(sub(i,1))
+    }
 }
 
 -- like fori but you must increment i yourself
