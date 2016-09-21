@@ -198,6 +198,9 @@ _corridor(y,f,c,l) {
 -- direction, so we draw all the curves first and define sectors after
 
 curveleft {
+  _curveleft(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
+}
+_curveleft(f,c,l) {
   corridor(32) -- gives us more favourable alignment for lights
   !curveleft
 
@@ -210,14 +213,14 @@ curveleft {
   ^curveleft
   movestep(160,-160)
   fori(0,3,
-    swater(straight(16) rightsector(0, add(mul(i,16),72), 140),
-      0, add(mul(i,16),72))
+    swater(straight(16) rightsector(f, add(mul(i,16),88), l),
+      f, add(mul(i,16),88))
   )
 
   -- middle curves
   ^curveleft
   movestep(0, 144)
-  ceil("CEIL5_2") sbox(-16, 124, 140, 32, 32) -- first bit of conduit
+  ceil("CEIL5_2") sbox(f, add(f,140), l, 32, 32) -- first bit of conduit
   movestep(32,-16)
   lightbox
 
@@ -230,8 +233,8 @@ curveleft {
     rotright
     curve(96, 144, 32, 1)
     right(32) ceil("CEIL5_2") 
-    rightsector(-16, 124, 140)
-  , -16, 124)
+    rightsector(f, add(f,140), l)
+  , f, add(f,140))
 
   ^curveleft
   move(224)
@@ -246,8 +249,8 @@ curveleft {
     move(64)
     step(0,16)
     ceil("CEIL5_2") 	
-    curve(48, -176, 32, 1) left(32) leftsector(0, 124, 140)
-  , 0, 124)
+    curve(48, -176, 32, 1) left(32) leftsector(f, add(f,140), l)
+  , f, add(f,140))
 
   -- outer curves
   fori(0,4,
@@ -256,13 +259,13 @@ curveleft {
     curve(add(mul(i,16),416), add(mul(i,-16),-416), 48, 1)
   )
   rotleft
-  fori(0,3, swater(straight(16) leftsector(16, add(mul(i,16),72), 140),
-      16, add(mul(i,16),72)))
+  fori(0,3, swater(straight(16) leftsector(add(f,16), add(mul(i,16),88), l),
+      add(f,16), add(mul(i,16),88)))
 
   -- middle sectors
-  swater( straight(80) ceil("RROCK10") leftsector(0, 124, 140), 0, 136)
+  swater( straight(80) ceil("RROCK10") leftsector(f, add(f,152), l), f, add(f,152))
   move(32)
-  swater( straight(80) ceil("RROCK10") leftsector(0, 124, 140), 0, 136)
+  swater( straight(80) ceil("RROCK10") leftsector(f, add(f,152), l), f, add(f,152))
 
   move(64) rotright
   corridor(32)
