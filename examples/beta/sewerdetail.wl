@@ -84,8 +84,19 @@ sewerquad {
   corridor(320)
 }
 
+
+-- sewerfade: light level fade-off
 sewerfade {
-  corridor(128)
+    set("slimefade", oget(get("slime"), "light"))
+    _sewerfade(16)
+    oset(get("slime"), "light", get("slimefade"))
+}
+_sewerfade(i) {
+    lessthaneq(i,0) ? 0 : {
+        oset(get("slime"), "light", sub(oget(get("slime"), "light"), 8))
+        corridor(16)
+        _sewerfade(sub(i,1))
+    }
 }
 
 -- like fori but you must increment i yourself
@@ -96,11 +107,14 @@ fori_(from, to, body) {
 
 -- corridor bit with conduit
 pipebit(y) {
-      sbox(0, 136, 140, y, 80)
+  _pipebit(y,oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
+}
+_pipebit(y,f,c,l) {
+      sbox(f, add(f,152), l, y, 80)
       movestep(0, 80)
-      ceil("CEIL5_2") sbox(0, 124, 140, y, 32)
+      ceil("CEIL5_2") sbox(f, add(f,140), l, y, 32)
       movestep(0, 32)
-      ceil("RROCK10") sbox(0, 136, 140, y, 80)
+      ceil("RROCK10") sbox(f, add(f,152), l, y, 80)
       movestep(y, -112)
 }
 
@@ -116,20 +130,27 @@ idiamond(x,f,c,l) {
 }
 
 lightbox {
-      ceil("TLITE6_1") sbox(-16, 116, 140, 64, 64)
+  _lightbox(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
+}
+_lightbox(f,c,l) {
+      ceil("TLITE6_1") sbox(f, add(f,132), l, 64, 64)
       pushpop(
         -- light cone
-        movestep(32,8) swater(quad(curve(24,24,4,0)) innerrightsector(-16,116,170),-16,116)
+        movestep(32,8) swater(quad(curve(24,24,4,0)) innerrightsector(f,add(f,132),add(l,30)),f,add(f,132))
         -- diamond light cut-out
-        movestep(0,8) swater(idiamond(16,-16,108,200),-16,108)
+        movestep(0,8) swater(idiamond(16,f,add(f,124),add(l,60)),f,add(f,124))
       )
 }
 
 corridor(y) {
+
+  _corridor(y,oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
+}
+_corridor(y,f,c,l) {
   !corridor
   fori(0,3,
 
-    sbox(16, add(mul(i,16),72), 140, y, 16)
+    sbox(add(f,16), add(mul(i,16),add(f,88)), l, y, 16)
     movestep(0,16)
     xoff(mul(add(1,i),16))
   )
@@ -144,11 +165,11 @@ corridor(y) {
 
       pipebit(128)
 
-      ceil("RROCK10") sbox(0, 136, 140, 64, 64)
+      ceil("RROCK10") sbox(f, add(f,152), l, 64, 64)
       movestep(0,64)
       lightbox
       movestep(0, 64)
-      ceil("RROCK10") sbox(0, 136, 140, 64, 64)
+      ceil("RROCK10") sbox(f, add(f,152), l, 64, 64)
       movestep(64,-128)
 
       inc("i", 192)
@@ -164,7 +185,7 @@ corridor(y) {
   movestep(0,256)
 
   fori(0,3,
-    sbox(16, sub(120,mul(i,16)), 140, y, 16)
+    sbox(add(f,16), sub(add(f,136),mul(i,16)), l, y, 16)
 
     movestep(0,16)
     xoff(mul(add(1,i),16))
@@ -177,6 +198,9 @@ corridor(y) {
 -- direction, so we draw all the curves first and define sectors after
 
 curveleft {
+  _curveleft(oget(get("slime"), "floor"), oget(get("slime"), "ceil"), oget(get("slime"), "light"))
+}
+_curveleft(f,c,l) {
   corridor(32) -- gives us more favourable alignment for lights
   !curveleft
 
@@ -189,14 +213,14 @@ curveleft {
   ^curveleft
   movestep(160,-160)
   fori(0,3,
-    swater(straight(16) rightsector(0, add(mul(i,16),72), 140),
-      0, add(mul(i,16),72))
+    swater(straight(16) rightsector(f, add(mul(i,16),88), l),
+      f, add(mul(i,16),88))
   )
 
   -- middle curves
   ^curveleft
   movestep(0, 144)
-  ceil("CEIL5_2") sbox(-16, 124, 140, 32, 32) -- first bit of conduit
+  ceil("CEIL5_2") sbox(f, add(f,140), l, 32, 32) -- first bit of conduit
   movestep(32,-16)
   lightbox
 
@@ -209,8 +233,8 @@ curveleft {
     rotright
     curve(96, 144, 32, 1)
     right(32) ceil("CEIL5_2") 
-    rightsector(-16, 124, 140)
-  , -16, 124)
+    rightsector(f, add(f,140), l)
+  , f, add(f,140))
 
   ^curveleft
   move(224)
@@ -225,8 +249,8 @@ curveleft {
     move(64)
     step(0,16)
     ceil("CEIL5_2") 	
-    curve(48, -176, 32, 1) left(32) leftsector(0, 124, 140)
-  , 0, 124)
+    curve(48, -176, 32, 1) left(32) leftsector(f, add(f,140), l)
+  , f, add(f,140))
 
   -- outer curves
   fori(0,4,
@@ -235,13 +259,13 @@ curveleft {
     curve(add(mul(i,16),416), add(mul(i,-16),-416), 48, 1)
   )
   rotleft
-  fori(0,3, swater(straight(16) leftsector(16, add(mul(i,16),72), 140),
-      16, add(mul(i,16),72)))
+  fori(0,3, swater(straight(16) leftsector(add(f,16), add(mul(i,16),88), l),
+      add(f,16), add(mul(i,16),88)))
 
   -- middle sectors
-  swater( straight(80) ceil("RROCK10") leftsector(0, 124, 140), 0, 136)
+  swater( straight(80) ceil("RROCK10") leftsector(f, add(f,152), l), f, add(f,152))
   move(32)
-  swater( straight(80) ceil("RROCK10") leftsector(0, 124, 140), 0, 136)
+  swater( straight(80) ceil("RROCK10") leftsector(f, add(f,152), l), f, add(f,152))
 
   move(64) rotright
   corridor(32)
