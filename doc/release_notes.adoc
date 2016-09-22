@@ -43,6 +43,8 @@ Not yet released.
  * `polyobj.wl`: example of Hexen polyobjects (swinging doors, etc.)
  * `boom.wl`: Examples of Boom generalised linedef and sector types.
  * `counter.wl`: a binary ripple counter for Boom
+ * `2countrev.wl`: a modified `counter.wl`, showing how it might be
+    used as part of a real map.
 
 === Documentation
 
