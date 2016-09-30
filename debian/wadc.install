@@ -1,2 +1,2 @@
-wadc.jar usr/share/wadc
-debian/wadcc usr/bin
+#!/usr/bin/dh-exec
+extra/wadccli.sh => /usr/bin/wadccli

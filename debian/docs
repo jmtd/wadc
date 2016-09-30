@@ -1,4 +1,4 @@
 doc/*
 examples/
-include/
 extra/
+target/classes/include

@@ -1,0 +1,4 @@
+
+org.apache.maven.plugins maven-assembly-plugin * * * *
+org.asciidoctor asciidoctor-maven-plugin * * * *
+pl.project13.maven git-commit-id-plugin * * * *

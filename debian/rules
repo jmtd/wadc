@@ -1,12 +1,19 @@
 #!/usr/bin/make -f
 
-JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export DH_VERBOSE=1
+version := $(shell dpkg-parsechangelog -S Version | cut -d+ -f1)
+mvnrepo := debian/wadc/usr/share/maven-repo
 
 %:
-	dh $@ --with javahelper
+	dh $@ --buildsystem=maven
 
-override_dh_link:
-	dh_link usr/share/wadc/wadc.jar usr/bin/wadc
+override_dh_auto_install:
+	dh_auto_install --buildsystem=maven
+	# workarounds for maven-debian-helper being ...weird
+	mv $(mvnrepo)/org/redmars/wadc/wadc/$(version)/wadc-$(version).jar debian/wadc/usr/share/wadc/wadc.jar
+	rm $(mvnrepo)/org/redmars/wadc/wadc/$(version)/wadc-$(version).pom
+	rm -r $(mvnrepo)
+	chmod +x debian/wadc/usr/share/wadc/wadc.jar
 
-override_jh_build:
-	make
+get-orig-source:
+	uscan --download-current-version --force-download --no-symlink
