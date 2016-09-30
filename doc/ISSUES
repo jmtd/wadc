@@ -1,4 +1,0 @@
-default window size better
-
-would be nice if current seed was printed when executing. however,
-we can't get the rng seed, so we'll have to set it ourselves.

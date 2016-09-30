@@ -15,14 +15,14 @@ stairtile2 { floor("DGMTLF06") bot("ADEL_Y05") }
 mainwall { wall("ADG_M01") } --"DPWALL02"
 wall3 { wall("AXLDGB01") }
 litewall { mid("LITE3") }
-metalstrip { wall("NMTSUP5C") }
+metalstrip { wall("FIREBLU2") } -- NMTSUP5C
 
-upperwall { mid("NMETAL12") ceil("DGMTLF05") }
+upperwall { mid("FIREBLU2") ceil("DGMTLF05") } -- NMETAL12
 upperlift { ceil("DGMTLF05") }
-liftside { wall("NMTPIPE1") }
-liftfloor { floor("NMTLF24") }
+liftside { wall("FIREBLU2") } -- NMTPIPE1
+liftfloor { 0 } --floor("NMTLF24") }
 
-archt { floor("DGLITF03") ceil("NMTLF24") wall("NRUST14B") }
+archt { floor("DGLITF03") /*ceil("NMTLF24")*/ wall("FIREBLU2") } -- NRUST14B
 
 main {
   thing

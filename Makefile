@@ -1,36 +1,33 @@
-default: wadc.jar
+# A very basic regression-check suite for WadC. Drop test .wl files in here
+# and you can see if the output WAD changes. Managing whether it *should*
+# have changed is left up to you.
 
-wadc.jar: classes
-	cd build && jar cef org.redmars.wadc.WadC ../wadc.jar \
-        org/redmars/wadc/*.class ../include ../LICENSE.txt
+# hint: md5sha1sum via brew for OS X
 
-v := $(shell git describe)
-org/redmars/wadc/Version.java: Version.java.in
-	sed 's/VERSION/$(v)/' $< > $@
+JAR  := target/wadc-2.1.jar
+WADS := $(patsubst %.wl,%.wad, $(wildcard examples/*.wl) $(wildcard tests/*.wl))
 
-classes: org/redmars/wadc/Version.java
-	mkdir -p build
-	javac org/redmars/wadc/*.java -d build
+default: check
+
+check:
+	sha1sum -b -c sha1sums
+
+wads: $(WADS)
+
+%.wad : %.wl
+	java -cp $(JAR) org.redmars.wadc.WadCCLI -nosrc "$<"
+
+# this should not be automatically re-generated so it should not appear as
+# a dependency in any other rules. To be run by hand by someone who is very
+# confident they haven't broken WadC at the time they run it :)
+sha1sums: $(WADS)
+	sha1sum -b $(WADS) > "$@"
 
 clean:
-	rm -f build/*.class wadc.jar wadc.zip
+	rm -f $(WADS)
 
-version:
-	git describe > VERSION
+# helpers for the tutorial
+TUTORIALWADS := $(patsubst %.wl,%.wad, $(wildcard doc/tutorial/*.wl))
+tutorial: $(TUTORIALWADS)
 
-wadc.zip: wadc.jar
-	zip wadc.zip \
-		wadc.jar \
-		LICENSE.txt \
-		extra/* \
-		examples/*.wl \
-		examples/*.h \
-		examples/old/*.wl \
-		examples/beta/*.wl \
-		examples/beta/*.h \
-		examples/beta/old/*.wl \
-        doc/* \
-        README.adoc \
-		include/*.h
-
-.PHONY: clean default version org/redmars/wadc/Version.java classes
+.PHONY: default clean check wads tutorial

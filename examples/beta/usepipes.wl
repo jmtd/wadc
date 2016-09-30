@@ -11,9 +11,20 @@
 #"pipes.wl"
 #"boring.wl"
 
+-- hack to avoid sprinkling get("slime1") all over _usepipes
 usepipes {
-  slimeinit(0, 128, 120)
-  slime_control
+  !usepipes
+  move(-64) rotright -- control sectors can extend from here
+  controlinit
+  ^usepipes
+
+  set("slime1", onew)
+  slimeinit(get("slime1"), 0, 128, 120, 24, "SLIME05", "WATERMAP", 80)
+  _usepipes(get("slime1"))
+}
+_usepipes(o) {
+  unpegged
+  set("slime1", o)
 
   /*
    * beginning rooms; preamble to pipes
@@ -56,67 +67,68 @@ usepipes {
   impassable
   slimebars(0)
   slimesplit(
-    slimebarcurve(0,120),
+    slimefade( twice( slimecurve_r )),
 
     slime_downpipe,
 
     slimebars(0)
-    slimefade
-    twice( _slimecurve(0,0) )
+    slimefade( twice( slimecurve_l ))
   )
 
 
   impassable
   ^beginning_detail_left
+  control_carriage_return
 
   slimeopening(928) -- TODO: a less random figure
-  slimeswitch(128,1)
+  slimeswitch(128,103,1)
   slimebars(1)
   pushpop( movestep(128,-128) rotleft slimechoke )
   slimecurve_l
+
   move(32)
   slimesecret(256,doublebarreled thing)
+  control_carriage_return
+
+  slimecorridor(864)
+  -- monsters for the upper corridor
   pushpop(
-    movestep(512,128)
+    movestep(-256,128)
     turnaround
     demon deaf
     triple( thing move(128) )
     deaf
   )
-  slimecorridor(896)
 
-  pushpop(movestep(384,384) rotright slimechoke )
-  slimesplit( !tempmain, !donothing, !tempmain2 )
-  ^tempmain2
-  move(32) -- ?
-  slimebarcurve(0,120)
+  set("slime2", onew)
+  slimeinit(get("slime2"), -256, -128, 150, 16, "SLIME05", "WATERMAP", 80)
 
-  ^tempmain
+  _slimelift(
+    !east,
+    /*west*/ slimebars(0) slimefade(slimecurve_r),
+    -256, oget(o, "ceil"), oget(o, "light"),
+    $sometag
+  )
+
+  -- last sector was the ibox...
+  -- XXX some of the step shenanigans here need tidying up
+  control(
+    move(8)
+    forcesector(lastsector)
+    movestep(0,-8)
+    box(0,0,0, 8,8) -- dummy
+    move(-8)
+    box(-232,128,0, 8,8) -- lift bottom height desired
+    move(16)
+    box(0,128,0, 8,8) -- floor height key
+    movestep(16,8)
+  )
+
+  /*north*/ slimebars(0) slimefade(slimecurve_l)
+
+  -- lower corridors
+  control_carriage_return
+  ^east
   slimecorridor(128)
-
-  -- we're going to drop down 192 units here, but first
-  -- some detailing on the top-level
-  !tempmain
-
-  -- inaccessible area
-  move(256)
-  slimebars(0)
-  slimecorridor(512)
-  slimecurve_l
-  slimecorridor(128)
-
-  -- the lower floors. temp low ceiling for trail-off
-  slimeinit(-192, add(-192,32), 120)
-
-  ^tempmain
-  movestep(256,256) rotleft !tempmain
-  straight(256) left(256)
-  !tempmain2
-  rotright slimebars(0) slimefade popsector
-  ^tempmain2
-  left(256) left(256)
-  leftsector(-192,128,120) rotright
-
-  -- slimecorridor(128) fucksake.
-
+  slimetrap(102, $sometag)
 }

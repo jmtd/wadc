@@ -1,0 +1,123 @@
+= WadC Hacking
+Jonathan Dowland <jon@dow.land>
+:toc:
+:toc-placement: preamble
+:toclevels: 5
+:homepage: http://jmtd.net/wadc/
+
+toc::[]
+
+== Introduction
+
+WadC is an old program, with roots in around 2000, and was originally written
+(I think) as a semi-private experiment and an opportunity to learn Java.
+
+I have deliberately avoided refactoring or reworking the Java unless I had to
+as part of achieving something else, so things can be a bit messy.
+
+== Building
+
+WadC is now built using Maven. Assuming you have maven installed, simply issue
+
+ mvn package
+
+To build both a `.jar` and a `.zip` bundle in the `target/` directory.
+
+=== Docs
+
+The documentation is built using link:http://asciidoctor.org[Asciidoctor].
+The Maven POM will attempt to build the documentation when you issue
+`mvn package`.  If you do not have Asciidoctor installed, this will not
+work, but you can probably avoid building the docs if you don't use the
+`package` target.
+
+== Regression test suite
+
+The top-level `Makefile` is used as a rough-and-ready regression test tool.
+Every example wl file in `examples/` as well as the test files in `tests/`
+are processed into WAD files via the experimental CLI mode and their SHA1
+sums recorded in the file `sha1sums`. You can check that things are fine via
+
+ mvn package                # rebuild WadC
+ make clean && make -j wads # build all the examples and tests
+ make check                 # ensure the sums match
+
+If you are making changes to the behaviour of the WadC language, you should
+use this to ensure that you haven't broken any of the existing maps.
+
+=== Updating the test suite
+
+Assuming you've made a change which needs to either add or change the sums of
+an example or a test, and you're sure that the new versions of the maps are OK,
+run the following to regenerate the sums file
+
+ make sha1sums
+
+Please include updated sha1sums with any changes you submit which change them.
+
+== Reporting problems
+
+Please raise an issue on the GitHub project, or failing that, email me, but
+GitHub issue is preferred.
+
+== Submitting changes
+
+Either raise a Pull Request on GitHub (preferred) or email me a patch file,
+ideally against the `master` branch.
+
+== Things that need doing
+
+=== constant definitions
+
+The list of constants defined for things, lines, sectors etc. are very incomplete.
+They need fleshing out, renaming or re-organising. This is quite a good task for a
+beginner.
+
+In particular the Hexen things are not very much changed from the definitions in the
+source, and might need renaming.
+
+=== blockmap
+
+`examples/beta/blockmap.wl` is the beginnings of a blockmap system for marking
+so that code that is randomly generating routines can ensure that it doesn't over
+draw an existing area.
+
+=== conveyors
+
+Library routines for constructing and manipulating conveyors. Perhaps a way of
+converting e.g. a switch to activating a walk-over linedef, and making them
+trigger multiple effects at once (with multiple voodoo dolls)
+
+=== missing examples
+
+* A basic day/night simulator (perhaps with sky switching as well as light levels)
+  via boom features and conveyors. See e.g. "The Last Sanctuary".
+
+=== more options for water.h
+
+Some things are hardcoded in water.h, or not possible to manipulate easily from the
+caller. For example, modifying the height of the control sectors to adjust the fake
+flat height; setting a sector type for either the control sector or the decorated
+sector.
+
+== Internationalisation
+
+WadC has basic internationalisation support. Within .java files, strings that might be
+translated are wrapped in `__()`, e.g. `msg(__("wrote file ")+name)`. Any such strings
+are looked up in `MessagesBundle.properties` files within the WadC JAR. These are at
+the location `src/main/resources` within the source. For example, the French translations
+are defined in `MessagesBundle_fr_FR.properties`.
+
+=== Adding translations
+
+Add or edit the `MessagesBundle_xx_XX.properties` files. The syntax is basically
+
+ lookup_string = translated_string
+
+Spaces in either string need to be backslash escaped.
+
+=== Adding words to be looked up
+
+For any strings in the `WadC.java` file,  wrap them in `__()`. For other Java source
+files, some extension work is necessary to define a `__()` method in that context. I
+would love patches to extend this.

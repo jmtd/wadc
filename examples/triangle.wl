@@ -5,6 +5,7 @@
 #"standard.h"
 
 main {
+  seed (1337)
   togglevertices
   --togglethings
   thing

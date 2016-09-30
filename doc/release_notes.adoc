@@ -1,21 +1,150 @@
-= Release Notes
+= WadC Release Notes
 Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 :toc:
 :toc-placement!:
 :toclevels: 5
-:homepage: http://jmtd.net/wadc/
+:toc-title:
+:homepage: https://jmtd.net/wadc/
+
+This lists changes made in each release. For a description of all
+current features, see link:reference.adoc[the Reference].
+
+== Table of Contents
 
 toc::[]
+
+== Dev
+
+Not yet released.
+
+== 2.1
+
+Version 2.1 of WadC is dedicated to the memory of Professor Seymour Papert
+(1928-2016), co-inventor of the LOGO programming language.
+
+=== Core program changes
+
+ * Internationalisation support.
+   * Partial french translation adapted from @nekrofage. Thanks!
+ * The random seed is printed when you first execute a script. This
+   means if something cool happens, you can make a note of the seed
+   and reproduce it.
+ * Stack traces are now divided by newlines rather than space characters.
+ * It is now much more convenient to generate maps for the original Doom,
+   Heretic, Hexen and Strife, in addition to Doom II.
+ * The GUI now has basic undo/redo support for text editing.
+ * The GUI's default size is now twice as large.
+ * You can now write numbers in hexidecimal by prefixing them with '0x'.
+   Only positive numbers are supported at the moment (use `mul(-1,0xabc)`
+   as a workaround if you must)
+
+=== Example scripts
+
+ * `logo.wl`: draws the letters "WadC".
+ * The "pipes" stuff in examples/beta continues to evolve and drive
+   WadC development.
+ * `doom_ex.wl`, `htic_ex.wl`, `hexen_ex.wl`, `strife.wl`: very simple
+    test maps that demonstrate Doom #1/Heretic/Hexen/Strife support
+ * `polyobj.wl`: example of Hexen polyobjects (swinging doors, etc.)
+ * `boom.wl`: Examples of Boom generalised linedef and sector types.
+ * `counter.wl`: a binary ripple counter for Boom
+ * `2countrev.wl`: a modified `counter.wl`, showing how it might be
+    used as part of a real map.
+
+=== Documentation
+
+ * The beginnings of a link:tutorial.adoc[proper tutorial].
+ * A basic link:https://redmars.org/wadc/examples.html[gallery of WadC examples]
+ * WAD files of the examples are periodically generated, nodes built and uploaded
+   to <https://redmars.org/wadc/examples/>
+
+=== Language features
+
+`hexenformat`:: forces the output map to be in Hexen format (suitable for
+                use with either Hexen or ZDoom)
+`mapname`::     sets the map name to be generated. The default is `MAP01`.
+                New libraries included in this release set sensible defaults
+                for other doom-engine games.
+`and`, `or`, `not`:: bitwise operators
+`setthingflags`, `getthingflags`:: get and set the flags used for new things
+`setlineflags`, `getlineflags`:: as above, but for lines
+`thingangle`:: create a thing with a supplied angle value
+
+==== Library additions/deletions
+
+ * `water.h` has been enhanced so that you can manage multiple water-effects
+   in the same map.
+ * Some built-ins have been removed from the language and converted into
+   WadC library routines: `deaf`, `easy`, `hurtmeplenty`, `ultraviolence`
+   and `friendly` (see `thingflags.h`)
+ * Angle constants have been added to `standard.h`: `angle_east`, `angle_ne`,
+   `angle_north`, `angle_nw`, `angle_west`, `angle_sw`, `angle_south` and
+   `angle_se`.
+
+===== New libraries
+
+`control.h`::  control sector management (broken out from `water.h`)
+`doom.h`, `heretic.h`, `hexen.h`, `strife.h`:: sensible defaults and
+       thing definitions for Doom (#1), Heretic, Hexen and Strife
+`thingflags.h`:: Definitions for common flag values for all four games
+                 as well as implementations of `deaf`, `easy`,
+                 `hurtmeplenty`, `ultraviolence` and `friendly`.
+`math.h`:: some mathematic routines (bit shifts and `pow` so far)
+`boom.h`:: Routines for building Boom generalised linedefs and sectors,
+           some constants for use with these routines.
+
+==== Bug fixes
+
+ * A long-standing bug with splitting lines has been fixed,
+   where one line is drawn in the opposite direction to the
+   first. When this happened you got the misleading error
+   "Sidedef already assigned to sector". Various example maps
+   had contortions to avoid this situation which now works.
+ * You can now use `popsector` more than once. This means you
+   can have an inner sector within an inner sector within an
+   outer one, to an arbitrary depth.
+ * `water.h` can now be used with inner-sectors and the water
+    light level value is honoured.
+ * `water.h` can be used to decorate the very first sector you
+    draw.
+ * The control sectors that `water.h` draws are now properly
+   to the right of the cursor, rather than to the left, so it
+   plays nicely with other `control.h` users.
+ * The GUI is now listed as "WadC" rather than "MainFrame" in
+   various places such as the Mac OS X menu bar.
+ * If you use the choice operator before a `seed` operation,
+   that seed value affected the choice operator when re-running
+   the script.
+ * You can freely mix `linetype` and `linetypehexen` in Zdoom
+   Hexen-format maps. Previously, some of the argument flags set
+   with `linetypehexen` were not cleared by `linetype`.
+ * The tech-preview CLI will correctly embed the WadC source in
+   generated WADs, just like the GUI.
+ * The GUI code to write-out WadC files when you save has been
+   changed to write UTF-8. Previously it was writing the first
+   byte of UTF-8 only, so any multibyte characters were getting
+   corrupted.
+
+=== Development stuff
+
+ * The tech-preview CLI has been renamed to WadCCLI.
+ * WadC is now built using Maven. This has some implications:
+ 
+  ** The source has all moved around and we have an obscene number
+      of subdirectories. Sigh. There are a few convenience symlinks
+      to make life easier.
+  ** The program's version is now embedded as a property rather
+      than being an auto-generated Java class.
+ * There's a very hacky, experimental regression test suite in
+   `tests/`.
 
 == 2.0
 
 Released 22^nd^ September 2015.
 
-=== What's new
+=== Core program changes
 
-==== Core program changes
-
-===== Distribution and runtime requirements
+==== Distribution and runtime requirements
 
 The WadC binary distribution is now a JAR file. On most platforms,
 simply double-clicking on the JAR should launch the program. WadC
@@ -27,17 +156,17 @@ tested only with
 * java version "1.8.0_45"
 * javac 1.8.0_45
 
-===== Sneak-peek: command-line interface
+==== Sneak-peek: command-line interface
 
 There is a very early-stages command-line interface now available. To
 launch it, you need to run
 
-    java -cp wadc.jar path/to/input.wl
+    java -cp wadc.jar org.redmars.wadc.WadCC path/to/input.wl
 
 It will attempt to parse, run and write out to path/to/output.wad. Be
 aware that this is alpha quality, consider this a tech preview :)
 
-===== configuration file syntax and location
+==== configuration file syntax and location
 
 wadc.cfg is no longer written/read from the current working directory. On
 Windows, it's found at `%USERHOME%/.wadc/wadc.cfg`, on UNIX platforms it
@@ -61,7 +190,7 @@ If you have defined any of `twad1`, `twad2` or `twad3` in your
 configuration, they will be added to the doom command line, immediately
 after your `doomargs`, and before the path to the WAD you are building.
 
-===== Embedded WadC code
+==== Embedded WadC code
 
 WadC now writes out the source code for your level to the generated WAD
 in a `WADCSRC` lump. Any locally included files are also included, but
@@ -72,7 +201,7 @@ any patches to new textures which are not in your IWAD, A new `PNAMES` lump
 will be generated and written. You need to have specified a path to an IWAD
 file in your configuration for this to work.
 
-==== Language features
+=== Language features
 
 `die(foo)`::   prints foo, then terminates.
 `cat(a, b)`::  concatenates a and b
@@ -83,7 +212,7 @@ file in your configuration for this to work.
 `deaf`::       `mute` has been renamed to `deaf`.
 `getbot`, `getmid`, `gettop`, `getfloor`, `getceil`::    Accessor functions for the current texture or flat in use
 
-===== Library additions
+==== Library additions
 
 `lisp.h`::  lisp-style lists (broken out from `examples/lisp.wl`)
 `water.h`:: Boom deep water tools
@@ -93,14 +222,14 @@ within `standard.h`:
  * `inc` and `dec`, convenient for increment/decrementing a variable
  * `fori` and `i`, the `for` loop but you can read the value of the iterator
 
-===== New examples
+==== New examples
 
 `textures.wl`:: demonstrating the texture features
 `llevels.wl`::  test WAD using texture features
 `water.wl`::    demonstrating the Boom water helpers
 "beta"::        directory containing my unfinished stuff
 
-==== Bug fixes
+=== Bug fixes
 
 Fix map view zooming with mouse clicks on non-Windows platforms.
 
@@ -108,7 +237,7 @@ The paths to the file you are editing, the corresponding generated WAD file,
 your preferred Doom executable and any texture WADs you have defined can now
 contain spaces or other special characters.
 
-=== 1.2
+== 1.2
 
 Released December 2011.
 
@@ -121,7 +250,7 @@ Released December 2011.
   - `1.2_features.wl` - demo the new features above
   - `entryway.wl` - a recreation of Doom 2 MAP01 in WadC, thanks GreyGhost
 
-=== 1.1
+== 1.1
 
 Released July 2001.
 
@@ -141,7 +270,7 @@ Released July 2001.
   - more examples / useful include files
   - many small enhancements/fixes
 
-=== 1.0: first public release
+== 1.0: first public release
 
 Released October 2000.
 
@@ -163,7 +292,7 @@ Released October 2000.
   - more examples etc.
   - comes with source (GPL)
 
-=== 0.9: initial beta
+== 0.9: initial beta
 
 Dates from around July 1999.
 

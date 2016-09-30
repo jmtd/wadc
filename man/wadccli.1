@@ -1,0 +1,35 @@
+.TH WADCCLI 1 "September 06, 2016"
+.SH NAME
+wadccli \- command-line interface for Wad Compiler
+.SH SYNOPSIS
+.B wadccli
+.I infile
+.SH DESCRIPTION
+.B wadccli
+is a command-line interface for Wad Compiler, a tool
+for creating doom-style WAD files from a functional
+programming language.
+.br
+.B wadccli
+will read in
+.I infile
+and write out a .wad file in the same directory, with
+the same basename minus the suffix.
+.br
+A description of this language can be found in the file
+.B /usr/share/doc/wadc/reference.adoc.gz
+and some example programs are available within
+.B /usr/share/doc/wadc/examples\ .
+.PP
+.SH OPTIONS
+None.
+.SH AUTHORS
+Jonathan Dowland.
+.PP
+This manual page was written by Jonathan Dowland <jmtd@debian.org>,
+based on a template created by the
+.B dh_make
+program, for the Debian Project. It may be used by others
+(see
+.B /usr/share/doc/wadc/copyright.gz
+).

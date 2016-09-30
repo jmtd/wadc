@@ -3,7 +3,7 @@ Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 :toc:
 :toc-placement: preamble
 :toclevels: 5
-:homepage: http://jmtd.net/wadc/
+:homepage: https://jmtd.net/wadc/
 
 toc::[]
 
@@ -48,7 +48,7 @@ You need a Java runtime environment installed to use WadC. Get one from
 https://java.com/download if you don't have it already.
 
 Unpack the whole zip to any directory you like. On most systems, just
-double-click or activate the "wadc.jar" file. From a command line in
+double-click or activate the "wadc-2.1.jar" file. From a command line in
 the location where you extracted the ZIP, could also run
 
     java -jar wadc.jar
@@ -62,7 +62,7 @@ For a list of other node builders, see http://doomwiki.org/wiki/Category:Node_bu
 There is a very early-stages command-line interface now available. To
 launch it, you need to run
 
-    java -cp wadc.jar path/to/input.wl
+    java -cp wadc.jar org.redmars.wadc.WadCCLI path/to/input.wl
 
 It will attempt to parse, run and write out to path/to/output.wad. Be
 aware that this is alpha quality, consider this a tech preview :)
@@ -73,7 +73,7 @@ aware that this is alpha quality, consider this a tech preview :)
 The zip also includes
 
 examples/:: example WadC files to try out.
-includes/:: a copy of the WadC "standard library". This is also
+include/::  a copy of the WadC "standard library". This is also
             embedded in the JAR, but is included so you can read
             it and see how it works. See also "Include files",
             below.
@@ -174,6 +174,20 @@ simply rearrange your code :)
 sin takes an argument in degrees (not radians) *10, i.e. 90 degrees is 900. It
 returns the 1.0 to -1.0 range as 1024 to -1024. asin performs the inverse
 transformation over the same ranges.
+
+=== Bitwise expressions
+
+Three bitwise operators are provided. These are mostly useful for setting flags:
+
+    and(a,b) or(c,d) not(e)
+
+equivalent to A · B, C + D, ¬E.
+
+=== String expressions
+
+    cat(a,b)
+
+Just one: `cat` concatenates two expressions into one string.
 
 === If Then Else
 
@@ -295,27 +309,9 @@ in any program really.
 
 WadC's set of standard include files contain a wide range of useful
 language, doom & architectural macros that are very useful and speed
-up editing a lot. You should make sure to get familiar with them:
-
-standard.h::    very basic language & doom macros for very common
-                things. Many of the macros here are easier to use
-                then the builtin features they are based upon.
-
-decoration.h, +
-spawns.h, +
-pickups.h, +
-monsters.h::    constant definitions for all doom things
-zdoom.h::       things that rely on zdoom features, such as slopes
-                and sloped arches.
-basic.h::       a set of higher level architectural building blocks
-                based on some conventions of composing sectors. good
-                to work with for bigger maps. Contains common doom map
-                prefabs for things like starts, end of level, monster
-                teleporting and placement, and room segments.
-lisp.h::        Basic lisp-style lists.
-water.h::       Helper routines for using Boom sector transfer effect
-                (linedef type 242) for deep water.
-
+up editing a lot. You should make sure to get familiar with them.
+See <<standard-library,Standard Library>> for descriptions of them
+all.
 
 === The choice operator
 
@@ -381,23 +377,23 @@ to "east".
 
     up down
 
-control wether the "pen" is up or down. If it is down (default)
+control whether the "pen" is up or down. If it is down (default)
 moving about will create linedefs (hint, use macros from standard.h
 instead of these).
 
     step(forwards_backwards,sideways)
 
 This is the main drawing command. It draws a line from the current
-vertex to a new postion which will become the new current vertex.
+vertex to a new position which will become the new current vertex.
 The first value determines how many units to go forwards in the
 direction you are looking, if it is negative you will go backwards.
 The second parameter determines a sidestep from this, 0 means
-straight ahead, positive numbers step towards the left, and negative
-ones to the right. For example, if you were looking north, and wanted
+straight ahead, positive numbers step towards the right, and negative
+ones to the left. For example, if you were looking north, and wanted
 to draw a line that goes 45 degrees across a 64 unit square towards
 the north-east, you would write:
 
-    step(64,-64)
+    step(64,64)
 
 Here you see why that 4 direction system is useful: if you were using
 arbitrary angles you would have needed to write something like 
@@ -447,7 +443,8 @@ to the current one (rather than inside it).
     thing
 
 Creates a thing of the current thingtype, with the current vertex
-as position (default is playerstart). You can change the type of
+as position (default is playerstart) and the current orientation as
+the things facing angle. You can change the type of
 thing being added by using
 
 	setthing(type)
@@ -455,11 +452,29 @@ thing being added by using
 where type you have to take from uds.txt, or better still use
 monsters.h / pickups.h / decoration.h / spawns.h include files instead.
 
-	friendly
+If you need to fine-tune the angle that things are facing, use
 
-toggles the 'friendly' flag of monsters. Friendly monsters are a
-http://doomwiki.org/wiki/Friendly_monster#MBF[MBF feature]. 'friendly' defaults
-to off.
+    thingangle(angle)
+    angle_east
+    angle_ne
+    angle_north
+    angle_nw
+    angle_west
+    angle_sw
+    angle_south
+    angle_se
+
+`thingangle` takes a value in degrees, with 0 degrees facing West.
+The constants `angle_east`, etc are defined in `standard.h` for your
+convenience.
+
+To fetch or adjust the flags used for creating new things, use
+
+    setthingflags(flags)
+    getthingflags
+
+Useful in conjunction with the bitwise operators. See the `thingtypes.h`
+library for useful definitions.
 
 	linetype(type,tag)
 
@@ -479,6 +494,13 @@ any of these commands automatically changes the output wad to hexen format.
 Note that arg1 in linetypehexen() is the same as tag in linetype(). To compile
 maps produced this way, recommended is the version of bsp that comes with
 "zeth". Check out zdoom.h for some useful macros.
+
+    setlineflags(flags)
+    getlineflags
+
+Similar to the thing equivalents: fine control over linedef flag values.
+Useful in conjunction with the bitwise operators. There are some linedef
+flag constants defined in `include/lineflags.h`.
 
     getfloor
     getceil
@@ -506,7 +528,7 @@ a priority. bot/top/mid get assigned to both sidedefs upon creation of the
 linedef (using step), floor/ceil are assigned when leftsector/rightsector is 
 executed.
 
-By default, WadC automatically removes textures on doublesided linedefs.
+By default, WadC automatically removes mid-textures on doublesided linedefs.
 You can toggle this on and off using the 'midtex' command:
 
     midtex
@@ -565,22 +587,8 @@ spacially adjoining it. forcesector will force the next makesector command
 to add sidedefs to the sector specified instead of creating a new one. The
 properties specified in the makesector command (floor level etc) are ignored.
 
-    deaf
-
-any following monsters will be deaf. Calling it again switches it off again.
-
-    easy
-    hurtmeplenty
-    ultraviolence
-
-any following monsters (calls to "thing") are available only from the said skill
-and upwards
-
-    popsector
-
 Clearly there are a few Doom specific types and flags missing, this will
 come in future versions.
-
 
 ==== Line splitting/merging
 
@@ -662,7 +670,7 @@ use 'newtag'
 
 ===== Caveats
 
-`newtag` nor tag identifiers pull unique tag numbers from the same "pool" so you
+`newtag` and tag identifiers pull unique tag numbers from the same "pool" so you
 can mix and match them. However, if you use bare numbers as tag arguments and use
 `newtag` or tag identifiers, you run the risk of clashing the generated numbers
 with your hand-chosen ones.
@@ -673,8 +681,8 @@ with your hand-chosen ones.
 This is a very powerful feature which lets you create "rules" that say
 how a map should be textured, instead of doing it by hand.
 
-Only surfaces that have the "?" texture assigned to them, will be auto textured
-this has the advantage that you can still perform manual texturing in those cases
+Only surfaces that have the "?" texture assigned to them, will be auto textured.
+This has the advantage that you can still perform manual texturing in those cases
 where you can't write a rule to express what you want. You can easily use
 autotexall() to set all texture to "?".
 
@@ -789,18 +797,6 @@ than global variables.
 See lisp.wl for an example of how to use these functions to create an
 actual datatype, and a caveat on the usage of "onew".
 
-=== Pitfalls
-
-Here are some common things that can go wrong, and which can result in
-runtime errors:
-
-- if you get a "sidedef already assigned" error, and it is not obvious
-  why (the current sector looks fine), it may be the case that for a
-  previously constructed sector you accidentally made a sector out of
-  the whole outside of the level (by choosing the wrong side). WadC doesn't
-  detect wether something is inside or outside, and this will only show
-  up when defining an adjoining sector.
-
 === Custom textures
 
 
@@ -820,6 +816,9 @@ offsets of the patch inside the texture.
 You can switch between texture definitions and back by calling `texture`
 with the same name again.
 
+Hint: you can generate patch names using `cat`; see the file "llevels.wl"
+in the WadC examples directory.
+
 If you define at least one texture, the output WAD will contain the
 definitions in a `TEXTURE2` lump.
 
@@ -835,3 +834,128 @@ For now, The quickest way is to add
     iwad("c:\path\to\doom2.wad")
 
 into the currently open WadC file and run it.
+
+=== Map type output
+
+By default, WadC targets Doom II. Amongst other things, this means the
+output map is labelled `MAP01`. To change it, use
+
+    mapname("E1M1")
+
+The default output format is traditional Doom format, suitable for Doom,
+Doom II and Heretic. To switch to Hexen-format (also useful for Zdoom),
+use
+
+    hexenformat
+
+This will happen automatically if you use one of `linetypehexen` or
+`setthinghexen` as described earlier.
+
+If you you are working on a map for a game other than Doom II, you might
+find the libraries `doom.h`, `heretic.h` and `hexen.h` useful. They contain
+the following helper routines to set up sensible defaults for textures, flats
+and map format:
+
+    doomdefaults
+    hereticdefaults
+    hexendefaults
+
+== Pitfalls
+
+Here are some common things that can go wrong, and which can result in
+runtime errors:
+
+- if you get a "sidedef already assigned" error, and it is not obvious
+  why (the current sector looks fine), it may be the case that for a
+  previously constructed sector you accidentally made a sector out of
+  the whole outside of the level (by choosing the wrong side). WadC doesn't
+  detect whether something is inside or outside, and this will only show
+  up when defining an adjoining sector.
+
+[[standard-library]]
+== Standard Library
+
+We really should document the standard library in this document. This is
+a work in progress. The best thing to do would be to read the comments in
+the `.h` files within link:../src/main/resources/include[src/main/resources/include]
+to see the finer detail.
+
+=== Basic/generic
+
+standard.h::   very basic language & doom macros for very common
+               things. Many of the macros here are easier to use
+               then the builtin features they are based upon.
+basic.h::      a set of higher level architectural building blocks
+               based on some conventions of composing sectors. good
+               to work with for bigger maps. Contains common doom map
+               prefabs for things like starts, end of level, monster
+               teleporting and placement, and room segments.
+lisp.h::       lisp-style cons lists
+math::         some math routines (bit shifts and `pow` so far)
+
+=== Thing definitions
+
+heretic/things.h:: Thing definitions for Heretic
+hexen/things.h::  Thing definitions for Hexen
+strife/things.h::  Thing definitions for Strife
+
+==== Doom-specific
+
+Note that Doom and Doom II things are not yet separated out. You will need
+to be careful if you are writing Doom #1 maps.
+
+decoration.h:: macros for Doom decorations
+monsters.h::   macros for Doom monsters
+pickups.h::    macros for Doom pick-ups (weapons, ammo, power-ups)
+spawns.h::     macros for Doom player and deathmatch starts, and teleports
+
+=== Thing flags
+
+`thingflags.h` contains definitions for thing flags common to all four games
+(as well as Boom and MBF additions) and some routines to manipulate them. Some
+of these routines were built-in commands in earlier versions of WadC:
+
+    deaf
+
+toggles the 'ambush' flag. Any following monsters will be in 'ambush' mode.
+Calling it again switches it off again.
+
+    easy
+    hurtmeplenty
+    ultraviolence
+
+any following things are available only from the said skill and upwards
+
+    friendly
+
+toggles the 'friendly' flag of monsters. Friendly monsters are a
+http://doomwiki.org/wiki/Friendly_monster#MBF[MBF feature] and will require
+an MBF-supporting port to work. It will not work for Hexen.
+'friendly' defaults to off.
+
+    setflag(x)
+    clearflag(x)
+
+Sets or clears the given flag value, e.g. `setflag(multiplayer)`
+
+=== Line flags
+
+Some line flag constant values are defined in `lineflags.h`.
+
+=== Other games
+
+doom.h::       Settings and defaults for Doom/Ultimate Doom
+heretic.h::    Settings and defaults for Heretic
+hexen.h::      Settings and defaults for Hexen
+strife.h::     Settings and defaults for Strife
+
+The above headers are one-size-fits all for inclusion in maps for those
+ports; they, in turn, pull in some smaller files in `include/<gamename>`
+in some cases.
+
+=== Port/post-vanilla
+
+boom.h::       Boom generalised linedef function and related constants
+control.h::    control sector macros, for e.g. Boom special effects
+water.h::      macros for Boom-deep water special effects
+zdoom.h::      macros for Zdoom-specific special effects (slopes, mirrors)
