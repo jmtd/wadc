@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=WadC
+Comment=WadC GUI for building Doom maps
+TryExec=wadc
+Exec=wadc
