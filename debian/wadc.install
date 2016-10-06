@@ -1,2 +1,3 @@
 #!/usr/bin/dh-exec
 extra/wadccli.sh => /usr/bin/wadccli
+extra/wadc.desktop =>  /usr/share/applications/wadc.desktop
