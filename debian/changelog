@@ -1,3 +1,9 @@
+wadc (2.1+git3aac3015-2) unstable; urgency=low
+
+  * Correct omissions in debian/copyright
+
+ -- Jonathan Dowland <jmtd@debian.org>  Mon, 10 Oct 2016 07:08:43 +0100
+
 wadc (2.1+git3aac3015-1) unstable; urgency=low
 
   * Initial release (Closes: #395364)
