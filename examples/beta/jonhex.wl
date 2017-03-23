@@ -2,13 +2,12 @@
 
 
 hex(s) {
-
   step(64,0)
-  step(32,-56)
-  step(-32,-56)
-  step(-64,0)
-  step(-32,56)
   step(32,56)
+  step(-32,56)
+  step(-64,0)
+  step(-32,-56)
+  step(32,-56)
   s
 }
 
@@ -26,7 +25,7 @@ hexes(w, h) {
     !hexes
     for(1, w,
       print(cat(i,cat(",","y")))
-      hex( leftsector(jitter, 256, 140))
+      hex( rightsector(jitter, 256, 140))
       movestep(0,112) -- horizontal spacing
     )
     ^hexes
