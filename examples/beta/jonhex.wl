@@ -18,7 +18,7 @@ hex(s) {
 
 flip(x) { eq(x,-1) ? 1 : -1 }
 
-jitter { 0 | 8 | -8 | 16 | -16 }
+jitter { 0 | 8 | -8 | 16 | -16 | 32 | 48 | 64 | 52 | 0 }
 
 even(x) {
   eq(x,mul(2,div(x,2)))
@@ -39,7 +39,7 @@ hexes(w, h) {
     !hexes
     for(1, w,
    --   print(cat(i,cat(",","y")))
-      hex( rightsector(jitter, 256, 140))
+      hex( rightsector(jitter, 256, 200))
       movestep(0,112) -- horizontal spacing
     )
     ^hexes
@@ -54,28 +54,28 @@ halfhex {
   step(-32,56)
   step(-64,0)
   step(-32,-56)
-  rightsector(0, 256, 140)
+  rightsector(0, 256, 200)
 }
 
 caphex {
   step(0,112)
   step(-32,-56)
   step(32,-56)
-  rightsector(0, 256, 140)
+  rightsector(0, 256, 200)
 }
 
 cornerhex {
   step(0,56)
   step(-32,0)
   step(32,-56)
-  rightsector(0, 256, 140)
+  rightsector(0, 256, 200)
 }
 
 cornerhexNE {
   step(32,0)
   step(0,56)
   step(-32,-56)
-  rightsector(0, 256, 140)
+  rightsector(0, 256, 200)
 }
 
 texrules {
@@ -92,7 +92,7 @@ main {
 
   texrules
   autotexall
-  pushpop( movestep(32,32) thing )
+thing
   
   ceil("F_SKY1")
   boxedhexes(32,32)
@@ -100,7 +100,7 @@ main {
 }
 
 /*
- * a square field of hexes with a box border (width 32)
+ * a square field of hexes with a box border (width 64)
  * each hex adds 96 (128- overlap 32) height to the base 128
  */
 boxedhexes(w,h) {
@@ -109,22 +109,22 @@ boxedhexes(w,h) {
   ^boxedhexes
 
   -- left
-  movestep(-64,-32)
-  box(128,256,200,    add(64 /* border */, add(128, mul(sub(h,1), 96))), 32)
+  movestep(-96,-64)
+  box(128,256,200,    add(128 /* border */, add(128, mul(sub(h,1), 96))), 64)
 
   -- top
-  movestep(add(32, add(128, mul(sub(h,1), 96))), 32)
-  box(128,256,200,    32, add(56,mul(w,112)))
+  movestep(add(64, add(128, mul(sub(h,1), 96))), 64)
+  box(128,256,200,    64, add(56,mul(w,112)))
 
   -- bottom
   ^boxedhexes
-  movestep(-64,0)
-  box(128,256,200,    32, add(56,mul(w,112)))
+  movestep(-96,0)
+  box(128,256,200,    64, add(56,mul(w,112)))
 
   -- right
   ^boxedhexes
-  movestep(-64,add(56,mul(w,112)))
-  box(128,256,200,    add(64 /* border */, add(128, mul(sub(h,1), 96))), 32)
+  movestep(-96,add(56,mul(w,112)))
+  box(128,256,200,    add(128 /* border */, add(128, mul(sub(h,1), 96))), 64)
 }
 
 /*
