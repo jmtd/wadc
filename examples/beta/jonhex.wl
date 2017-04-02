@@ -92,11 +92,12 @@ main {
 
   texrules
   autotexall
-thing
   
   ceil("F_SKY1")
-  boxedhexes(32,32)
-
+  boxedhexes(16,32)
+  movestep(96,128)
+  thing
+  boxedhexes(16,32)
 }
 
 /*
