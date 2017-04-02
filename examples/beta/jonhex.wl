@@ -1,6 +1,10 @@
 #"standard.h"
 
 
+/*
+ * draws a hex, up and to the right of origin
+ * hex is 128 tall and 112 wide
+ */
 hex(s) {
   step(64,0)
   step(32,56)
@@ -16,6 +20,16 @@ flip(x) { eq(x,-1) ? 1 : -1 }
 
 jitter { 0 | 8 | -8 | 16 | -16 }
 
+even(x) {
+  eq(x,mul(2,div(x,2)))
+}
+odd(x) {
+  eq(1,even(x)) ? 0 : 1
+}
+
+/*
+ * hexes - draw a field of hexes, w-wide and h-tall
+ */
 hexes(w, h) {
  
   set("hexes", 1)
@@ -24,7 +38,7 @@ hexes(w, h) {
 
     !hexes
     for(1, w,
-      print(cat(i,cat(",","y")))
+   --   print(cat(i,cat(",","y")))
       hex( rightsector(jitter, 256, 140))
       movestep(0,112) -- horizontal spacing
     )
@@ -33,6 +47,35 @@ hexes(w, h) {
     set("hexes", mul(-1, get("hexes")))
   )
 
+}
+
+halfhex {
+  step(128,0)
+  step(-32,56)
+  step(-64,0)
+  step(-32,-56)
+  rightsector(0, 256, 140)
+}
+
+caphex {
+  step(0,112)
+  step(-32,-56)
+  step(32,-56)
+  rightsector(0, 256, 140)
+}
+
+cornerhex {
+  step(0,56)
+  step(-32,0)
+  step(32,-56)
+  rightsector(0, 256, 140)
+}
+
+cornerhexNE {
+  step(32,0)
+  step(0,56)
+  step(-32,-56)
+  rightsector(0, 256, 140)
 }
 
 texrules {
@@ -45,11 +88,95 @@ texrules {
 }
 
 main {
+  !start
+
   texrules
   autotexall
   pushpop( movestep(32,32) thing )
   
   ceil("F_SKY1")
-  hexes(16,8)
+  boxedhexes(32,32)
 
+}
+
+/*
+ * a square field of hexes with a box border (width 32)
+ * each hex adds 96 (128- overlap 32) height to the base 128
+ */
+boxedhexes(w,h) {
+  !boxedhexes
+  squarehexes(w,h)
+  ^boxedhexes
+
+  -- left
+  movestep(-64,-32)
+  box(128,256,200,    add(64 /* border */, add(128, mul(sub(h,1), 96))), 32)
+
+  -- top
+  movestep(add(32, add(128, mul(sub(h,1), 96))), 32)
+  box(128,256,200,    32, add(56,mul(w,112)))
+
+  -- bottom
+  ^boxedhexes
+  movestep(-64,0)
+  box(128,256,200,    32, add(56,mul(w,112)))
+
+  -- right
+  ^boxedhexes
+  movestep(-64,add(56,mul(w,112)))
+  box(128,256,200,    add(64 /* border */, add(128, mul(sub(h,1), 96))), 32)
+}
+
+/*
+ * hexes, but with a squared-off border
+ * XXX: vary width to get back to 64 grid?
+ * XXX: 1,1 looks odd
+ */
+squarehexes(w,h) {
+  !squarehexes
+  hexes(w,h)
+  ^squarehexes
+
+  -- left-hand side
+  movestep(64,0)
+  for(1,div(h,2),
+    halfhex
+    movestep(192,0)
+  )
+
+  -- top
+  {odd(h) ? {
+    cornerhexNE
+    movestep(32,56)
+    for(1,w,
+      caphex
+      movestep(0,112)
+    )
+  } : {
+    movestep(-64,0)
+    for(1,w,
+      caphex
+      movestep(0,112)
+    )
+    cornerhex
+    movestep(-96,56)
+  }}
+ 
+  -- right-hand side
+  turnaround
+  for(1, even(h) ? div(h,2) : add(1,div(h,2)),
+    halfhex
+    movestep(192,0)
+  )
+
+  -- bottom
+  movestep(-64,0)
+  for(1,w,
+  caphex
+  movestep(0,112)
+  )
+
+  cornerhex
+  turnaround
+  movestep(32,-56) -- back to where we started
 }
