@@ -1,6 +1,5 @@
 #"standard.h"
 
-
 /*
  * draws a hex, up and to the right of origin
  * hex is 128 tall and 112 wide
@@ -15,9 +14,6 @@ hex(s) {
   s
 }
 
-
-flip(x) { eq(x,-1) ? 1 : -1 }
-
 jitter { 0 | 8 | -8 | 16 | -16 | 32 | 48 | 64 | 52 | 0 }
 
 even(x) {
@@ -28,25 +24,41 @@ odd(x) {
 }
 
 /*
+ * x: number of columns
+ * y: number of rows
+ * row: callback for ending a row (like carriage return)
+ * cell: callback for new cells
+ */
+forXY(x,y,row,cell) {
+  set("x", 1)
+  for(1, y,
+    set("y", 1)
+    for(1, x, cell inc("y",1))
+    inc("x",1)
+    row
+  )
+}
+x { get("x") }
+y { get("y") }
+
+/*
  * hexes - draw a field of hexes, w-wide and h-tall
  */
 hexes(w, h) {
- 
-  set("hexes", 1)
-
-  fori(1, h,
-
+    set("hexes", 1)
     !hexes
-    for(1, w,
-   --   print(cat(i,cat(",","y")))
-      hex( rightsector(jitter, 256, 200))
+
+    forXY(w,h,
+      -- per row
+      ^hexes
+      movestep(96,mul(get("hexes"), 56)) -- vertical spacing
+      set("hexes", mul(-1, get("hexes")))
+      !hexes
+      ,
+      -- per cell
+      hex(rightsector(jitter, 256, 200))
       movestep(0,112) -- horizontal spacing
     )
-    ^hexes
-    movestep(96,mul(get("hexes"), 56)) -- vertical spacing
-    set("hexes", mul(-1, get("hexes")))
-  )
-
 }
 
 halfhex {
