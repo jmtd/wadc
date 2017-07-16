@@ -44,7 +44,7 @@ y { get("y") }
 /*
  * hexes - draw a field of hexes, w-wide and h-tall
  */
-hexes(w, h) {
+hexes(w, h, s) {
     set("hexes", 1)
     !hexes
 
@@ -56,7 +56,7 @@ hexes(w, h) {
       !hexes
       ,
       -- per cell
-      hex(rightsector(jitter, 256, 200))
+      hex(s)
       movestep(0,112) -- horizontal spacing
     )
 }
@@ -106,20 +106,28 @@ main {
   autotexall
   
   ceil("F_SKY1")
+  hexes(16,32,rightsector(jitter, 256, 200))
+  ^start
+  ceil("F_SKY1")
+  squarehexes(16,32)
   boxedhexes(16,32)
+
   movestep(96,128)
   thing
+  !start
+  hexes(16,32,rightsector(perlin(x,y,1337,1), 256, 200))
+  ^start
+  ceil("F_SKY1")
+  squarehexes(16,32)
   boxedhexes(16,32)
 }
 
 /*
- * a square field of hexes with a box border (width 64)
+ * a box border (width 64) around a (pre-drawn) field of hexes
  * each hex adds 96 (128- overlap 32) height to the base 128
  */
 boxedhexes(w,h) {
   !boxedhexes
-  squarehexes(w,h)
-  ^boxedhexes
 
   -- left
   movestep(-96,-64)
@@ -141,14 +149,12 @@ boxedhexes(w,h) {
 }
 
 /*
- * hexes, but with a squared-off border
+ * a squared-off border around (existing) hexes
  * XXX: vary width to get back to 64 grid?
  * XXX: 1,1 looks odd
  */
 squarehexes(w,h) {
   !squarehexes
-  hexes(w,h)
-  ^squarehexes
 
   -- left-hand side
   movestep(64,0)
