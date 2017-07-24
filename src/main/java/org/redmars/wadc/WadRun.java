@@ -63,8 +63,8 @@ class WadRun {
 
   Vector<Vertex> vertices = new Vector<>();
   Vector<Line> lines = new Vector<>();
-  Vector sides = new Vector();
-  Vector sectors = new Vector();
+  Vector<Side> sides = new Vector<>();
+  Vector<Sector> sectors = new Vector<>();
   Vector<Thing> things = new Vector<>();
 
   Vector<Integer> vcoord = new Vector<>();
@@ -961,6 +961,48 @@ class WadRun {
     };
   }
 
+  void experimentalFillSector(Graphics g, int xmid, int ymid, int gxmid, int gymid) {
+
+      // we need to get a list of vertices that are related to each sector,
+      // which we (sadly) can't get from the Sectors themselves
+
+      for(Sector sector : sectors) {
+          // We don't want duplicate vertexes in this set. LinkedHashSet doesn't
+          // require the Vertex class to implement interface Comparable, but
+          // still offers insertion-order preservation.
+          //
+          // XXX: we need to subdivide sectors into concave (and properly
+          // connected) polygons or the draw will be corrupted.
+          Set<Vertex> av = new LinkedHashSet<Vertex>();
+
+          // sidedefs are the bridge between sectors and vertexes
+          for(Side side : sides) {
+              if(side.s == sector) {
+                  av.add(side.l.from);
+                  av.add(side.l.to);
+              }
+          }
+
+          int [] xPoints = new int[av.size()];
+          int [] yPoints = new int[av.size()];
+          int    nPoints = av.size();
+
+          int i = 0;
+          for(Vertex v : av) {
+              xPoints[i] = (int)((v.x-xmid)/scale) + gxmid;
+              yPoints[i] = (int)((v.y-ymid)/scale) + gymid;
+              i++;
+          }
+
+          // based on floor height. XXX this should be configurable, and perhaps
+          // nicer to figure out a range and scale the results into the range
+          int c = Math.max(0, Math.min(255, sector.floor));
+          g.setColor(new Color(c,c,c));
+
+          g.fillPolygon(xPoints, yPoints, nPoints);
+      }
+  }
+
   int thingsize(int n) {
     switch(n) {
       case    1: return  16;
@@ -1018,6 +1060,7 @@ class WadRun {
     int grminx = -((-minx+128)&0xFFFFFC0);
     int grmaxy = (maxy+128)&0xFFFFFC0;
     int grminy = -((-miny+128)&0xFFFFFC0);
+
     g.setColor(new Color(50,50,50));
     for(int x = grminx;x<=grmaxx;x+=64) {
       g.drawLine((int)((x-xmid)/scale)+gxmid,
@@ -1030,8 +1073,10 @@ class WadRun {
                    (int)((grmaxx-xmid)/scale)+gxmid,
                    (int)((y-ymid)/scale)+gymid);
     };
-    for(int i = 0;i<lines.size();i++) {
-      Line l = lines.elementAt(i);
+
+    experimentalFillSector(g,xmid,ymid,gxmid,gymid);
+
+    for(Line l : lines) {
       if(l.right!=null) {
         g.setColor(l.left!=null?Color.gray:Color.white);
       } else {
