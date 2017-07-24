@@ -100,24 +100,22 @@ texrules {
 }
 
 main {
-  !start
-
   texrules
   autotexall
-  
-  ceil("F_SKY1")
+  !start
+
   hexes(16,32,rightsector(jitter, 256, 200))
+
   ^start
-  ceil("F_SKY1")
   squarehexes(16,32)
   boxedhexes(16,32)
 
   movestep(96,128)
   thing
+
   !start
-  hexes(16,32,rightsector(perlin(x,y,1337,1), 256, 200))
+  hexes(16,32,rightsector(div(simplex(x,y),15625), 256, 200))
   ^start
-  ceil("F_SKY1")
   squarehexes(16,32)
   boxedhexes(16,32)
 }
