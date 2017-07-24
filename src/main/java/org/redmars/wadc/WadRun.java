@@ -211,6 +211,10 @@ class WadRun {
       return n;
     }});
 
+    builtin("simplex", 2, new Builtin() { Exp eval(Exp x, Exp y) {
+      return new Int(simplex(x.ival(), y.ival()));
+    }});
+
     builtin("mergesectors", 0, new Builtin() { Exp eval() {
       mergesectors = true;
       return n;
@@ -1358,6 +1362,15 @@ class WadRun {
 
   int prnd(int max, int x, int y, int seed, float scale) {
     return (int)(Perlin.perlinnoise_2D(x/scale+seed,y/scale+seed,1000,0.01f)*3.5f+100.0f);
+  }
+
+  int simplex(int x, int y) {
+    double simple = SimplexNoise.noise(x,y); // -1 - 1
+    return
+      (int)(
+      (simple + 1) // 0-2
+      * 500_000  // 0-1,000,000
+    );
   }
 }
 
