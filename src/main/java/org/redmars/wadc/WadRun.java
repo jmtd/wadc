@@ -313,6 +313,10 @@ class WadRun {
         return n;
     }});
 
+    builtin("is_hexenformat", 0, new Builtin() { Exp eval() {
+      return new Int(hexen?1:0);
+    }});
+
     builtin("sectortype", 2, new Builtin() { Exp eval(Exp a, Exp b) {
       cursectortype = a.ival();
       cursectortag = b.ival();

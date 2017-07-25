@@ -851,6 +851,10 @@ use
 This will happen automatically if you use one of `linetypehexen` or
 `setthinghexen` as described earlier.
 
+    is_hexenformat
+
+This evaluates to 1 if the map is set to hexen format, and 0 otherwise.
+
 If you you are working on a map for a game other than Doom II, you might
 find the libraries `doom.h`, `heretic.h` and `hexen.h` useful. They contain
 the following helper routines to set up sensible defaults for textures, flats

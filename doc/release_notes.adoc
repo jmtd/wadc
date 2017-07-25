@@ -17,6 +17,15 @@ toc::[]
 
 Not yet released.
 
+=== Language features
+
+`is_hexenformat`::   returns 1 if the map format is Hexen, 0 otherwise.
+
+=== Bug fixes
+
+ * The generalised sector helper in `boom.h` now correctly bit-shifts when
+   the map is in Hexen (ZDoom) format.
+
 == 2.1
 
 Version 2.1 of WadC is dedicated to the memory of Professor Seymour Papert
