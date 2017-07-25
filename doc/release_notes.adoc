@@ -28,6 +28,8 @@ Not yet released.
 
 == 2.1
 
+Released 22^nd^ September 2016.
+
 Version 2.1 of WadC is dedicated to the memory of Professor Seymour Papert
 (1928-2016), co-inventor of the LOGO programming language.
 
@@ -102,7 +104,7 @@ Version 2.1 of WadC is dedicated to the memory of Professor Seymour Papert
 `boom.h`:: Routines for building Boom generalised linedefs and sectors,
            some constants for use with these routines.
 
-==== Bug fixes
+=== Bug fixes
 
  * A long-standing bug with splitting lines has been fixed,
    where one line is drawn in the opposite direction to the
