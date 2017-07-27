@@ -21,6 +21,9 @@ public class WadCPrefs {
   String twad2 = "";
   String twad3 = "";
 
+  boolean renderverts = true;
+  boolean renderthings = true;
+
   public WadCPrefs() {
   }
 
