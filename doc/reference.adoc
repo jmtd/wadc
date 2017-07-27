@@ -154,6 +154,16 @@ The source is in free format (i.e. it doesn't matter how you layout your
 code). Single line comments start with "--" and last for the rest of that line,
 multiline comments is anything enclosed in /* */ (not nested).
 
+=== Printing, quitting
+
+    print("foo")
+
+Prints the argument to the output pane (or standard output in command-line mode).
+
+    die("argh")
+
+Stop evaluating the program and report the argument to the output pane. Useful for
+fatal errors.
 
 === Integer expressions
 
