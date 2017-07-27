@@ -102,33 +102,7 @@ class WadRun {
       prefs = wp.mf.prefs;
   }
 
-  void dep() { wp.mf.msg("north east west south are deprecated commands (you shouldn't need them).");}
-
   void addbuiltins() {
-
-    builtin("north", 0, new Builtin() { Exp eval() {
-      orient = 0;
-      dep();
-      return n;
-    }});
-
-    builtin("east", 0, new Builtin() { Exp eval() {
-      orient = 1;
-      dep();
-      return n;
-    }});
-
-    builtin("south", 0, new Builtin() { Exp eval() {
-      orient = 2;
-      dep();
-      return n;
-    }});
-
-    builtin("west", 0, new Builtin() { Exp eval() {
-      orient = 3;
-      dep();
-      return n;
-    }});
 
     builtin("rotright", 0, new Builtin() { Exp eval() {
       rotate(1);
