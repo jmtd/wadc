@@ -113,13 +113,14 @@ public class WadC extends JFrame implements WadCMainFrame {
     });
     menu1.setLabel(__("File"));
     menuItem1.setLabel(__("New"));
+    menuItem1.setShortcut(new MenuShortcut(KeyEvent.VK_N));
     menuItem1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         newfile(e);
       }
     });
     menuItem2.setLabel(__("Open"));
-    menuItem2.setShortcut(new MenuShortcut(79));
+    menuItem2.setShortcut(new MenuShortcut(KeyEvent.VK_O));
     menuItem2.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         open(e);
@@ -132,13 +133,14 @@ public class WadC extends JFrame implements WadCMainFrame {
       }
     });
     menuItem4.setLabel(__("Save"));
-    menuItem4.setShortcut(new MenuShortcut(83));
+    menuItem4.setShortcut(new MenuShortcut(KeyEvent.VK_S));
     menuItem4.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         save(e);
       }
     });
     menuItem5.setLabel(__("Quit"));
+    menuItem5.setShortcut(new MenuShortcut(KeyEvent.VK_Q));
     menuItem5.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         quit(e);
@@ -162,14 +164,14 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     menu2.setLabel(__("Program"));
     menuItem6.setLabel(__("Run"));
-    menuItem6.setShortcut(new MenuShortcut(82));
+    menuItem6.setShortcut(new MenuShortcut(KeyEvent.VK_R));
     menuItem6.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         run(e);
       }
     });
     menuItem7.setLabel(__("Run / Save / Save Wad"));
-    menuItem7.setShortcut(new MenuShortcut(87));
+    menuItem7.setShortcut(new MenuShortcut(KeyEvent.VK_W));
     menuItem7.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         savewad(e);
