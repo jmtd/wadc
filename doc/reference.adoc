@@ -159,11 +159,15 @@ multiline comments is anything enclosed in /* */ (not nested).
 
 The following builtin functions allow you to do simple operations on integers:
 
-    add(x,y) sub(x,y) mul(x,y) div(x,y)
+    add(x,y)
+    sub(x,y)
+    mul(x,y)
+    div(x,y)
 
 same as x+y x-y etc.
 
-    eq(x,y) lessthaneq(x,y)
+    eq(x,y)
+    lessthaneq(x,y)
 
 same as x==y and x<=y, returning 1 if true or 0 if false. To do other comparisons
 simply rearrange your code :)
@@ -179,7 +183,9 @@ transformation over the same ranges.
 
 Three bitwise operators are provided. These are mostly useful for setting flags:
 
-    and(a,b) or(c,d) not(e)
+    and(a,b)
+    or(c,d)
+    not(e)
 
 equivalent to A · B, C + D, ¬E.
 
@@ -368,14 +374,16 @@ be hard to keep track of your imaginary grid, and also that most maps
 will have parts that can benefit from rotating to any of these 4 directions,
 but more than that is hardly useful. Note that having these 4 directions
 doesn't mean you can't draw lines in arbitrary directions, it only affects
-which way you are looking. 
+which way you are looking.
 
-    rotright rotleft
+    rotright
+    rotleft
 
 rotate you 90 degrees, e.g. "north rotright" is equivalent
 to "east".
 
-    up down
+    up
+    down
 
 control whether the "pen" is up or down. If it is down (default)
 moving about will create linedefs (hint, use macros from standard.h
@@ -403,7 +411,7 @@ imprecise, assuming it would use floats.
 To make creating linedefs easier, some shorter macros exists (defined
 in "standard.h" to make life easier.
 
-	curve(forward,sideways,subdivisions,xoffdir)
+    curve(forward,sideways,subdivisions,xoffdir)
 
 draws a 90 degree curve out of linesegments, the number of which is determined by
 subdivisions. After the curve, the current orientation is rotated accordingly.
@@ -554,7 +562,7 @@ sets both lower & upper unpegged. calling it again resets to normal.
 
 By default, two-sided lines are passable. Setting 'impassable' prevents this.
 
-	arch(height,width,depth,subdivision,floor,lightlevel)
+    arch(height,width,depth,subdivision,floor,lightlevel)
 
 (experimental) makes an arch, of a certain base height, starting at a certain floor
 level. width is across the arch, depth is into the arch, subdivision should divide
@@ -562,7 +570,7 @@ width, i.e. if width = 128, then subdivision = 64 gives you sectors of 2 units w
 Arch adds to xoff automatically to reduce funny texturing. On the y axis it is best
 if you precede arch by unpegged.
 
-	mergesectors
+    mergesectors
 
 turns sector merge mode on. In this mode WadC will check for existing sectors
 with identical properties when creating a new sector, and if one exists,
@@ -571,7 +579,7 @@ will enable you to create maps with very few sectors :)
 Only use this option when necessary, as GL doom ports seem to have a hard time
 triangulating sectors like this.
 
-	prunelines
+    prunelines
 
 when this is on, removes all linedefs (when saving) that have the same
 sector on both sides, and linedefs with no sidedefs at all. This is often
@@ -654,8 +662,8 @@ Go back to the position/orientation stored in "name" and restore the textures.
 These are especially useful in combination with the linetype & sectortype
 commands. Simply use any identifier prefixed by a "$":
 
-	linetype(88,$exitlift)
-	sectortype(0,$exitlift)
+    linetype(88,$exitlift)
+    sectortype(0,$exitlift)
 
 whereever the same tag is used, a unique tag number is automatically generated and
 used.
@@ -688,7 +696,7 @@ autotexall() to set all texture to "?".
 
 You specify rules using the following command:
 
-	autotex(type,size1,size2,size3,texture)
+    autotex(type,size1,size2,size3,texture)
 
 This reads: apply "texture" to any surfaces that are of type "type",
 and comply with size constraints "size1", "size2" and "size3".
