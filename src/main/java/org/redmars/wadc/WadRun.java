@@ -102,6 +102,10 @@ class WadRun {
       prefs = wp.mf.prefs;
   }
 
+  static void deprecated(String fn) {
+      wp.mf.msg("WARNING: " +fn + "is deprecated and will be removed in a future release");
+  }
+
   void addbuiltins() {
 
     builtin("rotright", 0, new Builtin() { Exp eval() {
@@ -199,11 +203,13 @@ class WadRun {
     }});
 
     builtin("landscape", 3, new Builtin() { Exp eval(Exp a, Exp b, Exp c) {
+      deprecated("landscape");
       landscape(a.ival(),b.ival(),c.ival());
       return n;
     }});
 
     builtin("marchingcubes", 3, new Builtin() { Exp eval(Exp a, Exp b, Exp c) {
+      deprecated("marchingcubes");
       marchingcubes(a.ival(),b.ival(),c.ival());
       return n;
     }});
