@@ -207,18 +207,8 @@ public class WadC extends JFrame implements WadCMainFrame {
     this.setLocation(50,50);
     pack();
     setVisible(true);
-    newfile(null);
 
-    String cfg = getPrefs();
-    if("".equals(cfg)) {
-        // if we couldn't read wadc.cfg, write out a default
-        savecfg();
-    } else {
-        WadParse prefs = new WadParse(cfg, this);
-        if(prefs.err==null) prefs.run();
-    }
-
-    String lf = loadtextfile(prefs.basename);
+    String lf = loadtextfile(prefs.get("basename"));
     if(lf.length()>0) { textArea1.setText(lf); } else { newfile(null); };
   }
 
@@ -250,66 +240,40 @@ public class WadC extends JFrame implements WadCMainFrame {
     return "";
   }
 
-  String getPrefs() {
-      String prefDir = System.getProperty("user.home") + File.separator + ".wadc";
-      return loadtextfile(prefDir + File.separator + "wadc.cfg");
-  }
-
-  void setPrefs(String prefs) {
-      String prefDir = System.getProperty("user.home") + File.separator + ".wadc";
-      File f = new File(prefDir);
-
-      if(!f.exists() && !f.mkdir()) {
-          msg(__("couldn't create ") + prefDir);
-          msg(__("saving configuration unsuccessful"));
-      }
-      if(f.exists() && !f.isDirectory()) {
-          msg(prefDir + __(" exists but is not a directory"));
-          msg(__("saving configuration unsuccessful"));
-      }
-
-      savetextfile(prefDir + File.separator + "wadc.cfg", prefs);
-  }
-
   void newfile(ActionEvent e) {
     textArea1.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
     // XXX: nasty hack to ensure basename is always a FQ path
-    prefs.basename = new File(System.getProperty("user.home"), "untitled.wl").toString();
+    prefs.put("basename", new File(System.getProperty("user.home"), "untitled.wl").toString());
   }
 
   void open(ActionEvent e) {
     FileDialog fd = new FileDialog(this, __("select a .wl file to load"), FileDialog.LOAD);
-    fd.setDirectory((new File(prefs.basename)).getParent());
+    fd.setDirectory((new File(prefs.get("basename"))).getParent());
     fd.setVisible(true);
     String name = fd.getFile();
     if(name==null) return;
-    prefs.basename = (new File(fd.getDirectory(),name)).toString();
-    textArea1.setText(loadtextfile(prefs.basename));
+    prefs.put("basename", (new File(fd.getDirectory(),name)).toString());
+    textArea1.setText(loadtextfile(prefs.get("basename")));
   }
 
   void saveas(ActionEvent e) {
     FileDialog fd = new FileDialog(this, __("save program (.wl)"), FileDialog.SAVE);
-    fd.setDirectory((new File(prefs.basename)).getParent());
-    fd.setFile((new File(prefs.basename)).getName()); //File f = new File(); f.
+    fd.setDirectory((new File(prefs.get("basename"))).getParent());
+    fd.setFile((new File(prefs.get("basename"))).getName()); //File f = new File(); f.
     fd.setVisible(true);
     String name = fd.getFile();
     if(name==null) return;
-    prefs.basename = (new File(fd.getDirectory(),name)).toString();
+    prefs.put("basename", (new File(fd.getDirectory(),name)).toString());
     save(e);
   }
 
   void save(ActionEvent e) {
-    savetextfile(prefs.basename,textArea1.getText());
+    savetextfile(prefs.get("basename"), textArea1.getText());
     changed = false;
-  }
-
-  void savecfg() {
-    setPrefs(prefs.toString());
   }
 
   void quit(ActionEvent e) {
     if(changed) saveas(e);
-    savecfg();
     System.exit(0);
   }
 
@@ -357,8 +321,9 @@ public class WadC extends JFrame implements WadCMainFrame {
     if(lastwp==null || lastwp.err!=null) {
       //msg("wadsave: can only save wad after program has been run successfully");
     } else {
+      String basename = prefs.get("basename");
       save(e);
-      wadfile = prefs.basename.substring(0,prefs.basename.lastIndexOf('.'))+".wad";
+      wadfile = basename.substring(0, basename.lastIndexOf('.')) + ".wad";
       Wad wad = new Wad(lastwp,this,wadfile,true);
       wad.run();
     };
@@ -389,12 +354,12 @@ public class WadC extends JFrame implements WadCMainFrame {
   void bspdoom(String wadfile) {
     if(wadfile==null) return;
 
-    subcmd(Arrays.asList(prefs.bspcmd, wadfile, "-o", wadfile));
+    subcmd(Arrays.asList(prefs.get("bspcmd"), wadfile, "-o", wadfile));
 
     ArrayList<String> cmd = new ArrayList<String>();
-    cmd.add(prefs.doomexe);
-    cmd.addAll(Arrays.asList(prefs.doomargs.split("\\s+")));
-    cmd.addAll(Arrays.asList(prefs.twad1, prefs.twad2, prefs.twad3, wadfile).stream()
+    cmd.add(prefs.get("doomexe"));
+    cmd.addAll(Arrays.asList(prefs.get("doomargs").split("\\s+")));
+    cmd.addAll(Arrays.asList(prefs.get("twad1"), prefs.get("twad2"), prefs.get("twad3"), wadfile).stream()
         .filter(s -> !"".equals(s))
         .collect(Collectors.toList()));
 

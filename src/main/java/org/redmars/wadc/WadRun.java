@@ -65,7 +65,7 @@ class WadRun {
   Vector<Line> lines = new Vector<>();
   Vector sides = new Vector();
   Vector sectors = new Vector();
-  Vector things = new Vector();
+  Vector<Thing> things = new Vector<>();
 
   Vector<Integer> vcoord = new Vector<>();
   Vector<Vector<Vertex>> vlists = new Vector<>();
@@ -438,61 +438,61 @@ class WadRun {
 
     builtin("lastfile", 1, new Builtin() { Exp eval(Exp s) {
       deprecated("lastfile");
-      prefs.basename = s.sval();
+      prefs.put("basename", s.sval());
       return n;
     }});
 
     builtin("doomexe", 1, new Builtin() { Exp eval(Exp s) {
       deprecated("doomexe");
-      prefs.doomexe = s.sval();
+      prefs.put("doomexe", s.sval());
       return n;
     }});
 
     builtin("doomargs", 1, new Builtin() { Exp eval(Exp s) {
       deprecated("doomargs");
-      prefs.doomargs = s.sval();
+      prefs.put("doomargs", s.sval());
       return n;
     }});
 
     builtin("bspcmd", 1, new Builtin() { Exp eval(Exp s) {
       deprecated("bspcmd");
-      prefs.bspcmd = s.sval();
+      prefs.put("bspcmd", s.sval());
       return n;
     }});
 
     builtin("iwad", 1, new Builtin() { Exp eval(Exp s) {
       deprecated("iwad");
-      prefs.iwad = s.sval();
+      prefs.put("iwad", s.sval());
       return n;
     }});
 
     builtin("twad1", 1, new Builtin() { Exp eval(Exp s) {
       deprecated("twad1");
-      prefs.twad1 = s.sval();
+      prefs.put("twad1", s.sval());
       return n;
     }});
 
     builtin("twad2", 1, new Builtin() { Exp eval(Exp s) {
       deprecated("twad2");
-      prefs.twad2 = s.sval();
+      prefs.put("twad2", s.sval());
       return n;
     }});
 
     builtin("twad3", 1, new Builtin() { Exp eval(Exp s) {
       deprecated("twad3");
-      prefs.twad3 = s.sval();
+      prefs.put("twad3", s.sval());
       return n;
     }});
 
     builtin("togglevertices", 0, new Builtin() { Exp eval() {
       deprecated("togglevertices");
-      prefs.renderverts = !prefs.renderverts;
+      prefs.putBoolean("renderverts", !prefs.getBoolean("renderverts"));
       return n;
     }});
 
     builtin("togglethings", 0, new Builtin() { Exp eval() {
       deprecated("togglethings");
-      prefs.renderthings = !prefs.renderthings;
+      prefs.putBoolean("renderthings", !prefs.getBoolean("renderthings"));
       return n;
     }});
 
@@ -1047,7 +1047,7 @@ class WadRun {
                  (int)((l.to.x-xmid)/scale)+gxmid,
                  (int)((l.to.y-ymid)/scale)+gymid);
     };
-    if(prefs.renderverts) for(Vertex v : vertices) {
+    if(prefs.getBoolean("renderverts")) for(Vertex v : vertices) {
       int d = 2;
       g.setColor(Color.green);
       if(v==lastvertex) { d=5; g.setColor(Color.magenta); };
@@ -1056,7 +1056,7 @@ class WadRun {
       g.drawLine(x-d,y-d,x+d,y+d);
       g.drawLine(x+d,y-d,x-d,y+d);
     };
-    if(prefs.renderthings) for(Thing t : things) {
+    if(prefs.getBoolean("renderthings")) for(Thing t : things) {
       g.setColor(Color.blue);
       int rad = thingsize(t.type);
       int x1 = (int)((t.x-rad-xmid)/scale)+gxmid;
