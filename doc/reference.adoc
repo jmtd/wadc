@@ -494,12 +494,12 @@ To fetch or adjust the flags used for creating new things, use
 Useful in conjunction with the bitwise operators. See the `thingtypes.h`
 library for useful definitions.
 
-	linetype(type,tag)
+    linetype(type,tag)
 
 Sets the current type & tag for lines being drawn. Needs to be reset to 0
 manually. (see below for how to use tags).
 
-	sectortype(type,tag)
+    sectortype(type,tag)
 
 sets current type & tag for the next sectors being creates. Needs to be reset
 to 0 manually. (see below for how to use tags).
