@@ -15,6 +15,7 @@ package org.redmars.wadc;
 
 import java.util.HashMap;
 import java.util.prefs.Preferences;
+import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.BackingStoreException;
 
 public class WadCPrefs {
@@ -38,6 +39,10 @@ public class WadCPrefs {
   }
   public void putBoolean(String key, boolean value) {
       prefs.putBoolean(key, value);
+  }
+
+  void addPreferenceChangeListener(PreferenceChangeListener pcl) {
+      prefs.addPreferenceChangeListener(pcl);
   }
 
   public WadCPrefs() {

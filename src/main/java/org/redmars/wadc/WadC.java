@@ -40,7 +40,10 @@ public class WadC extends JFrame implements WadCMainFrame {
   MenuItem menuItem2 = new MenuItem(); // open
   MenuItem menuItem3 = new MenuItem(); // save
   MenuItem menuItem4 = new MenuItem(); // save as
+  MenuItem preferencesMenu = new MenuItem(); // preferences
   MenuItem menuItem5 = new MenuItem(); // quit
+
+  EngineConfigDialog engineConfigDialog;
 
   Menu editMenu = new Menu();
   MenuItem undoItem = new MenuItem();
@@ -86,6 +89,10 @@ public class WadC extends JFrame implements WadCMainFrame {
 
   private void jbInit() throws Exception {
     setTitle("wadc");
+
+    engineConfigDialog = new EngineConfigDialog(this, prefs);
+    engineConfigDialog.pack();
+
     textArea1.setFont(new Font("Monospaced",0,12));
     textArea1.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
       public void insertUpdate(DocumentEvent e) {
@@ -139,6 +146,14 @@ public class WadC extends JFrame implements WadCMainFrame {
         save(e);
       }
     });
+    preferencesMenu.setLabel(__("Preferences"));
+    preferencesMenu.setShortcut(new MenuShortcut(KeyEvent.VK_COMMA));
+    preferencesMenu.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        engineConfigDialog.setVisible(true);
+      }
+    });
+
     menuItem5.setLabel(__("Quit"));
     menuItem5.setShortcut(new MenuShortcut(KeyEvent.VK_Q));
     menuItem5.addActionListener(new java.awt.event.ActionListener() {
@@ -191,6 +206,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     menu1.add(menuItem2);
     menu1.add(menuItem3);
     menu1.add(menuItem4);
+    menu1.add(preferencesMenu);
     menu1.add(menuItem5);
     editMenu.add(undoItem);
     editMenu.add(redoItem);
