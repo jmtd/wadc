@@ -844,15 +844,6 @@ If you have defined any new patch names, a `PNAMES` lump is also written
 to the output WAD. For this to work, you have to have configured WadC to
 know where your IWAD is.
 
-The "proper" way to do this is to quit WadC, edit your configuration and
-start it back up.
-
-For now, The quickest way is to add
-
-    iwad("c:\path\to\doom2.wad")
-
-into the currently open WadC file and run it.
-
 === Map type output
 
 By default, WadC targets Doom II. Amongst other things, this means the
