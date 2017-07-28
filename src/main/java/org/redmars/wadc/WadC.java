@@ -53,6 +53,11 @@ public class WadC extends JFrame implements WadCMainFrame {
   MenuItem menuItem6 = new MenuItem(); // run
   MenuItem menuItem7 = new MenuItem(); // run / save
   MenuItem menuItem8 = new MenuItem(); // ... / bsp / doom
+
+  Menu viewMenu = new Menu();
+  CheckboxMenuItem showThings = new CheckboxMenuItem();
+  CheckboxMenuItem showVertices = new CheckboxMenuItem();
+
   Canvas cv;
   UndoManager manager = new UndoManager();
 
@@ -198,10 +203,30 @@ public class WadC extends JFrame implements WadCMainFrame {
         bspdoom(savewad(e));
       }
     });
+
+    viewMenu.setLabel(__("View"));
+    showThings.setLabel(__("Show things"));
+    showThings.setState(prefs.getBoolean("renderthings"));
+    showThings.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            prefs.toggle("renderthings");
+            cv.repaint();
+        }
+    });
+    showVertices.setLabel(__("Show vertices"));
+    showVertices.setState(prefs.getBoolean("renderverts"));
+    showVertices.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            prefs.toggle("renderverts");
+            cv.repaint();
+        }
+    });
+
     add(sp, "b");
     menuBar1.add(menu1);
     menuBar1.add(editMenu);
     menuBar1.add(menu2);
+    menuBar1.add(viewMenu);
     menu1.add(menuItem1);
     menu1.add(menuItem2);
     menu1.add(menuItem3);
@@ -213,6 +238,10 @@ public class WadC extends JFrame implements WadCMainFrame {
     menu2.add(menuItem6);
     menu2.add(menuItem7);
     menu2.add(menuItem8);
+
+    viewMenu.add(showThings);
+    viewMenu.add(showVertices);
+
     cv = new MyCanvas(this);
     //textArea2.setBackground(Color.lightGray);
     textArea2.setEditable(false);

@@ -31,7 +31,7 @@ public class WadCPrefs {
       if(key.equals("renderverts") || key.equals("renderthings")) {
           return prefs.getBoolean(key, true);
       }
-      return false;
+      return prefs.getBoolean(key, false);
   }
 
   public void put(String key, String value) {
@@ -39,6 +39,10 @@ public class WadCPrefs {
   }
   public void putBoolean(String key, boolean value) {
       prefs.putBoolean(key, value);
+  }
+
+  public void toggle(String key) {
+      putBoolean(key, !getBoolean(key));
   }
 
   void addPreferenceChangeListener(PreferenceChangeListener pcl) {
