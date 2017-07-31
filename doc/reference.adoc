@@ -370,6 +370,18 @@ the random number generator:
 
 This affects any use of the choice operator that follows.
 
+=== Simplex noise
+
+   simplex(x,y)
+
+The `simplex` function returns a number between 0 and 1,000,000 based on the
+supplied X/Y coordinates into a 2D Simplex "field". This is useful for generating
+landscapes or any other structure of feature which requires smoothed noise. To
+get smooth changes, use small iterations over X and Y, for rougher transitions,
+use larger.
+
+`simplex` is entirely deterministic, reproducible and not affected by `seed`.
+
 === Doom Specific Commands
 
 The bit you have been waiting for :)
