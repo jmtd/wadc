@@ -1078,7 +1078,9 @@ class WadRun {
                    (int)((y-ymid)/scale)+gymid);
     };
 
-    experimentalFillSector(g,xmid,ymid,gxmid,gymid);
+    if(prefs.getBoolean("fillsectors")) {
+        experimentalFillSector(g,xmid,ymid,gxmid,gymid);
+    }
 
     for(Line l : lines) {
       if(l.right!=null) {
