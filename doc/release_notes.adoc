@@ -21,6 +21,10 @@ Not yet released.
 
 `is_hexenformat`::   returns 1 if the map format is Hexen, 0 otherwise.
 
+==== Removed stuff
+
+A whole load of deprecated (and undocumented) built-ins have been removed.
+
 === Bug fixes
 
  * The generalised sector helper in `boom.h` now correctly bit-shifts when

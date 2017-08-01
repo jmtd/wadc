@@ -15,7 +15,7 @@ public class Line {
   Side right = null, left = null;
   String t,m,b;
   int xoff, yoff;
-  boolean undefx, undefy;
+  boolean undefx;
   int flags = 0;
   int type = 0;
   int tag = 0;
@@ -33,7 +33,6 @@ public class Line {
     yoff = l.yoff;
     flags = l.flags;
     undefx = l.undefx;
-    undefy = l.undefy;
     type = l.type;
     tag = l.tag;
     for(int i = 0; i < specialargs.length; i++) specialargs[i] = l.specialargs[i];

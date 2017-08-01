@@ -15,7 +15,6 @@ potential todos:
 - check curve xoff accuracy?
 - render thing orientation?
 - make a way to have the xo() macro be independant of undefx?
-- add undefy? -> not practical, because it has different effects on mid/bot/top
 - fix can't draw when no lines drawn?
 - curb lazyness? in some code (with loops) this is really the bottleneck
   -> happens mainly in recursive functions, which can easily be given _

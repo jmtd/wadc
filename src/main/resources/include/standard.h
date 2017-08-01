@@ -25,8 +25,8 @@ eright(n) { step(n,n) rotright }
 unpeg(x) { unpegged x unpegged }
 typeline(t, tag, x) { linetype(t, tag) x linetype(0, 0) }
 typesector(t, tag, x) { sectortype(t, tag) x sectortype(0, 0) }
-xo(x, y) { xoff(x) y undefx } 
-yo(x, y) { yoff(x) y undefy } 
+xo(x, y) { xoff(x) y undefx }
+yo(x, y) { yoff(x) y }
 
 pushpop(x)  { !pushpop  x ^pushpop  }
 pushpop2(x) { !pushpop2 x ^pushpop2 }  -- one level of nesting :)

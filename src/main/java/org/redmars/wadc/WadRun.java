@@ -36,7 +36,6 @@ class WadRun {
   boolean mergesectors = false;
   boolean prunelines = false;
   boolean undefx = false;
-  boolean undefy = false;
   int forcesec = -1;
   boolean hexen = false;
   boolean midtex = false;
@@ -349,12 +348,11 @@ class WadRun {
 
     builtin("yoff", 1, new Builtin() { Exp eval(Exp s) {
       yoff = s.ival();
-      undefy = false;
       return n;
     }});
 
     builtin("midtex", 0, new Builtin() { Exp eval() {
-	  midtex = !midtex;
+      midtex = !midtex;
       return n;
     }});
 
@@ -543,11 +541,6 @@ class WadRun {
       return n;
     }});
 
-    builtin("undefy", 0, new Builtin() { Exp eval() {
-      undefy = true;
-      return n;
-    }});
-
     builtin("popsector", 0, new Builtin() { Exp eval() {
       if(sectorStack.size() <= 1) {
           wp.error("error: can't pop the last sector");
@@ -691,7 +684,6 @@ class WadRun {
     l.xoff = xoff;
     l.yoff = yoff;
     l.undefx = undefx;
-    l.undefy = undefy;
     l.type = curlinetype;
     l.tag = curlinetag;
     l.flags |= lineflags;
