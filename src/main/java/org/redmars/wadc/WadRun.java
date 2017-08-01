@@ -102,7 +102,7 @@ class WadRun {
       prefs = wp.mf.prefs;
   }
 
-  static void deprecated(String fn) {
+  void deprecated(String fn) {
       wp.mf.msg("WARNING: " +fn + "is deprecated and will be removed in a future release");
   }
 
