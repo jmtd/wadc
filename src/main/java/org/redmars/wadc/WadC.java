@@ -58,6 +58,10 @@ public class WadC extends JFrame implements WadCMainFrame {
   CheckboxMenuItem showThings = new CheckboxMenuItem();
   CheckboxMenuItem showVertices = new CheckboxMenuItem();
 
+  Menu fillMenu = new Menu();
+  CheckboxMenuItem emptySectors = new CheckboxMenuItem();
+  CheckboxMenuItem floorSectors = new CheckboxMenuItem();
+
   Canvas cv;
   UndoManager manager = new UndoManager();
 
@@ -90,6 +94,16 @@ public class WadC extends JFrame implements WadCMainFrame {
 
   public static void main(String[] args) {
     WadCMainFrame mainFrame1 = new WadC();
+  }
+
+  private void syncFillSectorItems() {
+    if(prefs.getBoolean("fillsectors")) {
+        emptySectors.setState(false);
+        floorSectors.setState(true);
+    } else {
+        emptySectors.setState(true);
+        floorSectors.setState(false);
+    }
   }
 
   private void jbInit() throws Exception {
@@ -222,6 +236,24 @@ public class WadC extends JFrame implements WadCMainFrame {
         }
     });
 
+    fillMenu.setLabel(__("Sector Fill"));
+    emptySectors.setLabel(__("None"));
+    emptySectors.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            prefs.putBoolean("fillsectors", false);
+            syncFillSectorItems();
+            cv.repaint();
+        }
+    });
+    floorSectors.setLabel(__("Floor height"));
+    floorSectors.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            prefs.putBoolean("fillsectors", true);
+            syncFillSectorItems();
+            cv.repaint();
+        }
+    });
+
     add(sp, "b");
     menuBar1.add(menu1);
     menuBar1.add(editMenu);
@@ -241,6 +273,11 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     viewMenu.add(showThings);
     viewMenu.add(showVertices);
+    viewMenu.add(fillMenu);
+
+    fillMenu.add(emptySectors);
+    fillMenu.add(floorSectors);
+    syncFillSectorItems();
 
     cv = new MyCanvas(this);
     //textArea2.setBackground(Color.lightGray);

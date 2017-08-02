@@ -39,7 +39,8 @@ the `wadc.cfg` file if you wish.
 WadC now features a Preferences GUI dialogue window that can be used to browse for and
 set the Doom engine, BSP tool, etc.
 
-You can also toggle the rendering of things or vertices from a new *View* menu.
+You can also toggle the rendering of things or vertices and enable or disable a new
+experimental fill-sectors feature from a new *View* menu.
 
 ==== command-line interface
 
@@ -50,6 +51,8 @@ custom textures.
 === Language features
 
 `is_hexenformat`::   returns 1 if the map format is Hexen, 0 otherwise.
+`simplex(x,y)`::     A simplex noise feature. Returns a random value between 0 and
+                     1,000,000 from the X,Y coordinate into a 2D simplex "field".
 
 The behaviour of `renderthings` and `renderverts` has changed slightly: they now work
 with a global preference, rather than being something that is specific to the current
@@ -63,6 +66,7 @@ A whole load of deprecated (and undocumented) built-ins have been removed.
 
  * The generalised sector helper in `boom.h` now correctly bit-shifts when
    the map is in Hexen (ZDoom) format.
+ * the CLI tool now honours WadC preferences (in particular `iwad`).
 
 == 2.1
 
