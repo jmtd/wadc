@@ -140,7 +140,7 @@ public class WadParse {
 
   // given a relative file e.g. "foo.h", construct an absolute path
   Path resolveinclude(String name) {
-    Path p = Paths.get(mf.prefs.basename).getParent();
+    Path p = Paths.get(mf.prefs.get("basename")).getParent();
     String base = p == null ? "" : p.toString();
     p = Paths.get(base, name);
     return p;

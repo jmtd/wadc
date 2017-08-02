@@ -40,7 +40,10 @@ public class WadC extends JFrame implements WadCMainFrame {
   MenuItem menuItem2 = new MenuItem(); // open
   MenuItem menuItem3 = new MenuItem(); // save
   MenuItem menuItem4 = new MenuItem(); // save as
+  MenuItem preferencesMenu = new MenuItem(); // preferences
   MenuItem menuItem5 = new MenuItem(); // quit
+
+  EngineConfigDialog engineConfigDialog;
 
   Menu editMenu = new Menu();
   MenuItem undoItem = new MenuItem();
@@ -50,6 +53,11 @@ public class WadC extends JFrame implements WadCMainFrame {
   MenuItem menuItem6 = new MenuItem(); // run
   MenuItem menuItem7 = new MenuItem(); // run / save
   MenuItem menuItem8 = new MenuItem(); // ... / bsp / doom
+
+  Menu viewMenu = new Menu();
+  CheckboxMenuItem showThings = new CheckboxMenuItem();
+  CheckboxMenuItem showVertices = new CheckboxMenuItem();
+
   Canvas cv;
   UndoManager manager = new UndoManager();
 
@@ -86,6 +94,10 @@ public class WadC extends JFrame implements WadCMainFrame {
 
   private void jbInit() throws Exception {
     setTitle("wadc");
+
+    engineConfigDialog = new EngineConfigDialog(this, prefs);
+    engineConfigDialog.pack();
+
     textArea1.setFont(new Font("Monospaced",0,12));
     textArea1.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
       public void insertUpdate(DocumentEvent e) {
@@ -113,13 +125,14 @@ public class WadC extends JFrame implements WadCMainFrame {
     });
     menu1.setLabel(__("File"));
     menuItem1.setLabel(__("New"));
+    menuItem1.setShortcut(new MenuShortcut(KeyEvent.VK_N));
     menuItem1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         newfile(e);
       }
     });
     menuItem2.setLabel(__("Open"));
-    menuItem2.setShortcut(new MenuShortcut(79));
+    menuItem2.setShortcut(new MenuShortcut(KeyEvent.VK_O));
     menuItem2.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         open(e);
@@ -132,13 +145,22 @@ public class WadC extends JFrame implements WadCMainFrame {
       }
     });
     menuItem4.setLabel(__("Save"));
-    menuItem4.setShortcut(new MenuShortcut(83));
+    menuItem4.setShortcut(new MenuShortcut(KeyEvent.VK_S));
     menuItem4.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         save(e);
       }
     });
+    preferencesMenu.setLabel(__("Preferences"));
+    preferencesMenu.setShortcut(new MenuShortcut(KeyEvent.VK_COMMA));
+    preferencesMenu.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        engineConfigDialog.setVisible(true);
+      }
+    });
+
     menuItem5.setLabel(__("Quit"));
+    menuItem5.setShortcut(new MenuShortcut(KeyEvent.VK_Q));
     menuItem5.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         quit(e);
@@ -162,14 +184,14 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     menu2.setLabel(__("Program"));
     menuItem6.setLabel(__("Run"));
-    menuItem6.setShortcut(new MenuShortcut(82));
+    menuItem6.setShortcut(new MenuShortcut(KeyEvent.VK_R));
     menuItem6.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         run(e);
       }
     });
     menuItem7.setLabel(__("Run / Save / Save Wad"));
-    menuItem7.setShortcut(new MenuShortcut(87));
+    menuItem7.setShortcut(new MenuShortcut(KeyEvent.VK_W));
     menuItem7.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         savewad(e);
@@ -181,20 +203,45 @@ public class WadC extends JFrame implements WadCMainFrame {
         bspdoom(savewad(e));
       }
     });
+
+    viewMenu.setLabel(__("View"));
+    showThings.setLabel(__("Show things"));
+    showThings.setState(prefs.getBoolean("renderthings"));
+    showThings.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            prefs.toggle("renderthings");
+            cv.repaint();
+        }
+    });
+    showVertices.setLabel(__("Show vertices"));
+    showVertices.setState(prefs.getBoolean("renderverts"));
+    showVertices.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            prefs.toggle("renderverts");
+            cv.repaint();
+        }
+    });
+
     add(sp, "b");
     menuBar1.add(menu1);
     menuBar1.add(editMenu);
     menuBar1.add(menu2);
+    menuBar1.add(viewMenu);
     menu1.add(menuItem1);
     menu1.add(menuItem2);
     menu1.add(menuItem3);
     menu1.add(menuItem4);
+    menu1.add(preferencesMenu);
     menu1.add(menuItem5);
     editMenu.add(undoItem);
     editMenu.add(redoItem);
     menu2.add(menuItem6);
     menu2.add(menuItem7);
     menu2.add(menuItem8);
+
+    viewMenu.add(showThings);
+    viewMenu.add(showVertices);
+
     cv = new MyCanvas(this);
     //textArea2.setBackground(Color.lightGray);
     textArea2.setEditable(false);
@@ -205,18 +252,8 @@ public class WadC extends JFrame implements WadCMainFrame {
     this.setLocation(50,50);
     pack();
     setVisible(true);
-    newfile(null);
 
-    String cfg = getPrefs();
-    if("".equals(cfg)) {
-        // if we couldn't read wadc.cfg, write out a default
-        savecfg();
-    } else {
-        WadParse prefs = new WadParse(cfg, this);
-        if(prefs.err==null) prefs.run();
-    }
-
-    String lf = loadtextfile(prefs.basename);
+    String lf = loadtextfile(prefs.get("basename"));
     if(lf.length()>0) { textArea1.setText(lf); } else { newfile(null); };
   }
 
@@ -248,66 +285,40 @@ public class WadC extends JFrame implements WadCMainFrame {
     return "";
   }
 
-  String getPrefs() {
-      String prefDir = System.getProperty("user.home") + File.separator + ".wadc";
-      return loadtextfile(prefDir + File.separator + "wadc.cfg");
-  }
-
-  void setPrefs(String prefs) {
-      String prefDir = System.getProperty("user.home") + File.separator + ".wadc";
-      File f = new File(prefDir);
-
-      if(!f.exists() && !f.mkdir()) {
-          msg(__("couldn't create ") + prefDir);
-          msg(__("saving configuration unsuccessful"));
-      }
-      if(f.exists() && !f.isDirectory()) {
-          msg(prefDir + __(" exists but is not a directory"));
-          msg(__("saving configuration unsuccessful"));
-      }
-
-      savetextfile(prefDir + File.separator + "wadc.cfg", prefs);
-  }
-
   void newfile(ActionEvent e) {
     textArea1.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
     // XXX: nasty hack to ensure basename is always a FQ path
-    prefs.basename = new File(System.getProperty("user.home"), "untitled.wl").toString();
+    prefs.put("basename", new File(System.getProperty("user.home"), "untitled.wl").toString());
   }
 
   void open(ActionEvent e) {
     FileDialog fd = new FileDialog(this, __("select a .wl file to load"), FileDialog.LOAD);
-    fd.setDirectory((new File(prefs.basename)).getParent());
+    fd.setDirectory((new File(prefs.get("basename"))).getParent());
     fd.setVisible(true);
     String name = fd.getFile();
     if(name==null) return;
-    prefs.basename = (new File(fd.getDirectory(),name)).toString();
-    textArea1.setText(loadtextfile(prefs.basename));
+    prefs.put("basename", (new File(fd.getDirectory(),name)).toString());
+    textArea1.setText(loadtextfile(prefs.get("basename")));
   }
 
   void saveas(ActionEvent e) {
     FileDialog fd = new FileDialog(this, __("save program (.wl)"), FileDialog.SAVE);
-    fd.setDirectory((new File(prefs.basename)).getParent());
-    fd.setFile((new File(prefs.basename)).getName()); //File f = new File(); f.
+    fd.setDirectory((new File(prefs.get("basename"))).getParent());
+    fd.setFile((new File(prefs.get("basename"))).getName()); //File f = new File(); f.
     fd.setVisible(true);
     String name = fd.getFile();
     if(name==null) return;
-    prefs.basename = (new File(fd.getDirectory(),name)).toString();
+    prefs.put("basename", (new File(fd.getDirectory(),name)).toString());
     save(e);
   }
 
   void save(ActionEvent e) {
-    savetextfile(prefs.basename,textArea1.getText());
+    savetextfile(prefs.get("basename"), textArea1.getText());
     changed = false;
-  }
-
-  void savecfg() {
-    setPrefs(prefs.toString());
   }
 
   void quit(ActionEvent e) {
     if(changed) saveas(e);
-    savecfg();
     System.exit(0);
   }
 
@@ -355,8 +366,9 @@ public class WadC extends JFrame implements WadCMainFrame {
     if(lastwp==null || lastwp.err!=null) {
       //msg("wadsave: can only save wad after program has been run successfully");
     } else {
+      String basename = prefs.get("basename");
       save(e);
-      wadfile = prefs.basename.substring(0,prefs.basename.lastIndexOf('.'))+".wad";
+      wadfile = basename.substring(0, basename.lastIndexOf('.')) + ".wad";
       Wad wad = new Wad(lastwp,this,wadfile,true);
       wad.run();
     };
@@ -387,12 +399,12 @@ public class WadC extends JFrame implements WadCMainFrame {
   void bspdoom(String wadfile) {
     if(wadfile==null) return;
 
-    subcmd(Arrays.asList(prefs.bspcmd, wadfile, "-o", wadfile));
+    subcmd(Arrays.asList(prefs.get("bspcmd"), wadfile, "-o", wadfile));
 
     ArrayList<String> cmd = new ArrayList<String>();
-    cmd.add(prefs.doomexe);
-    cmd.addAll(Arrays.asList(prefs.doomargs.split("\\s+")));
-    cmd.addAll(Arrays.asList(prefs.twad1, prefs.twad2, prefs.twad3, wadfile).stream()
+    cmd.add(prefs.get("doomexe"));
+    cmd.addAll(Arrays.asList(prefs.get("doomargs").split("\\s+")));
+    cmd.addAll(Arrays.asList(prefs.get("twad1"), prefs.get("twad2"), prefs.get("twad3"), wadfile).stream()
         .filter(s -> !"".equals(s))
         .collect(Collectors.toList()));
 

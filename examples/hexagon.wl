@@ -5,8 +5,6 @@
 
 main {
   seed (1337)
-  togglevertices
-  togglethings
   mergesectors
   prunelines
   deaf

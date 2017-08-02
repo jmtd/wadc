@@ -17,9 +17,43 @@ toc::[]
 
 Not yet released.
 
+=== Core program changes
+
+==== No more configuration file
+
+WadC no longer uses a `wadc.cfg` file to store preferences. The various language
+built-ins for configuration are deprecated and will be removed in the next release.
+
+Preferences are now stored using the
+link:https://docs.oracle.com/javase/8/docs/api/java/util/prefs/Preferences.html[Java
+Preferences API]. What this means depends on what platform you are using; if you
+want to inspect the preferences outside of WadC please consult the Java documentation
+for more information.
+
+If you want to read in the settings from an old `wadc.cfg` file, open it in WadC and
+run it. The resulting preferences will be saved in the new system. You can then delete
+the `wadc.cfg` file if you wish.
+
+==== GUI preferences additions
+
+WadC now features a Preferences GUI dialogue window that can be used to browse for and
+set the Doom engine, BSP tool, etc.
+
+You can also toggle the rendering of things or vertices from a new *View* menu.
+
+==== command-line interface
+
+The command-line tool now reads in WadC's preferences. This means you can now
+use it to build WADs that need `iwad` set correctly, such as those that compose
+custom textures.
+
 === Language features
 
 `is_hexenformat`::   returns 1 if the map format is Hexen, 0 otherwise.
+
+The behaviour of `renderthings` and `renderverts` has changed slightly: they now work
+with a global preference, rather than being something that is specific to the current
+program. They are also both deprecated and will be removed in the next release.
 
 ==== Removed stuff
 
