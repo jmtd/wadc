@@ -964,11 +964,30 @@ class WadRun {
       y = v.y;
     };
   }
+  private static int scale(short x, short min, short max)
+  {
+      short denominator = max - min;
+      if(0 != denominator) {
+        return ((255 * (x - min)) / denominator);
+      }
+      return 127; // default to mid-range
+  }
 
   void experimentalFillSector(Graphics g, int xmid, int ymid, int gxmid, int gymid) {
 
+      short min_height = 0, max_height = 0;
       // we need to get a list of vertices that are related to each sector,
       // which we (sadly) can't get from the Sectors themselves
+
+      // collect sector height information
+      for(Sector sector : sectors) {
+          if(sector.floor < min_height) {
+              min_height = (short)sector.floor;
+          }
+          if(sector.floor > max_height) {
+              max_height = (short)sector.floor;
+          }
+      }
 
       for(Sector sector : sectors) {
           // We don't want duplicate vertexes in this set. LinkedHashSet doesn't
@@ -998,9 +1017,8 @@ class WadRun {
               i++;
           }
 
-          // based on floor height. XXX this should be configurable, and perhaps
-          // nicer to figure out a range and scale the results into the range
-          int c = Math.max(0, Math.min(255, sector.floor));
+          // based on floor height. XXX this should be configurable
+          int c = scale((short)sector.floor, min_height, max_height);
           g.setColor(new Color(c,c,c));
 
           g.fillPolygon(xPoints, yPoints, nPoints);
