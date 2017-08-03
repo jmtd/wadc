@@ -69,8 +69,7 @@ public class WadCCLI implements WadCMainFrame {
 
     void readSource(final String name) {
         if(name==null) return;
-        this.prefs.put("basename", (new File(name)).toString());
-        this.src = loadtextfile(this.prefs.get("basename"));
+        this.src = loadtextfile((new File(name)).toString());
     }
 
     /* do the magic */
@@ -79,9 +78,8 @@ public class WadCCLI implements WadCMainFrame {
         readSource(infile);
         WadParse wp = new WadParse(this.src, this);
         try {
-            String basename = prefs.get("basename");
             wp.run();
-            wadfile = basename.substring(0,basename.lastIndexOf('.'))+".wad";
+            wadfile = infile.substring(0,infile.lastIndexOf('.'))+".wad";
             Wad wad = new Wad(wp,this,wadfile,writesrc);
             wad.run();
 
