@@ -966,7 +966,7 @@ class WadRun {
   }
   private static int scale(short x, short min, short max)
   {
-      short denominator = max - min;
+      int denominator = max - min;
       if(0 != denominator) {
         return ((255 * (x - min)) / denominator);
       }
