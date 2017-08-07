@@ -1,3 +1,13 @@
+/*
+ * triangle.wl: Random triangle sectors, similar to hexagon.wl
+ * part of WadC
+ *
+ * Copyright © 2001-2008 Wouter van Oortmerssen
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 -- similar thing to hexagon.wl, but more hierarchical and more compact code
 -- doesn't look as good in Doom as hexagons though, probably because of the
 -- sharp angles

@@ -1,3 +1,14 @@
+/*
+ * entryway.wl: Re-creation of Doom 2 MAP01 by hand
+ * part of WadC
+ *
+ * Copyright © 2010 GreyGhost
+ * Copyright © 2010-2017 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 -- First attempt at re-creating MAP01 from Doom 2
 -- more-or-less successfull IMHO
 

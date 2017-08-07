@@ -1,8 +1,15 @@
-#"standard.h"
+/*
+ * llevels.wl: generates a corridor with every possible doom light level.  each segment has a custom texture with a number on it corresponding to the light level
+ * 
+ * part of WadC
+ *
+ * Copyright © 2015-2017 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
 
--- generates a corridor with every possible doom light level
--- each segment has a custom texture with a number on it corresponding
--- to the light level
+#"standard.h"
 
 -- units/tens/hundreds: given a number (light level), calculate patch
 -- name and offset for each decimal number column

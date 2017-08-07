@@ -1,9 +1,17 @@
+/*
+ * 1.2_features.wl: demonstrate the new features in WadC 1.2: midtex, impassable and friendly
+ * part of WadC
+ *
+ * Copyright © 2016 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 #"standard.h"
 #"monsters.h"
 #"pickups.h"
 
--- 1.2_features.wl: demonstrate the new features in WadC 1.2:
--- midtex, impassable and friendly
 
 main {
   thing movestep(-64,-64)

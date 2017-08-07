@@ -1,3 +1,14 @@
+/*
+ * tulip.wl: DM map, the basis of "MAP12: Sperziebonen Met Slagroom" in "Crucified Dreams"
+ *
+ * part of WadC
+ *
+ * Copyright © 2006 Wouter van Oortmerssen
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 #"standard.h"
 #"pickups.h"
 #"spawns.h"

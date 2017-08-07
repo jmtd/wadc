@@ -1,11 +1,12 @@
 /*
- * boom.wl - part of WadC
+ * boom.wl: Test of (some) Boom generalised linedef types
+ * part of WadC
+ *
  * Copyright © 2016 Jonathan Dowland <jon@dow.land>
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
  *
- * Test of (some) Boom generalised linedef types
  * Untested: locked doors, stairs and crushers, and various flag combinations
  */
 

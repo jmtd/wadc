@@ -1,10 +1,17 @@
-#"standard.h"
-
 /*
- * an example of a sewer-like pattern, with curving corridor sections.
+ * pipes.wl: an example of a sewer-like pattern, with curving corridor sections.
  * Also demonstrates fixing the random number generator with a given
  * seed.
+ *
+ * part of WadC
+ *
+ * Copyright © 2015-2017 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
  */
+
+#"standard.h"
 
 -- normal corridor
 slimecorridor(y,f,c,l) {

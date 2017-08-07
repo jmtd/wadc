@@ -1,11 +1,11 @@
 /*
- * htic_ex.wl - part of WadC
+ * htic_ex.wl: Simple example of a Heretic map
+ * part of WadC
+ *
  * Copyright © 2016 Jonathan Dowland <jon@dow.land>
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
- * 
- * Boring basic Heretic example
  */
 
 #"heretic.h"

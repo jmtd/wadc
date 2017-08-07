@@ -1,13 +1,12 @@
 /*
- * 2countrev.wl - part of WadC
+ * 2countrev.wl: 2 bit binary counter which activates trap doors when it overflows.
+ * See also counter.wl
+ * part of WadC
+ *
  * Copyright © 2016 Jonathan Dowland <jon@dow.land>
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
- *
- * 2 bit binary counter which activates trap doors when
- * it overflows
- * see also counter.wl
  */
 
 #"control.h"

@@ -1,7 +1,14 @@
 /*
- * water.wl - a demonstration of the Boom water routines
+ * water.wl: a demonstration of the Boom water routines
  * both using the basic water* routines and the more advanced
  * owater* routines (at the same time)
+ *
+ * part of WadC
+ *
+ * Copyright © 2015-2017 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
  */
 
 #"standard.h"
