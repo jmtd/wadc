@@ -41,6 +41,7 @@ mybox(floor,ceil,light,x,y) {
 }
 
 main {
+  rotleft
   pushpop(
     movestep(32,32)
     thing
