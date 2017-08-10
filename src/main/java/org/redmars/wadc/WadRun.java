@@ -8,7 +8,12 @@
 
 package org.redmars.wadc;
 import java.util.*;
-import java.awt.*;
+
+import java.util.stream.Collectors;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 class WadRun {
   WadParse wp;
@@ -973,6 +978,65 @@ class WadRun {
       return 127; // default to mid-range
   }
 
+  /*
+   * orderByPath(vertices, lines): returns a re-ordered (possibly reduced) list
+   * of vertices that follow a path based on lines, which are treated as
+   * bi-directional
+   * converted from the following Haskell
+   *
+   *  sortme vs ss = (head vs) : sortme' (head vs) (tail vs) (ss ++ (map swap ss))
+   *  sortme' v [] _  = []
+   *  sortme' v vs ss | vs == newvs = []
+   *                  | otherwise = newv : (sortme' newv newvs ss) where
+   *      newv  = snd $ head $ filter (\(x,y) -> x == v) ss
+   *      newvs = filter ((/=) newv) vs
+   */
+  List<Vertex> orderByPath(Set<Vertex> set_v, List<Line> ls)
+  {
+    List<Vertex> vs = new ArrayList<>();
+    vs.addAll(set_v);
+
+    // Lines have direction, but we need bi-directional for this purpose.
+    // Build a new list, appending reversed lines to the end.
+    ArrayList<Line> ls2 = new ArrayList<>(ls);
+
+    for(Line l : ls) {
+        Line nl = new Line();
+        nl.from = l.to;
+        nl.to = l.from;
+        ls2.add(nl);
+    }
+
+    Vertex head = vs.remove(0);
+    List<Vertex> ret = nextNode(head, vs, ls2);
+    ret.add(head);
+    return ret;
+  }
+
+  // internal recursive function for the above
+  List<Vertex> nextNode(Vertex v, List<Vertex> vs, List<Line> ls)
+  {
+    Optional<Vertex> o = ls.stream()
+                        .filter(l -> l.from == v)
+                        .map(l -> l.to)
+                        .filter(v_ -> vs.contains(v_))
+                        .findFirst();
+
+    // this can happen if vs is empty (normal situation at the end of recursion)
+    // or the input sector was disjoint (e.g. mergesectors)
+    if(!o.isPresent())
+    {
+        return new ArrayList<Vertex>();
+    }
+    Vertex newv = o.get();
+
+    vs.remove(newv);
+    List<Vertex> ret = nextNode(newv, vs, ls);
+
+    ret.add(newv);
+    return ret;
+  }
+
   void experimentalFillSector(Graphics g, int xmid, int ymid, int gxmid, int gymid) {
 
       short min_height = 0, max_height = 0;
@@ -1006,12 +1070,17 @@ class WadRun {
               }
           }
 
+          List<Line> ls = sides.stream()
+                         .filter(side -> side.s == sector)
+                         .map(side -> side.l)
+                         .collect(Collectors.toList());
+
           int [] xPoints = new int[av.size()];
           int [] yPoints = new int[av.size()];
           int    nPoints = av.size();
 
           int i = 0;
-          for(Vertex v : av) {
+          for(Vertex v : orderByPath(av, ls)) {
               xPoints[i] = (int)((v.x-xmid)/scale) + gxmid;
               yPoints[i] = (int)((v.y-ymid)/scale) + gymid;
               i++;
