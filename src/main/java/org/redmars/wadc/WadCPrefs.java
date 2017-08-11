@@ -34,6 +34,13 @@ public class WadCPrefs {
       return prefs.getBoolean(key, false);
   }
 
+  public SectorFill getEnum(String key) {
+      return SectorFill.values()[prefs.getInt(key, 0)]; // XXX overflow?
+  }
+  public void putEnum(String key, SectorFill e) {
+      prefs.putInt(key, e.ordinal());
+  }
+
   public void put(String key, String value) {
       prefs.put(key, value);
   }

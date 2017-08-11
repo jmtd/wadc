@@ -1037,21 +1037,36 @@ class WadRun {
     return ret;
   }
 
-  void experimentalFillSector(Graphics g, int xmid, int ymid, int gxmid, int gymid) {
+  void experimentalFillSector(Graphics g, int xmid, int ymid, int gxmid, int gymid)
+  {
+      // collect sector height/light/etc information
+      short min_val = 0, max_val = 0;
+      short comp;
 
-      short min_height = 0, max_height = 0;
-      // we need to get a list of vertices that are related to each sector,
-      // which we (sadly) can't get from the Sectors themselves
+      for(Sector sector : sectors)
+      {
+          switch(prefs.getEnum("fillsectors"))
+          {
+              case FLOORHEIGHT:
+                  comp = (short)sector.floor;
+                  break;
 
-      // collect sector height information
-      for(Sector sector : sectors) {
-          if(sector.floor < min_height) {
-              min_height = (short)sector.floor;
+              default:
+              case NONE: // can't be reached
+                  comp = 0;
+                  break;
           }
-          if(sector.floor > max_height) {
-              max_height = (short)sector.floor;
+
+          if(comp < min_val) {
+              min_val = comp;
+          }
+          if(comp > max_val) {
+              max_val = comp;
           }
       }
+
+      // we need to get a list of vertices that are related to each sector,
+      // which we (sadly) can't get from the Sectors themselves
 
       for(Sector sector : sectors) {
           // We don't want duplicate vertexes in this set. LinkedHashSet doesn't
@@ -1086,8 +1101,18 @@ class WadRun {
               i++;
           }
 
-          // based on floor height. XXX this should be configurable
-          int c = scale((short)sector.floor, min_height, max_height);
+          int c;
+          short v;
+          switch(prefs.getEnum("fillsectors"))
+          {
+              case FLOORHEIGHT:
+                  v = (short)sector.floor;
+                  break;
+              default: // should be unreachable
+                  v = 0;
+                  break;
+          }
+          c = scale(v, min_val, max_val);
           g.setColor(new Color(c,c,c));
 
           g.fillPolygon(xPoints, yPoints, nPoints);
@@ -1165,7 +1190,7 @@ class WadRun {
                    (int)((y-ymid)/scale)+gymid);
     };
 
-    if(prefs.getBoolean("fillsectors")) {
+    if(prefs.getEnum("fillsectors") != SectorFill.NONE) {
         experimentalFillSector(g,xmid,ymid,gxmid,gymid);
     }
 

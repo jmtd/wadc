@@ -24,6 +24,13 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.undo.UndoManager;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.ButtonGroup;
+import javax.swing.KeyStroke;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -34,33 +41,34 @@ public class WadC extends JFrame implements WadCMainFrame {
   GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
   Panel panel1 = new Panel();
   TextArea textArea2 = new TextArea("",5,20);
-  MenuBar menuBar1 = new MenuBar();
-  Menu menu1 = new Menu(); // file
-  MenuItem menuItem1 = new MenuItem(); // new
-  MenuItem menuItem2 = new MenuItem(); // open
-  MenuItem menuItem3 = new MenuItem(); // save
-  MenuItem menuItem4 = new MenuItem(); // save as
-  MenuItem preferencesMenu = new MenuItem(); // preferences
-  MenuItem menuItem5 = new MenuItem(); // quit
+  JMenuBar menuBar1 = new JMenuBar();
+  JMenu menu1 = new JMenu(); // file
+  JMenuItem menuItem1 = new JMenuItem(); // new
+  JMenuItem menuItem2 = new JMenuItem(); // open
+  JMenuItem menuItem3 = new JMenuItem(); // save
+  JMenuItem menuItem4 = new JMenuItem(); // save as
+  JMenuItem preferencesMenu = new JMenuItem(); // preferences
+  JMenuItem menuItem5 = new JMenuItem(); // quit
 
   EngineConfigDialog engineConfigDialog;
 
-  Menu editMenu = new Menu();
-  MenuItem undoItem = new MenuItem();
-  MenuItem redoItem = new MenuItem();
+  JMenu editMenu = new JMenu();
+  JMenuItem undoItem = new JMenuItem();
+  JMenuItem redoItem = new JMenuItem();
 
-  Menu menu2 = new Menu(); // program
-  MenuItem menuItem6 = new MenuItem(); // run
-  MenuItem menuItem7 = new MenuItem(); // run / save
-  MenuItem menuItem8 = new MenuItem(); // ... / bsp / doom
+  JMenu menu2 = new JMenu(); // program
+  JMenuItem menuItem6 = new JMenuItem(); // run
+  JMenuItem menuItem7 = new JMenuItem(); // run / save
+  JMenuItem menuItem8 = new JMenuItem(); // ... / bsp / doom
 
-  Menu viewMenu = new Menu();
-  CheckboxMenuItem showThings = new CheckboxMenuItem();
-  CheckboxMenuItem showVertices = new CheckboxMenuItem();
+  JMenu viewMenu = new JMenu();
+  JCheckBoxMenuItem showThings = new JCheckBoxMenuItem();
+  JCheckBoxMenuItem showVertices = new JCheckBoxMenuItem();
 
-  Menu fillMenu = new Menu();
-  CheckboxMenuItem emptySectors = new CheckboxMenuItem();
-  CheckboxMenuItem floorSectors = new CheckboxMenuItem();
+  JMenu fillMenu = new JMenu();
+  ButtonGroup fillButtonGroup = new ButtonGroup();
+  JRadioButtonMenuItem emptySectors;
+  JRadioButtonMenuItem floorSectors;
 
   Canvas cv;
   UndoManager manager = new UndoManager();
@@ -96,21 +104,13 @@ public class WadC extends JFrame implements WadCMainFrame {
     WadCMainFrame mainFrame1 = new WadC();
   }
 
-  private void syncFillSectorItems() {
-    if(prefs.getBoolean("fillsectors")) {
-        emptySectors.setState(false);
-        floorSectors.setState(true);
-    } else {
-        emptySectors.setState(true);
-        floorSectors.setState(false);
-    }
-  }
-
   private void jbInit() throws Exception {
     setTitle("wadc");
 
     engineConfigDialog = new EngineConfigDialog(this, prefs);
     engineConfigDialog.pack();
+
+    final int MENU_SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
     textArea1.setFont(new Font("Monospaced",0,12));
     textArea1.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -131,95 +131,95 @@ public class WadC extends JFrame implements WadCMainFrame {
     this.setLayout(borderLayout1);
     setBackground(Color.lightGray);
     setEnabled(true);
-    setMenuBar(menuBar1);
+    setJMenuBar(menuBar1);
     addWindowListener(new java.awt.event.WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         quit(null);
       }
     });
-    menu1.setLabel(__("File"));
-    menuItem1.setLabel(__("New"));
-    menuItem1.setShortcut(new MenuShortcut(KeyEvent.VK_N));
+    menu1.setText(__("File"));
+    menuItem1.setText(__("New"));
+    menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, MENU_SHORTCUT_MASK));
     menuItem1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         newfile(e);
       }
     });
-    menuItem2.setLabel(__("Open"));
-    menuItem2.setShortcut(new MenuShortcut(KeyEvent.VK_O));
+    menuItem2.setText(__("Open"));
+    menuItem2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MENU_SHORTCUT_MASK));
     menuItem2.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         open(e);
       }
     });
-    menuItem3.setLabel(__("Save As"));
+    menuItem3.setText(__("Save As"));
     menuItem3.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         saveas(e);
       }
     });
-    menuItem4.setLabel(__("Save"));
-    menuItem4.setShortcut(new MenuShortcut(KeyEvent.VK_S));
+    menuItem4.setText(__("Save"));
+    menuItem4.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MENU_SHORTCUT_MASK));
     menuItem4.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         save(e);
       }
     });
-    preferencesMenu.setLabel(__("Preferences"));
-    preferencesMenu.setShortcut(new MenuShortcut(KeyEvent.VK_COMMA));
+    preferencesMenu.setText(__("Preferences"));
+    preferencesMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, MENU_SHORTCUT_MASK));
     preferencesMenu.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         engineConfigDialog.setVisible(true);
       }
     });
 
-    menuItem5.setLabel(__("Quit"));
-    menuItem5.setShortcut(new MenuShortcut(KeyEvent.VK_Q));
+    menuItem5.setText(__("Quit"));
+    menuItem5.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, MENU_SHORTCUT_MASK));
     menuItem5.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         quit(e);
       }
     });
 
-    editMenu.setLabel(__("Edit"));
-    undoItem.setLabel(__("Undo"));
-    undoItem.setShortcut(new MenuShortcut(KeyEvent.VK_Z)); // VK_UNDO?
+    editMenu.setText(__("Edit"));
+    undoItem.setText(__("Undo"));
+    undoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, MENU_SHORTCUT_MASK)); // VK_UNDO?
     undoItem.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(ActionEvent e) {
             manager.undo();
         }
     });
-    redoItem.setLabel(__("Redo")); // XXX: shortcuts
+    redoItem.setText(__("Redo")); // XXX: shortcuts
     redoItem.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(ActionEvent e) {
             manager.redo();
         }
     });
 
-    menu2.setLabel(__("Program"));
-    menuItem6.setLabel(__("Run"));
-    menuItem6.setShortcut(new MenuShortcut(KeyEvent.VK_R));
+    menu2.setText(__("Program"));
+    menuItem6.setText(__("Run"));
+    menuItem6.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_MASK));
     menuItem6.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         run(e);
       }
     });
-    menuItem7.setLabel(__("Run / Save / Save Wad"));
-    menuItem7.setShortcut(new MenuShortcut(KeyEvent.VK_W));
+    menuItem7.setText(__("Run / Save / Save Wad"));
+    menuItem7.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, MENU_SHORTCUT_MASK));
     menuItem7.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         savewad(e);
       }
     });
-    menuItem8.setLabel(__("Run / Save / Save Wad / BSP / DOOM"));
+    menuItem8.setText(__("Run / Save / Save Wad / BSP / DOOM"));
     menuItem8.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         bspdoom(savewad(e));
       }
     });
 
-    viewMenu.setLabel(__("View"));
-    showThings.setLabel(__("Show things"));
+    viewMenu.setText(__("View"));
+    showThings.setText(__("Show things"));
     showThings.setState(prefs.getBoolean("renderthings"));
     showThings.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
@@ -227,7 +227,7 @@ public class WadC extends JFrame implements WadCMainFrame {
             cv.repaint();
         }
     });
-    showVertices.setLabel(__("Show vertices"));
+    showVertices.setText(__("Show vertices"));
     showVertices.setState(prefs.getBoolean("renderverts"));
     showVertices.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
@@ -236,20 +236,23 @@ public class WadC extends JFrame implements WadCMainFrame {
         }
     });
 
-    fillMenu.setLabel(__("Sector Fill"));
-    emptySectors.setLabel(__("None"));
+    fillMenu.setText(__("Sector Fill"));
+
+    SectorFill fill = prefs.getEnum("fillsectors");
+    emptySectors = new JRadioButtonMenuItem(__("None"), SectorFill.NONE == fill);
+    floorSectors = new JRadioButtonMenuItem(__("Floor height"), SectorFill.FLOORHEIGHT == fill);
+    fillButtonGroup.add(emptySectors);
+    fillButtonGroup.add(floorSectors);
+
     emptySectors.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
-            prefs.putBoolean("fillsectors", false);
-            syncFillSectorItems();
+            prefs.putEnum("fillsectors", SectorFill.NONE);
             cv.repaint();
         }
     });
-    floorSectors.setLabel(__("Floor height"));
     floorSectors.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
-            prefs.putBoolean("fillsectors", true);
-            syncFillSectorItems();
+            prefs.putEnum("fillsectors", SectorFill.FLOORHEIGHT);
             cv.repaint();
         }
     });
@@ -277,7 +280,6 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     fillMenu.add(emptySectors);
     fillMenu.add(floorSectors);
-    syncFillSectorItems();
 
     cv = new MyCanvas(this);
     //textArea2.setBackground(Color.lightGray);
