@@ -67,8 +67,9 @@ public class WadC extends JFrame implements WadCMainFrame {
 
   JMenu fillMenu = new JMenu();
   ButtonGroup fillButtonGroup = new ButtonGroup();
-  JRadioButtonMenuItem emptySectors;
-  JRadioButtonMenuItem floorSectors;
+  JRadioButtonMenuItem emptySectors;//= new JRadioButtonMenuItem();
+  JRadioButtonMenuItem floorSectors;//= new JRadioButtonMenuItem();
+  JRadioButtonMenuItem lightSectors;//= new JRadioButtonMenuItem();
 
   Canvas cv;
   UndoManager manager = new UndoManager();
@@ -241,8 +242,10 @@ public class WadC extends JFrame implements WadCMainFrame {
     SectorFill fill = prefs.getEnum("fillsectors");
     emptySectors = new JRadioButtonMenuItem(__("None"), SectorFill.NONE == fill);
     floorSectors = new JRadioButtonMenuItem(__("Floor height"), SectorFill.FLOORHEIGHT == fill);
+    lightSectors = new JRadioButtonMenuItem(__("Light level"), SectorFill.LIGHTLEVEL == fill);
     fillButtonGroup.add(emptySectors);
     fillButtonGroup.add(floorSectors);
+    fillButtonGroup.add(lightSectors);
 
     emptySectors.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
@@ -253,6 +256,12 @@ public class WadC extends JFrame implements WadCMainFrame {
     floorSectors.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
             prefs.putEnum("fillsectors", SectorFill.FLOORHEIGHT);
+            cv.repaint();
+        }
+    });
+    lightSectors.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            prefs.putEnum("fillsectors", SectorFill.LIGHTLEVEL);
             cv.repaint();
         }
     });
@@ -280,6 +289,7 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     fillMenu.add(emptySectors);
     fillMenu.add(floorSectors);
+    fillMenu.add(lightSectors);
 
     cv = new MyCanvas(this);
     //textArea2.setBackground(Color.lightGray);

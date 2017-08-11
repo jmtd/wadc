@@ -1051,6 +1051,10 @@ class WadRun {
                   comp = (short)sector.floor;
                   break;
 
+              case LIGHTLEVEL:
+                  comp = (short)sector.light;
+                  break;
+
               default:
               case NONE: // can't be reached
                   comp = 0;
@@ -1107,6 +1111,9 @@ class WadRun {
           {
               case FLOORHEIGHT:
                   v = (short)sector.floor;
+                  break;
+              case LIGHTLEVEL:
+                  v = (short)sector.light;
                   break;
               default: // should be unreachable
                   v = 0;
