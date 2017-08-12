@@ -1039,33 +1039,22 @@ class WadRun {
 
   void experimentalFillSector(Graphics g, int xmid, int ymid, int gxmid, int gymid)
   {
-      // collect sector height/light/etc information
+      // collect sector height/etc information
       short min_val = 0, max_val = 0;
       short comp;
 
-      for(Sector sector : sectors)
+      if(SectorFill.FLOORHEIGHT == prefs.getEnum("fillsectors"))
       {
-          switch(prefs.getEnum("fillsectors"))
+          for(Sector sector : sectors)
           {
-              case FLOORHEIGHT:
-                  comp = (short)sector.floor;
-                  break;
+              comp = (short)sector.floor;
 
-              case LIGHTLEVEL:
-                  comp = (short)sector.light;
-                  break;
-
-              default:
-              case NONE: // can't be reached
-                  comp = 0;
-                  break;
-          }
-
-          if(comp < min_val) {
-              min_val = comp;
-          }
-          if(comp > max_val) {
-              max_val = comp;
+              if(comp < min_val) {
+                  min_val = comp;
+              }
+              if(comp > max_val) {
+                  max_val = comp;
+              }
           }
       }
 
@@ -1111,15 +1100,18 @@ class WadRun {
           {
               case FLOORHEIGHT:
                   v = (short)sector.floor;
+                  c = scale(v, min_val, max_val);
                   break;
+
               case LIGHTLEVEL:
                   v = (short)sector.light;
+                  c = scale(v, (short)0, (short)255);
                   break;
+
               default: // should be unreachable
-                  v = 0;
+                  c = 127;
                   break;
           }
-          c = scale(v, min_val, max_val);
           g.setColor(new Color(c,c,c));
 
           g.fillPolygon(xPoints, yPoints, nPoints);
