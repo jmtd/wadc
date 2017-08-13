@@ -101,10 +101,6 @@ public class WadC extends JFrame implements WadCMainFrame {
     }
   }
 
-  public static void main(String[] args) {
-    WadCMainFrame mainFrame1 = new WadC();
-  }
-
   private void jbInit() throws Exception {
     setTitle("wadc");
 

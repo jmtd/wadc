@@ -28,7 +28,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>org.redmars.wadc.WadC</mainClass>
+              <mainClass>org.redmars.wadc.WadCLaunch</mainClass>
             </manifest>
           </archive>
         </configuration>
