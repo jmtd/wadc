@@ -14,6 +14,7 @@
 
 package org.redmars.wadc;
 
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -28,10 +29,14 @@ import javax.swing.JPanel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import java.awt.TextField;
 import java.awt.event.TextListener;
 import java.awt.event.TextEvent;
+
+import java.nio.file.Paths;
 
 /**
  * A Panel to input paths
@@ -41,7 +46,8 @@ public class JPathPanel extends JPanel {
 
     private final TextField path;
     private final JButton fileChooserButton;
-    private final JFileChooser chooser;
+    private final FileDialog chooser;
+    private final JFrame frame;
 
     private final ArrayList<ActionListener> actionListeners = new ArrayList<>();
     public void addActionListener(ActionListener al) {
@@ -62,7 +68,11 @@ public class JPathPanel extends JPanel {
      *               JFileChooser.FILES_AND_DIRECTORIES,
      *               JFileChooser.FILES_ONLY
      */
+
     public JPathPanel(String basePath, int filesAndOrDirectories) {
+
+        this.frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
         path = new TextField(basePath, inputLength);
@@ -73,14 +83,18 @@ public class JPathPanel extends JPanel {
         });
         add(path);
 
-        this.chooser = new JFileChooser(getPath());
-        chooser.setFileSelectionMode(filesAndOrDirectories);
+        this.chooser = new FileDialog(frame, "...", FileDialog.LOAD);
+        chooser.setDirectory(getPath().toString());
 
         this.fileChooserButton = new JButton("Select");
         fileChooserButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if(JFileChooser.APPROVE_OPTION == chooser.showOpenDialog(JPathPanel.this)) {
-                        setPath(chooser.getSelectedFile());
+                    chooser.setVisible(true);
+                    String dn = chooser.getDirectory();
+                    String bn = chooser.getFile();
+                    if(null!=dn && null != bn)
+                    {
+                        setPath(Paths.get(dn,bn).toString());
                     }
                 }
             });
