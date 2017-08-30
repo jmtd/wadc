@@ -48,6 +48,11 @@ The command-line tool now reads in WadC's preferences. This means you can now
 use it to build WADs that need `iwad` set correctly, such as those that compose
 custom textures.
 
+=== new example programs
+
+* `laby.wl`: a large, machine-generated script that generates a Labyrinth.
+   Thanks to Yoruk for the contribution!
+
 === Language features
 
 `is_hexenformat`::   returns 1 if the map format is Hexen, 0 otherwise.
