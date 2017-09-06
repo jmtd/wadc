@@ -38,6 +38,8 @@ import javax.swing.event.DocumentEvent;
 import java.awt.TextField;
 import java.awt.event.TextListener;
 import java.awt.event.TextEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import java.util.prefs.Preferences;
 import java.util.prefs.BackingStoreException;
@@ -59,6 +61,12 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
         super(frame, windowTitle, true);
 
         prefs.addPreferenceChangeListener(this);
+
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                savePrefs(prefs);
+            }
+        });
 
         configPanel = new JPanel();
         //configPanel.setBorder(LookAndFeelDefaults.PADDINGBORDER);
@@ -93,11 +101,6 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
         {
             JLabel label = new JLabel("Doom engine path");
             enginePath = new JPathPanel(prefs.get("doomexe"));
-            enginePath.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    prefs.put("doomexe", enginePath.getPath().toString());
-                }
-            });
 
             label.setBorder(leftBorder);
 
@@ -111,11 +114,6 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
             label.setBorder(leftBorder);
 
             doomargsField = new TextField(prefs.get("doomargs"), 40);
-            doomargsField.addTextListener(new TextListener() {
-                public void textValueChanged(TextEvent e) {
-                    prefs.put("doomargs", doomargsField.getText());
-                }
-            });
 
             final int row_ = row;
             configPanel.add(label, new LabelConstraints() {{ gridy = row_; }});
@@ -127,11 +125,6 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
             label.setBorder(leftBorder);
 
             bspPath = new JPathPanel(prefs.get("bspcmd"));
-            bspPath.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    prefs.put("bspcmd", bspPath.getPath().toString());
-                }
-            });
 
             final int row_ = row;
             configPanel.add(label, new LabelConstraints() {{ gridy = row_; }});
@@ -143,11 +136,6 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
             label.setBorder(leftBorder);
 
             iwadPath = new JPathPanel(prefs.get("iwad"));
-            iwadPath.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    prefs.put("iwad", iwadPath.getPath().toString());
-                }
-            });
 
             final int row_ = row;
             configPanel.add(label, new LabelConstraints() {{ gridy = row_; }});
@@ -159,11 +147,6 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
             label.setBorder(leftBorder);
 
             twad1Path = new JPathPanel(prefs.get("twad1"));
-            twad1Path.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    prefs.put("twad1", twad1Path.getPath().toString());
-                }
-            });
 
             final int row_ = row;
             configPanel.add(label, new LabelConstraints() {{ gridy = row_; }});
@@ -177,15 +160,21 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
         okay.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
+                savePrefs(prefs);
                 dispose();
             }
         });
         add(okay, BorderLayout.PAGE_END);
     }
 
-    /*
-     * possible race condition here. we will be changing preferences too!
-     */
+    public void savePrefs(WadCPrefs prefs) {
+        prefs.put("doomargs", doomargsField.getText());
+        prefs.put("doomexe", enginePath.getPath().toString());
+        prefs.put("bspcmd", bspPath.getPath().toString());
+        prefs.put("iwad", iwadPath.getPath().toString());
+        prefs.put("twad1", twad1Path.getPath().toString());
+    }
+
     public void preferenceChange(PreferenceChangeEvent evt) {
         String key = evt.getKey();
         if(key.equals("doomexe")) {
