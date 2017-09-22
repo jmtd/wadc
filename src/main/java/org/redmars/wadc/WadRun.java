@@ -1244,7 +1244,8 @@ class WadRun {
           v.idx = i;
         };
       };
-      wp.mf.msg(vertices.size()+" vertices, "+lines.size()+" lines, "+sectors.size()+" sectors.");
+      wp.mf.msg(vertices.size()+" vertices, "+lines.size()+" lines, "+sectors.size()+" sectors, "+
+        things.size()+" things.");
   }
 
   void varerr(String s) { wp.error("variable "+s+" never set"); }
