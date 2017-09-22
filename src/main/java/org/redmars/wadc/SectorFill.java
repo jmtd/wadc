@@ -4,4 +4,5 @@ enum SectorFill {
   NONE,
   FLOORHEIGHT,
   LIGHTLEVEL,
+  CEILINGHEIGHT,
 }

@@ -69,6 +69,7 @@ public class WadC extends JFrame implements WadCMainFrame {
   ButtonGroup fillButtonGroup = new ButtonGroup();
   JRadioButtonMenuItem emptySectors;//= new JRadioButtonMenuItem();
   JRadioButtonMenuItem floorSectors;//= new JRadioButtonMenuItem();
+  JRadioButtonMenuItem ceilingSectors;//= new JRadioButtonMenuItem();
   JRadioButtonMenuItem lightSectors;//= new JRadioButtonMenuItem();
 
   Canvas cv;
@@ -238,9 +239,11 @@ public class WadC extends JFrame implements WadCMainFrame {
     SectorFill fill = prefs.getEnum("fillsectors");
     emptySectors = new JRadioButtonMenuItem(__("None"), SectorFill.NONE == fill);
     floorSectors = new JRadioButtonMenuItem(__("Floor height"), SectorFill.FLOORHEIGHT == fill);
+    ceilingSectors = new JRadioButtonMenuItem(__("Ceiling height"), SectorFill.CEILINGHEIGHT == fill);
     lightSectors = new JRadioButtonMenuItem(__("Light level"), SectorFill.LIGHTLEVEL == fill);
     fillButtonGroup.add(emptySectors);
     fillButtonGroup.add(floorSectors);
+    fillButtonGroup.add(ceilingSectors);
     fillButtonGroup.add(lightSectors);
 
     emptySectors.addItemListener(new ItemListener() {
@@ -252,6 +255,12 @@ public class WadC extends JFrame implements WadCMainFrame {
     floorSectors.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
             prefs.putEnum("fillsectors", SectorFill.FLOORHEIGHT);
+            cv.repaint();
+        }
+    });
+    ceilingSectors.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            prefs.putEnum("fillsectors", SectorFill.CEILINGHEIGHT);
             cv.repaint();
         }
     });
@@ -285,6 +294,7 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     fillMenu.add(emptySectors);
     fillMenu.add(floorSectors);
+    fillMenu.add(ceilingSectors);
     fillMenu.add(lightSectors);
 
     cv = new MyCanvas(this);

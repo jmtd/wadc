@@ -1040,14 +1040,18 @@ class WadRun {
   void experimentalFillSector(Graphics g, int xmid, int ymid, int gxmid, int gymid)
   {
       // collect sector height/etc information
-      short min_val = 0, max_val = 0;
-      short comp;
+      short min_val = 0, max_val = 0, comp = 0;
 
-      if(SectorFill.FLOORHEIGHT == prefs.getEnum("fillsectors"))
+      if(SectorFill.CEILINGHEIGHT == prefs.getEnum("fillsectors") || SectorFill.FLOORHEIGHT == prefs.getEnum("fillsectors"))
       {
           for(Sector sector : sectors)
           {
-              comp = (short)sector.floor;
+              if(SectorFill.FLOORHEIGHT == prefs.getEnum("fillsectors")) {
+                  comp = (short)sector.floor;
+              }
+              else if(SectorFill.CEILINGHEIGHT == prefs.getEnum("fillsectors")) {
+                  comp = (short)sector.ceil;
+              }
 
               if(comp < min_val) {
                   min_val = comp;
@@ -1098,6 +1102,11 @@ class WadRun {
           short v;
           switch(prefs.getEnum("fillsectors"))
           {
+              case CEILINGHEIGHT:
+                  v = (short)sector.ceil;
+                  c = scale(v, min_val, max_val);
+                  break;
+
               case FLOORHEIGHT:
                   v = (short)sector.floor;
                   c = scale(v, min_val, max_val);
