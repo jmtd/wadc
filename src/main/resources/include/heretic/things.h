@@ -38,10 +38,14 @@
    /*6*/  phoenixrod            { setthing(2003) }
    /*7*/ macespawner            { setthing(2002) }
 
--- ?
+-- items
 
+         crystalvial            { setthing(81) }
          itemshield1            { setthing(85) }
          itemshield2            { setthing(31) }
+
+-- artefacts
+
     artiinvisibility            { setthing(75) }
              artifly            { setthing(83) }
  artiinvulnerability            { setthing(84) }
@@ -49,6 +53,33 @@
              artiegg            { setthing(30) }
        artisuperheal            { setthing(32) }
         artiteleport            { setthing(36) }
+            timebomb            { setthing(34) }
+        quartz_flask            { setthing(82) }
+
+-- decorations
+
+          tallpillar            { setthing(47) }
+           walltorch            { setthing(50) }
+         firebrazier            { setthing(76) }
+       hangingcorpse            { setthing(51) }
+
+-- ammo
+
+         amgwndwimpy            { setthing(10) }
+         amgwndhefty            { setthing(12) }
+         ammacewimpy            { setthing(13) }
+         ammacehefty            { setthing(16) }
+         amcbowwimpy            { setthing(18) }
+         amcbowhefty            { setthing(19) }
+         amskrdwimpy            { setthing(20) }
+         amskrdhefty            { setthing(21) }
+         amphrdwimpy            { setthing(22) }
+         amphrdhefty            { setthing(23) }
+         amblsrwimpy            { setthing(54) }
+         amblsrhefty            { setthing(55) }
+
+-- unsorted
+
                  pod            { setthing(2035) }
         podgenerator            { setthing(43) }
          skullhang70            { setthing(17) }
@@ -72,17 +103,5 @@
                 akyy            { setthing(73) }
                 bkyy            { setthing(79) }
                 ckey            { setthing(80) }
-         amgwndwimpy            { setthing(10) }
-         amgwndhefty            { setthing(12) }
-         ammacewimpy            { setthing(13) }
-         ammacehefty            { setthing(16) }
-         amcbowwimpy            { setthing(18) }
-         amcbowhefty            { setthing(19) }
-         amskrdwimpy            { setthing(20) }
-         amskrdhefty            { setthing(21) }
-         amphrdwimpy            { setthing(22) }
-         amphrdhefty            { setthing(23) }
-         amblsrwimpy            { setthing(54) }
-         amblsrhefty            { setthing(55) }
            soundwind            { setthing(42) }
       soundwaterfall            { setthing(41) }
