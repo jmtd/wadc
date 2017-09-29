@@ -4,7 +4,7 @@
   <groupId>org.redmars.wadc</groupId>
   <artifactId>wadc</artifactId>
   <packaging>jar</packaging>
-  <version>2.2</version>
+  <version>2.1</version>
   <name>WadC</name>
   <url>https://jmtd.net/wadc/</url>
   <properties>
