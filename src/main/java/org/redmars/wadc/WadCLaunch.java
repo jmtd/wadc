@@ -21,6 +21,15 @@ public class WadCLaunch
     System.setProperty("apple.awt.application.name", "Wad Compiler");
     System.setProperty("apple.laf.useScreenMenuBar", "true");
 
+    // The default setting for useSystemAAFontSettings is off; and the result
+    // looks awful on (at least my) Linux systems. We want to switch the default
+    // to on, but leave it possible for the user to override our choice.
+    if(null == System.getenv("_JAVA_OPTIONS") ||
+        !System.getenv("_JAVA_OPTIONS").contains("useSystemAAFontSettings"))
+    {
+        System.setProperty("awt.useSystemAAFontSettings", "on");
+    }
+
     // native theme
     try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); } catch(Exception e) {}
 
