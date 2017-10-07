@@ -19,6 +19,17 @@ Not yet released.
 
 === Core program changes
 
+==== UI Look and Feel changes
+
+As a side effect of other changes, the UI will possibly look and feel quite different,
+depending on what platform you are using. On OS X, the menu is now integrated with the
+OS menu at the top. Several extra keyboard shortcuts have been added.
+
+On Linux, the new UI system (Swing) seemed to have terrible font rendering by default,
+so WadC will try to enable font smoothing unless you explicitly configure the font
+settings yourself by defining a `_JAVA_OPTIONS` environment variable containing a
+definition of `useSystemAAFontSettings`, e.g. `useSystemAAFontSettings=off`.
+
 ==== No more configuration file
 
 WadC no longer uses a `wadc.cfg` file to store preferences. The various language
@@ -55,8 +66,6 @@ custom textures.
   "Heretic Upstart Mappers Project".
 * `laby.wl`: a large, machine-generated script that generates a Labyrinth.
    Thanks to Yoruk for the contribution!
-* `birds.wl`: "Bird Cage", a complete Heretic map, as featured in the
-   "Heretic Upstart Mapping Project"
 
 Several existing examples have been promoted out of `examples/old` into the
 `examples/` folder.
@@ -67,9 +76,10 @@ Several existing examples have been promoted out of `examples/old` into the
 `simplex(x,y)`::     A simplex noise feature. Returns a random value between 0 and
                      1,000,000 from the X,Y coordinate into a 2D simplex "field".
 
-The behaviour of `renderthings` and `renderverts` has changed slightly: they now work
-with a global preference, rather than being something that is specific to the current
-program. They are also both deprecated and will be removed in the next release.
+The behaviour of `renderthings` and `renderverts` has changed slightly: they
+now work with a global preference, rather than being something that is specific
+to the current program. The language commands are also both deprecated and will
+be removed in the next release (the preferences will remain)
 
 ==== Library additions/deletions
 
