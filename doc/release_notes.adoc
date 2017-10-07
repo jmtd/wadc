@@ -13,7 +13,7 @@ current features, see link:reference.adoc[the Reference].
 
 toc::[]
 
-== Dev
+== 2.2
 
 Not yet released.
 
@@ -40,7 +40,8 @@ WadC now features a Preferences GUI window that can be used to browse for and
 set the Doom engine, BSP tool, etc.
 
 You can also toggle the rendering of things or vertices and enable or disable a new
-experimental fill-sectors feature from a new *View* menu.
+experimental fill-sectors feature from a new *View* menu. Sectors can be filled using
+their floor height, ceiling height or light level values.
 
 ==== command-line interface
 
@@ -50,10 +51,15 @@ custom textures.
 
 === new example programs
 
+* `birds.wl`: a complete map for Heretic, developed from scratch for Doomworld's
+  "Heretic Upstart Mappers Project".
 * `laby.wl`: a large, machine-generated script that generates a Labyrinth.
    Thanks to Yoruk for the contribution!
 * `birds.wl`: "Bird Cage", a complete Heretic map, as featured in the
    "Heretic Upstart Mapping Project"
+
+Several existing examples have been promoted out of `examples/old` into the
+`examples/` folder.
 
 === Language features
 
