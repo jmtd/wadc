@@ -56,6 +56,8 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
     private final JPathPanel bspPath;
     private final JPathPanel iwadPath;
     private final JPathPanel twad1Path;
+    private final JPathPanel twad2Path;
+    private final JPathPanel twad3Path;
 
     public EngineConfigDialog(final JFrame frame, WadCPrefs prefs) {
         super(frame, windowTitle, true);
@@ -153,6 +155,28 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
             configPanel.add(twad1Path, new InputConstraints() {{ gridy = row_; }});
             ++row;
         }
+        {
+            JLabel label = new JLabel("Resource WAD #2");
+            label.setBorder(leftBorder);
+
+            twad2Path = new JPathPanel(prefs.get("twad2"));
+
+            final int row_ = row;
+            configPanel.add(label, new LabelConstraints() {{ gridy = row_; }});
+            configPanel.add(twad2Path, new InputConstraints() {{ gridy = row_; }});
+            ++row;
+        }
+        {
+            JLabel label = new JLabel("Resource WAD #3");
+            label.setBorder(leftBorder);
+
+            twad3Path = new JPathPanel(prefs.get("twad3"));
+
+            final int row_ = row;
+            configPanel.add(label, new LabelConstraints() {{ gridy = row_; }});
+            configPanel.add(twad3Path, new InputConstraints() {{ gridy = row_; }});
+            ++row;
+        }
 
         add(configPanel, BorderLayout.CENTER);
 
@@ -173,6 +197,8 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
         prefs.put("bspcmd", bspPath.getPath().toString());
         prefs.put("iwad", iwadPath.getPath().toString());
         prefs.put("twad1", twad1Path.getPath().toString());
+        prefs.put("twad2", twad2Path.getPath().toString());
+        prefs.put("twad3", twad3Path.getPath().toString());
     }
 
     public void preferenceChange(PreferenceChangeEvent evt) {
@@ -191,6 +217,12 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
         }
         if(key.equals("twad1")) {
             twad1Path.setPath(evt.getNewValue());
+        }
+        if(key.equals("twad2")) {
+            twad2Path.setPath(evt.getNewValue());
+        }
+        if(key.equals("twad3")) {
+            twad3Path.setPath(evt.getNewValue());
         }
     }
 
