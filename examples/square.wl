@@ -1,6 +1,7 @@
 #"standard.h"
 
 main {
+  seed(1337)
   thing
   movestep(-192,-192)
   rectop(1024)
