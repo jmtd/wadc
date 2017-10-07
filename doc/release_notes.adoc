@@ -52,6 +52,8 @@ custom textures.
 
 * `laby.wl`: a large, machine-generated script that generates a Labyrinth.
    Thanks to Yoruk for the contribution!
+* `birds.wl`: "Bird Cage", a complete Heretic map, as featured in the
+   "Heretic Upstart Mapping Project"
 
 === Language features
 
