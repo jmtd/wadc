@@ -21,3 +21,11 @@ lshift(a,b) {
 rshift(a,b) { -- signed right shift
     div(a, pow(2,b))
 }
+
+even(x) {
+  eq(x,mul(2,div(x,2)))
+}
+
+odd(x) {
+    even(x) ? 0 : 1
+}

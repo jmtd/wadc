@@ -118,3 +118,9 @@ angle_east  { 180 }
 angle_ne    { 225 }
 angle_north { 270 }
 angle_nw    { 315 }
+
+ifelse(pred, iftrue, iffalse) { pred ? iftrue : iffalse }
+if(pred, iftrue) { pred ? iftrue : 0 }
+
+-- useful for a temporary addition to replace later
+pradd(x,y) { print(add(x,y)) add(x,y) }

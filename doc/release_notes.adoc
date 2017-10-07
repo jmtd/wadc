@@ -36,7 +36,7 @@ the `wadc.cfg` file if you wish.
 
 ==== GUI preferences additions
 
-WadC now features a Preferences GUI dialogue window that can be used to browse for and
+WadC now features a Preferences GUI window that can be used to browse for and
 set the Doom engine, BSP tool, etc.
 
 You can also toggle the rendering of things or vertices and enable or disable a new
@@ -62,6 +62,18 @@ custom textures.
 The behaviour of `renderthings` and `renderverts` has changed slightly: they now work
 with a global preference, rather than being something that is specific to the current
 program. They are also both deprecated and will be removed in the next release.
+
+==== Library additions/deletions
+
+ * `lineflags.h` has been renamed `lines.h` and some line type definitions have been added.
+ * `basic.h` additions:
+    * `cluster` - cluster 9 things together
+ * `heretic/things.h` - various thing definitions have been added or renamed.
+ * `math.h` has gained `even` and `odd`.
+ * `standard.h` has gained `ifelse` and `if`: wrappers around the ternary operator
+    which are possibly friendlier to use; `pradd` which behaves like a combination
+    of `add` and `print`; useful when refactoring a program.
+ * `thingflag.h` has gained `easyonly` and `mediumonly`.
 
 ==== Removed stuff
 

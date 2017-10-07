@@ -82,10 +82,10 @@
 
                  pod            { setthing(2035) }
         podgenerator            { setthing(43) }
-         skullhang70            { setthing(17) }
-         skullhang60            { setthing(24) }
-         skullhang45            { setthing(25) }
-         skullhang35            { setthing(26) }
+      skullhang_left            { setthing(17) }
+     skullhang_right            { setthing(24) }
+skullhang_small_right           { setthing(25) }
+skullhang_small_left            { setthing(26) }
           chandelier            { setthing(28) }
            serptorch            { setthing(27) }
          smallpillar            { setthing(29) }
