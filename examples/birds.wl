@@ -55,6 +55,7 @@
 #"heretic.h"
 #"shared.h"
 #"control.h"
+#"sectors.h"
 
 skyheight    { 192 }
 wallheight   { 96  }

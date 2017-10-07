@@ -82,6 +82,7 @@ program. They are also both deprecated and will be removed in the next release.
     which are possibly friendlier to use; `pradd` which behaves like a combination
     of `add` and `print`; useful when refactoring a program.
  * `thingflag.h` has gained `easyonly` and `mediumonly`.
+ * `sectors.h` added with the beginnings of sector type definitions
 
 ==== Removed stuff
 
