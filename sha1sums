@@ -1,6 +1,7 @@
 aff80ee383c5adf7b3636808b479bdd4f86dc5c9 *examples/1.2_features.wad
 75a1c3fba1f44bc2edccfaf28d6bfb3af0b70e25 *examples/2countrev.wad
 ff6fbb1c7df2e49d55b1cb68a1224fdb31a4f134 *examples/archtest.wad
+4c9e5bb305be7f8115f3aa94bc3c3fa31c897172 *examples/birds.wad
 d38b9f4fa863e50b001dd431026ba32962df1711 *examples/boom.wad
 17bee025cd24442fc2370a48c87dbd6637665232 *examples/choicetest.wad
 23578fc56328c433b4f2d74f104b9f6acc29afb6 *examples/choz.wad
@@ -25,13 +26,14 @@ b63e61550d0232e4d983e145be0e939ad9d30709 *examples/slopesphere.wad
 5cd04f50fec9a7ac9fce693521987e6c30eb91fd *examples/slopetest.wad
 55cc6b5a230b3b6117b4216cc1c7db179af3d51a *examples/spd2_aard.wad
 381f85e419f678bfdf067aa1d98db643303d69e3 *examples/spd5_aard.wad
-da6bd009635ce5699c18726b483ff4c321b1c480 *examples/square.wad
+d722c65055f7b88eea60c72dc146ae3ec65d5754 *examples/square.wad
 b69b16f8abe1f8138d2ce4b7842e684d80788957 *examples/strife_ex.wad
 50c341b5f59a16cf0a8fb6de9ce2f550b1a1dd43 *examples/textures.wad
 689f8997d8bdc945c06d12ac94e1eca7c825cf19 *examples/triangle.wad
 cef9f4f41be09635673c661e14261c063f71450d *examples/tulip.wad
 1b0d1f9dfb828f4708afec301c2e7e68f4b1c0d4 *examples/water.wad
 facb596891725a41171fb29023304c5a2c16a900 *tests/angles.wad
+99a30928d46ec321e40e535fe9498ef0addfb71e *tests/evenodd.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/hex.wad
 f7e27018715d91faa910cdb34789f8fc61ed656f *tests/mixtypes.wad
 f9f53a320ad21dcf2d8621ff261cf167d17efcbd *tests/overlap1.wad
