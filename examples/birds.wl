@@ -53,7 +53,6 @@
 #"standard.h"
 #"basic.h"
 #"heretic.h"
-#"shared.h"
 #"control.h"
 #"sectors.h"
 
