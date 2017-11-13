@@ -15,7 +15,7 @@ toc::[]
 
 == 2.2
 
-Not yet released.
+Released 13^th^ November 2017.
 
 === Core program changes
 
@@ -84,8 +84,7 @@ be removed in the next release (the preferences will remain)
 ==== Library additions/deletions
 
  * `lineflags.h` has been renamed `lines.h` and some line type definitions have been added.
- * `basic.h` additions:
-    * `cluster` - cluster 9 things together
+ * `basic.h` addition: `cluster` - cluster 9 things together
  * `heretic/things.h` - various thing definitions have been added or renamed.
  * `math.h` has gained `even` and `odd`.
  * `standard.h` has gained `ifelse` and `if`: wrappers around the ternary operator
