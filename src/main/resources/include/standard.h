@@ -25,8 +25,8 @@ eright(n) { step(n,n) rotright }
 unpeg(x) { unpegged x unpegged }
 typeline(t, tag, x) { linetype(t, tag) x linetype(0, 0) }
 typesector(t, tag, x) { sectortype(t, tag) x sectortype(0, 0) }
-xo(x, y) { xoff(x) y undefx } 
-yo(x, y) { yoff(x) y undefy } 
+xo(x, y) { xoff(x) y undefx }
+yo(x, y) { yoff(x) y }
 
 pushpop(x)  { !pushpop  x ^pushpop  }
 pushpop2(x) { !pushpop2 x ^pushpop2 }  -- one level of nesting :)
@@ -55,6 +55,25 @@ fori(from, to, body) {
     )
 }
 i { get("i") }
+
+/*
+ * forXY
+ * x: number of columns
+ * y: number of rows
+ * row: callback for ending a row (like carriage return)
+ * cell: callback for new cells
+ */
+forXY(x,y,row,cell) {
+  set("x", 1)
+  for(1, y,
+    set("y", 1)
+    for(1, x, cell inc("y",1))
+    inc("x", 1)
+    row
+  )
+}
+x { get("x") }
+y { get("y") }
 
 inc(i,n) {
     set(i, add(get(i), n))
@@ -99,3 +118,9 @@ angle_east  { 180 }
 angle_ne    { 225 }
 angle_north { 270 }
 angle_nw    { 315 }
+
+ifelse(pred, iftrue, iffalse) { pred ? iftrue : iffalse }
+if(pred, iftrue) { pred ? iftrue : 0 }
+
+-- useful for a temporary addition to replace later
+pradd(x,y) { print(add(x,y)) add(x,y) }

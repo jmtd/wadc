@@ -8,7 +8,12 @@
 
 package org.redmars.wadc;
 import java.util.*;
-import java.awt.*;
+
+import java.util.stream.Collectors;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 class WadRun {
   WadParse wp;
@@ -36,7 +41,6 @@ class WadRun {
   boolean mergesectors = false;
   boolean prunelines = false;
   boolean undefx = false;
-  boolean undefy = false;
   int forcesec = -1;
   boolean hexen = false;
   boolean midtex = false;
@@ -64,9 +68,9 @@ class WadRun {
 
   Vector<Vertex> vertices = new Vector<>();
   Vector<Line> lines = new Vector<>();
-  Vector sides = new Vector();
-  Vector sectors = new Vector();
-  Vector things = new Vector();
+  Vector<Side> sides = new Vector<>();
+  Vector<Sector> sectors = new Vector<>();
+  Vector<Thing> things = new Vector<>();
 
   Vector<Integer> vcoord = new Vector<>();
   Vector<Vector<Vertex>> vlists = new Vector<>();
@@ -82,8 +86,6 @@ class WadRun {
 
   // rendering
 
-  boolean renderverts = true;
-  boolean renderthings = true;
   int maxx = 0, maxy = 0, minx = 0, miny = 0;
   int xmid, ymid;
   float scale, basescale = 1.0f;
@@ -102,33 +104,11 @@ class WadRun {
       prefs = wp.mf.prefs;
   }
 
-  void dep() { wp.mf.msg("north east west south are deprecated commands (you shouldn't need them).");}
+  void deprecated(String fn) {
+      wp.mf.msg("WARNING: " +fn + " is deprecated and will be removed in a future release");
+  }
 
   void addbuiltins() {
-
-    builtin("north", 0, new Builtin() { Exp eval() {
-      orient = 0;
-      dep();
-      return n;
-    }});
-
-    builtin("east", 0, new Builtin() { Exp eval() {
-      orient = 1;
-      dep();
-      return n;
-    }});
-
-    builtin("south", 0, new Builtin() { Exp eval() {
-      orient = 2;
-      dep();
-      return n;
-    }});
-
-    builtin("west", 0, new Builtin() { Exp eval() {
-      orient = 3;
-      dep();
-      return n;
-    }});
 
     builtin("rotright", 0, new Builtin() { Exp eval() {
       rotate(1);
@@ -225,13 +205,19 @@ class WadRun {
     }});
 
     builtin("landscape", 3, new Builtin() { Exp eval(Exp a, Exp b, Exp c) {
+      deprecated("landscape");
       landscape(a.ival(),b.ival(),c.ival());
       return n;
     }});
 
     builtin("marchingcubes", 3, new Builtin() { Exp eval(Exp a, Exp b, Exp c) {
+      deprecated("marchingcubes");
       marchingcubes(a.ival(),b.ival(),c.ival());
       return n;
+    }});
+
+    builtin("simplex", 2, new Builtin() { Exp eval(Exp x, Exp y) {
+      return new Int(simplex(x.ival(), y.ival()));
     }});
 
     builtin("mergesectors", 0, new Builtin() { Exp eval() {
@@ -313,6 +299,10 @@ class WadRun {
         return n;
     }});
 
+    builtin("is_hexenformat", 0, new Builtin() { Exp eval() {
+      return new Int(hexen?1:0);
+    }});
+
     builtin("sectortype", 2, new Builtin() { Exp eval(Exp a, Exp b) {
       cursectortype = a.ival();
       cursectortag = b.ival();
@@ -365,12 +355,11 @@ class WadRun {
 
     builtin("yoff", 1, new Builtin() { Exp eval(Exp s) {
       yoff = s.ival();
-      undefy = false;
       return n;
     }});
 
     builtin("midtex", 0, new Builtin() { Exp eval() {
-	  midtex = !midtex;
+      midtex = !midtex;
       return n;
     }});
 
@@ -457,52 +446,62 @@ class WadRun {
     }});
 
     builtin("lastfile", 1, new Builtin() { Exp eval(Exp s) {
-      prefs.basename = s.sval();
+      deprecated("lastfile");
+      prefs.put("basename", s.sval());
       return n;
     }});
 
     builtin("doomexe", 1, new Builtin() { Exp eval(Exp s) {
-      prefs.doomexe = s.sval();
+      deprecated("doomexe");
+      prefs.put("doomexe", s.sval());
       return n;
     }});
 
     builtin("doomargs", 1, new Builtin() { Exp eval(Exp s) {
-      prefs.doomargs = s.sval();
+      deprecated("doomargs");
+      prefs.put("doomargs", s.sval());
       return n;
     }});
 
     builtin("bspcmd", 1, new Builtin() { Exp eval(Exp s) {
-      prefs.bspcmd = s.sval();
+      deprecated("bspcmd");
+      prefs.put("bspcmd", s.sval());
       return n;
     }});
 
     builtin("iwad", 1, new Builtin() { Exp eval(Exp s) {
-      prefs.iwad = s.sval();
+      deprecated("iwad");
+      prefs.put("iwad", s.sval());
       return n;
     }});
 
     builtin("twad1", 1, new Builtin() { Exp eval(Exp s) {
-      prefs.twad1 = s.sval();
+      deprecated("twad1");
+      prefs.put("twad1", s.sval());
       return n;
     }});
 
     builtin("twad2", 1, new Builtin() { Exp eval(Exp s) {
-      prefs.twad2 = s.sval();
+      deprecated("twad2");
+      prefs.put("twad2", s.sval());
       return n;
     }});
 
     builtin("twad3", 1, new Builtin() { Exp eval(Exp s) {
-      prefs.twad3 = s.sval();
+      deprecated("twad3");
+      prefs.put("twad3", s.sval());
       return n;
     }});
 
     builtin("togglevertices", 0, new Builtin() { Exp eval() {
-      renderverts = !renderverts;
+      deprecated("togglevertices");
+      prefs.putBoolean("renderverts", !prefs.getBoolean("renderverts"));
       return n;
     }});
 
     builtin("togglethings", 0, new Builtin() { Exp eval() {
-      renderthings = !renderthings;
+      deprecated("togglethings");
+      prefs.putBoolean("renderthings", !prefs.getBoolean("renderthings"));
       return n;
     }});
 
@@ -556,11 +555,6 @@ class WadRun {
 
     builtin("undefx", 0, new Builtin() { Exp eval() {
       undefx = true;
-      return n;
-    }});
-
-    builtin("undefy", 0, new Builtin() { Exp eval() {
-      undefy = true;
       return n;
     }});
 
@@ -707,7 +701,6 @@ class WadRun {
     l.xoff = xoff;
     l.yoff = yoff;
     l.undefx = undefx;
-    l.undefy = undefy;
     l.type = curlinetype;
     l.tag = curlinetag;
     l.flags |= lineflags;
@@ -976,6 +969,163 @@ class WadRun {
       y = v.y;
     };
   }
+  private static int scale(short x, short min, short max)
+  {
+      int denominator = max - min;
+      if(0 != denominator) {
+        return ((255 * (x - min)) / denominator);
+      }
+      return 127; // default to mid-range
+  }
+
+  /*
+   * orderByPath(vertices, lines): returns a re-ordered (possibly reduced) list
+   * of vertices that follow a path based on lines, which are treated as
+   * bi-directional
+   * converted from the following Haskell
+   *
+   *  sortme vs ss = (head vs) : sortme' (head vs) (tail vs) (ss ++ (map swap ss))
+   *  sortme' v [] _  = []
+   *  sortme' v vs ss | vs == newvs = []
+   *                  | otherwise = newv : (sortme' newv newvs ss) where
+   *      newv  = snd $ head $ filter (\(x,y) -> x == v) ss
+   *      newvs = filter ((/=) newv) vs
+   */
+  List<Vertex> orderByPath(Set<Vertex> set_v, List<Line> ls)
+  {
+    List<Vertex> vs = new ArrayList<>();
+    vs.addAll(set_v);
+
+    // Lines have direction, but we need bi-directional for this purpose.
+    // Build a new list, appending reversed lines to the end.
+    ArrayList<Line> ls2 = new ArrayList<>(ls);
+
+    for(Line l : ls) {
+        Line nl = new Line();
+        nl.from = l.to;
+        nl.to = l.from;
+        ls2.add(nl);
+    }
+
+    Vertex head = vs.remove(0);
+    List<Vertex> ret = nextNode(head, vs, ls2);
+    ret.add(head);
+    return ret;
+  }
+
+  // internal recursive function for the above
+  List<Vertex> nextNode(Vertex v, List<Vertex> vs, List<Line> ls)
+  {
+    Optional<Vertex> o = ls.stream()
+                        .filter(l -> l.from == v)
+                        .map(l -> l.to)
+                        .filter(v_ -> vs.contains(v_))
+                        .findFirst();
+
+    // this can happen if vs is empty (normal situation at the end of recursion)
+    // or the input sector was disjoint (e.g. mergesectors)
+    if(!o.isPresent())
+    {
+        return new ArrayList<Vertex>();
+    }
+    Vertex newv = o.get();
+
+    vs.remove(newv);
+    List<Vertex> ret = nextNode(newv, vs, ls);
+
+    ret.add(newv);
+    return ret;
+  }
+
+  void experimentalFillSector(Graphics g, int xmid, int ymid, int gxmid, int gymid)
+  {
+      // collect sector height/etc information
+      short min_val = 0, max_val = 0, comp = 0;
+
+      if(SectorFill.CEILINGHEIGHT == prefs.getEnum("fillsectors") || SectorFill.FLOORHEIGHT == prefs.getEnum("fillsectors"))
+      {
+          for(Sector sector : sectors)
+          {
+              if(SectorFill.FLOORHEIGHT == prefs.getEnum("fillsectors")) {
+                  comp = (short)sector.floor;
+              }
+              else if(SectorFill.CEILINGHEIGHT == prefs.getEnum("fillsectors")) {
+                  comp = (short)sector.ceil;
+              }
+
+              if(comp < min_val) {
+                  min_val = comp;
+              }
+              if(comp > max_val) {
+                  max_val = comp;
+              }
+          }
+      }
+
+      // we need to get a list of vertices that are related to each sector,
+      // which we (sadly) can't get from the Sectors themselves
+
+      for(Sector sector : sectors) {
+          // We don't want duplicate vertexes in this set. LinkedHashSet doesn't
+          // require the Vertex class to implement interface Comparable, but
+          // still offers insertion-order preservation.
+          //
+          // XXX: we need to subdivide sectors into concave (and properly
+          // connected) polygons or the draw will be corrupted.
+          Set<Vertex> av = new LinkedHashSet<Vertex>();
+
+          // sidedefs are the bridge between sectors and vertexes
+          for(Side side : sides) {
+              if(side.s == sector) {
+                  av.add(side.l.from);
+                  av.add(side.l.to);
+              }
+          }
+
+          List<Line> ls = sides.stream()
+                         .filter(side -> side.s == sector)
+                         .map(side -> side.l)
+                         .collect(Collectors.toList());
+
+          int [] xPoints = new int[av.size()];
+          int [] yPoints = new int[av.size()];
+          int    nPoints = av.size();
+
+          int i = 0;
+          for(Vertex v : orderByPath(av, ls)) {
+              xPoints[i] = (int)((v.x-xmid)/scale) + gxmid;
+              yPoints[i] = (int)((v.y-ymid)/scale) + gymid;
+              i++;
+          }
+
+          int c;
+          short v;
+          switch(prefs.getEnum("fillsectors"))
+          {
+              case CEILINGHEIGHT:
+                  v = (short)sector.ceil;
+                  c = scale(v, min_val, max_val);
+                  break;
+
+              case FLOORHEIGHT:
+                  v = (short)sector.floor;
+                  c = scale(v, min_val, max_val);
+                  break;
+
+              case LIGHTLEVEL:
+                  v = (short)sector.light;
+                  c = scale(v, (short)0, (short)255);
+                  break;
+
+              default: // should be unreachable
+                  c = 127;
+                  break;
+          }
+          g.setColor(new Color(c,c,c));
+
+          g.fillPolygon(xPoints, yPoints, nPoints);
+      }
+  }
 
   int thingsize(int n) {
     switch(n) {
@@ -1034,6 +1184,7 @@ class WadRun {
     int grminx = -((-minx+128)&0xFFFFFC0);
     int grmaxy = (maxy+128)&0xFFFFFC0;
     int grminy = -((-miny+128)&0xFFFFFC0);
+
     g.setColor(new Color(50,50,50));
     for(int x = grminx;x<=grmaxx;x+=64) {
       g.drawLine((int)((x-xmid)/scale)+gxmid,
@@ -1046,8 +1197,12 @@ class WadRun {
                    (int)((grmaxx-xmid)/scale)+gxmid,
                    (int)((y-ymid)/scale)+gymid);
     };
-    for(int i = 0;i<lines.size();i++) {
-      Line l = lines.elementAt(i);
+
+    if(prefs.getEnum("fillsectors") != SectorFill.NONE) {
+        experimentalFillSector(g,xmid,ymid,gxmid,gymid);
+    }
+
+    for(Line l : lines) {
       if(l.right!=null) {
         g.setColor(l.left!=null?Color.gray:Color.white);
       } else {
@@ -1063,8 +1218,7 @@ class WadRun {
                  (int)((l.to.x-xmid)/scale)+gxmid,
                  (int)((l.to.y-ymid)/scale)+gymid);
     };
-    if(renderverts) for(int i = 0;i<vertices.size();i++) {
-      Vertex v = vertices.elementAt(i);
+    if(prefs.getBoolean("renderverts")) for(Vertex v : vertices) {
       int d = 2;
       g.setColor(Color.green);
       if(v==lastvertex) { d=5; g.setColor(Color.magenta); };
@@ -1073,8 +1227,7 @@ class WadRun {
       g.drawLine(x-d,y-d,x+d,y+d);
       g.drawLine(x+d,y-d,x-d,y+d);
     };
-    if(renderthings) for(int i = 0;i<things.size();i++) {
-      Thing t = (Thing)things.elementAt(i);
+    if(prefs.getBoolean("renderthings")) for(Thing t : things) {
       g.setColor(Color.blue);
       int rad = thingsize(t.type);
       int x1 = (int)((t.x-rad-xmid)/scale)+gxmid;
@@ -1100,7 +1253,8 @@ class WadRun {
           v.idx = i;
         };
       };
-      wp.mf.msg(vertices.size()+" vertices, "+lines.size()+" lines, "+sectors.size()+" sectors.");
+      wp.mf.msg(vertices.size()+" vertices, "+lines.size()+" lines, "+sectors.size()+" sectors, "+
+        things.size()+" things.");
   }
 
   void varerr(String s) { wp.error("variable "+s+" never set"); }
@@ -1331,6 +1485,15 @@ class WadRun {
 
   int prnd(int max, int x, int y, int seed, float scale) {
     return (int)(Perlin.perlinnoise_2D(x/scale+seed,y/scale+seed,1000,0.01f)*3.5f+100.0f);
+  }
+
+  int simplex(int x, int y) {
+    double simple = SimplexNoise.noise(x,y); // -1 - 1
+    return
+      (int)(
+      (simple + 1) // 0-2
+      * 500_000  // 0-1,000,000
+    );
   }
 }
 

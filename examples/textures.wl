@@ -1,3 +1,13 @@
+/*
+ * textures.wl: Simple example of composing textures in WadC
+ * part of WadC
+ *
+ * Copyright © 2015-2017 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 #"standard.h"
 
 main {

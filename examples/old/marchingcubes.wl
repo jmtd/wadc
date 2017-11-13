@@ -1,7 +1,6 @@
 #"standard.h"
 
 main {
-  togglevertices
   prunelines
   movestep(-128,128)
   thing

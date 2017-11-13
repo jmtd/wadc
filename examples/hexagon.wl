@@ -1,3 +1,13 @@
+/*
+ * hexagon.wl: random hexagon maze, as featured in the 10 Sectors Competition MAP32
+ * part of WadC
+ *
+ * Copyright © 2000 Wouter van Oortmerssen
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 #"standard.h"
 #"decoration.h"
 #"monsters.h"
@@ -5,8 +15,6 @@
 
 main {
   seed (1337)
-  togglevertices
-  togglethings
   mergesectors
   prunelines
   deaf

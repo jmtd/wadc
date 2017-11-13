@@ -20,7 +20,7 @@
  */
 
 #"standard.h"
-#"lineflags.h"
+#"lines.h"
 
 controlinit {
     !control -- where the next control sector will go

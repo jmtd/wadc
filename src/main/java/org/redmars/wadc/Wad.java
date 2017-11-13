@@ -279,7 +279,7 @@ public class Wad {
         int doffs, dsize;
         int poffs = 0, numps;
 
-        RandomAccessFile iwad = new RandomAccessFile(mf.prefs.iwad, "r");
+        RandomAccessFile iwad = new RandomAccessFile(mf.prefs.get("iwad"), "r");
         iwad.seek(4);
         dsize = Integer.reverseBytes(iwad.readInt());
         doffs = Integer.reverseBytes(iwad.readInt());

@@ -347,3 +347,13 @@ walllight(n, d, s, mid) {
   straight(s)
 }
 
+-- a cluster of 9 things
+cluster(x,gap) {
+  !cluster
+  movestep(mul(-1,gap),mul(-1,gap))
+  forXY(3, 3,
+    movestep(gap,mul(-1,mul(gap,3))),
+    x movestep(0,gap)
+  )
+  ^cluster
+}

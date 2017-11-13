@@ -3,6 +3,13 @@
 #"pipes.wl"
 #"monsters.h"
 
+/*
+ * TODO
+ * proper implementation of slimequad. corridor always put ceiling a fixed height
+ * above floor, so either rework corridor, or reimplement slimequad not in terms
+ * of corridor.x
+ */
+
 sbox(f,c,l,w,h) {
     swater(box(f,c,l,w,h),f,c)
 }
@@ -35,19 +42,29 @@ main {
   entrance_area(player1start)
   curveleft
   corridor(64)
+
   !quad1
+  slimeset(get("slime1_5"))
   sewerquad
+  slimeset(get("slime1"))
+
   corridor(128)
   curveleft
   corridor(128)
+  control_carriage_return
+
   !quad2
+  slimeset(get("slime1_5"))
   sewerquad
+  slimeset(get("slime1"))
+
   corridor(64)
   curveleft
   corridor(512)
   curveleft
 
   -- middle loop
+  control_carriage_return
   ^quad1
   move(320)
   rotright
@@ -56,11 +73,13 @@ main {
   corridor(64)
   curveleft
   corridor(512)
+  control_carriage_return
   curveleft
   entrance_area(formersergeant)
   curveleft
   corridor(64)
   move(320) -- skip slimequad
+  control_carriage_return
   sewerfade
 
   print(cat(get("controlstats")," control sectors"))

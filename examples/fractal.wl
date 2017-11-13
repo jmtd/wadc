@@ -1,3 +1,15 @@
+/*
+ * fractal.wl: fractal example by Aardappel
+ * part of WadC
+ *
+ * Copyright © 2000 Wouter van Oortmerssen
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ * 
+ * requires Q1TEX.WAD to play
+ */
+
 #"standard.h"
 
 main {

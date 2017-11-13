@@ -8,34 +8,6 @@
 
 package org.redmars.wadc;
 
-/*
-potential todos:
-- "autorim" feature: draws an inner sector to the next sector
-- zdoom thing id
-- check curve xoff accuracy?
-- render thing orientation?
-- make a way to have the xo() macro be independant of undefx?
-- add undefy? -> not practical, because it has different effects on mid/bot/top
-- fix can't draw when no lines drawn?
-- curb lazyness? in some code (with loops) this is really the bottleneck
-  -> happens mainly in recursive functions, which can easily be given _
-  what would be cool is a strictness analysis for all parameters that
-  are used twice, for all callers wether the argument is "functional".
-  This could automatically speed up all code, but is not trivial.
-- arches give unexpected bugs with lower subdiv?
-- fix alignment in arches?
-- randow walk line
-- textures:
-  * add custom textures directly from jpg? (easy)
-  * custom texture wad automatic merging? (medium)
-  * iwad+custom texture browsing (medium)
-- support map02 etc in one source
-- mirroring (difficult: needs to be at both line/vertex level, reverse rotation doesn't work)
-- opengl preview (+ editing?)
-- generic lighting (place a lightsource... draw sectors automatically)
-
-*/
-
 import java.awt.*;
 import java.util.*;
 import java.io.InputStream;
@@ -168,7 +140,7 @@ public class WadParse {
 
   // given a relative file e.g. "foo.h", construct an absolute path
   Path resolveinclude(String name) {
-    Path p = Paths.get(mf.prefs.basename).getParent();
+    Path p = Paths.get(mf.prefs.get("basename")).getParent();
     String base = p == null ? "" : p.toString();
     p = Paths.get(base, name);
     return p;

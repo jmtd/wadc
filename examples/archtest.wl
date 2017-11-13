@@ -1,3 +1,13 @@
+/*
+ * archtest.wl: simple test of WadC's arch() built-in
+ * part of WadC
+ *
+ * Copyright © 2001-2008 Wouter van Oortmerssen
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 #"standard.h"
 
 main {

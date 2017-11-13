@@ -1,3 +1,13 @@
+/*
+ * spd5_aard.wl: Aardappel's entry into the 5th Doomworld Speedmapping compilation
+ * part of WadC
+ *
+ * Copyright © 2001-2008 Wouter van Oortmerssen
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 #"basic.h"
 #"monsters.h"
 #"pickups.h"

@@ -52,21 +52,6 @@ public class WadCCLI implements WadCMainFrame {
     }
 
     // XXX: copied verbatim from MainFrame. should be a static interface method?
-    String getPrefs() {
-        String prefDir = System.getProperty("user.home") + File.separator + ".wadc";
-        return loadtextfile(prefDir + File.separator + "wadc.cfg");
-    }
-
-    void readPrefs() {
-        // XXX: copied from MainFrame. should be a static interface method?
-        String cfg = getPrefs();
-        if(!"".equals(cfg)) {
-            WadParse prefs = new WadParse(cfg, this);
-            if(prefs.err==null) prefs.run();
-        }
-    }
-
-    // XXX: copied verbatim from MainFrame. should be a static interface method?
     String loadtextfile(String name) {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(name)));
@@ -84,21 +69,17 @@ public class WadCCLI implements WadCMainFrame {
 
     void readSource(final String name) {
         if(name==null) return;
-        this.prefs.basename = (new File(name)).toString();
-        this.src = loadtextfile(this.prefs.basename);
+        this.src = loadtextfile((new File(name)).toString());
     }
 
     /* do the magic */
     public WadCCLI(final String infile, boolean writesrc) {
         String wadfile;
-        readPrefs();
         readSource(infile);
         WadParse wp = new WadParse(this.src, this);
         try {
             wp.run();
-            wadfile = prefs.basename.substring(0,prefs.basename.lastIndexOf('.'))+".wad";
-            // XXX: we haven't initialised the prefs properly, so this will fail if
-            // if it needs doom2.wad.
+            wadfile = infile.substring(0,infile.lastIndexOf('.'))+".wad";
             Wad wad = new Wad(wp,this,wadfile,writesrc);
             wad.run();
 
