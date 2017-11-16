@@ -4,22 +4,34 @@ Source: https://jmtd.net/wadc/
 
 Files: *
 Copyright: 2000-2008, Wouter van Oortmerssen;
-           2008-2016, Jonathan Dowland <jmtd@debian.org>
+           2008-2017, Jonathan Dowland <jmtd@debian.org>
 License: GPL-2
 
 Files: examples/entryway.pl
 Copyright: 2010, GreyGhost
-           2010-2016, Jonathan Dowland <jmtd@debian.org>
+           2010-2017, Jonathan Dowland <jmtd@debian.org>
 License: GPL-2
 
 Files: src/main/java/org/redmars/wadc/MainFrame.java
 Copyright: 2000-2008, Wouter van Oortmerssen;
            2015, Jonathan Rimmer;
-           2008-2016, Jonathan Dowland <jmtd@debian.org>
+           2008-2017, Jonathan Dowland <jmtd@debian.org>
+License: GPL-2
+
+Files: src/main/java/org/redmars/wadc/EngineConfigDialog.java
+       src/main/java/org/redmars/wadc/JPathPanel.java
+Copyright: 2009, Hauke Rehfeld;
+           2017, Jonathan Dowland <jmtd@debian.org>
+License: GPL-2
+
+Files: src/main/java/org/redmars/wadc/SimplexNoise.java
+Copyright: 2012, Stefan Gustavson <stegu@itn.liu.se>;
+           2012, Peter Eastman <peastman@drizzle.stanford.edu>;
+           2017, Jonathan Dowland <jmtd@debian.org>
 License: GPL-2
 
 Files: debian/*
-Copyright: 2006-2016, Jonathan Dowland <jmtd@debian.org>
+Copyright: 2006-2017, Jonathan Dowland <jmtd@debian.org>
 License: GPL-2
 
 License: GPL-2
