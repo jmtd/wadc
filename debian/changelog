@@ -1,3 +1,9 @@
+wadc (2.2-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Jonathan Dowland <jmtd@debian.org>  Mon, 13 Nov 2017 15:31:35 +0000
+
 wadc (2.1+git3aac3015-2) unstable; urgency=low
 
   * Correct omissions in debian/copyright
