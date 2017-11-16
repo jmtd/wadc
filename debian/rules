@@ -8,11 +8,18 @@ mvnrepo := debian/wadc/usr/share/maven-repo
 %:
 	dh $@ --buildsystem=maven
 
-override_dh_auto_build:
+ADOCS = $(wildcard doc/*.adoc)
+DOCS  = $(subst .adoc,.html, $(ADOCS))
+
+doc/%.html: doc/%.adoc
+	asciidoctor $<
+
+override_dh_auto_build: $(DOCS)
 	echo git.commit.id.describe=v$(version) > src/main/resources/git.properties
 	dh_auto_build --buildsystem=maven
 
 override_dh_auto_clean:
+	rm -f $(DOCS)
 	dh_auto_clean --buildsystem=maven
 	rm -f src/main/resources/git.properties
 

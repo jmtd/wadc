@@ -1,4 +1,5 @@
-doc/*
+doc/*.html
+doc/tutorial/
 examples/
 extra/
 target/classes/include
