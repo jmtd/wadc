@@ -1,31 +1,26 @@
-From c8baed0d65356a0d49f3f6315d7388d73f50a8ec Mon Sep 17 00:00:00 2001
-From: Jonathan Dowland <jmtd@debian.org>
-Date: Fri, 30 Sep 2016 17:43:17 +0100
-Subject: [PATCH] Replace default engine/iwad/bsp paths
+commit 305d1d2ba624dec7729e78904e8aa577155826c9
+Author: Jonathan Dowland <jmtd@debian.org>
+Date:   Thu Nov 16 11:45:15 2017 +0000
 
-Replace with sensible defaults for UNIX/Linux/Debian systems.
----
- src/main/java/org/redmars/wadc/WadCPrefs.java | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+    Replace default preferences values with sensible defaults
+    
+    Sensible defaults for Debian systems
 
 diff --git a/src/main/java/org/redmars/wadc/WadCPrefs.java b/src/main/java/org/redmars/wadc/WadCPrefs.java
-index 0a6a0e3..d9d3f98 100644
+index 445da67..bce1c67 100644
 --- a/src/main/java/org/redmars/wadc/WadCPrefs.java
 +++ b/src/main/java/org/redmars/wadc/WadCPrefs.java
-@@ -13,10 +13,10 @@ package org.redmars.wadc;
+@@ -59,10 +59,10 @@ public class WadCPrefs {
+   public WadCPrefs() {
+       prefs = Preferences.userNodeForPackage(WadCPrefs.class);
  
- public class WadCPrefs {
-   String basename;
--  String bspcmd = "c:\\doom2\\bsp";
--  String doomexe = "c:\\doom\\zdoom.exe";
-+  String bspcmd = "glbsp";
-+  String doomexe = "doom";
-   String doomargs = "-warp 1 -file";
--  String iwad = "c:\\doom2\\doom2.wad";
-+  String iwad = "/usr/share/games/doom/doom2.wad";
-   String twad1 = "";
-   String twad2 = "";
-   String twad3 = "";
--- 
-2.9.3
-
+-      defs.put("bspcmd",   "c:\\doom2\\bsp");
+-      defs.put("doomexe",  "c:\\doom\\zdoom.exe");
++      defs.put("bspcmd",   "glbsp");
++      defs.put("doomexe",  "doom");
+       defs.put("doomargs", "-warp 1 -file");
+-      defs.put("iwad",     "c:\\doom2\\doomw.wad");
++      defs.put("iwad",     "/usr/share/games/doom/doom2.wad");
+       defs.put("twad1",    "");
+       defs.put("twad2",    "");
+       defs.put("twad3",    "");
