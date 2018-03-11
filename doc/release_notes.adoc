@@ -13,6 +13,17 @@ current features, see link:reference.adoc[the Reference].
 
 toc::[]
 
+== Dev
+
+Not released yet.
+
+=== Core program changes
+
+==== UI improvements
+
+The GUI now draws a marker for the cursor's location and orientation, in orange.
+It can be toggled with the menus in the same way as drawing things or vertices.
+
 == 2.2
 
 Released 13^th^ November 2017.

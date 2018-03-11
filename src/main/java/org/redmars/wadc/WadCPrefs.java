@@ -28,7 +28,7 @@ public class WadCPrefs {
       return prefs.get(key, defs.getOrDefault(key, "?"));
   }
   public boolean getBoolean(String key) {
-      if(key.equals("renderverts") || key.equals("renderthings")) {
+      if(key.equals("renderverts") || key.equals("renderthings") || key.equals("renderturtle")) {
           return prefs.getBoolean(key, true);
       }
       return prefs.getBoolean(key, false);

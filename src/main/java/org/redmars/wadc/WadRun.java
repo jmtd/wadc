@@ -1237,6 +1237,7 @@ class WadRun {
       g.drawOval(x1,y1,x2-x1,y2-y1);
     };
     // draw the turtle
+    if(prefs.getBoolean("renderturtle"))
     {
         g.setColor(Color.orange);
         int rad = 16;

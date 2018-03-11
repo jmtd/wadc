@@ -64,6 +64,7 @@ public class WadC extends JFrame implements WadCMainFrame {
   JMenu viewMenu = new JMenu();
   JCheckBoxMenuItem showThings = new JCheckBoxMenuItem();
   JCheckBoxMenuItem showVertices = new JCheckBoxMenuItem();
+  JCheckBoxMenuItem showTurtle = new JCheckBoxMenuItem();
 
   JMenu fillMenu = new JMenu();
   ButtonGroup fillButtonGroup = new ButtonGroup();
@@ -233,6 +234,15 @@ public class WadC extends JFrame implements WadCMainFrame {
             cv.repaint();
         }
     });
+    showTurtle.setText(__("Show the cursor"));
+    showTurtle.setState(prefs.getBoolean("renderturtle"));
+    showTurtle.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            prefs.toggle("renderturtle");
+            cv.repaint();
+        }
+    });
+
 
     fillMenu.setText(__("Sector Fill"));
 
@@ -290,6 +300,7 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     viewMenu.add(showThings);
     viewMenu.add(showVertices);
+    viewMenu.add(showTurtle);
     viewMenu.add(fillMenu);
 
     fillMenu.add(emptySectors);
