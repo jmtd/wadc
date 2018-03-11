@@ -1236,6 +1236,41 @@ class WadRun {
       int y2 = (int)((t.y+rad-ymid)/scale)+gymid;
       g.drawOval(x1,y1,x2-x1,y2-y1);
     };
+    // draw the turtle
+    {
+        g.setColor(Color.orange);
+        int rad = 16;
+        int x1 = (int)((xp-rad-xmid)/scale)+gxmid;
+        int y1 = (int)((yp-rad-ymid)/scale)+gymid;
+        int x2 = (int)((xp+rad-xmid)/scale)+gxmid;
+        int y2 = (int)((yp+rad-ymid)/scale)+gymid;
+        g.drawOval(x1,y1,x2-x1,y2-y1);
+
+        // orientation line
+        x1 = (int)((xp-xmid)/scale)+gxmid;
+        y1 = (int)((yp-ymid)/scale)+gymid;
+        switch(orient)
+        {
+            case 0: // north
+                y2 = (int)(((yp-32)-ymid)/scale)+gymid;
+                x2 = x1;
+                break;
+            case 1: // east
+                x2 = (int)(((xp+32)-xmid)/scale)+gxmid;
+                y2 = y1;
+                break;
+            case 2: // south
+                y2 = (int)(((yp+32)-ymid)/scale)+gymid;
+                x2 = x1;
+                break;
+            case 3: // west
+                x2 = (int)(((xp-32)-xmid)/scale)+gxmid;
+                y2 = y1;
+                break;
+        }
+        g.drawLine(x1, y1, x2, y2);
+    }
+
     renderxtraverts(g);
   }
 
