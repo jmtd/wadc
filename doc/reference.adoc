@@ -370,6 +370,14 @@ the random number generator:
 
 This affects any use of the choice operator that follows.
 
+=== random numbers
+
+    rand(x,y)
+
+Returns a random integer within the range x to y, inclusive. `rand` uses the
+same Random pool as the choice operator, and is similarly affected by the use
+of `seed`.
+
 === Simplex noise
 
    simplex(x,y)
