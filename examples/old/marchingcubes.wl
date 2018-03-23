@@ -4,5 +4,5 @@ main {
   prunelines
   movestep(-128,128)
   thing
-  marchingcubes(50,5,50)
+  marchingcubes(50,5)
 }

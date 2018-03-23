@@ -23,7 +23,7 @@ class Line {
   boolean midtex = false;
 
   Line() {
-    for(int i = 0; i<5; i++) specialargs[i] = 0;
+    for(int i = 0; i<4; i++) specialargs[i] = 0;
   }
 
   Line(boolean mt) {
@@ -47,10 +47,9 @@ class Line {
     yoff = line.yoff;
     flags = line.flags;
     undefx = line.undefx;
-    undefy = line.undefy;
     type = line.type;
     tag = line.tag;
-    System.arraycopy(line.specialargs, 0, specialargs, 0, 5);
+    System.arraycopy(line.specialargs, 0, specialargs, 0, 4);
   }
 
   int width() {

@@ -213,9 +213,9 @@ class WadRun {
       return n;
     }});
 
-    builtin("marchingcubes", 3, new Builtin() { Exp eval(Exp a, Exp b, Exp c) {
+    builtin("marchingcubes", 2, new Builtin() { Exp eval(Exp a, Exp b) {
       deprecated("marchingcubes");
-      marchingcubes(a.ival(),b.ival(),c.ival());
+      marchingcubes(a.ival(),b.ival());
       return n;
     }});
 
@@ -731,7 +731,7 @@ class WadRun {
     l.type = curlinetype;
     l.tag = curlinetag;
     l.flags |= lineflags;
-    System.arraycopy(curlinearg, 0, l.specialargs, 0, 5);
+    System.arraycopy(curlinearg, 0, l.specialargs, 0, 4);
   }
 
   private Line makelineMinimal(Vertex from, Vertex to) {
@@ -792,7 +792,7 @@ class WadRun {
       collect.add(lcb);
       collect.add(ca);
       collect.add(cb);
-      v.removeElementAt(i);
+      v.remove(i);
       if(c1<lc1) {    // overlap on the left
         splitLines((ca==a ? ca : lca), (ca==a ? lca : ca), eqx, coord);
       }
@@ -822,14 +822,14 @@ class WadRun {
     return fromto ? sec : l;
   }
 
-  private void makething() {
+  private void makething(int angle) {
     Thing t = new Thing();
     t.x = xp;
     t.y = yp;
     t.type = curthingtype;
     t.opt = thingflags;
     t.idx = things.size();
-    t.angle = (-orient+3)*90;
+    t.angle = angle;
     System.arraycopy(curthingarg, 0, t.specialargs, 0, 5);
     things.add(t);
   }

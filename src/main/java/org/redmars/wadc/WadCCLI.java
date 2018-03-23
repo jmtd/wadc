@@ -66,7 +66,7 @@ public class WadCCLI implements WadCMainFrame {
 
     private void readSource(final String name) {
         if(name==null) return;
-        this.src = loadtextfile((new File(name)).toString());
+        this.src = loadTextFile((new File(name)).toString());
     }
 
     /* do the magic */

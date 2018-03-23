@@ -11,7 +11,7 @@ import java.util.*;
 
 class Choice extends Exp {
   static long seed;
-  private static Random rnd = new Random();
+  static Random rnd = new Random();
 
   static void setSeed(int s) {
       seed = s;

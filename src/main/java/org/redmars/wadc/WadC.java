@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.undo.UndoManager;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -38,8 +39,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class WadC extends JFrame implements WadCMainFrame {
-  private JTextArea textArea1 = new JTextArea("",15,30);
-  private JScrollPane sp = new JScrollPane(textArea1);
+  private JTextArea programTextArea = new JTextArea("",15,30);
+  private JScrollPane sp = new JScrollPane(programTextArea);
   private GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
   private Panel panel1 = new Panel();
   private TextArea messagesTextArea = new TextArea("",5,20);
@@ -114,7 +115,15 @@ public class WadC extends JFrame implements WadCMainFrame {
     final int MENU_SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
     programTextArea.setFont(new Font("Monospaced",0,12));
-    programTextArea.addTextListener(this::textArea1_textValueChanged);
+    programTextArea.getDocument().addDocumentListener(new DocumentListener() {
+        public void removeUpdate(DocumentEvent e) {
+            textArea1_textValueChanged();
+        }
+        public void insertUpdate(DocumentEvent e) {
+            textArea1_textValueChanged(); // this:: ?
+        }
+        public void changedUpdate(DocumentEvent e) {}
+    });
     programTextArea.getDocument().addUndoableEditListener(manager);
 
     panel1.setLayout(new GroupLayout(false));
@@ -122,8 +131,8 @@ public class WadC extends JFrame implements WadCMainFrame {
     this.setLayout(borderLayout1);
     setBackground(Color.lightGray);
     setEnabled(true);
-    setMenuBar(mainMenuBar);
-    addWindowListener(new WindowAdapter() {
+    setJMenuBar(mainMenuBar);
+    addWindowListener(new java.awt.event.WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         quit(null);
       }
@@ -137,7 +146,6 @@ public class WadC extends JFrame implements WadCMainFrame {
     newMenuItem.addActionListener(this::newfile);
     openMenuItem.setText(__("Open"));
     openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MENU_SHORTCUT_MASK));
-    openMenuItem.setShortcut(new MenuShortcut(79));
     openMenuItem.addActionListener(this::open);
     saveAsMenuItem.setText(__("Save As"));
     saveAsMenuItem.addActionListener(this::saveAs);
@@ -271,7 +279,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     pack();
     setVisible(true);
 
-    String lf = loadtextfile(prefs.get("basename"));
+    String lf = loadTextFile(prefs.get("basename"));
     if(lf.length()>0) { programTextArea.setText(lf); } else { newfile(null); };
   }
 
@@ -303,7 +311,7 @@ public class WadC extends JFrame implements WadCMainFrame {
   }
 
   void newfile(ActionEvent e) {
-    textArea1.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
+    programTextArea.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
     // XXX: nasty hack to ensure basename is always a FQ path
     prefs.put("basename", new File(System.getProperty("user.home"), "untitled.wl").toString());
   }
@@ -315,7 +323,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     String name = fd.getFile();
     if(name==null) return;
     prefs.put("basename", (new File(fd.getDirectory(),name)).toString());
-    programTextArea.setText(loadTextFile(prefs.get("basename"));
+    programTextArea.setText(loadTextFile(prefs.get("basename")));
   }
 
   private void saveAs(ActionEvent e) {
@@ -396,7 +404,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     return wadfile;
   }
 
-  private void textArea1_textValueChanged(TextEvent ignored) {
+  private void textArea1_textValueChanged() {
     changed = true;
     if(lastwp!=null) {
       if(lastwp.editchanged==0) lastwp.editchanged = 2;

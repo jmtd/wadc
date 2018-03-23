@@ -10,7 +10,7 @@ WADS := $(patsubst %.wl,%.wad, $(wildcard examples/*.wl) $(wildcard tests/*.wl))
 default: check
 
 check:
-	sha1sum -b -c sha1sums
+	sha1sum -c sha1sums
 
 wads: $(WADS)
 
