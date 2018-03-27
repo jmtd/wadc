@@ -14,7 +14,8 @@ package org.redmars.wadc;
 class Patch {
     String name;
     int xoff, yoff;
-    public Patch(String n, int x, int y) {
+
+    Patch(String n, int x, int y) {
         name = n;
         xoff = x;
         yoff = y;

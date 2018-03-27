@@ -17,42 +17,43 @@ import java.awt.Rectangle;
 
 class WadRun {
   WadParse wp;
-  WadCPrefs prefs;
+  private WadCPrefs prefs;
   // state variables
 
   int xp = 0;
   int yp = 0;
   int orient = 0;
 
-  boolean pendown = true;
-  Vertex lastvertex = null;
-  Vertex beforelastvertex = null;
-  Line lastline = null;
+  private boolean pendown = true;
+  private Vertex lastvertex = null;
+  private Vertex beforelastvertex = null;
+  private Line lastline = null;
 
-  ArrayDeque<Integer> sectorStack = new ArrayDeque<>();
+  private ArrayDeque<Integer> sectorStack = new ArrayDeque<>();
 
-  int curthingtype = 1;
-  int thingflags = 7; // all skill levels
+  private int curthingtype = 1;
+  private int thingflags = 7; // all skill levels
 
-  int curlinetype = 0;
-  int curlinetag = 0;
-  int cursectortype = 0;
-  int cursectortag = 0;
-  boolean mergesectors = false;
+  private int curlinetype = 0;
+  private int curlinetag = 0;
+  private int cursectortype = 0;
+  private int cursectortag = 0;
+  private boolean mergesectors = false;
   boolean prunelines = false;
-  boolean undefx = false;
-  int forcesec = -1;
+  private boolean undefx = false;
+  private boolean undefy = false;
+  private int forcesec = -1;
   boolean hexen = false;
-  boolean midtex = false;
-  int curlinearg[] = new int[4];
-  int curthingarg[] = new int[5];
+  private boolean midtex = false;
+  private int curlinearg[] = new int[5];
+  private int curthingarg[] = new int[5];
 
-  Hashtable gvars = new Hashtable();
-  Vector objects = new Vector();
-  Vector stacktrace = new Vector();
+  private Map<String, Exp> gvars = new HashMap<>();
+  private List<Map<String, Exp>> objects = new ArrayList<>();
+  List<String> stacktrace = new ArrayList<>();
 
-  int lightlevel = 160;
-  int ceil = 128, floor = 0;
+  private int lightlevel = 160;
+  private int ceil = 128, floor = 0;
 
   String texceil = "RROCK10";
   String texfloor = "SLIME13";
@@ -61,54 +62,56 @@ class WadRun {
   String texmid = "BRICK7";
   String mapname = "MAP01";
 
-  int xoff = 0, yoff = 0;
-  int lineflags = 0;
+  private int xoff = 0, yoff = 0;
+  private int lineflags = 0;
 
   // generated data
 
-  Vector<Vertex> vertices = new Vector<>();
-  Vector<Line> lines = new Vector<>();
-  Vector<Side> sides = new Vector<>();
-  Vector<Sector> sectors = new Vector<>();
-  Vector<Thing> things = new Vector<>();
+  List<Vertex> vertices = new ArrayList<>();
+  List<Line> lines = new ArrayList<>();
+  List<Side> sides = new ArrayList<>();
+  List<Sector> sectors = new ArrayList<>();
+  List<Thing> things = new ArrayList<>();
 
-  Vector<Integer> vcoord = new Vector<>();
-  Vector<Vector<Vertex>> vlists = new Vector<>();
+  private List<Integer> vcoord = new ArrayList<>();
+  private List<List<Vertex>> vlists = new ArrayList<>();
 
   AutoRule texrules = null;
 
   // merging and splitting
 
-  Vector<Integer> xcoord = new Vector<>();
-  Vector<Integer> ycoord = new Vector<>();
-  Vector<Vector<Line>> xlists = new Vector<>();
-  Vector<Vector<Line>> ylists = new Vector<>();
+  private List<Integer> xcoord = new ArrayList<>();
+  private List<Integer> ycoord = new ArrayList<>();
+  private List<List<Line>> xlists = new ArrayList<>();
+  private List<List<Line>> ylists = new ArrayList<>();
 
   // rendering
 
-  int maxx = 0, maxy = 0, minx = 0, miny = 0;
+  private boolean renderverts = true;
+  private boolean renderthings = true;
+  private int maxx = 0, maxy = 0, minx = 0, miny = 0;
   int xmid, ymid;
   float scale, basescale = 1.0f;
   boolean zoomed = false;
-  Rectangle r;
-  int gridsnap = 16;
-  Vector xtraverts = new Vector();
-  Sector errsec = null;
+  private Rectangle r;
+  private int gridsnap = 16;
+  private List<Vertex> xtraverts = new ArrayList<>();
+  private Sector errsec = null;
 
-  LinkedHashSet<Vertex> collect = new LinkedHashSet<>();
+  private LinkedHashSet<Vertex> collect = new LinkedHashSet<>();
 
-  static Random rnd = new Random();
+  private static Random rnd = new Random();
 
   WadRun(WadParse p) {
       wp = p;
-      prefs = wp.mf.prefs;
+      prefs = WadCMainFrame.prefs;
   }
 
   void deprecated(String fn) {
       wp.mf.msg("WARNING: " +fn + " is deprecated and will be removed in a future release");
   }
 
-  void addbuiltins() {
+  void addBuiltins() {
 
     builtin("rotright", 0, new Builtin() { Exp eval() {
       rotate(1);
@@ -157,7 +160,7 @@ class WadRun {
         xoff += ((int)Math.sqrt(f*f+s*s))*xoffinc;
         cur = (int)seg;
         curside = (int)segs;
-      };
+      }
       undefx = ux;
       rotate((side>0)?1:-1);
       return n;
@@ -180,7 +183,7 @@ class WadRun {
         step(step,0);
         makesector(true,-1,floor,floor+height+xtra,lightlevel);
         xoff += step;
-      };
+      }
       return n;
     }});
 
@@ -210,9 +213,9 @@ class WadRun {
       return n;
     }});
 
-    builtin("marchingcubes", 3, new Builtin() { Exp eval(Exp a, Exp b, Exp c) {
+    builtin("marchingcubes", 2, new Builtin() { Exp eval(Exp a, Exp b) {
       deprecated("marchingcubes");
-      marchingcubes(a.ival(),b.ival(),c.ival());
+      marchingcubes(a.ival(),b.ival());
       return n;
     }});
 
@@ -364,12 +367,16 @@ class WadRun {
     }});
 
     builtin("unpegged", 0, new Builtin() { Exp eval() {
-      if((lineflags&24)==0) { lineflags |= 24; } else { lineflags &= ~24; };
+      if((lineflags&24)==0) {
+        lineflags |= 24;
+      } else {
+        lineflags &= ~24;
+      }
       return n;
     }});
 
     builtin("impassable", 0, new Builtin() { Exp eval() {
-      if((lineflags&0x01)==0) { lineflags |= 0x01; } else { lineflags &= ~0x01; };
+      if((lineflags&0x01)==0) { lineflags |= 0x01; } else { lineflags &= ~0x01; }
       return n;
     }});
 
@@ -507,17 +514,23 @@ class WadRun {
 
     builtin("autotex", 5, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e) {
       String t[] = { "L", "U", "N" };
-      if(!a.sval().equals("W")) { t = new String[1]; t[0] = a.sval(); };
-      for(int i = 0; i<t.length; i++) {
+
+      if (!a.sval().equals("W")) {
+        t = new String[1];
+        t[0] = a.sval();
+      }
+
+      for (String aT : t) {
         AutoRule ar = new AutoRule();
         ar.next = texrules;
         texrules = ar;
-        ar.type = t[i];
+        ar.type = aT;
         ar.h = b.ival();
         ar.w = c.ival();
         ar.f = d.ival();
         ar.tex = e.sval();
-      };
+      }
+
       return n;
     }});
 
@@ -527,28 +540,30 @@ class WadRun {
     }});
 
     builtin("get", 1, new Builtin() { Exp eval(Exp a) {
-      Exp e = (Exp)gvars.get(a.sval());
-      if(e==null) wp.error("get: uninitialised variable: "+a.sval());
+      Exp e = gvars.get(a.sval());
+      if (e == null) {
+        wp.error("get: uninitialised variable: " + a.sval());
+      }
       return e;
     }});
 
     builtin("onew", 0, new Builtin() { Exp eval() {
       int n = objects.size();
-      objects.addElement(new Hashtable());
+      objects.add(new HashMap<>());
       return new Int(n);
     }});
 
     builtin("oset", 3, new Builtin() { Exp eval(Exp a, Exp b, Exp c) {
       int i = a.ival();
       if(i<0 || i>=objects.size()) wp.error("oset: illegal object pointer");
-      ((Hashtable)objects.elementAt(i)).put(b.sval(), c);
+      (objects.get(i)).put(b.sval(), c);
       return c;
     }});
 
     builtin("oget", 2, new Builtin() { Exp eval(Exp a, Exp b) {
       int i = a.ival();
       if(i<0 || i>=objects.size()) wp.error("oget: illegal object pointer");
-      Exp e = (Exp)((Hashtable)objects.elementAt(i)).get(b.sval());
+      Exp e = (objects.get(i)).get(b.sval());
       if(e==null) wp.error("oget: uninitialised object field: "+b.sval());
       return e;
     }});
@@ -600,25 +615,25 @@ class WadRun {
     }});
   }
 
-  void builtin(String s, int nargs, Builtin b) {
+  private void builtin(String s, int nargs, Builtin b) {
     b.nargs = nargs;
     Fun f = new Fun(s);
     f.builtin = b;
     wp.funs.put(s,f);
   }
 
-  void step(int f, int s) {
+  private void step(int f, int s) {
     switch(orient) {
       case 0: yp-=f; xp+=s; break;
       case 1: xp+=f; yp+=s; break;
       case 2: yp+=f; xp-=s; break;
       case 3: xp-=f; yp-=s; break;
-    };
+    }
     makevertex();
     if(pendown) makeline();
-  };
+  }
 
-  void rotate(int sign) {
+  private void rotate(int sign) {
     orient = (orient+sign)&3;
   }
 
@@ -628,33 +643,37 @@ class WadRun {
     lastvertex = v;
   }
 
-  Vertex makevertex(int xp, int yp) {
+  private Vertex makevertex(int xp, int yp) {
     Vertex v = null;
-    Vector vlist = coordlookup(xp,vcoord,vlists);
+    List<Vertex> vlist = coordlookup(xp,vcoord,vlists);
     if(vlist!=null) {
-      for(int i = 0;i<vlist.size();i++) {
-        v = (Vertex)vlist.elementAt(i);
-        if(v.x==xp && v.y==yp) break;
+      for (Vertex aVlist : vlist) {
+        v = aVlist;
+        if (v.x == xp && v.y == yp) break;
         v = null;
-      };
-    };
+      }
+    }
     if(v==null) {
       v = new Vertex();
       v.x = xp;
       v.y = yp;
-      vertices.addElement(v);
+      vertices.add(v);
       addcoordlists(v,xp,vcoord,vlists);
-    };
+    }
     return v;
   }
 
-  void makeline(Vertex a, Vertex b) {
+  private void add(Vertex v) { // ??? keep??? XXX
+    if(!collect.contains(v)) collect.add(v);
+  }
+
+  private void makeline(Vertex a, Vertex b) {
     beforelastvertex = a;
     lastvertex = b;
     makeline();
-  };
+  }
 
-  void makeline() {
+  private void makeline() {
     Vector<Line> v = lastvertex.v;
     for(int i = 0; i < v.size(); i++) {
       Line l = v.elementAt(i);
@@ -668,11 +687,11 @@ class WadRun {
     collect.add(beforelastvertex);
 
     if(beforelastvertex.x==lastvertex.x) {
-      splitlines(beforelastvertex, lastvertex, true, lastvertex.x);
+      splitLines(beforelastvertex, lastvertex, true, lastvertex.x);
     } else if(beforelastvertex.y==lastvertex.y) {
-      splitlines(beforelastvertex, lastvertex, false, lastvertex.y);
+      splitLines(beforelastvertex, lastvertex, false, lastvertex.y);
     } else {
-      makeline_really(beforelastvertex, lastvertex);
+      makelineReally(beforelastvertex, lastvertex);
     };
 
     // This fixes the case where a line is split by a second linedef
@@ -700,8 +719,8 @@ class WadRun {
     wp.error("could not locate last line?");
   }
 
-  void makeline_really(Vertex from, Vertex to) {
-    Line l = makeline_minimal(from,to);
+  private void makelineReally(Vertex from, Vertex to) {
+    Line l = makelineMinimal(from,to);
     lastline = l;
     l.t = textop;
     l.m = texmid;
@@ -712,97 +731,98 @@ class WadRun {
     l.type = curlinetype;
     l.tag = curlinetag;
     l.flags |= lineflags;
-    for(int i = 0; i < curlinearg.length; i++) l.specialargs[i] = curlinearg[i];
-  };
+    System.arraycopy(curlinearg, 0, l.specialargs, 0, 4);
+  }
 
-  Line makeline_minimal(Vertex from, Vertex to) {
+  private Line makelineMinimal(Vertex from, Vertex to) {
     if(from==to) {
       wp.error("line endpoints are identical?");
-    };
+    }
     Line l = new Line(midtex);
     l.from = from;
     l.to = to;
     l.idx = lines.size();
-    lines.addElement(l);
+    lines.add(l);
     from.insert(l);
     to.insert(l);
     if(from.x==to.x) addcoordlists(l,from.x,xcoord,xlists);
     if(from.y==to.y) addcoordlists(l,from.y,ycoord,ylists);
     return l;
-  };
-
-  <T> void addcoordlists(T o, int coord, Vector<Integer> coords, Vector<Vector<T>> lists) {
-    int i = 0;
-    for(;i<coords.size();i++) if(coords.elementAt(i)==coord) break;
-    Vector<T> v;
-    if(i<coords.size()) {
-      v = lists.elementAt(i);
-    } else {
-      coords.addElement(coord);
-      lists.addElement(v = new Vector<T>());
-    };
-    v.addElement(o);
   }
 
-  <T> Vector<T> coordlookup(int coord, Vector<Integer> coords, Vector<Vector<T>> lists) {
+  private <T> void addcoordlists(T o, int coord, List<Integer> coords, List<List<T>> lists) {
+    int i = 0;
+    for(;i<coords.size();i++) if(coords.get(i) == coord) break;
+    List<T> v;
+    if(i<coords.size()) {
+      v = lists.get(i);
+    } else {
+      coords.add(coord);
+      lists.add(v = new ArrayList<>());
+    }
+    v.add(o);
+  }
+
+  private <T> List<T> coordlookup(int coord, List<Integer> coords, List<List<T>> lists) {
     for(int i = 0; i<coords.size(); i++) {
-      if(coords.elementAt(i) == coord) {
-        return lists.elementAt(i);
+      if(coords.get(i) ==coord) {
+        return lists.get(i);
       }
     }
     return null;
   }
 
-  void splitlines(Vertex a, Vertex b, boolean eqx, int coord) {
-    Vector<Line> v = coordlookup(coord, eqx ? xcoord : ycoord,
+  private void splitLines(Vertex a, Vertex b, boolean eqx, int coord) {
+    List<Line> v = coordlookup(coord, eqx ? xcoord : ycoord,
                                   eqx ? xlists : ylists);
     if(v!=null) for(int i = 0; i<v.size(); i++) {
       int c1 = eqx ? a.y : a.x;
       int c2 = eqx ? b.y : b.x;
-      Line l = v.elementAt(i);
+      Line l = v.get(i);
       int lc1 = eqx ? l.from.y : l.from.x;
       int lc2 = eqx ? l.to.y : l.to.x;
       Vertex ca = a;
       Vertex cb = b;
       Vertex lca = l.from;
       Vertex lcb = l.to;
-      if(c1>c2) { int temp = c2; c2 = c1; c1 = temp; ca = b; cb = a; };
-      if(lc1>lc2) { int temp = lc2; lc2 = lc1; lc1 = temp; lca = l.to; lcb = l.from; };
+      if(c1>c2) { int temp = c2; c2 = c1; c1 = temp; ca = b; cb = a; }
+      if(lc1>lc2) { int temp = lc2; lc2 = lc1; lc1 = temp; lca = l.to; lcb = l.from; }
       if(c2<=lc1 || c1>=lc2) continue;       // no overlap
       collect.add(lca);
       collect.add(lcb);
       collect.add(ca);
       collect.add(cb);
-      v.removeElementAt(i);
+      v.remove(i);
       if(c1<lc1) {    // overlap on the left
-        splitlines((ca==a ? ca : lca), (ca==a ? lca : ca), eqx, coord);
-      };
+        splitLines((ca==a ? ca : lca), (ca==a ? lca : ca), eqx, coord);
+      }
       if(c2>lc2) {    // overlap on the right
-        splitlines((cb==b ? cb : lcb), (cb==b ? lcb : cb), eqx, coord);
-      };
-      v.addElement(l);
+        splitLines((cb==b ? cb : lcb), (cb==b ? lcb : cb), eqx, coord);
+      }
+      v.add(l);
       if(c1>lc1) {   // overlap starts within
-        l = splitatvertex(l, lca==l.from, eqx ? coord : c1, eqx ? c1 : coord);
-      };
+        l = splitAtVertex(l, lca==l.from, eqx ? coord : c1, eqx ? c1 : coord);
+      }
       if(c2<lc2) {   // overlap ends within
-        splitatvertex(l, lcb==l.to, eqx ? coord : c2, eqx ? c2 : coord);
-      };
+        splitAtVertex(l, lcb==l.to, eqx ? coord : c2, eqx ? c2 : coord);
+      }
       return;
-    };
-    makeline_really(a,b);
+    }
+
+    makelineReally(a,b);
   }
 
-  Line splitatvertex(Line l, boolean fromto, int x, int y) {
+  private Line splitAtVertex(Line l, boolean fromto, int x, int y) {
     Vertex mid = makevertex(x, y);
     l.to.remove(l);
-    Line sec = makeline_minimal(mid,l.to);
-    sec.copyattrs(l,sides);
+    Line sec = makelineMinimal(mid,l.to);
+    sec.copyattrs(l, sides);
     l.to = mid;
     mid.insert(l);
     return fromto ? sec : l;
-  };
+  }
 
-  void makething(int angle) {
+  private void makething(int angle) {
     Thing t = new Thing();
     t.x = xp;
     t.y = yp;
@@ -810,29 +830,27 @@ class WadRun {
     t.opt = thingflags;
     t.idx = things.size();
     t.angle = angle;
-
-    for(int i = 0; i < curthingarg.length; i++) t.specialargs[i] = curthingarg[i];
-    things.addElement(t);
+    System.arraycopy(curthingarg, 0, t.specialargs, 0, 5);
+    things.add(t);
   }
 
-  Sector newsector() {
-    if(forcesec>=0 && forcesec<sectors.size()) return (Sector)sectors.elementAt(forcesec);
+  private Sector newsector() {
+    if(forcesec>=0 && forcesec<sectors.size()) return sectors.get(forcesec);
     if(mergesectors) {
-      for(int i = 0;i<sectors.size();i++) {
-        Sector s = (Sector)sectors.elementAt(i);
-        if(s.ceil==ceil &&
-           s.floor==floor &&
-           s.light==lightlevel &&
-           s.tag==cursectortag &&
-           s.type==cursectortype &&
-           s.ctex.compareTo(texceil)==0 &&
-           s.ftex.compareTo(texfloor)==0) return s;
-      };
-    };
+      for (Sector s : sectors) {
+        if (s.ceil == ceil &&
+                s.floor == floor &&
+                s.light == lightlevel &&
+                s.tag == cursectortag &&
+                s.type == cursectortype &&
+                s.ctex.compareTo(texceil) == 0 &&
+                s.ftex.compareTo(texfloor) == 0) return s;
+      }
+    }
     return new Sector(texceil,texfloor,ceil,floor,lightlevel,sectors,cursectortype,cursectortag);
   }
 
-  void makesector(boolean rightside, int lastsec, int flr, int cl, int ll) {
+  private void makesector(boolean rightside, int lastsec, int flr, int cl, int ll) {
     //wp.mf.msg("START SECTOR");
     floor = flr;
     ceil = cl;
@@ -848,35 +866,35 @@ class WadRun {
         if(!rightside) right = false;
       } else {
         if(rightside) right = false;
-      };
+      }
       right = !right;
       if((right?l.right:l.left)!=null) {
          errsec = sec; wp.error("sidedef already assigned to a sector");
-      };
+      }
       Side other = right?l.left:l.right;
       if(other!=null && other.s==sec && !prunelines) {
         errsec = sec; wp.error("both sides assigned to the same sector");
-      };
+      }
       Side ns = new Side(l,sides);
-      if(right) { l.right = ns; } else { l.left = ns; };
+      if(right) { l.right = ns; } else { l.left = ns; }
       ns.s = sec;
       sec.boundlen += l.width();
       if(lastsec>=0) {
-        Sector inside = (Sector)sectors.elementAt(lastsec);
+        Sector inside = sectors.get(lastsec);
         if(other!=null) {
           errsec = inside; wp.error("cannot make inner sector: sidedef already assigned");
-        };
+        }
         Side nis = new Side(l,sides);
-        if(right) { l.left = nis; } else { l.right = nis; };
+        if(right) { l.left = nis; } else { l.right = nis; }
         nis.s = inside;
-      };
+      }
       if(v==lastvertex) return;
       //for(int i = 0;i<v.v.size();i++) { Line m = (Line)v.v.elementAt(i); wp.mf.msg("line: "+v.angle(m)); };
       for(int i = 0;i<v.v.size();i++) {
         Line m = v.v.elementAt(i);
         if(m==l) {
           //wp.mf.msg("pick: "+i);
-          if(rightside) { i--; } else { i++; };
+          if(rightside) { i--; } else { i++; }
           if(i<0) i = v.v.size()-1;
           if(i>=v.v.size()) i = 0;
           m = v.v.elementAt(i);
@@ -884,8 +902,8 @@ class WadRun {
           l = m;
           v = l.from==v?l.to:l.from;
           continue main;
-        };
-      };
+        }
+      }
       errsec = sec;
       wp.error("make sector: no line found?");
     }
@@ -907,7 +925,7 @@ class WadRun {
     if(wp.editchanged==2) {
       wp.mf.msg("Code changed, please re-run before drawing next vertex!");
       return;
-    };
+    }
     int x = (int)((clickx-(r.width/2))*scale)+xmid;
     int y = (int)((clicky-(r.height/2))*scale)+ymid;
     int gs = gridsnap/2;
@@ -916,9 +934,9 @@ class WadRun {
     Vertex v = new Vertex();
     v.x = x/gridsnap*gridsnap;
     v.y = y/gridsnap*gridsnap;
-    Vertex last = xtraverts.size()>0 ? (Vertex)xtraverts.lastElement() : lastvertex;
+    Vertex last = xtraverts.size()>0 ? xtraverts.get(xtraverts.size() - 1) : lastvertex;
     if(last.x==v.x && last.y==v.y) return;
-    xtraverts.addElement(v);
+    xtraverts.add(v);
     int dx = v.x-last.x;
     int dy = v.y-last.y;
     switch(orient) {
@@ -926,7 +944,7 @@ class WadRun {
       case 1: x=dx;  y=dy;  break;
       case 2: x=dy;  y=-dx; break;
       case 3: x=-dx; y=-dy; break;
-    };
+    }
     String s;
     if(type=='C') {
       s = "  curve("+x+","+y+",10,1)\n";
@@ -961,21 +979,21 @@ class WadRun {
   void crosshair(Graphics g, boolean show) {
   }
 
-  void renderxtraverts(Graphics g) {
+  private void renderxtraverts(Graphics g) {
     int x = lastvertex.x;
     int y = lastvertex.y;
     int gxmid = r.width/2;
     int gymid = r.height/2;
     g.setColor(Color.yellow);
     for(int i = 0; i<xtraverts.size(); i++) {
-      Vertex v = (Vertex)xtraverts.elementAt(i);
+      Vertex v = xtraverts.get(i);
       g.drawLine((int)((x-xmid)/scale)+gxmid,
                  (int)((y-ymid)/scale)+gymid,
                  (int)((v.x-xmid)/scale)+gxmid,
                  (int)((v.y-ymid)/scale)+gymid);
       x = v.x;
       y = v.y;
-    };
+    }
   }
   private static int scale(short x, short min, short max)
   {
@@ -1135,7 +1153,7 @@ class WadRun {
       }
   }
 
-  int thingsize(int n) {
+  private int thingsize(int n) {
     switch(n) {
       case    1: return  16;
       case    2: return  16;
@@ -1170,14 +1188,14 @@ class WadRun {
 
   void render(Graphics g) {
     r = g.getClip().getBounds();
-    for(int i = 0;i<vertices.size();i++) {
-      Vertex v = vertices.elementAt(i);
-      if(v.x>maxx) maxx = v.x;
-      if(v.x<minx) minx = v.x;
-      if(v.y>maxy) maxy = v.y;
-      if(v.y<miny) miny = v.y;
-    };
-    if(!zoomed) {
+    for (Vertex vertex : vertices) {
+      if (vertex.x > maxx) maxx = vertex.x;
+      if (vertex.x < minx) minx = vertex.x;
+      if (vertex.y > maxy) maxy = vertex.y;
+      if (vertex.y < miny) miny = vertex.y;
+    }
+
+    if (!zoomed) {
       xmid = (maxx+minx)/2;
       ymid = (maxy+miny)/2;
       scale = (maxx-minx)/(float)r.width;
@@ -1185,7 +1203,7 @@ class WadRun {
       if(yscale>scale) scale = yscale;
       scale *= 1.05;
       zoomed = true;
-    };
+    }
     int gxmid = r.width/2;
     int gymid = r.height/2;
     int grmaxx = (maxx+128)&0xFFFFFC0;
@@ -1204,37 +1222,47 @@ class WadRun {
                    (int)((y-ymid)/scale)+gymid,
                    (int)((grmaxx-xmid)/scale)+gxmid,
                    (int)((y-ymid)/scale)+gymid);
-    };
+    }
 
     if(prefs.getEnum("fillsectors") != SectorFill.NONE) {
         experimentalFillSector(g,xmid,ymid,gxmid,gymid);
     }
 
-    for(Line l : lines) {
-      if(l.right!=null) {
-        g.setColor(l.left!=null?Color.gray:Color.white);
+    for (Line line : lines) {
+      if (line.right != null) {
+        g.setColor(line.left != null ? Color.gray : Color.white);
       } else {
-        g.setColor(l.left!=null?Color.white:Color.green);
-      };
-      if(errsec!=null)
-        if((l.right!=null && l.right.s==errsec) ||
-           (l.left!=null && l.left.s==errsec)) g.setColor(Color.red);
-      if(l.type!=0) g.setColor(Color.blue);
-      if(l==lastline) { g.setColor(Color.magenta); };
-      g.drawLine((int)((l.from.x-xmid)/scale)+gxmid,
-                 (int)((l.from.y-ymid)/scale)+gymid,
-                 (int)((l.to.x-xmid)/scale)+gxmid,
-                 (int)((l.to.y-ymid)/scale)+gymid);
-    };
+        g.setColor(line.left != null ? Color.white : Color.green);
+      }
+
+      if (errsec != null)
+        if ((line.right != null && line.right.s == errsec) ||
+                (line.left != null && line.left.s == errsec)) g.setColor(Color.red);
+      if (line.type != 0) g.setColor(Color.blue);
+      if (line == lastline) {
+        g.setColor(Color.magenta);
+      }
+
+      g.drawLine((int) ((line.from.x - xmid) / scale) + gxmid,
+              (int) ((line.from.y - ymid) / scale) + gymid,
+              (int) ((line.to.x - xmid) / scale) + gxmid,
+              (int) ((line.to.y - ymid) / scale) + gymid);
+    }
+
     if(prefs.getBoolean("renderverts")) for(Vertex v : vertices) {
       int d = 2;
       g.setColor(Color.green);
-      if(v==lastvertex) { d=5; g.setColor(Color.magenta); };
-      int x = (int)((v.x-xmid)/scale)+gxmid;
-      int y = (int)((v.y-ymid)/scale)+gymid;
-      g.drawLine(x-d,y-d,x+d,y+d);
-      g.drawLine(x+d,y-d,x-d,y+d);
-    };
+      if (v == lastvertex) {
+        d = 5;
+        g.setColor(Color.magenta);
+      }
+
+      int x = (int) ((v.x - xmid) / scale) + gxmid;
+      int y = (int) ((v.y - ymid) / scale) + gymid;
+      g.drawLine(x - d, y - d, x + d, y + d);
+      g.drawLine(x + d, y - d, x - d, y + d);
+    }
+
     if(prefs.getBoolean("renderthings")) for(Thing t : things) {
       g.setColor(Color.blue);
       int rad = thingsize(t.type);
@@ -1243,7 +1271,7 @@ class WadRun {
       int x2 = (int)((t.x+rad-xmid)/scale)+gxmid;
       int y2 = (int)((t.y+rad-ymid)/scale)+gymid;
       g.drawOval(x1,y1,x2-x1,y2-y1);
-    };
+    }
     // draw the turtle
     if(prefs.getBoolean("renderturtle"))
     {
@@ -1289,14 +1317,14 @@ class WadRun {
       makevertex();
       call(new Id("main"));
       for(int i = 0; i<vertices.size(); i++) {
-        Vertex v = vertices.elementAt(i);
+        Vertex v = vertices.get(i);
         if(v.v.size()==0) {
           vertices.remove(v);
           i--;
         } else {
           v.idx = i;
-        };
-      };
+        }
+      }
       wp.mf.msg(vertices.size()+" vertices, "+lines.size()+" lines, "+sectors.size()+" sectors, "+
         things.size()+" things.");
   }
@@ -1305,7 +1333,7 @@ class WadRun {
 
   Exp call(Id caller) {
     //System.out.println(caller.show());
-    stacktrace.addElement(caller.show());
+    stacktrace.add(caller.show());
     Fun f = (Fun)wp.funs.get(caller.s);
     Vector v = caller.v;
     int nargs = 0;
@@ -1345,30 +1373,30 @@ class WadRun {
       if(nargs!=f.args.size()) wp.error("wrong number of arguments for macro: "+caller.s);
       if(v!=null) for(int i = 0; i<v.size(); i++) {
         if(((String)f.args.get(i)).charAt(0)=='_') v.set(i, ((Exp)v.elementAt(i)).eval(this));
-      };
+      }
       Exp e = f.body;
       //if(nargs>0)
       e = e.replace(f.args,v);
       r = e.eval(this);
-    };
-    stacktrace.setSize(stacktrace.size()-1);
+    }
+    stacktrace.remove(stacktrace.size() - 1);
     return r;
   }
 
-  int rnd(int n) { return Math.abs(rnd.nextInt())%n; }
+  private int rnd(int n) { return Math.abs(rnd.nextInt())%n; }
 
-  float dist(Vertex a, Vertex b) {
+  private float dist(Vertex a, Vertex b) {
     int dx = Math.abs(a.x-b.x);
     int dy = Math.abs(a.y-b.y);
     return (float)Math.sqrt(dx*dx+dy*dy);
   }
 
-  void landscape(int width, int height, int density) {
+  private void landscape(int width, int height, int density) {
     int xstart = xp;
     int ystart = yp;
     for(int i = 0; i<density; i++) makevertex(xstart+rnd(width),ystart+rnd(height));
     for(int i = 0; i<vertices.size(); i++) {
-      Vertex v = vertices.elementAt(i);
+      Vertex v = vertices.get(i);
       if(v.v.size()>=3) continue;
       Vertex closest = null;
       Vertex nextclosest = null;
@@ -1376,27 +1404,28 @@ class WadRun {
       float distclose = 999999;
       float distnextclose = 999999;
       float distthirdclose = 999999;
-      for(int j = 0; j<vertices.size(); j++) {
-        Vertex t = vertices.elementAt(j);
-        if(t==v) continue;
-        float dist = dist(v,t);
-        if(dist<distclose) {
+      for (Vertex t : vertices) {
+        if (t == v) continue;
+        float dist = dist(v, t);
+        if (dist < distclose) {
           thirdclosest = nextclosest;
           distthirdclose = distnextclose;
           nextclosest = closest;
           distnextclose = distclose;
           closest = t;
           distclose = dist;
-        } else if(dist<distnextclose) {
+        } else if (dist < distnextclose) {
           thirdclosest = nextclosest;
           distthirdclose = distnextclose;
           nextclosest = t;
           distnextclose = dist;
-        } else if(dist<distthirdclose) {
+        } else if (dist < distthirdclose) {
           thirdclosest = t;
           distthirdclose = dist;
-        };
-      };
+        }
+
+      }
+
       xp = v.x;
       yp = v.y;
       makeline(closest,v);
@@ -1407,16 +1436,15 @@ class WadRun {
     };
   }
 
-  void marchingcubes(int scale, int pscale, int __density) {
+  private void marchingcubes(int scale, int pscale) {
     int gridx = scale;
     int gridy = scale;
-    int numlevels = 3;
     int gridsize = 64;
     int step = gridsize/2;
     int grid[][] = new int[gridx][gridy];
     int seed = rnd(10000);
     for(int x = 0; x<gridx; x++) for(int y = 0; y<gridy; y++) {
-      grid[x][y] = (x==0 || y==0 || x==gridx-1 || y==gridy-1) ? 0 : prnd(numlevels,x,y,seed,pscale)+1;
+      grid[x][y] = (x==0 || y==0 || x==gridx-1 || y==gridy-1) ? 0 : prnd(x,y,seed,pscale)+1;
     };
     for(int x = 0; x<gridx-1; x++) for(int y = 0; y<gridy-1; y++) {
       // A-ab-B
@@ -1493,7 +1521,7 @@ class WadRun {
     for(int i = gridx*2-4; i>2; i--) tryline(step,i*step,step,(i-1)*step);
 
     for(int i = 0; i<gridx*gridy; i++) {
-      Line l = lines.elementAt(rnd(lines.size()));
+      Line l = lines.get(rnd(lines.size()));
       int fbound = (gridx-2)*gridsize;
       int nbound = 1*gridsize;
       if(l.from.x<=nbound || l.from.x>=fbound) continue;
@@ -1510,7 +1538,7 @@ class WadRun {
     
   }
 
-  void tryline(int x1, int y1, int x2, int y2) {
+  private void tryline(int x1, int y1, int x2, int y2) {
     //if(rnd(6)==0) return;
     makeline(makevertex(x1,y1),makevertex(x2,y2));
     if(lastline.left==null && lastline.right==null) {
@@ -1518,7 +1546,7 @@ class WadRun {
     };
   }
 
-  void rndsector(boolean right) {
+  private void rndsector(boolean right) {
     int floor = rnd(4)*8;
     int ceilrnd = rnd(3);
     texceil = (ceilrnd==2) ? "F_SKY1" : "FLAT5_3";
@@ -1527,8 +1555,8 @@ class WadRun {
     makesector(right,-1,floor,ceil,light);
   }
 
-  int prnd(int max, int x, int y, int seed, float scale) {
-    return (int)(Perlin.perlinnoise_2D(x/scale+seed,y/scale+seed,1000,0.01f)*3.5f+100.0f);
+  private int prnd(int x, int y, int seed, float scale) {
+    return (int)(Perlin.perlinnoise_2D(x/scale+seed,y/scale+seed, 0.01f)*3.5f+100.0f);
   }
 
   int simplex(int x, int y) {

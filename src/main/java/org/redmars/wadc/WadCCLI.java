@@ -8,12 +8,9 @@
 // XXX: should probably use nio
 
 package org.redmars.wadc;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
-import java.util.Vector;
+
+import java.io.*;
+import java.util.List;
 
 /*
  * an initial, very hacky CLI for WadC
@@ -23,7 +20,7 @@ public class WadCCLI implements WadCMainFrame {
 
     String src = "";
 
-    public static void usage() {
+    private static void usage() {
         System.err.println("usage: WadCCLI <infile>");
         System.exit(1);
     }
@@ -48,11 +45,11 @@ public class WadCCLI implements WadCMainFrame {
             infile = args[0];
         }
 
-        WadCCLI w = new WadCCLI(infile, writesrc);
+        new WadCCLI(infile, writesrc);
     }
 
     // XXX: copied verbatim from MainFrame. should be a static interface method?
-    String loadtextfile(String name) {
+    private String loadTextFile(String name) {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(name)));
         String c = "";
@@ -63,13 +60,13 @@ public class WadCCLI implements WadCMainFrame {
         return c;
       } catch(IOException i) {
         msg("couldn't load file "+name);
-      };
+      }
       return "";
     }
 
-    void readSource(final String name) {
+    private void readSource(final String name) {
         if(name==null) return;
-        this.src = loadtextfile((new File(name)).toString());
+        this.src = loadTextFile((new File(name)).toString());
     }
 
     /* do the magic */
@@ -86,13 +83,13 @@ public class WadCCLI implements WadCMainFrame {
         } catch(Error e) {
             System.err.println("eval: "+e.getMessage());
 
-            Vector stacktrace = wp.wr.stacktrace;
+            List<String> stacktrace = wp.wr.stacktrace;
             if(stacktrace.size()>0) {
               System.err.println("stacktrace: ");
               int st = stacktrace.size()-10;
               if(st<0) st = 0;
               for(int i = stacktrace.size()-1; i>=st; i--) {
-                System.err.println((String)stacktrace.elementAt(i));
+                System.err.println(stacktrace.get(i));
               }
             }
 

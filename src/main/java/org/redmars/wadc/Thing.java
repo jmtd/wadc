@@ -7,7 +7,6 @@
  */
 
 package org.redmars.wadc;
-import java.util.*;
 
 public class Thing {
   int idx;
@@ -17,5 +16,10 @@ public class Thing {
   int opt;
   int special = 0;
   int specialargs[] = new int[5];
-  Thing() { for(int i = 0; i < specialargs.length; i++) specialargs[i] = 0; }
+
+  Thing() {
+    for(int i = 0; i<5; i++) {
+      specialargs[i] = 0;
+    }
+  }
 }
