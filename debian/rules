@@ -12,7 +12,7 @@ ADOCS = $(wildcard doc/*.adoc)
 DOCS  = $(subst .adoc,.html, $(ADOCS))
 
 doc/%.html: doc/%.adoc
-	asciidoctor $<
+	asciidoctor -a 'webfonts!' $<
 
 override_dh_auto_build: $(DOCS)
 	echo git.commit.id.describe=v$(version) > src/main/resources/git.properties

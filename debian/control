@@ -2,11 +2,11 @@ Source: wadc
 Section: utils
 Priority: optional
 Maintainer: Jonathan Dowland <jmtd@debian.org>
-Build-Depends: debhelper (>= 9),
+Build-Depends: asciidoctor,
+               debhelper (>= 9),
                default-jdk-headless (>= 2:1.8),
-               maven-debian-helper (>= 2.1),
                dh-exec,
-               asciidoctor
+               maven-debian-helper (>= 2.1)
 Standards-Version: 3.9.8
 Vcs-Git: https://github.com/jmtd/wadc -b debian
 Vcs-Browser: https://github.com/jmtd/wadc
@@ -14,10 +14,14 @@ Homepage: https://jmtd.net/wadc/
 
 Package: wadc
 Architecture: all
-Depends: openjdk-8-jre | java8-runtime, ${maven:Depends}, ${misc:Depends}, jarwrapper
+Depends: default-jre (>= 2:1.8) | java8-runtime,
+         jarwrapper,
+         ${maven:Depends},
+         ${misc:Depends}
 Recommends: freedoom | doom-wad | boom-wad | game-data-packager,
+            glbsp,
             prboom-plus | boom-engine | doom-engine,
-            glbsp, ${java:Recommends}
+            ${java:Recommends}
 Suggests: ${maven:OptionalDepends}
 Description: programming environment for creating Doom maps
  WadC (Wad Compiler) is an Integrated Development Environment and

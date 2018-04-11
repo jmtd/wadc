@@ -1,3 +1,13 @@
+wadc (2.2-2) unstable; urgency=medium
+
+  * Adjust dependencies so the default-jre (currently 9) by default
+    satisfy the dependency rather than pull in 8 specifically.
+    Closes: #894367.
+  * Tweak invocation of asciidoctor so the output does not require
+    web fonts to be loaded from a network connection (privacy)
+
+ -- Jonathan Dowland <jmtd@debian.org>  Fri, 30 Mar 2018 18:52:23 +0100
+
 wadc (2.2-1) unstable; urgency=medium
 
   * New upstream release.
