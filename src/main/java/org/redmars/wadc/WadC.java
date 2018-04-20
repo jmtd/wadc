@@ -251,7 +251,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     runSaveSaveWadMenuItem.addActionListener(this::savewad);
     runSaveSaveWadBspDoomMenuItem.setText(__("Run / Save / Save Wad / BSP / DOOM"));
     runSaveSaveWadBspDoomMenuItem.addActionListener(e -> bspdoom(savewad(e)));
-    add(programTextArea, "b");
+    add(sp, "b");
     
     mainMenuBar.add(fileMenu);
     mainMenuBar.add(editMenu);
