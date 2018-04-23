@@ -262,11 +262,25 @@ public class WadC extends JFrame implements WadCMainFrame {
     fileMenu.add(openMenuItem);
     fileMenu.add(saveAsMenuItem);
     fileMenu.add(saveMenuItem);
+    fileMenu.add(preferencesMenu);
     fileMenu.add(quitMenuItem);
+
+    editMenu.add(undoItem);
+    editMenu.add(redoItem);
     
     programMenu.add(runMenuItem);
     programMenu.add(runSaveSaveWadMenuItem);
     programMenu.add(runSaveSaveWadBspDoomMenuItem);
+
+    viewMenu.add(showThings);
+    viewMenu.add(showVertices);
+    viewMenu.add(showTurtle);
+    viewMenu.add(fillMenu);
+
+    fillMenu.add(emptySectors);
+    fillMenu.add(floorSectors);
+    fillMenu.add(ceilingSectors);
+    fillMenu.add(lightSectors);
     
     cv = new WadCanvas(this);
     //messagesTextArea.setBackground(Color.lightGray);
