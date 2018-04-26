@@ -538,7 +538,7 @@ maps produced this way, recommended is the version of bsp that comes with
 
 Similar to the thing equivalents: fine control over linedef flag values.
 Useful in conjunction with the bitwise operators. There are some linedef
-flag constants defined in `include/lineflags.h`.
+flag constants defined in `include/lines.h`.
 
     getfloor
     getceil
@@ -973,7 +973,7 @@ Sets or clears the given flag value, e.g. `setflag(multiplayer)`
 
 === Line flags
 
-Some line flag constant values are defined in `lineflags.h`.
+Some line flag constant values are defined in `lines.h`.
 
 === Other games
 
