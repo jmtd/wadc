@@ -19,7 +19,7 @@ usepipes {
   ^usepipes
 
   set("slime1", onew)
-  slimeinit(get("slime1"), 0, 128, 120, 24, "SLIME05", "WATERMAP", 80)
+  slimeinit(get("slime1"), 0, 128, 120, 24, "SLIME05", "WATERMAP", 80, "AASHITTY")
   _usepipes(get("slime1"))
 }
 _usepipes(o) {
@@ -101,7 +101,7 @@ _usepipes(o) {
   )
 
   set("slime2", onew)
-  slimeinit(get("slime2"), -256, -128, 150, 16, "SLIME05", "WATERMAP", 80)
+  slimeinit(get("slime2"), -256, -128, 150, 16, "SLIME05", "WATERMAP", 80, "AASHITTY")
 
   _slimelift(
     !east,
