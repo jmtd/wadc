@@ -17,7 +17,7 @@ main {
   seed (1337)
   mergesectors
   prunelines
-  deaf
+  toggleflag(ambush)
   thing
   shotgun
   thing

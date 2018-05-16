@@ -29,9 +29,15 @@ skill4_5            { 4  }
 ambush              { 8  } /* or "stands still" for Strife */
 multiplayer         { 16 }
 
+
 /* formerly built-in WadC commands */
 
-deaf { toggleflag(ambush) }
+deaf
+{
+  print("WARNING: deaf is deprecated and will be removed in a future release")
+  toggleflag(ambush)
+}
+
 easy { setflag(or(skill1_2, or(skill3, skill4_5))) }
 hurtmeplenty { clearflag(skill1_2) setflag(or(skill3, skill4_5)) }
 ultraviolence { clearflag(or(skill1_2, skill3)) setflag(skill4_5) }

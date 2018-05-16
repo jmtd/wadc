@@ -30,6 +30,10 @@ It can be toggled with the menus in the same way as drawing things or vertices.
     of `rand` is affected by the use of the `seed` function, in the same way as the
     choice operator.
 
+==== Library additions/deletions
+
+ * `deaf` has been deprecated.
+
 == 2.2
 
 Released 13^th^ November 2017.

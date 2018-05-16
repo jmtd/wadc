@@ -95,9 +95,9 @@ _usepipes(o) {
   pushpop(
     movestep(-256,128)
     turnaround
-    demon deaf
+    demon toggleflag(ambush)
     triple( thing move(128) )
-    deaf
+    toggleflag(ambush)
   )
 
   set("slime2", onew)

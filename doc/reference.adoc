@@ -948,11 +948,6 @@ spawns.h::     macros for Doom player and deathmatch starts, and teleports
 (as well as Boom and MBF additions) and some routines to manipulate them. Some
 of these routines were built-in commands in earlier versions of WadC:
 
-    deaf
-
-toggles the 'ambush' flag. Any following monsters will be in 'ambush' mode.
-Calling it again switches it off again.
-
     easy
     hurtmeplenty
     ultraviolence
@@ -968,8 +963,9 @@ an MBF-supporting port to work. It will not work for Hexen.
 
     setflag(x)
     clearflag(x)
+    toggleflag(x)
 
-Sets or clears the given flag value, e.g. `setflag(multiplayer)`
+Sets, clears or flips the given flag value, e.g. `setflag(multiplayer)`
 
 === Line flags
 

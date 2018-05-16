@@ -198,7 +198,7 @@ main {
   placeitem9rev(0,0,48,medikit)
   rotright
   movestep(576,352)
-  deaf
+  toggleflag(ambush)
   placeitem9rev(0,0,48,imp)
   movestep(200,160)
   placeitem9rev(0,0,64,demon)
