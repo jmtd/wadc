@@ -13,6 +13,8 @@ import java.awt.event.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.FileSystems;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
@@ -34,9 +36,6 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.ButtonGroup;
 import javax.swing.KeyStroke;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class WadC extends JFrame implements WadCMainFrame {
   private JTextArea programTextArea = new JTextArea("",15,30);
@@ -442,7 +441,16 @@ public class WadC extends JFrame implements WadCMainFrame {
   private void bspdoom(String wadfile) {
     if(wadfile==null) return;
 
-    subcmd(Arrays.asList(prefs.get("bspcmd"), wadfile, "-o", wadfile));
+    File tmpfile;
+    try {
+      tmpfile = File.createTempFile(wadfile, ".tmp");
+      subcmd(Arrays.asList(prefs.get("bspcmd"), wadfile, "-o", tmpfile.getCanonicalPath()));
+      Files.copy(tmpfile.toPath(), FileSystems.getDefault().getPath(wadfile), StandardCopyOption.REPLACE_EXISTING);
+    } catch (IOException e) {
+        msg(__("IO Error with BSP! "));
+        msg(e.getMessage());
+        return;
+    }
 
     ArrayList<String> cmd = new ArrayList<>();
     cmd.add(prefs.get("doomexe"));
