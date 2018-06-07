@@ -446,6 +446,7 @@ public class WadC extends JFrame implements WadCMainFrame {
       tmpfile = File.createTempFile(wadfile, ".tmp");
       subcmd(Arrays.asList(prefs.get("bspcmd"), wadfile, "-o", tmpfile.getCanonicalPath()));
       Files.copy(tmpfile.toPath(), FileSystems.getDefault().getPath(wadfile), StandardCopyOption.REPLACE_EXISTING);
+      tmpfile.delete();
     } catch (IOException e) {
         msg(__("IO Error with BSP! "));
         msg(e.getMessage());
