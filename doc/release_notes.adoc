@@ -19,6 +19,11 @@ Not released yet.
 
 === Core program changes
 
+ * When the external BSP program is invoked, we now instruct it to write out to
+   a temporary filename, and then move that over the final WAD name. This means
+   WadC can be used with node builders which do not support in-place node building
+   (e.g. AJBSP and ZokumBSP).
+
 ==== UI improvements
 
 The GUI now draws a marker for the cursor's location and orientation, in orange.
@@ -30,9 +35,27 @@ It can be toggled with the menus in the same way as drawing things or vertices.
     of `rand` is affected by the use of the `seed` function, in the same way as the
     choice operator.
 
+ * Various deprecated functions have been removed: `landscape` and `marchingcubes`;
+   as well as the functions formerly used for configuring WadC: `lastfile`, `doomexe`,
+   `doomargs`, `bspcmd`, `iwad`, `twad1`, `twad2`, `twad3`, `togglevertices` and
+   `togglethings`.
+
+=== new example programs
+
+* `bsp2.wl`: a simple example of a Binary Space Partition algorithm to subdivide a
+   rectangular space into sub-spaces, e.g. as a random dungeon generator
+
+Various deprecated examples in `examples/old` have been removed.
+
 ==== Library additions/deletions
 
  * `deaf` has been deprecated.
+ * `standard.h`: `forXY`: a two-dimensional for loop
+
+=== Development stuff
+
+ * Upgrade the version of `maven-assemble-plugin` that we rely on. This fixes building
+   WadC with OpenJDK versions ≥ 9.
 
 == 2.2
 
