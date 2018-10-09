@@ -17,23 +17,13 @@ success! If not, you probably haven't got Java on properly.
 You will also need a Doom engine, a Doom IWAD (game data), and a nodes
 builder. Use your favourite, otherwise I recommend:
 
-Java JRE:: link:http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html[via Oracle]
+Java JRE:: link:http://openjdk.java.net/install/[via OpenJDK]
 Engine:: link:https://www.chocolate-doom.org/wiki/index.php/Crispy_Doom#Download[Crispy Doom]
 IWAD:: link:https://www.gog.com/game/doom_ii_final_doom[Doom 2 via GOG.com]
 Node builder:: link:http://glbsp.sourceforge.net[glbsp]
 
-Put them all somewhere and let WadC know where they are by either editing
-`wadc.cfg` in any editor of your choice, or in WadC itself, or simply write
-something like the following into the open WadC window and Run the result
-(adjust the paths to reflect where you put the stuff):
-
- doomexe("/Users/jon/git/crispy-doom/src/crispy-doom")
- doomargs("-iwad /Users/jon/games/doom2.wad -warp 1 -file")
- bspcmd("/Users/jon/Downloads/glbsp-2.24-source/glbsp")
- iwad("/Users/jon/games/doom2/doom2.wad")
-
-Evaluating the above updates WadC's in-memory configuration, which is saved
-out to `wadc.cfg` when you close the program.
+Put them all somewhere and let WadC know where they are via the Preferences
+dialogue.
 
 == High-level overview
 
