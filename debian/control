@@ -19,7 +19,7 @@ Depends: default-jre (>= 2:1.8) | java8-runtime,
          ${maven:Depends},
          ${misc:Depends}
 Recommends: freedoom | doom-wad | boom-wad | game-data-packager,
-            glbsp,
+            doom-node-builder | glbsp (>= 2.24-4),
             prboom-plus | boom-engine | doom-engine,
             ${java:Recommends}
 Suggests: ${maven:OptionalDepends}

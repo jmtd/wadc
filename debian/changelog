@@ -1,3 +1,12 @@
+wadc (2.2-3) unstable; urgency=medium
+
+  * Switch the default bsp tool from /usr/bin/glbsp to /usr/bin/bsp
+  * Switch to recommending a virtual package (bsp) that could be
+    satisfied by more than just glbsp (but recommend a glbsp version
+    that provides bsp)
+
+ -- Jonathan Dowland <jmtd@debian.org>  Mon, 19 Nov 2018 16:42:52 +0000
+
 wadc (2.2-2) unstable; urgency=medium
 
   * Adjust dependencies so the default-jre (currently 9) by default

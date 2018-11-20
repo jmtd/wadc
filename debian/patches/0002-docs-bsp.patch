@@ -1,0 +1,15 @@
+Minor documentation tweak to reflect preferred choice of BSP.
+
+diff --git a/doc/tutorial.adoc b/doc/tutorial.adoc
+index 283f45a..e4e0401 100644
+--- a/doc/tutorial.adoc
++++ b/doc/tutorial.adoc
+@@ -20,7 +20,7 @@ builder. Use your favourite, otherwise I recommend:
+ Java JRE:: link:http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html[via Oracle]
+ Engine:: link:https://www.chocolate-doom.org/wiki/index.php/Crispy_Doom#Download[Crispy Doom]
+ IWAD:: link:https://www.gog.com/game/doom_ii_final_doom[Doom 2 via GOG.com]
+-Node builder:: link:http://glbsp.sourceforge.net[glbsp]
++Node builder:: link:http://zdbsp.sourceforge.net[zdbsp]
+ 
+ Put them all somewhere and let WadC know where they are by either editing
+ `wadc.cfg` in any editor of your choice, or in WadC itself, or simply write

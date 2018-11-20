@@ -1,6 +1,5 @@
-commit 305d1d2ba624dec7729e78904e8aa577155826c9
 Author: Jonathan Dowland <jmtd@debian.org>
-Date:   Thu Nov 16 11:45:15 2017 +0000
+Date:   Mon, 19 Nov 2018 16:40:57 +0000
 
     Replace default preferences values with sensible defaults
     
@@ -16,7 +15,7 @@ index 445da67..bce1c67 100644
  
 -      defs.put("bspcmd",   "c:\\doom2\\bsp");
 -      defs.put("doomexe",  "c:\\doom\\zdoom.exe");
-+      defs.put("bspcmd",   "glbsp");
++      defs.put("bspcmd",   "bsp");
 +      defs.put("doomexe",  "doom");
        defs.put("doomargs", "-warp 1 -file");
 -      defs.put("iwad",     "c:\\doom2\\doomw.wad");
