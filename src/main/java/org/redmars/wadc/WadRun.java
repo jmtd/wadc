@@ -123,6 +123,10 @@ class WadRun {
       return n;
     }});
 
+    builtin("getorient", 0, new Builtin() { Exp eval() {
+      return new Int(orient);
+    }});
+
     builtin("up", 0, new Builtin() { Exp eval() {
       pendown = false;
       return n;

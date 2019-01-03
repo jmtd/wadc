@@ -412,6 +412,11 @@ which way you are looking.
 rotate you 90 degrees, e.g. "north rotright" is equivalent
 to "east".
 
+    getorient
+
+Tells you the current orientation as an integer: 0 for North, 1 for East,
+2 for South, 3 for West.
+
     up
     down
 

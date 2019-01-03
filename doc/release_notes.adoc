@@ -35,6 +35,9 @@ It can be toggled with the menus in the same way as drawing things or vertices.
     of `rand` is affected by the use of the `seed` function, in the same way as the
     choice operator.
 
+ * `getorient` — returns the cursor's current orientation as an integer: 0 for North,
+    1 for East, 2 for South, 3 for West.
+
  * Various deprecated functions have been removed: `landscape` and `marchingcubes`;
    as well as the functions formerly used for configuring WadC: `lastfile`, `doomexe`,
    `doomargs`, `bspcmd`, `iwad`, `twad1`, `twad2`, `twad3`, `togglevertices` and
