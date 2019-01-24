@@ -8,7 +8,7 @@
  * See file LICENSE.txt
  */
 
-#"lisp.h"
+#"list.h"
 
 main {
   map(append(list3(1, 2, 3),

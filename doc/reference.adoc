@@ -832,7 +832,7 @@ object however results in an error.
 Identical in behaviour to get/set, these 2 access fields in an object rather
 than global variables.
 
-See lisp.wl for an example of how to use these functions to create an
+See list.wl for an example of how to use these functions to create an
 actual datatype, and a caveat on the usage of "onew".
 
 === Custom textures
@@ -923,7 +923,7 @@ basic.h::      a set of higher level architectural building blocks
                to work with for bigger maps. Contains common doom map
                prefabs for things like starts, end of level, monster
                teleporting and placement, and room segments.
-lisp.h::       lisp-style cons lists
+list.h::       lisp-style cons lists
 math::         some math routines (bit shifts and `pow` so far)
 
 === Thing definitions

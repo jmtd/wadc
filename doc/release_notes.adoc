@@ -51,6 +51,7 @@ Various deprecated examples in `examples/old` have been removed.
 
  * `deaf` has been deprecated.
  * `standard.h`: `forXY`: a two-dimensional for loop
+ * `list.h`: renamed from `lisp.h`
 
 === Development stuff
 
@@ -346,7 +347,7 @@ file in your configuration for this to work.
 
 ==== Library additions
 
-`lisp.h`::  lisp-style lists (broken out from `examples/lisp.wl`)
+`list.h`::  lisp-style lists (broken out from `examples/lisp.wl`)
 `water.h`:: Boom deep water tools
 
 within `standard.h`:
