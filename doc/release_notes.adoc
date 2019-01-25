@@ -50,8 +50,11 @@ Various deprecated examples in `examples/old` have been removed.
 ==== Library additions/deletions
 
  * `deaf` has been deprecated.
- * `standard.h`: `forXY`: a two-dimensional for loop
+ * `standard.h`:
+     * `forXY`: a two-dimensional for loop
+     * `assert`: test the parameter and die if ≠ 1
  * `list.h`: renamed from `lisp.h`
+ * `tuple.h`: a pair data structure
 
 === Development stuff
 
