@@ -21,7 +21,7 @@ wads: $(WADS)
 # a dependency in any other rules. To be run by hand by someone who is very
 # confident they haven't broken WadC at the time they run it :)
 sha1sums: $(WADS)
-	sha1sum -b $(WADS) > "$@"
+	sha1sum -b $(WADS) | sort -k2 > "$@"
 
 clean:
 	rm -f $(WADS)
