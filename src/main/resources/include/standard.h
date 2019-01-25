@@ -124,3 +124,8 @@ if(pred, iftrue) { pred ? iftrue : 0 }
 
 -- useful for a temporary addition to replace later
 pradd(x,y) { print(add(x,y)) add(x,y) }
+
+assert(x)
+{
+    ifelse(x,1, die(cat("assertion failed: ",x)))
+}
