@@ -56,7 +56,9 @@ Various deprecated examples in `examples/old` have been removed.
  * `standard.h`:
      * `forXY`: a two-dimensional for loop
      * `assert`: test the parameter and die if ≠ 1
- * `list.h`: renamed from `lisp.h`
+ * `list.h`:
+     * renamed from `lisp.h`
+     * add `in_list` and `list_length` functions
  * `tuple.h`: a pair data structure
 
 === Development stuff

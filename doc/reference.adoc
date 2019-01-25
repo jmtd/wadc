@@ -837,7 +837,7 @@ object however results in an error.
 Identical in behaviour to get/set, these 2 access fields in an object rather
 than global variables.
 
-See list.wl for an example of how to use these functions to create an
+See `list.h` for an example of how to use these functions to create an
 actual datatype, and a caveat on the usage of "onew".
 
 === Custom textures

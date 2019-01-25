@@ -45,3 +45,19 @@ map(x, f) {
 }
 
 mapvar() { get("mapvar") }   -- our closures can't take arguments
+
+-- relies on eq()
+in_list(x,l)
+{
+    ifelse(eq(l,nil), 0,
+        ifelse(eq(hd(l), x),
+           1,
+           in_list(x, tl(l))
+    ))
+}
+
+list_length(l)
+{
+    ifelse(eq(nil,l), 0,
+       add(1, list_length(tl(l))))
+}
