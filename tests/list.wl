@@ -8,10 +8,13 @@
  * See file LICENSE.txt
  */
 
+#"standard.h"
 #"list.h"
 
-main {
+main
+{
   map(append(list3(1, 2, 3),
              list3(4, 5, 6)),
       print(mapvar))
+    test_list
 }

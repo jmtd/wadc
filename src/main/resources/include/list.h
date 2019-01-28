@@ -61,3 +61,9 @@ list_length(l)
     ifelse(eq(nil,l), 0,
        add(1, list_length(tl(l))))
 }
+
+test_list
+{
+    assert(eq(1, in_list(1, list3(0,1,2))))
+    assert(eq(0, in_list(3, list3(0,1,2))))
+}
