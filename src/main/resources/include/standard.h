@@ -129,3 +129,23 @@ assert(x)
 {
     ifelse(x,1, die(cat("assertion failed: ",x)))
 }
+
+-- relevant to the return value of `getorient`
+north { 0 }
+east  { 1 }
+south { 2 }
+west  { 3 }
+
+-- XXX put in WadRun.java
+lessthan(x,y)
+{
+  lessthaneq(add(1,x),y)
+}
+
+test_lessthan
+{
+  assert(lessthan(0,1))
+  assert(lessthan(1,2))
+  assert(not(lessthan(0,0)))
+  assert(not(lessthan(1,0)))
+}
