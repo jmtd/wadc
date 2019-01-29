@@ -62,8 +62,12 @@ list_length(l)
        add(1, list_length(tl(l))))
 }
 
-test_list
+list_get(l,i)
 {
-    assert(eq(1, in_list(1, list3(0,1,2))))
-    assert(eq(0, in_list(3, list3(0,1,2))))
+    ifelse(eq(nil, l),
+           nil,
+           ifelse(eq(0,i),
+                  hd(l),
+                  list_get(tl(l), sub(i,1))
+    ))
 }

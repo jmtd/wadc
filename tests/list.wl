@@ -16,5 +16,16 @@ main
   map(append(list3(1, 2, 3),
              list3(4, 5, 6)),
       print(mapvar))
-    test_list
+  test_list
+
+  assert(eq(0,  list_get(list3(0,1,2), 0)))
+  assert(eq(1,  list_get(list3(0,1,2), 1)))
+  assert(eq(2,  list_get(list3(0,1,2), 2)))
+  assert(eq(-1, list_get(list3(0,1,2), 3)))
+}
+
+test_list
+{
+    assert(eq(1, in_list(1, list3(0,1,2))))
+    assert(eq(0, in_list(3, list3(0,1,2))))
 }
