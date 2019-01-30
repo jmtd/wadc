@@ -71,3 +71,12 @@ list_get(l,i)
                   list_get(tl(l), sub(i,1))
     ))
 }
+
+list_remove(l, i)
+{
+    ifelse(eq(nil, l), nil,
+          ifelse(eq(0, i),
+                tl(l),
+                cons(hd(l), list_remove(tl(l),sub(i,1)))
+    ))
+}
