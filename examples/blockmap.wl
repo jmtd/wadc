@@ -44,29 +44,29 @@ basic_room(t)
     inner_arrow
     _blockmap_mark(t)
 
-    print(cat(tuple_str(t),
+    print(cat(pair_str(t),
           cat("=>",
-          cat(tuple_str(tuple_add(t, tuple_rotate(tuple(1,0),getorient))),
+          cat(pair_str(pair_add(t, pair_rotate(pair(1,0),getorient))),
           cat(",",
-              tuple_str(tuple_add(t, tuple_rotate(tuple(0,1),getorient)))
+              pair_str(pair_add(t, pair_rotate(pair(0,1),getorient)))
     )))))
 
     if(and(lessthan(1, get("rooms")),
-           not(blockmap_check(tuple_add(t,tuple_rotate(tuple(1,0),getorient))))),
+           not(blockmap_check(pair_add(t,pair_rotate(pair(1,0),getorient))))),
 
       -- doorway 1
       movestep(256,64)
       door
       movestep(64,-64)
       dec("rooms", 1)
-      basic_room(tuple_add(t,tuple_rotate(tuple(1,0),getorient)))
+      basic_room(pair_add(t,pair_rotate(pair(1,0),getorient)))
       movestep(-256,0)
       movestep(-64, 0)
     )
 
     -- doorway 2
     if(and(lessthan(1, get("rooms")),
-           not(blockmap_check(tuple_add(t,tuple_rotate(tuple(0,1),getorient))))),
+           not(blockmap_check(pair_add(t,pair_rotate(pair(0,1),getorient))))),
 
       movestep(192,256)
       set("fuck", getorient) -- we need to capture it prior to rotating :/
@@ -75,7 +75,7 @@ basic_room(t)
       movestep(64,-64)
       dec("rooms", 1)
 
-      basic_room(tuple_add(t,tuple_rotate(tuple(0,1),get("fuck"))))
+      basic_room(pair_add(t,pair_rotate(pair(0,1),get("fuck"))))
       movestep(-64,0)
       movestep(-256,256)
       rotleft
@@ -95,6 +95,6 @@ main
 
     blockmap_debug_draw(320)
 
-    basic_room(tuple(0,0))
+    basic_room(pair(0,0))
     place(64,64, thing)
 }

@@ -9,37 +9,37 @@
  */
 
 #"list.h"
-#"tuple.h"
+#"pair.h"
 
--- we're going to maintain a list of tuples, which are coordinates in a blockmap
+-- we're going to maintain a list of pairs, which are coordinates in a blockmap
 
-tuple_in_list(t,l)
+pair_in_list(t,l)
 {
     ifelse(eq(l,nil), 0,
-        ifelse(tuple_eq(hd(l), t),
+        ifelse(pair_eq(hd(l), t),
            1,
-           tuple_in_list(t, tl(l))
+           pair_in_list(t, tl(l))
     ))
 }
 
-test_tuple_in_list
+test_pair_in_list
 {
-    set("mylist", list2(tuple(1,2), tuple(2,3)))
-    map(get("mylist"), print(tuple_str(mapvar)))
+    set("mylist", list2(pair(1,2), pair(2,3)))
+    map(get("mylist"), print(pair_str(mapvar)))
 
-    assert(eq(1, tuple_in_list(
-        tuple(0,1),
-        list2(tuple(0,1), tuple(1,2))
+    assert(eq(1, pair_in_list(
+        pair(0,1),
+        list2(pair(0,1), pair(1,2))
     )))
 
-    assert(eq(1, tuple_in_list(
-        tuple(0,1),
-        list3(tuple(3,3), tuple(0,1), tuple(1,2))
+    assert(eq(1, pair_in_list(
+        pair(0,1),
+        list3(pair(3,3), pair(0,1), pair(1,2))
     )))
 
-    assert(eq(0, tuple_in_list(
-        tuple(3,1),
-        list2(tuple(0,1), tuple(1,2))
+    assert(eq(0, pair_in_list(
+        pair(3,1),
+        list2(pair(0,1), pair(1,2))
     )))
 }
 
@@ -56,16 +56,16 @@ blockmap_init
 
 blockmap_check(t)
 {
-    tuple_in_list(t, blockmap)
+    pair_in_list(t, blockmap)
 }
 
 blockmap_mark(x,y)
 {
-    _blockmap_mark(tuple(x,y))
+    _blockmap_mark(pair(x,y))
 }
 _blockmap_mark(t)
 {
-    ifelse(eq(1,tuple_in_list(t,blockmap)),
+    ifelse(eq(1,pair_in_list(t,blockmap)),
        0,
        set("blockmap", cons(t,blockmap)))
 }
@@ -73,17 +73,17 @@ _blockmap_mark(t)
 test_blockmap
 {
     blockmap_init
-    assert(eq(0, blockmap_check(tuple(0,0))))    -- nothing marked by default
+    assert(eq(0, blockmap_check(pair(0,0))))    -- nothing marked by default
     assert(eq(0, list_length(blockmap))) -- list is empty
     blockmap_mark(0,0)                   -- mark one block
-    assert(eq(1, blockmap_check(tuple(0,0))))    -- test it is marked
+    assert(eq(1, blockmap_check(pair(0,0))))    -- test it is marked
     assert(eq(1, list_length(blockmap))) -- list has grown by 1
     blockmap_mark(0,0)                   -- ask to mark the same block
-    assert(eq(1, blockmap_check(tuple(0,0))))    -- test it is marked still
+    assert(eq(1, blockmap_check(pair(0,0))))    -- test it is marked still
     assert(eq(1, list_length(blockmap))) -- list has not grown
     blockmap_mark(0,1)
-    assert(eq(1, blockmap_check(tuple(0,0))))    -- test it is marked still
-    assert(eq(1, blockmap_check(tuple(0,1))))    -- test it is marked
+    assert(eq(1, blockmap_check(pair(0,0))))    -- test it is marked still
+    assert(eq(1, blockmap_check(pair(0,1))))    -- test it is marked
     assert(eq(2, list_length(blockmap))) -- list has grown by 1
 }
 

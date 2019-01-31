@@ -929,7 +929,7 @@ basic.h::      a set of higher level architectural building blocks
                prefabs for things like starts, end of level, monster
                teleporting and placement, and room segments.
 list.h::       lisp-style cons lists
-tuple.h::      pairs (useful for coordinates, etc.)
+pair.h::       pair type (useful for coordinates, etc.)
 math::         some math routines (bit shifts and `pow` so far)
 
 === Thing definitions

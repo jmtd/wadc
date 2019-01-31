@@ -59,7 +59,7 @@ Various deprecated examples in `examples/old` have been removed.
  * `list.h`:
      * renamed from `lisp.h`
      * add `in_list`, `list_length` and `list_get` functions
- * `tuple.h`: a pair data structure
+ * `pair.h`: a pair data structure
 
 === Development stuff
 
