@@ -7,94 +7,189 @@
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
+ *
+ * draws a random assortment of rooms, using a blocklist to avoid overdrawing,
+ * and a drawlist to determine where the rooms can be added
  */
 
 #"basic.h"
 #"blockmap.h"
 
+------------------------------------------------------------------------------
+
+drawlist
+{
+  get("drawlist")
+}
+drawlist_init
+{
+  set("drawlist", nil)
+}
+drawlist_add(t)
+{
+  _drawlist_add(t,getorient)
+}
+_drawlist_add(t,_orient)
+{
+  ifelse(eq(1,pair_in_list(pair(t,_orient),drawlist)),
+         0,
+         -- sidecar the orientation into the tuple
+         set("drawlist", cons(pair(t,_orient),drawlist)))
+}
+drawlist_dump
+{
+  map(drawlist,
+      print(cat(pair_str(fst(mapvar)),cat(",", snd(mapvar))))
+  )
+}
+
+------------------------------------------------------------------------------
+
 door
 {
-      box(0,128, 160, 64,128)
+  box(0,128, 160, 64,128)
 }
 
 inner_arrow
 {
-    pushpop(
-      movestep(64,96)
-      step(96,0)
-      step(0,-32)
-      step(64,64)
-      step(-64,64)
-      step(0,-32)
-      step(-96,0)
-      step(0,-64)
-      innerrightsector(0,160,0)
-    )
+  pushpop(
+    movestep(64,96)
+    step(96,0)
+    step(0,-32)
+    step(64,64)
+    step(-64,64)
+    step(0,-32)
+    step(-96,0)
+    step(0,-64)
+    innerrightsector(0,160,0)
+  )
+}
 
+possible_future_room(t)
+{
+  -- populate drawlist
+  -- XXX the 'and' trick is working around a bug in not()/blockmap_check
+  if(and(1,not(blockmap_check(pair_add(t,pair_rotate(pair(1,0),getorient))))),
+     drawlist_add(pair_add(t,pair_rotate(pair(1,0),getorient))))
 }
 
 -- a basic square room, possibly with a door to the "top", and another to
--- the right. Attempt to recursively draw further rooms atop and to the right
--- if:
---    * the blockmap doesn't indicate that the space is already occupied
---    * the variable "rooms" is ≥ 1
+-- the right.
 basic_room(t)
 {
-    box(0,160, 160, 256,256)
-    inner_arrow
-    _blockmap_mark(t)
+  box(0,160, 160, 256,256)
+  inner_arrow
+  possible_future_room(t)
+  rotright
+  possible_future_room(t)
+  rotleft
+}
 
-    print(cat(pair_str(t),
-          cat("=>",
-          cat(pair_str(pair_add(t, pair_rotate(pair(1,0),getorient))),
-          cat(",",
-              pair_str(pair_add(t, pair_rotate(pair(0,1),getorient)))
-    )))))
+right_turn(t)
+{
+  movestep(0,64)
+  straight(192)
+  right(192)
+  possible_future_room(t)
+  right(128)
+  right(64)
+  left(64)
+  right(128)
+  rotright
+  rightsector(0,160,160)
+}
 
-    if(and(lessthan(1, get("rooms")),
-           not(blockmap_check(pair_add(t,pair_rotate(pair(1,0),getorient))))),
+left_turn(t)
+{
+  movestep(0,64)
+  straight(64)
+  left(64)
+  possible_future_room(t)
+  right(128)
+  right(192)
+  right(192)
+  right(128)
+  rotright
+  rightsector(0,160,160)
+}
 
-      -- doorway 1
-      movestep(256,64)
-      door
-      movestep(64,-64)
-      dec("rooms", 1)
-      basic_room(pair_add(t,pair_rotate(pair(1,0),getorient)))
-      movestep(-256,0)
-      movestep(-64, 0)
-    )
+tee(t)
+{
+  movestep(0,64)
+  straight(64)
+  left(64)
+  possible_future_room(t)
+  right(128)
+  right(256)
+  possible_future_room(t)
+  right(128)
+  right(64)
+  left(64)
+  right(128)
+  rotright
+  rightsector(0,160,160)
+}
 
-    -- doorway 2
-    if(and(lessthan(1, get("rooms")),
-           not(blockmap_check(pair_add(t,pair_rotate(pair(0,1),getorient))))),
-
-      movestep(192,256)
-      set("fuck", getorient) -- we need to capture it prior to rotating :/
-      rotright
-      door
-      movestep(64,-64)
-      dec("rooms", 1)
-
-      basic_room(pair_add(t,pair_rotate(pair(0,1),get("fuck"))))
-      movestep(-64,0)
-      movestep(-256,256)
-      rotleft
-    )
+random_room(t)
+{
+  basic_room(t) | right_turn(t) | left_turn(t) | tee(t)
 }
 
 main
 {
-    blockmap_init
-    set("rooms", 7)
+  !start
+  blockmap_init
+  drawlist_init
 
-     -- mark the blockmap in a few places to force the rooms to spread
-    blockmap_mark(3,0)
-    blockmap_mark(3,1)
-    blockmap_mark(2,3)
-    blockmap_mark(0,2)
+  place(64,96, thing)
+  drawlist_add(pair(0,0))
 
-    blockmap_debug_draw(320)
+  fori(1, 16, place_random_room)
+}
 
-    basic_room(pair(0,0))
-    place(64,64, thing)
+place_random_room
+{
+  -- XXX the drawlist might be empty!
+  ifelse(eq(0, list_length(drawlist)),
+         print("drawlist is empty!"),
+
+         -- random index into drawlist
+         _random_room(rand(0,sub(list_length(drawlist),1))))
+}
+
+_random_room(_i)
+{
+  if(and(1,not(blockmap_check(fst(list_get(drawlist, _i))))),
+    set("weeeee2", list_get(drawlist, _i))
+    set("drawlist", list_remove(drawlist, _i))
+
+    orientfix(fst(get("weeeee2")), snd(get("weeeee2")))
+    place(-64,64, door)
+    random_room(fst(get("weeeee2")))
+   _blockmap_mark(fst(get("weeeee2")))
+  )
+}
+
+-- assume we are at the bottom-left of a blockmap space. move/rotate according
+-- to orientation
+
+orientfix(_t, _o)
+{
+  ^start
+  movestep(mul(320,fst(_t)),mul(320,snd(_t)))
+
+  orientswitch(_o,
+    /* north */ 0,
+    /* south */ movestep(256,256) turnaround,
+    /* east  */ move(256) rotright,
+    /* west  */ movestep(0,256) rotleft
+  )
+}
+
+orientswitch(orient, n, s, e, w)
+{
+  ifelse(eq(orient, north), n,
+         ifelse(eq(orient, south), s,
+                ifelse(eq(orient, east), e,w
+  )))
 }
