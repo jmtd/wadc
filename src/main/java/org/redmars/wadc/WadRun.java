@@ -529,12 +529,11 @@ class WadRun {
       return n;
     }});
 
-    // XXX rand(1,4) returns {2,3,4}
     builtin("rand", 2, new Builtin() { Exp eval(Exp ea, Exp eb) {
       int floor = ea.ival();
       int ceil  = eb.ival();
       if(floor > ceil) { int c = floor; floor = ceil; ceil = c; }
-      return new Int(floor + Choice.rnd.nextInt(ceil - floor) + 1);
+      return new Int(floor + Choice.rnd.nextInt(ceil - floor + 1));
       // +1 to make ceiling inclusive (nextInt is exclusive of ceiling)
     }});
 
