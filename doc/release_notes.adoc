@@ -45,6 +45,8 @@ It can be toggled with the menus in the same way as drawing things or vertices.
 
 === new example programs
 
+* `blockmap.wl`: a random dungeon generator example. Room overdraw is avoided using
+   a blocklist.
 * `bsp2.wl`: a simple example of a Binary Space Partition algorithm to subdivide a
    rectangular space into sub-spaces, e.g. as a random dungeon generator
 
