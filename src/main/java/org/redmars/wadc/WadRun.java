@@ -31,7 +31,7 @@ class WadRun {
 
   private ArrayDeque<Integer> sectorStack = new ArrayDeque<>();
 
-  private Thing curthing;
+  private Thing curthing = new Thing();
   private int thingflags = 7; // all skill levels
 
   private int curlinetype = 0;
