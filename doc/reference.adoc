@@ -530,7 +530,7 @@ sets current type & tag for the next sectors being creates. Needs to be reset
 to 0 manually. (see below for how to use tags).
 
     linetypehexen(type,arg1,arg2,arg3,arg4,arg5)
-    setthinghexen(type,arg1,arg2,arg3,arg4,arg5)
+    setthinghexen(type,tid,zpos,arg1,arg2,arg3,arg4,arg5)
 
 same as linetype & setthing above, only now for hexen/zdoom style wads. Using
 any of these commands automatically changes the output wad to hexen format.

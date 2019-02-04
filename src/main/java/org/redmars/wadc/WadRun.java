@@ -31,7 +31,7 @@ class WadRun {
 
   private ArrayDeque<Integer> sectorStack = new ArrayDeque<>();
 
-  private int curthingtype = 1;
+  private Thing curthing = new Thing();
   private int thingflags = 7; // all skill levels
 
   private int curlinetype = 0;
@@ -46,7 +46,6 @@ class WadRun {
   boolean hexen = false;
   private boolean midtex = false;
   private int curlinearg[] = new int[5];
-  private int curthingarg[] = new int[5];
 
   private Map<String, Exp> gvars = new HashMap<>();
   private List<Map<String, Exp>> objects = new ArrayList<>();
@@ -236,7 +235,7 @@ class WadRun {
     }});
 
     builtin("setthing", 1, new Builtin() { Exp eval(Exp a) {
-      curthingtype = a.ival();
+      curthing.type = a.ival();
       return n;
     }});
 
@@ -278,13 +277,15 @@ class WadRun {
         return new Int(lineflags);
     }});
 
-    builtin("setthinghexen", 6, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f) {
-      curthingtype = a.ival();
-      curthingarg[0] = b.ival();
-      curthingarg[1] = c.ival();
-      curthingarg[2] = d.ival();
-      curthingarg[3] = e.ival();
-      curthingarg[4] = f.ival();
+    builtin("setthinghexen", 8, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f, Exp g, Exp h) {
+      curthing.type = a.ival();
+      curthing.tid = b.ival();
+      curthing.zpos = c.ival();
+      curthing.specialargs[0] = d.ival();
+      curthing.specialargs[1] = e.ival();
+      curthing.specialargs[2] = f.ival();
+      curthing.specialargs[3] = g.ival();
+      curthing.specialargs[4] = h.ival();
       hexen = true;
       return n;
     }});
@@ -758,11 +759,13 @@ class WadRun {
     Thing t = new Thing();
     t.x = xp;
     t.y = yp;
-    t.type = curthingtype;
+    t.type = curthing.type;
+    t.tid = curthing.tid;
+    t.zpos = curthing.zpos;
     t.opt = thingflags;
     t.idx = things.size();
     t.angle = angle;
-    System.arraycopy(curthingarg, 0, t.specialargs, 0, 5);
+    System.arraycopy(curthing.specialargs, 0, t.specialargs, 0, 5);
     things.add(t);
   }
 
@@ -1299,6 +1302,14 @@ class WadRun {
                            ((Exp)v.elementAt(3)).eval(this),
                            ((Exp)v.elementAt(4)).eval(this),
                            ((Exp)v.elementAt(5)).eval(this)); break;
+        case 8: r = b.eval(((Exp)v.elementAt(0)).eval(this),
+                           ((Exp)v.elementAt(1)).eval(this),
+                           ((Exp)v.elementAt(2)).eval(this),
+                           ((Exp)v.elementAt(3)).eval(this),
+                           ((Exp)v.elementAt(4)).eval(this),
+                           ((Exp)v.elementAt(5)).eval(this),
+                           ((Exp)v.elementAt(6)).eval(this),
+                           ((Exp)v.elementAt(7)).eval(this)); break;
         default: wp.error("oops");
       };
     } else {

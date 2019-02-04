@@ -218,10 +218,10 @@ public class Wad {
   private int writeThings() throws IOException {
     List<Thing> v = wr.things;
     for (Thing a : v) {
-      if (wr.hexen) writeShort(0);   // thingid?
+      if (wr.hexen) writeShort(a.tid);
       writeShort(-a.x);
       writeShort(a.y);
-      if (wr.hexen) writeShort(0);   // z pos?
+      if (wr.hexen) writeShort(a.zpos);
       writeShort(a.angle);
       writeShort(a.type);
       writeShort(a.opt);
