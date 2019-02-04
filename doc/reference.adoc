@@ -519,6 +519,11 @@ To fetch or adjust the flags used for creating new things, use
 Useful in conjunction with the bitwise operators. See the `thingtypes.h`
 library for useful definitions.
 
+    setthingargs(tid,zpos,arg1,arg2,arg3,arg4,arg5)
+
+Sets thing argument parameters for hexen-format maps. Using this command
+automatically changes the output wad to hexen format.
+
     linetype(type,tag)
 
 Sets the current type & tag for lines being drawn. Needs to be reset to 0
@@ -530,13 +535,11 @@ sets current type & tag for the next sectors being creates. Needs to be reset
 to 0 manually. (see below for how to use tags).
 
     linetypehexen(type,arg1,arg2,arg3,arg4,arg5)
-    setthinghexen(type,tid,zpos,arg1,arg2,arg3,arg4,arg5)
 
-same as linetype & setthing above, only now for hexen/zdoom style wads. Using
-any of these commands automatically changes the output wad to hexen format.
-Note that arg1 in linetypehexen() is the same as tag in linetype(). To compile
-maps produced this way, recommended is the version of bsp that comes with
-"zeth". Check out zdoom.h for some useful macros.
+same as linetype above, only now for hexen/zdoom style wads. Using this command
+automatically changes the output wad to hexen format.  Note that arg1
+in linetypehexen() is the same as tag in linetype().
+Check out zdoom.h for some useful macros.
 
     setlineflags(flags)
     getlineflags
@@ -883,7 +886,7 @@ use
     hexenformat
 
 This will happen automatically if you use one of `linetypehexen` or
-`setthinghexen` as described earlier.
+`setthingargs` as described earlier.
 
     is_hexenformat
 

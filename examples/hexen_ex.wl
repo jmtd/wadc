@@ -50,10 +50,10 @@ main {
     )
 
     -- demonstrate z-position with a rising line of mana
+    mana1
     movestep(64,960)
     fori(1,10,
-      print(i)
-      setthinghexen(122 /* mana1 */, 0, mul(i,8) /* zpos */, 0,0,0,0,0)
+      setthingargs(0, mul(i,8) /* zpos */, 0,0,0,0,0)
       thing
       move(64)
     )

@@ -277,15 +277,14 @@ class WadRun {
         return new Int(lineflags);
     }});
 
-    builtin("setthinghexen", 8, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f, Exp g, Exp h) {
-      curthing.type = a.ival();
-      curthing.tid = b.ival();
-      curthing.zpos = c.ival();
-      curthing.specialargs[0] = d.ival();
-      curthing.specialargs[1] = e.ival();
-      curthing.specialargs[2] = f.ival();
-      curthing.specialargs[3] = g.ival();
-      curthing.specialargs[4] = h.ival();
+    builtin("setthingargs", 7, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f, Exp g) {
+      curthing.tid = a.ival();
+      curthing.zpos = b.ival();
+      curthing.specialargs[0] = c.ival();
+      curthing.specialargs[1] = d.ival();
+      curthing.specialargs[2] = e.ival();
+      curthing.specialargs[3] = f.ival();
+      curthing.specialargs[4] = g.ival();
       hexen = true;
       return n;
     }});
@@ -1302,14 +1301,13 @@ class WadRun {
                            ((Exp)v.elementAt(3)).eval(this),
                            ((Exp)v.elementAt(4)).eval(this),
                            ((Exp)v.elementAt(5)).eval(this)); break;
-        case 8: r = b.eval(((Exp)v.elementAt(0)).eval(this),
+        case 7: r = b.eval(((Exp)v.elementAt(0)).eval(this),
                            ((Exp)v.elementAt(1)).eval(this),
                            ((Exp)v.elementAt(2)).eval(this),
                            ((Exp)v.elementAt(3)).eval(this),
                            ((Exp)v.elementAt(4)).eval(this),
                            ((Exp)v.elementAt(5)).eval(this),
-                           ((Exp)v.elementAt(6)).eval(this),
-                           ((Exp)v.elementAt(7)).eval(this)); break;
+                           ((Exp)v.elementAt(6)).eval(this)); break;
         default: wp.error("oops");
       };
     } else {
