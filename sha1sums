@@ -2,8 +2,9 @@ aff80ee383c5adf7b3636808b479bdd4f86dc5c9 *examples/1.2_features.wad
 75a1c3fba1f44bc2edccfaf28d6bfb3af0b70e25 *examples/2countrev.wad
 ff6fbb1c7df2e49d55b1cb68a1224fdb31a4f134 *examples/archtest.wad
 4c9e5bb305be7f8115f3aa94bc3c3fa31c897172 *examples/birds.wad
+cd493a29a5ada3c73c1eeffd83155ad387f1319c *examples/blockmap.wad
 d38b9f4fa863e50b001dd431026ba32962df1711 *examples/boom.wad
-ba92f72c04b1948e67328b9e3db2576a2acba489 *examples/bsp2.wad
+672320495afa056a6420b63ad3d78f67f548d4d0 *examples/bsp2.wad
 17bee025cd24442fc2370a48c87dbd6637665232 *examples/choicetest.wad
 23578fc56328c433b4f2d74f104b9f6acc29afb6 *examples/choz.wad
 18972f9b1c3969a6196bd64c4a4b43c8c52db610 *examples/church.wad
@@ -42,9 +43,9 @@ facb596891725a41171fb29023304c5a2c16a900 *tests/angles.wad
 f7e27018715d91faa910cdb34789f8fc61ed656f *tests/mixtypes.wad
 f9f53a320ad21dcf2d8621ff261cf167d17efcbd *tests/overlap1.wad
 0dfd1aa946895e5b4eb1ca1b8978b623caf7e9ed *tests/overlap2.wad
+99a30928d46ec321e40e535fe9498ef0addfb71e *tests/pair.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/randcheck.wad
 d5c33398bdf0e8d95613d7941c02cfe4409a82d6 *tests/sectorfill.wad
 5dd3d3bf64b55d5b324bfdb0e148dfd64d0f3c7b *tests/skills.wad
 fae9fccbb559479fe0747f033108e621d882938d *tests/testboom.wad
-99a30928d46ec321e40e535fe9498ef0addfb71e *tests/pair.wad
 d63bf6371c22404623c3917fa6e1af68afd8aaf0 *tests/usedto.wad
