@@ -12,7 +12,7 @@ public class Thing {
   int idx;
   int x,y;
   int angle;
-  int type;
+  int type = 1;
   int opt; // flags
   int special = 0;
   int specialargs[] = new int[5];

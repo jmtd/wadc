@@ -1302,6 +1302,14 @@ class WadRun {
                            ((Exp)v.elementAt(3)).eval(this),
                            ((Exp)v.elementAt(4)).eval(this),
                            ((Exp)v.elementAt(5)).eval(this)); break;
+        case 8: r = b.eval(((Exp)v.elementAt(0)).eval(this),
+                           ((Exp)v.elementAt(1)).eval(this),
+                           ((Exp)v.elementAt(2)).eval(this),
+                           ((Exp)v.elementAt(3)).eval(this),
+                           ((Exp)v.elementAt(4)).eval(this),
+                           ((Exp)v.elementAt(5)).eval(this),
+                           ((Exp)v.elementAt(6)).eval(this),
+                           ((Exp)v.elementAt(7)).eval(this)); break;
         default: wp.error("oops");
       };
     } else {

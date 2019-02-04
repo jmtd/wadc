@@ -18,5 +18,6 @@ class Builtin {
   Exp eval(Exp a, Exp b, Exp c, Exp d) { return null; }
   Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e) { return null; }
   Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f) { return null; }
+  Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f, Exp g, Exp h) { return null; }
 };
 
