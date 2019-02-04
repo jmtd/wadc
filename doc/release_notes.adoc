@@ -43,7 +43,9 @@ It can be toggled with the menus in the same way as drawing things or vertices.
    `doomargs`, `bspcmd`, `iwad`, `twad1`, `twad2`, `twad3`, `togglevertices` and
    `togglethings`.
 
- * `setthinghexen` has grown two extra parameters: Thing ID and Z-position.
+ * `setthingargs` is a renamed `setthinghexen` which has lost the thing type
+   argument (just use `thingtype` instead) and has grown two extra parameters: Thing
+   ID and Z-position.
 
 === new/modified example programs
 
