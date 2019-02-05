@@ -765,6 +765,7 @@ class WadRun {
     t.opt = thingflags;
     t.idx = things.size();
     t.angle = angle;
+    t.special = curthing.special;
     System.arraycopy(curthing.specialargs, 0, t.specialargs, 0, 5);
     things.add(t);
   }
