@@ -57,4 +57,10 @@ main {
       thing
       move(64)
     )
+
+    -- pottery exit, thanks Gez
+    setthingargs(0, 0, 74 /* Teleport_NewMap */, 2,0,0,0,0)
+    movestep(192,-384)
+    pottery1
+    thing
 }
