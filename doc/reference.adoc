@@ -519,7 +519,7 @@ To fetch or adjust the flags used for creating new things, use
 Useful in conjunction with the bitwise operators. See the `thingtypes.h`
 library for useful definitions.
 
-    setthingargs(tid,zpos,arg1,arg2,arg3,arg4,arg5)
+    setthingargs(tid,zpos,special,arg1,arg2,arg3,arg4,arg5)
 
 Sets thing argument parameters for hexen-format maps. Using this command
 automatically changes the output wad to hexen format.

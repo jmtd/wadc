@@ -53,7 +53,7 @@ main {
     mana1
     movestep(64,960)
     fori(1,10,
-      setthingargs(0, mul(i,8) /* zpos */, 0,0,0,0,0)
+      setthingargs(0, mul(i,8) /* zpos */, 0, 0,0,0,0,0)
       thing
       move(64)
     )

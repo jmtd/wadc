@@ -44,8 +44,8 @@ It can be toggled with the menus in the same way as drawing things or vertices.
    `togglethings`.
 
  * `setthingargs` is a renamed `setthinghexen` which has lost the thing type
-   argument (just use `thingtype` instead) and has grown two extra parameters: Thing
-   ID and Z-position.
+   argument (just use `thingtype` instead) and has grown three extra parameters: Thing
+   ID, Z-position and Thing Special.
 
 === new/modified example programs
 
