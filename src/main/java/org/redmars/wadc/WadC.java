@@ -75,6 +75,9 @@ public class WadC extends JFrame implements WadCMainFrame {
   private JRadioButtonMenuItem ceilingSectors;//= new JRadioButtonMenuItem();
   private JRadioButtonMenuItem lightSectors;//= new JRadioButtonMenuItem();
 
+  private JMenuItem fontSizeDownItem = new JMenuItem();
+  private JMenuItem fontSizeUpItem = new JMenuItem();
+
   private Canvas cv;
   UndoManager manager = new UndoManager();
 
@@ -239,7 +242,26 @@ public class WadC extends JFrame implements WadCMainFrame {
             cv.repaint();
         }
     });
-    
+
+    fontSizeDownItem.setText(__("Decrease font size"));
+    fontSizeDownItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, MENU_SHORTCUT_MASK));
+    fontSizeDownItem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            Font f = programTextArea.getFont();
+            Float ff = f.getSize2D() - 1.0f;
+            programTextArea.setFont(f.deriveFont(ff));
+        }
+    });
+    fontSizeUpItem.setText(__("Increase font size"));
+    fontSizeUpItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, MENU_SHORTCUT_MASK));
+    fontSizeUpItem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            Font f = programTextArea.getFont();
+            Float ff = f.getSize2D() + 1.0f;
+            programTextArea.setFont(f.deriveFont(ff));
+        }
+    });
+
     programMenu.setText(__("Program"));
     
     runMenuItem.setText(__("Run"));
@@ -275,6 +297,8 @@ public class WadC extends JFrame implements WadCMainFrame {
     viewMenu.add(showVertices);
     viewMenu.add(showTurtle);
     viewMenu.add(fillMenu);
+    viewMenu.add(fontSizeDownItem);
+    viewMenu.add(fontSizeUpItem);
 
     fillMenu.add(emptySectors);
     fillMenu.add(floorSectors);
