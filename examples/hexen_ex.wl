@@ -46,7 +46,11 @@ main {
     pushpop(
         movestep(512,512)
         iceguy
-        for(1,5, thing movestep(0,64))
+        fori(1,5,
+            -- spawn a quartz flask when the wendigos die
+            -- thanks Gez
+            setthingargs(i, 0, 135, i,75,0,0,0)
+            thing movestep(0,64))
     )
 
     -- demonstrate z-position with a rising line of mana
@@ -57,10 +61,4 @@ main {
       thing
       move(64)
     )
-
-    -- pottery exit, thanks Gez
-    setthingargs(0, 0, 74 /* Teleport_NewMap */, 2,0,0,0,0)
-    movestep(192,-384)
-    pottery1
-    thing
 }
