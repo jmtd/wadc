@@ -1,5 +1,14 @@
+/*
+ * bsp.wl: binary space partitioning experiment
+ * part of WadC
+ *
+ * Copyright © 2019 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ */
+
 #"standard.h"
-/* binary space partitioning experiment! */
 
 minseg  { 512 }
 minroom  { 128 }
