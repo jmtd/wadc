@@ -1,3 +1,9 @@
+wadc (2.2-4) UNRELEASED; urgency=medium
+
+  * Update series file to apply 0002-docs-bsp.patch (oops)
+
+ -- Jonathan Dowland <jmtd@debian.org>  Mon, 18 Feb 2019 11:51:22 +0000
+
 wadc (2.2-3) unstable; urgency=medium
 
   * Switch the default bsp tool from /usr/bin/glbsp to /usr/bin/bsp
