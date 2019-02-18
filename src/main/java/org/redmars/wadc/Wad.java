@@ -155,7 +155,9 @@ public class Wad {
 
         writeShort(a.from.idx);
         writeShort(a.to.idx);
-        if (a.right != null) {
+        if (a.right == null) {
+          a.flags |= 1;
+        } else {
           a.flags |= 4;
           if (!a.midtex) a.m = "-";
         }
