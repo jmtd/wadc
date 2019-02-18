@@ -23,6 +23,7 @@ Not released yet.
    a temporary filename, and then move that over the final WAD name. This means
    WadC can be used with node builders which do not support in-place node building
    (e.g. AJBSP and ZokumBSP).
+ * One-sided lines now have their "impassable" flag bit set in PWADs.
 
 ==== UI improvements
 
@@ -63,10 +64,13 @@ Various deprecated examples in `examples/old` have been removed.
  * `standard.h`:
      * `forXY`: a two-dimensional for loop
      * `assert`: test the parameter and die if ≠ 1
+     * `north`/`east`/`south`/`west` constants, for use with `getorient`
+     * `lessthan`, logical function
  * `list.h`:
      * renamed from `lisp.h`
      * add `in_list`, `list_length`, `list_remove` and `list_get` functions
  * `pair.h`: a pair data structure
+ * `blockmap.h`: a blockmap data structure, based on pairs in tuples
 
 === Development stuff
 
