@@ -17,6 +17,8 @@ toc::[]
 
 Not released yet.
 
+This version of WadC is dedicated to Lu (1972-2019). RIP.
+
 === Core program changes
 
  * When the external BSP program is invoked, we now instruct it to write out to
