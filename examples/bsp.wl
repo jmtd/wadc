@@ -15,7 +15,7 @@ minroom  { 128 }
 
 main
 {
-    --seed(1337)
+    seed(1337)
     bsp(2048, 2048, 0)
     pushpop( movestep(32,32) thing)
 }
