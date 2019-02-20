@@ -15,6 +15,9 @@
         <include>extra/**</include>
         <include>examples/**</include>
       </includes>
+      <excludes>
+        <exclude>examples/**/*wad</exclude>
+      </excludes>
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}</directory>
