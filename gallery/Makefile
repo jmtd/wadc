@@ -1,7 +1,7 @@
 EXAMPLES := $(filter-out %lisp.wl,$(filter-out %choz.wl,$(wildcard ../examples/*wl)))
 MAPS     := $(addprefix img/map_, $(addsuffix .png, $(basename $(notdir $(EXAMPLES)))))
 PWD      := $(shell pwd)
-JAR      := ../target/wadc-2.2.jar
+JAR      := ../target/wadc-3.0.jar
 OMGIFOLD := $(HOME)/git/doom/omgifol
 
 default: index.html $(MAPS)

@@ -13,9 +13,9 @@ current features, see link:reference.adoc[the Reference].
 
 toc::[]
 
-== Dev
+== 3.0
 
-Not released yet.
+Released 20^th^ February 2019.
 
 This version of WadC is dedicated to Lu (1972-2019). RIP.
 

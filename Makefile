@@ -4,7 +4,7 @@
 
 # hint: md5sha1sum via brew for OS X
 
-JAR  := target/wadc-2.2.jar
+JAR  := target/wadc-3.0.jar
 WADS := $(patsubst %.wl,%.wad, $(wildcard examples/*.wl) $(wildcard tests/*.wl))
 
 default: check
