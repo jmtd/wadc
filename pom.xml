@@ -4,7 +4,7 @@
   <groupId>org.redmars.wadc</groupId>
   <artifactId>wadc</artifactId>
   <packaging>jar</packaging>
-  <version>2.2</version>
+  <version>3.0</version>
   <name>WadC</name>
   <url>https://jmtd.net/wadc/</url>
   <properties>
@@ -54,9 +54,11 @@
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.5.3</version>
+        <version>3.1.0</version>
         <configuration>
-          <descriptor>src/assembly/zip.xml</descriptor>
+          <descriptors>
+            <descriptor>src/assembly/zip.xml</descriptor>
+          </descriptors>
         </configuration>
         <executions>
           <execution>

@@ -4,13 +4,13 @@
 
 # hint: md5sha1sum via brew for OS X
 
-JAR  := target/wadc-2.2.jar
+JAR  := target/wadc-3.0.jar
 WADS := $(patsubst %.wl,%.wad, $(wildcard examples/*.wl) $(wildcard tests/*.wl))
 
 default: check
 
 check:
-	sha1sum -b -c sha1sums
+	sha1sum -c sha1sums
 
 wads: $(WADS)
 
@@ -21,7 +21,7 @@ wads: $(WADS)
 # a dependency in any other rules. To be run by hand by someone who is very
 # confident they haven't broken WadC at the time they run it :)
 sha1sums: $(WADS)
-	sha1sum -b $(WADS) > "$@"
+	sha1sum -b $(WADS) | sort -k2 > "$@"
 
 clean:
 	rm -f $(WADS)

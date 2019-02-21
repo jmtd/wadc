@@ -11,18 +11,23 @@ package org.redmars.wadc;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.FileSystems;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.Vector;
+import java.util.stream.Stream;
 
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.undo.UndoManager;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -32,62 +37,63 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.ButtonGroup;
 import javax.swing.KeyStroke;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 public class WadC extends JFrame implements WadCMainFrame {
-  JTextArea textArea1 = new JTextArea("",15,30);
-  JScrollPane sp = new JScrollPane(textArea1);
-  GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
-  Panel panel1 = new Panel();
-  TextArea textArea2 = new TextArea("",5,20);
-  JMenuBar menuBar1 = new JMenuBar();
-  JMenu menu1 = new JMenu(); // file
-  JMenuItem menuItem1 = new JMenuItem(); // new
-  JMenuItem menuItem2 = new JMenuItem(); // open
-  JMenuItem menuItem3 = new JMenuItem(); // save
-  JMenuItem menuItem4 = new JMenuItem(); // save as
-  JMenuItem preferencesMenu = new JMenuItem(); // preferences
-  JMenuItem menuItem5 = new JMenuItem(); // quit
+  private JTextArea programTextArea = new JTextArea("",15,30);
+  private JScrollPane sp = new JScrollPane(programTextArea);
+  private GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
+  private Panel panel1 = new Panel();
+  private TextArea messagesTextArea = new TextArea("",5,20);
+  private JMenuBar mainMenuBar = new JMenuBar();
+  private JMenu fileMenu = new JMenu();
+  private JMenuItem newMenuItem = new JMenuItem();
+  private JMenuItem openMenuItem = new JMenuItem();
+  private JMenuItem saveMenuItem = new JMenuItem();
+  private JMenuItem saveAsMenuItem = new JMenuItem();
+  private JMenuItem preferencesMenu = new JMenuItem();
+  private JMenuItem quitMenuItem = new JMenuItem();
 
-  EngineConfigDialog engineConfigDialog;
+  private EngineConfigDialog engineConfigDialog;
 
-  JMenu editMenu = new JMenu();
-  JMenuItem undoItem = new JMenuItem();
-  JMenuItem redoItem = new JMenuItem();
+  private JMenu editMenu = new JMenu();
+  private JMenuItem undoItem = new JMenuItem();
+  private JMenuItem redoItem = new JMenuItem();
 
-  JMenu menu2 = new JMenu(); // program
-  JMenuItem menuItem6 = new JMenuItem(); // run
-  JMenuItem menuItem7 = new JMenuItem(); // run / save
-  JMenuItem menuItem8 = new JMenuItem(); // ... / bsp / doom
+  private JMenu programMenu = new JMenu();
+  private JMenuItem runMenuItem = new JMenuItem();
+  private JMenuItem runSaveSaveWadMenuItem = new JMenuItem();
+  private JMenuItem runSaveSaveWadBspDoomMenuItem = new JMenuItem();
 
-  JMenu viewMenu = new JMenu();
-  JCheckBoxMenuItem showThings = new JCheckBoxMenuItem();
-  JCheckBoxMenuItem showVertices = new JCheckBoxMenuItem();
+  private JMenu viewMenu = new JMenu();
+  private JCheckBoxMenuItem showThings = new JCheckBoxMenuItem();
+  private JCheckBoxMenuItem showVertices = new JCheckBoxMenuItem();
+  private JCheckBoxMenuItem showTurtle = new JCheckBoxMenuItem();
 
-  JMenu fillMenu = new JMenu();
-  ButtonGroup fillButtonGroup = new ButtonGroup();
-  JRadioButtonMenuItem emptySectors;//= new JRadioButtonMenuItem();
-  JRadioButtonMenuItem floorSectors;//= new JRadioButtonMenuItem();
-  JRadioButtonMenuItem ceilingSectors;//= new JRadioButtonMenuItem();
-  JRadioButtonMenuItem lightSectors;//= new JRadioButtonMenuItem();
+  private JMenu fillMenu = new JMenu();
+  private ButtonGroup fillButtonGroup = new ButtonGroup();
+  private JRadioButtonMenuItem emptySectors;//= new JRadioButtonMenuItem();
+  private JRadioButtonMenuItem floorSectors;//= new JRadioButtonMenuItem();
+  private JRadioButtonMenuItem ceilingSectors;//= new JRadioButtonMenuItem();
+  private JRadioButtonMenuItem lightSectors;//= new JRadioButtonMenuItem();
 
-  Canvas cv;
+  private JMenuItem fontSizeDownItem = new JMenuItem();
+  private JMenuItem fontSizeUpItem = new JMenuItem();
+
+  private Canvas cv;
   UndoManager manager = new UndoManager();
 
   WadParse lastwp = null;
-  boolean changed = false;
+  private boolean changed = false;
 
   // i18n
-  Locale locale;
-  ResourceBundle messages;
+  private Locale locale;
+  private ResourceBundle messages;
 
-  void initI18n() {
+  private void initI18n() {
     locale = Locale.getDefault();
     messages = ResourceBundle.getBundle("MessagesBundle", locale);
   }
 
-  String __(String s) {
+  private String __(String s) {
     if(messages.containsKey(s)) return messages.getString(s);
     return s;
   }
@@ -110,59 +116,44 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     final int MENU_SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
-    textArea1.setFont(new Font("Monospaced",0,12));
-    textArea1.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-      public void insertUpdate(DocumentEvent e) {
-        textArea1_textValueChanged();
-      }
-      public void removeUpdate(DocumentEvent e) {
-          textArea1_textValueChanged();
-      }
-      public void changedUpdate(DocumentEvent e) {
-          textArea1_textValueChanged();
-      }
+    programTextArea.setFont(new Font("Monospaced",0,12));
+    programTextArea.getDocument().addDocumentListener(new DocumentListener() {
+        public void removeUpdate(DocumentEvent e) {
+            textArea1_textValueChanged();
+        }
+        public void insertUpdate(DocumentEvent e) {
+            textArea1_textValueChanged(); // this:: ?
+        }
+        public void changedUpdate(DocumentEvent e) {}
     });
-    textArea1.getDocument().addUndoableEditListener(manager);
+    programTextArea.getDocument().addUndoableEditListener(manager);
 
     panel1.setLayout(new GroupLayout(false));
-    textArea1.setBackground(Color.white);
+    programTextArea.setBackground(Color.white);
     this.setLayout(borderLayout1);
     setBackground(Color.lightGray);
     setEnabled(true);
-    setJMenuBar(menuBar1);
+    setJMenuBar(mainMenuBar);
     addWindowListener(new java.awt.event.WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         quit(null);
       }
     });
-    menu1.setText(__("File"));
-    menuItem1.setText(__("New"));
-    menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, MENU_SHORTCUT_MASK));
-    menuItem1.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        newfile(e);
-      }
-    });
-    menuItem2.setText(__("Open"));
-    menuItem2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MENU_SHORTCUT_MASK));
-    menuItem2.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        open(e);
-      }
-    });
-    menuItem3.setText(__("Save As"));
-    menuItem3.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        saveas(e);
-      }
-    });
-    menuItem4.setText(__("Save"));
-    menuItem4.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MENU_SHORTCUT_MASK));
-    menuItem4.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        save(e);
-      }
-    });
+
+
+    fileMenu.setText(__("File"));
+    
+    newMenuItem.setText(__("New"));
+    newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, MENU_SHORTCUT_MASK));
+    newMenuItem.addActionListener(this::newfile);
+    openMenuItem.setText(__("Open"));
+    openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MENU_SHORTCUT_MASK));
+    openMenuItem.addActionListener(this::open);
+    saveAsMenuItem.setText(__("Save As"));
+    saveAsMenuItem.addActionListener(this::saveAs);
+    saveMenuItem.setText(__("Save"));
+    saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MENU_SHORTCUT_MASK));
+    saveMenuItem.addActionListener(this::save);
     preferencesMenu.setText(__("Preferences"));
     preferencesMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, MENU_SHORTCUT_MASK));
     preferencesMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -170,14 +161,9 @@ public class WadC extends JFrame implements WadCMainFrame {
         engineConfigDialog.setVisible(true);
       }
     });
-
-    menuItem5.setText(__("Quit"));
-    menuItem5.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, MENU_SHORTCUT_MASK));
-    menuItem5.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        quit(e);
-      }
-    });
+    quitMenuItem.setText(__("Quit"));
+    quitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, MENU_SHORTCUT_MASK));
+    quitMenuItem.addActionListener(this::quit);
 
     editMenu.setText(__("Edit"));
     undoItem.setText(__("Undo"));
@@ -194,28 +180,6 @@ public class WadC extends JFrame implements WadCMainFrame {
         }
     });
 
-    menu2.setText(__("Program"));
-    menuItem6.setText(__("Run"));
-    menuItem6.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_MASK));
-    menuItem6.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        run(e);
-      }
-    });
-    menuItem7.setText(__("Run / Save / Save Wad"));
-    menuItem7.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, MENU_SHORTCUT_MASK));
-    menuItem7.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        savewad(e);
-      }
-    });
-    menuItem8.setText(__("Run / Save / Save Wad / BSP / DOOM"));
-    menuItem8.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        bspdoom(savewad(e));
-      }
-    });
-
     viewMenu.setText(__("View"));
     showThings.setText(__("Show things"));
     showThings.setState(prefs.getBoolean("renderthings"));
@@ -230,6 +194,14 @@ public class WadC extends JFrame implements WadCMainFrame {
     showVertices.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
             prefs.toggle("renderverts");
+            cv.repaint();
+        }
+    });
+    showTurtle.setText(__("Show the cursor"));
+    showTurtle.setState(prefs.getBoolean("renderturtle"));
+    showTurtle.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            prefs.toggle("renderturtle");
             cv.repaint();
         }
     });
@@ -271,117 +243,156 @@ public class WadC extends JFrame implements WadCMainFrame {
         }
     });
 
+    fontSizeDownItem.setText(__("Decrease font size"));
+    fontSizeDownItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, MENU_SHORTCUT_MASK));
+    fontSizeDownItem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            Font f = programTextArea.getFont();
+            Float ff = f.getSize2D() - 1.0f;
+            programTextArea.setFont(f.deriveFont(ff));
+        }
+    });
+    fontSizeUpItem.setText(__("Increase font size"));
+    fontSizeUpItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, MENU_SHORTCUT_MASK));
+    fontSizeUpItem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            Font f = programTextArea.getFont();
+            Float ff = f.getSize2D() + 1.0f;
+            programTextArea.setFont(f.deriveFont(ff));
+        }
+    });
+
+    programMenu.setText(__("Program"));
+    
+    runMenuItem.setText(__("Run"));
+    runMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_MASK));
+    runMenuItem.addActionListener(this::run);
+    runSaveSaveWadMenuItem.setLabel(__("Run / Save / Save Wad"));
+    runSaveSaveWadMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, MENU_SHORTCUT_MASK));
+    runSaveSaveWadMenuItem.addActionListener(this::savewad);
+    runSaveSaveWadBspDoomMenuItem.setText(__("Run / Save / Save Wad / BSP / DOOM"));
+    runSaveSaveWadBspDoomMenuItem.addActionListener(e -> bspdoom(savewad(e)));
     add(sp, "b");
-    menuBar1.add(menu1);
-    menuBar1.add(editMenu);
-    menuBar1.add(menu2);
-    menuBar1.add(viewMenu);
-    menu1.add(menuItem1);
-    menu1.add(menuItem2);
-    menu1.add(menuItem3);
-    menu1.add(menuItem4);
-    menu1.add(preferencesMenu);
-    menu1.add(menuItem5);
+    
+    mainMenuBar.add(fileMenu);
+    mainMenuBar.add(editMenu);
+    mainMenuBar.add(programMenu);
+    mainMenuBar.add(viewMenu);
+
+    fileMenu.add(newMenuItem);
+    fileMenu.add(openMenuItem);
+    fileMenu.add(saveAsMenuItem);
+    fileMenu.add(saveMenuItem);
+    fileMenu.add(preferencesMenu);
+    fileMenu.add(quitMenuItem);
+
     editMenu.add(undoItem);
     editMenu.add(redoItem);
-    menu2.add(menuItem6);
-    menu2.add(menuItem7);
-    menu2.add(menuItem8);
+    
+    programMenu.add(runMenuItem);
+    programMenu.add(runSaveSaveWadMenuItem);
+    programMenu.add(runSaveSaveWadBspDoomMenuItem);
 
     viewMenu.add(showThings);
     viewMenu.add(showVertices);
+    viewMenu.add(showTurtle);
     viewMenu.add(fillMenu);
+    viewMenu.add(fontSizeDownItem);
+    viewMenu.add(fontSizeUpItem);
 
     fillMenu.add(emptySectors);
     fillMenu.add(floorSectors);
     fillMenu.add(ceilingSectors);
     fillMenu.add(lightSectors);
-
-    cv = new MyCanvas(this);
-    //textArea2.setBackground(Color.lightGray);
-    textArea2.setEditable(false);
+    
+    cv = new WadCanvas(this);
+    //messagesTextArea.setBackground(Color.lightGray);
+    messagesTextArea.setEditable(false);
     panel1.add(cv,"b3");
-    panel1.add(textArea2, "b1");
+    panel1.add(messagesTextArea, "b1");
     add(panel1, "b3");
     //setSize(600,400);
     this.setLocation(50,50);
     pack();
     setVisible(true);
 
-    String lf = loadtextfile(prefs.get("basename"));
-    if(lf.length()>0) { textArea1.setText(lf); } else { newfile(null); };
+    String lf = loadTextFile(prefs.get("basename"));
+    if(lf.length()>0) { programTextArea.setText(lf); } else { newfile(null); };
   }
 
   public void msg(String s) {
-    textArea2.append(s+"\n");
+    messagesTextArea.append(s+"\n");
   }
 
-  void savetextfile(String name, String contents) {
+  private void saveTextFile(String name, String contents) {
     try {
       Files.write(Paths.get(name), contents.getBytes("UTF-8"));
       msg(__("wrote file ")+name);
     } catch(IOException i) {
       msg(__("saving file unsuccessful: ") + name);
-    };
+    }
   }
 
-  String loadtextfile(String name) {
+  private String loadTextFile(String name) {
     try {
-      BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(name)));
-      String c = "";
-      String t;
-      while((t = in.readLine())!=null) c+=t+"\n";
-      in.close();
+      String contents = Files
+              .readAllLines(Paths.get(name))
+              .stream()
+              .collect(Collectors.joining("\n")) + "\n";
       msg(__("file read: ") + name);
-      return c;
+      return contents;
     } catch(IOException i) {
       msg(__("couldn't load file ") + name);
-    };
+    }
     return "";
   }
 
   void newfile(ActionEvent e) {
-    textArea1.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
+    programTextArea.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
     // XXX: nasty hack to ensure basename is always a FQ path
     prefs.put("basename", new File(System.getProperty("user.home"), "untitled.wl").toString());
   }
 
-  void open(ActionEvent e) {
+  private void open(ActionEvent e) {
     FileDialog fd = new FileDialog(this, __("select a .wl file to load"), FileDialog.LOAD);
     fd.setDirectory((new File(prefs.get("basename"))).getParent());
     fd.setVisible(true);
     String name = fd.getFile();
     if(name==null) return;
     prefs.put("basename", (new File(fd.getDirectory(),name)).toString());
-    textArea1.setText(loadtextfile(prefs.get("basename")));
+    programTextArea.setText(loadTextFile(prefs.get("basename")));
   }
 
-  void saveas(ActionEvent e) {
+  private void saveAs(ActionEvent e) {
     FileDialog fd = new FileDialog(this, __("save program (.wl)"), FileDialog.SAVE);
     fd.setDirectory((new File(prefs.get("basename"))).getParent());
     fd.setFile((new File(prefs.get("basename"))).getName()); //File f = new File(); f.
     fd.setVisible(true);
     String name = fd.getFile();
-    if(name==null) return;
+    if( name == null) {
+      return;
+    }
     prefs.put("basename", (new File(fd.getDirectory(),name)).toString());
     save(e);
   }
 
-  void save(ActionEvent e) {
-    savetextfile(prefs.get("basename"), textArea1.getText());
+  private void save(ActionEvent e) {
+    saveTextFile(prefs.get("basename"), programTextArea.getText());
     changed = false;
   }
 
-  void quit(ActionEvent e) {
-    if(changed) saveas(e);
-    System.exit(0);
+  private void quit(ActionEvent e) {
+    if (changed) {
+      saveAs(e);
+    }
+    System.exit(1);
   }
 
-  void run(ActionEvent e) {
-    textArea2.setText("");
-    WadParse wp = new WadParse(textArea1.getText(),this);
+  private void run(ActionEvent e) {
+    messagesTextArea.setText("");
+    WadParse wp = new WadParse(programTextArea.getText(),this);
     if(wp.err!=null) {
-      textArea1.setCaretPosition(wp.pos);
+      programTextArea.setCaretPosition(wp.pos);
     } else {
       msg(__("parsed successfully, evaluating..."));
 
@@ -390,13 +401,13 @@ public class WadC extends JFrame implements WadCMainFrame {
       } catch(Error err) {
           wp.mf.msg("eval: "+err.getMessage());
 
-          Vector stacktrace = wp.wr.stacktrace;
+          List<String> stacktrace = wp.wr.stacktrace;
           if(stacktrace.size()>0) {
             String s = "stacktrace: ";
             int st = stacktrace.size()-10;
             if(st<0) st = 0;
             for(int i = stacktrace.size()-1; i>=st; i--) {
-              s += ((String)stacktrace.elementAt(i))+"\n";
+              s += (stacktrace.get(i))+"\n";
             }
             wp.mf.msg(s);
           }
@@ -409,16 +420,16 @@ public class WadC extends JFrame implements WadCMainFrame {
         wp.wr.scale = lastwp.wr.scale;
         wp.wr.xmid = lastwp.wr.xmid;
         wp.wr.ymid = lastwp.wr.ymid;
-      };
+      }
       lastwp = wp;
       cv.repaint();
-    };
+    }
   }
 
-  String savewad(ActionEvent e) {
+  private String savewad(ActionEvent e) {
     run(e);
     String wadfile = null;
-    if(lastwp==null || lastwp.err!=null) {
+    if (lastwp == null || lastwp.err != null) {
       //msg("wadsave: can only save wad after program has been run successfully");
     } else {
       String basename = prefs.get("basename");
@@ -426,20 +437,20 @@ public class WadC extends JFrame implements WadCMainFrame {
       wadfile = basename.substring(0, basename.lastIndexOf('.')) + ".wad";
       Wad wad = new Wad(lastwp,this,wadfile,true);
       wad.run();
-    };
+    }
     return wadfile;
   }
 
-  void textArea1_textValueChanged() {
+  private void textArea1_textValueChanged() {
     changed = true;
     if(lastwp!=null) {
       if(lastwp.editchanged==0) lastwp.editchanged = 2;
       if(lastwp.editchanged==1) lastwp.editchanged = 0;
-    };
+    }
   }
 
   // helper routine for invoking bsp, doom, etc.
-  void subcmd(List<String> cmd) {
+  private void subcmd(List<String> cmd) {
     ProcessBuilder pb = new ProcessBuilder(cmd);
     pb.inheritIO();
     msg(__("launching: ") + String.join(" ", cmd));
@@ -448,18 +459,28 @@ public class WadC extends JFrame implements WadCMainFrame {
       if(pb.start().waitFor() != 0) msg(__("cmd failed? ") + cmd.get(0));
     } catch(Exception e) {
       msg(__("command interrupted! ") + cmd.get(0));
-    };
+    }
   }
 
-  void bspdoom(String wadfile) {
+  private void bspdoom(String wadfile) {
     if(wadfile==null) return;
 
-    subcmd(Arrays.asList(prefs.get("bspcmd"), wadfile, "-o", wadfile));
+    File tmpfile;
+    try {
+      tmpfile = File.createTempFile(wadfile, ".tmp");
+      subcmd(Arrays.asList(prefs.get("bspcmd"), wadfile, "-o", tmpfile.getCanonicalPath()));
+      Files.copy(tmpfile.toPath(), FileSystems.getDefault().getPath(wadfile), StandardCopyOption.REPLACE_EXISTING);
+      tmpfile.delete();
+    } catch (IOException e) {
+        msg(__("IO Error with BSP! "));
+        msg(e.getMessage());
+        return;
+    }
 
-    ArrayList<String> cmd = new ArrayList<String>();
+    ArrayList<String> cmd = new ArrayList<>();
     cmd.add(prefs.get("doomexe"));
     cmd.addAll(Arrays.asList(prefs.get("doomargs").split("\\s+")));
-    cmd.addAll(Arrays.asList(prefs.get("twad1"), prefs.get("twad2"), prefs.get("twad3"), wadfile).stream()
+    cmd.addAll(Stream.of(prefs.get("twad1"), prefs.get("twad2"), prefs.get("twad3"), wadfile)
         .filter(s -> !"".equals(s))
         .collect(Collectors.toList()));
 
@@ -467,61 +488,11 @@ public class WadC extends JFrame implements WadCMainFrame {
   }
 
   public String getText() {
-      return textArea1.getText();
+      return programTextArea.getText();
   }
 
   public void insert(String s, int pos) {
-      textArea1.insert(s, pos);
+      programTextArea.insert(s, pos);
   }
 }
 
-class MyCanvas extends Canvas {
-  WadC mf;
-  boolean dragged;
-  int startx, starty;
-  MyCanvas c = this;
-
-  public void paint(Graphics g) {
-    if(mf.lastwp!=null) mf.lastwp.wr.render(g);
-  }
-
-  MyCanvas(WadC m) {
-    mf = m;
-    setBackground(Color.black);
-    enableEvents(AWTEvent.MOUSE_EVENT_MASK);
-    addMouseListener(new MouseAdapter() {
-      public void mousePressed(MouseEvent e) {
-        dragged = false;
-        startx = e.getX();
-        starty = e.getY();
-      }
-      public void mouseReleased(MouseEvent e) {
-        Graphics g = c.getGraphics();
-        if(mf.lastwp!=null) {
-          if(e.getButton() != MouseEvent.BUTTON1) {
-            mf.lastwp.wr.zoom(e.getX(),e.getY(),2.0f);
-          } else if((e.getModifiers()&MouseEvent.CTRL_MASK)!=0) {
-             mf.lastwp.wr.addstep(e.getX(),e.getY(),'L');
-          } else if((e.getModifiers()&MouseEvent.ALT_MASK)!=0) {
-             mf.lastwp.wr.addstep(e.getX(),e.getY(),'C');
-          } else if((e.getModifiers()&MouseEvent.SHIFT_MASK)!=0) {
-             mf.lastwp.wr.addstep(e.getX(),e.getY(),'J');
-          } else if(dragged && Math.abs(startx-e.getX())+Math.abs(starty-e.getY())>10) {
-            mf.lastwp.wr.pan(startx,starty,e.getX(),e.getY());
-          } else {
-            mf.lastwp.wr.zoom(e.getX(),e.getY(),0.5f);
-          };
-          repaint();
-        };
-      }
-      public void mouseClicked(MouseEvent e) {
-      };
-    });
-    addMouseMotionListener(new MouseMotionAdapter() {
-      public void mouseDragged(MouseEvent e) {
-        dragged = true;
-        if(mf.lastwp!=null) mf.lastwp.wr.crosshair(c.getGraphics(),(e.getModifiers()&MouseEvent.CTRL_MASK)!=0);
-      };
-    });
-  }
-}

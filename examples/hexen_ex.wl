@@ -46,6 +46,19 @@ main {
     pushpop(
         movestep(512,512)
         iceguy
-        for(1,5, thing movestep(0,64))
+        fori(1,5,
+            -- spawn a quartz flask when the wendigos die
+            -- thanks Gez
+            setthingargs(i, 0, 135, i,75,0,0,0)
+            thing movestep(0,64))
+    )
+
+    -- demonstrate z-position with a rising line of mana
+    mana1
+    movestep(64,960)
+    fori(1,10,
+      setthingargs(0, mul(i,8) /* zpos */, 0, 0,0,0,0,0)
+      thing
+      move(64)
     )
 }

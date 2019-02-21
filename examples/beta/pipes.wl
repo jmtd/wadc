@@ -6,7 +6,7 @@
 
 #"standard.h"
 #"water.h"
-#"lineflags.h"
+#"lines.h"
 #"basic.h"
 
 /*
@@ -326,7 +326,7 @@ _slimesecret(y,f,c,l,whatever) {
 
   slimecut(64,sub(f,96)) -- tunnel will be -96
   !slimesecret_orig
-  slimeinit(get("slimesecret"), -96, 32, 120, 120, "NUKAGE1", "WATERMAP", 80)
+  slimeinit(get("slimesecret"), -96, 32, 120, 120, "NUKAGE1", "WATERMAP", 80, "AASHITTY")
   ^slimesecret_orig
 
   set("slimesecret_lineflags_backup", getlineflags)

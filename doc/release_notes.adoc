@@ -13,6 +13,72 @@ current features, see link:reference.adoc[the Reference].
 
 toc::[]
 
+== 3.0
+
+Released 20^th^ February 2019.
+
+This version of WadC is dedicated to Lu (1972-2019). RIP.
+
+=== Core program changes
+
+ * When the external BSP program is invoked, we now instruct it to write out to
+   a temporary filename, and then move that over the final WAD name. This means
+   WadC can be used with node builders which do not support in-place node building
+   (e.g. AJBSP and ZokumBSP).
+ * One-sided lines now have their "impassable" flag bit set in PWADs.
+
+==== UI improvements
+
+The GUI now draws a marker for the cursor's location and orientation, in orange.
+It can be toggled with the menus in the same way as drawing things or vertices.
+
+=== Language features
+
+ * `rand(x,y)` — returns a random integer between x and y (inclusive). The behaviour
+    of `rand` is affected by the use of the `seed` function, in the same way as the
+    choice operator.
+
+ * `getorient` — returns the cursor's current orientation as an integer: 0 for North,
+    1 for East, 2 for South, 3 for West.
+
+ * Various deprecated functions have been removed: `landscape` and `marchingcubes`;
+   as well as the functions formerly used for configuring WadC: `lastfile`, `doomexe`,
+   `doomargs`, `bspcmd`, `iwad`, `twad1`, `twad2`, `twad3`, `togglevertices` and
+   `togglethings`.
+
+ * `setthingargs` is a renamed `setthinghexen` which has lost the thing type
+   argument (just use `thingtype` instead) and has grown three extra parameters: Thing
+   ID, Z-position and Thing Special.
+
+=== new/modified example programs
+
+* `blockmap.wl`: a random dungeon generator example. Room overdraw is avoided using
+   a blocklist.
+* `bsp.wl`: a simple example of a Binary Space Partition algorithm to subdivide a
+   rectangular space into sub-spaces, e.g. as a random dungeon generator
+* `hexen_ex.wl`: Added examples of z-height adjusted things
+
+Various deprecated examples in `examples/old` have been removed.
+
+==== Library additions/deletions
+
+ * `deaf` has been deprecated.
+ * `standard.h`:
+     * `forXY`: a two-dimensional for loop
+     * `assert`: test the parameter and die if ≠ 1
+     * `north`/`east`/`south`/`west` constants, for use with `getorient`
+     * `lessthan`, logical function
+ * `list.h`:
+     * renamed from `lisp.h`
+     * add `in_list`, `list_length`, `list_remove` and `list_get` functions
+ * `pair.h`: a pair data structure
+ * `blockmap.h`: a blockmap data structure, based on pairs in tuples
+
+=== Development stuff
+
+ * Upgrade the version of `maven-assemble-plugin` that we rely on. This fixes building
+   WadC with OpenJDK versions ≥ 9.
+
 == 2.2
 
 Released 13^th^ November 2017.
@@ -302,7 +368,7 @@ file in your configuration for this to work.
 
 ==== Library additions
 
-`lisp.h`::  lisp-style lists (broken out from `examples/lisp.wl`)
+`list.h`::  lisp-style lists (broken out from `examples/lisp.wl`)
 `water.h`:: Boom deep water tools
 
 within `standard.h`:

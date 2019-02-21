@@ -370,6 +370,14 @@ the random number generator:
 
 This affects any use of the choice operator that follows.
 
+=== random numbers
+
+    rand(x,y)
+
+Returns a random integer within the range x to y, inclusive. `rand` uses the
+same Random pool as the choice operator, and is similarly affected by the use
+of `seed`.
+
 === Simplex noise
 
    simplex(x,y)
@@ -403,6 +411,11 @@ which way you are looking.
 
 rotate you 90 degrees, e.g. "north rotright" is equivalent
 to "east".
+
+    getorient
+
+Tells you the current orientation as an integer: 0 for North, 1 for East,
+2 for South, 3 for West.
 
     up
     down
@@ -506,6 +519,11 @@ To fetch or adjust the flags used for creating new things, use
 Useful in conjunction with the bitwise operators. See the `thingtypes.h`
 library for useful definitions.
 
+    setthingargs(tid,zpos,special,arg1,arg2,arg3,arg4,arg5)
+
+Sets thing argument parameters for hexen-format maps. Using this command
+automatically changes the output wad to hexen format.
+
     linetype(type,tag)
 
 Sets the current type & tag for lines being drawn. Needs to be reset to 0
@@ -517,20 +535,18 @@ sets current type & tag for the next sectors being creates. Needs to be reset
 to 0 manually. (see below for how to use tags).
 
     linetypehexen(type,arg1,arg2,arg3,arg4,arg5)
-    setthinghexen(type,arg1,arg2,arg3,arg4,arg5)
 
-same as linetype & setthing above, only now for hexen/zdoom style wads. Using
-any of these commands automatically changes the output wad to hexen format.
-Note that arg1 in linetypehexen() is the same as tag in linetype(). To compile
-maps produced this way, recommended is the version of bsp that comes with
-"zeth". Check out zdoom.h for some useful macros.
+same as linetype above, only now for hexen/zdoom style wads. Using this command
+automatically changes the output wad to hexen format.  Note that arg1
+in linetypehexen() is the same as tag in linetype().
+Check out zdoom.h for some useful macros.
 
     setlineflags(flags)
     getlineflags
 
 Similar to the thing equivalents: fine control over linedef flag values.
 Useful in conjunction with the bitwise operators. There are some linedef
-flag constants defined in `include/lineflags.h`.
+flag constants defined in `include/lines.h`.
 
     getfloor
     getceil
@@ -824,7 +840,7 @@ object however results in an error.
 Identical in behaviour to get/set, these 2 access fields in an object rather
 than global variables.
 
-See lisp.wl for an example of how to use these functions to create an
+See `list.h` for an example of how to use these functions to create an
 actual datatype, and a caveat on the usage of "onew".
 
 === Custom textures
@@ -870,7 +886,7 @@ use
     hexenformat
 
 This will happen automatically if you use one of `linetypehexen` or
-`setthinghexen` as described earlier.
+`setthingargs` as described earlier.
 
     is_hexenformat
 
@@ -915,7 +931,8 @@ basic.h::      a set of higher level architectural building blocks
                to work with for bigger maps. Contains common doom map
                prefabs for things like starts, end of level, monster
                teleporting and placement, and room segments.
-lisp.h::       lisp-style cons lists
+list.h::       lisp-style cons lists
+pair.h::       pair type (useful for coordinates, etc.)
 math::         some math routines (bit shifts and `pow` so far)
 
 === Thing definitions
@@ -940,11 +957,6 @@ spawns.h::     macros for Doom player and deathmatch starts, and teleports
 (as well as Boom and MBF additions) and some routines to manipulate them. Some
 of these routines were built-in commands in earlier versions of WadC:
 
-    deaf
-
-toggles the 'ambush' flag. Any following monsters will be in 'ambush' mode.
-Calling it again switches it off again.
-
     easy
     hurtmeplenty
     ultraviolence
@@ -960,12 +972,13 @@ an MBF-supporting port to work. It will not work for Hexen.
 
     setflag(x)
     clearflag(x)
+    toggleflag(x)
 
-Sets or clears the given flag value, e.g. `setflag(multiplayer)`
+Sets, clears or flips the given flag value, e.g. `setflag(multiplayer)`
 
 === Line flags
 
-Some line flag constant values are defined in `lineflags.h`.
+Some line flag constant values are defined in `lines.h`.
 
 === Other games
 

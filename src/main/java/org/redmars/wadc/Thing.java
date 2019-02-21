@@ -7,15 +7,22 @@
  */
 
 package org.redmars.wadc;
-import java.util.*;
 
 public class Thing {
   int idx;
   int x,y;
   int angle;
-  int type;
-  int opt;
+  int type = 1;
+  int opt; // flags
   int special = 0;
   int specialargs[] = new int[5];
-  Thing() { for(int i = 0; i < specialargs.length; i++) specialargs[i] = 0; }
+
+  int tid = 0;
+  int zpos = 0;
+
+  Thing() {
+    for(int i = 0; i<5; i++) {
+      specialargs[i] = 0;
+    }
+  }
 }

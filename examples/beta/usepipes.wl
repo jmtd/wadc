@@ -19,7 +19,7 @@ usepipes {
   ^usepipes
 
   set("slime1", onew)
-  slimeinit(get("slime1"), 0, 128, 120, 24, "SLIME05", "WATERMAP", 80)
+  slimeinit(get("slime1"), 0, 128, 120, 24, "SLIME05", "WATERMAP", 80, "AASHITTY")
   _usepipes(get("slime1"))
 }
 _usepipes(o) {
@@ -95,13 +95,13 @@ _usepipes(o) {
   pushpop(
     movestep(-256,128)
     turnaround
-    demon deaf
+    demon toggleflag(ambush)
     triple( thing move(128) )
-    deaf
+    toggleflag(ambush)
   )
 
   set("slime2", onew)
-  slimeinit(get("slime2"), -256, -128, 150, 16, "SLIME05", "WATERMAP", 80)
+  slimeinit(get("slime2"), -256, -128, 150, 16, "SLIME05", "WATERMAP", 80, "AASHITTY")
 
   _slimelift(
     !east,

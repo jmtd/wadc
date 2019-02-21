@@ -24,24 +24,6 @@ odd(x) {
 }
 
 /*
- * x: number of columns
- * y: number of rows
- * row: callback for ending a row (like carriage return)
- * cell: callback for new cells
- */
-forXY(x,y,row,cell) {
-  set("x", 1)
-  for(1, y,
-    set("y", 1)
-    for(1, x, cell inc("y",1))
-    inc("x",1)
-    row
-  )
-}
-x { get("x") }
-y { get("y") }
-
-/*
  * hexes - draw a field of hexes, w-wide and h-tall
  */
 hexes(w, h, s) {

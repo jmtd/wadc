@@ -1,10 +1,12 @@
 /*
- * lisp.h - part of WadC
+ * list.h - part of WadC
  * Copyright © 2001-2008 Wouter van Oortmerssen
  * Copyright © 2008-2016 Jonathan Dowland <jon@dow.land>
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
+ *
+ * Lisp-style lists
  */
 
 -- basic constructor/accessor functions
@@ -43,3 +45,38 @@ map(x, f) {
 }
 
 mapvar() { get("mapvar") }   -- our closures can't take arguments
+
+-- relies on eq()
+in_list(x,l)
+{
+    ifelse(eq(l,nil), 0,
+        ifelse(eq(hd(l), x),
+           1,
+           in_list(x, tl(l))
+    ))
+}
+
+list_length(l)
+{
+    ifelse(eq(nil,l), 0,
+       add(1, list_length(tl(l))))
+}
+
+list_get(l,i)
+{
+    ifelse(eq(nil, l),
+           nil,
+           ifelse(eq(0,i),
+                  hd(l),
+                  list_get(tl(l), sub(i,1))
+    ))
+}
+
+list_remove(l, i)
+{
+    ifelse(eq(nil, l), nil,
+          ifelse(eq(0, i),
+                tl(l),
+                cons(hd(l), list_remove(tl(l),sub(i,1)))
+    ))
+}
