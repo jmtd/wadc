@@ -1,8 +1,10 @@
-wadc (2.2-4) UNRELEASED; urgency=medium
+wadc (3.0-1) unstable; urgency=medium
 
+  * New upstream release.
+  * Recommend zdbsp instead of glbsp.
   * Update series file to apply 0002-docs-bsp.patch (oops)
 
- -- Jonathan Dowland <jmtd@debian.org>  Mon, 18 Feb 2019 11:51:22 +0000
+ -- Jonathan Dowland <jmtd@debian.org>  Mon, 18 Feb 2019 11:53:18 +0000
 
 wadc (2.2-3) unstable; urgency=medium
 
