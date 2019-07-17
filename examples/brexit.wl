@@ -1,14 +1,21 @@
+/*
+ * brexit.wl - part of WadC
+ * Copyright © 2019 Jonathan Dowland <jon@dow.land>
+ *
+ * Distributed under the terms of the GNU GPL Version 2
+ * See file LICENSE.txt
+ *
+ * "BRutal EXtinction International Tournament"
+ * More complex demonstration of vanilla conveyors
+ * Available in the /idgames archive:
+ * https://www.doomworld.com/idgames/levels/doom2/a-c/brexit
+ */
+
 #"standard.h"
 #"monsters.h"
 #"basic.h"
 #"control.h"
 #"vanilla_conveyor.h"
-
-/*
- * we could try line type 59: up 24, rear sideof activating linedef controls floor and special
- * means controlling properties of the conveyor sector
- * or we could revert to the working version from earlier
- */
 
 skyheight { 320 }
 wsize { 112 }

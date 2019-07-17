@@ -1,11 +1,13 @@
 /*
- * conveyor.h - part of WadC
+ * vanilla_conveyor.h - part of WadC
  * Copyright © 2019 Jonathan Dowland <jon@dow.land>
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
  *
  * routines for building vanilla-compatible vanilla conveyors
+ *
+ * EXPERIMENTAL — skill1 is currently broken
  */
 
 #"standard.h"

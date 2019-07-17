@@ -13,6 +13,21 @@ current features, see link:reference.adoc[the Reference].
 
 toc::[]
 
+== Dev
+
+Not yet released.
+
+=== new/modified example programs
+
+ * `vanilla_conveyor.wl`: simple demonstration of vanilla conveyors
+ * `brexit.wl`: more complex demonstration of vanilla conveyors
+
+==== Library additions/deletions
+
+ * `vanilla_conveyor.h`: helper routines for building vanilla "conveyor"
+    triggers, based on a discovery by Mikolah & Linguica on the Doomworld
+    Forums. Experimental.
+
 == 3.0
 
 Released 20^th^ February 2019.
