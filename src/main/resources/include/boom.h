@@ -12,6 +12,7 @@
 */
 
 #"math.h"
+#"sector.h"
 
 /* boom linedef types *******************************************************/
 
@@ -181,27 +182,11 @@ gen_crusher(trigger, speed, monster, silent) {
 
 /* generalised sector types *************************************************/
 
--- these are actually vanilla doom values; the light values are re-used in
--- generalised sectors, but the others are ignored (commented out in-line
--- for reference)
-light_normal            { 0  }
-light_random_off        { 1  }
-light_blink_half_s      { 2  }
-light_blink_1s          { 3  }
-light_blink_half_s_hurt { 4  } -- -10/20% health
---5   Damage  10% damage per second
---7   Damage  5% damage per second
-light_oscillate         { 8  }
---9   Secret  Player entering this sector gets credit for finding a secret
---10  Door    30 seconds after level start, ceiling closes like a door
---11  End 20% damage per second. When player dies, level ends
-light_blink_05s_sync    { 12 }
-light_blink_1s_sync     { 13 }
---14  Door    300 seconds after level start, ceiling opens like a door
---16  Damage  20% damage per second
-light_flicker           { 17 }
+-- the light values from vanilla doom sector types for lighting are re-used
+-- for boom generalised sectors. See sectors.h
 
 -- boom additions
+
 damage_5pers  { 32 }
 damage_10pers { 64 }
 damage_20pers { 96 }

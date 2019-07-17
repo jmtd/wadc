@@ -357,3 +357,10 @@ cluster(x,gap) {
   )
   ^cluster
 }
+
+flip {
+ ifelse(eq(0,get("flip")),
+    set("flip", 1),
+    set("flip", 0)
+   )
+}

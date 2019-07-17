@@ -16,40 +16,12 @@
 #"basic.h"
 #"control.h"
 #"vanilla_conveyor.h"
+#"lines.h"
+#"sectors.h"
 
 skyheight { 320 }
 wsize { 112 }
 skylight { 160 }
-
--- stuff to move elsewere ----------------------------------------------------
-
-sectortype_damage_5 { 7 }
-sectortype_damage_10 { 5 }
-door_w1_openclose { 2 } -- XXX rename
-floor_w1_down_slow_txty { 37 }
-floor_w1_up_fast_nnF { 130 }
-wall_scroll_left { 48 }
-sector_oscillate { 8 }
-
-ceiling_w1_down_8f { 44 }
-
-light_w1_255  { 13 }
-light_w1_35   { 35 }
-light_w1_maxN { 12 }
-light_w1_minN { 104 }
-light_w1_blink{ 17 }
-
-stairs_w1_slow_8  { 8 }
-stairs_w1_fast_16 { 100 }
-
-flip {
- ifelse(eq(0,get("flip")),
-    set("flip", 1),
-    set("flip", 0)
-   )
-}
-
-------------------------------------------------------------------------------
 
 main
 {
@@ -187,10 +159,10 @@ setup_conveyor
   conveyor_trigger(stairs_w1_fast_16, $upstairs, 128)
 
   -- nukage flood #1
-  conveyor_trigger(floor_w1_down_slow_txty, $bottom, 1)
+  conveyor_trigger(floor_w1_down_LnF_TxTy, $bottom, 1)
   conveyor_trigger(light_w1_255, $bottom, 1)
   conveyor_trigger(floor_w1_up_24, $bottom, 1)
-  conveyor_trigger(floor_w1_down_slow_txty, $step1, 12) -- must be >10 but want as short as poss, step inaccessible until it rises again
+  conveyor_trigger(floor_w1_down_LnF_TxTy, $step1, 12) -- must be >10 but want as short as poss, step inaccessible until it rises again
   conveyor_trigger(light_w1_255, $step1, 1) -- XXX move to flood 2?
 
   -- flood #2
@@ -202,7 +174,7 @@ setup_conveyor
   conveyor_trigger(floor_w1_up_24, $bottom, 32)
   conveyor_trigger(floor_w1_up_24, $crate1, 1)
   conveyor_trigger(floor_w1_up_24, $crate2, 1)
-  conveyor_trigger(floor_w1_down_slow_txty, $step2, 14) -- must be >8
+  conveyor_trigger(floor_w1_down_LnF_TxTy, $step2, 14) -- must be >8
   conveyor_trigger(light_w1_255, $step2, 1)
   conveyor_trigger(floor_w1_up_NnF, $step1, 7) -- must be >8 from last mover
   conveyor_trigger(floor_w1_up_NnF, $step2, 12) -- must be >=12
@@ -212,30 +184,30 @@ setup_conveyor
   conveyor_trigger(floor_w1_up_24, $crate1, 1)
   conveyor_trigger(floor_w1_up_24, $crate2, 1)
   conveyor_trigger(floor_w1_up_NnF, $step1, 10) -- must be >8
-  conveyor_trigger(floor_w1_down_slow_txty, $step3, 1) -- 
+  conveyor_trigger(floor_w1_down_LnF_TxTy, $step3, 1) -- 
   conveyor_trigger(floor_w1_up_NnF, $step2, 11) -- 
   conveyor_trigger(light_w1_255, $step3, 1)
   conveyor_trigger(floor_w1_up_NnF, $step3, 12) -- 
 
   -- zombie boxes
   conveyor_trigger(floor_w1_down_LnF, $door1,  1)
-  conveyor_trigger(floor_w1_up_fast_nnF, $plat1, 32)
+  conveyor_trigger(floor_w1_up_fast_NnF, $plat1, 32)
   conveyor_trigger(floor_w1_down_LnF,$door3,  64)
-  conveyor_trigger(floor_w1_up_fast_nnF, $plat3, 32)
+  conveyor_trigger(floor_w1_up_fast_NnF, $plat3, 32)
 
   conveyor_trigger(floor_w1_down_LnF,$door2,  64)
   conveyor_trigger(floor_w1_down_LnF,$door4,  1)
-  conveyor_trigger(floor_w1_up_fast_nnF, $plat2, 32)
-  conveyor_trigger(floor_w1_up_fast_nnF, $plat4, 1)
+  conveyor_trigger(floor_w1_up_fast_NnF, $plat2, 32)
+  conveyor_trigger(floor_w1_up_fast_NnF, $plat4, 1)
 
   -- access to upper level
   --conveyor_trigger(stairs_w1_fast_16, $upstairs, 128)
 
   -- more doors (to interleave/reorder/time)
   conveyor_trigger(floor_w1_down_LnF,$door5, 256)
-  conveyor_trigger(floor_w1_up_fast_nnF, $plat5, 32)
+  conveyor_trigger(floor_w1_up_fast_NnF, $plat5, 32)
   conveyor_trigger(floor_w1_down_LnF,$door6, 128) -- exit door
-  conveyor_trigger(floor_w1_up_fast_nnF, $plat6, 32)
+  conveyor_trigger(floor_w1_up_fast_NnF, $plat6, 32)
 
   -- old...
   conveyor_trigger(door_w1_openclose,$door7, 32)
@@ -739,7 +711,7 @@ advert(height,tex,width,tag,y)
   right(2)
   right(width)
   rotright
-  sectortype(sector_oscillate, 0)
+  sectortype(light_oscillate, 0)
   rightsector(height, add(20,height), 256)
   move(2)
 /*
@@ -750,7 +722,7 @@ advert(height,tex,width,tag,y)
   right(2)
   right(width)
   rotright
-  sectortype(sector_oscillate,$exitdoor)
+  sectortype(light_oscillate,$exitdoor)
   rightsector(height, height, 100)
   sectortype(0,0)
   move(2)
@@ -786,7 +758,7 @@ diagvert(height,tex,width,tag)
   mid("BLAKWAL1")
   step(-1, 1)
   step(mul(-1, width), mul(-1, width))
-  sectortype(sector_oscillate, 0)
+  sectortype(light_oscillate, 0)
   rightsector(height, add(20,height), 256)
   movestep(1,-1)
 /*
@@ -796,7 +768,7 @@ diagvert(height,tex,width,tag)
   linetype(0,0)
   step(-1,1)
   step(mul(-1, width), mul(-1, width))
-  sectortype(sector_oscillate,$exitdoor)
+  sectortype(light_oscillate,$exitdoor)
   rightsector(height, height, 100)
   sectortype(0,0)
   movestep(1,-1)

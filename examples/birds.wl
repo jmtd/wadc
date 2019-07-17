@@ -735,13 +735,6 @@ starts {
   ^starts
 }
 
-flip {
- ifelse(eq(0,get("flip")),
-    set("flip", 1),
-    set("flip", 0)
-   )
-}
-
 /*
     off-map joined-sector for waking up monsters and later
     teleporting them into the game area
