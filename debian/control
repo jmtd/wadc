@@ -1,7 +1,7 @@
 Source: wadc
 Section: utils
 Priority: optional
-Maintainer: Jonathan Dowland <jmtd@debian.org>
+Maintainer: Debian QA Group <packages@qa.debian.org>
 Build-Depends: asciidoctor,
                debhelper (>= 9),
                default-jdk-headless (>= 2:1.8),
