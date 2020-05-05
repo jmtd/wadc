@@ -3,7 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Debian QA Group <packages@qa.debian.org>
 Build-Depends: asciidoctor,
-               debhelper (>= 12~),
+               debhelper-compat (= 12),
                default-jdk-headless (>= 2:1.8),
                dh-exec,
                maven-debian-helper (>= 2.1)
