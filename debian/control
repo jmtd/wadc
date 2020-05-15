@@ -3,12 +3,12 @@ Section: utils
 Priority: optional
 Maintainer: Debian QA Group <packages@qa.debian.org>
 Build-Depends: asciidoctor,
-               debhelper (>= 9),
+               debhelper-compat (= 12),
                default-jdk-headless (>= 2:1.8),
                dh-exec,
                maven-debian-helper (>= 2.1)
 Standards-Version: 3.9.8
-Vcs-Git: https://github.com/jmtd/wadc -b debian
+Vcs-Git: https://github.com/jmtd/wadc.git -b debian
 Vcs-Browser: https://github.com/jmtd/wadc
 Homepage: https://jmtd.net/wadc/
 
