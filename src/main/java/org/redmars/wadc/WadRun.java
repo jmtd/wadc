@@ -426,6 +426,10 @@ class WadRun {
       return new Int(a.ival()==b.ival()?1:0);
     }});
 
+    builtin("streq", 2, new Builtin() { Exp eval(Exp a, Exp b) {
+      return new Int(a.sval().equals(b.sval())?1:0);
+    }});
+
     builtin("lessthaneq", 2, new Builtin() { Exp eval(Exp a, Exp b) {
       return new Int(a.ival()<=b.ival()?1:0);
     }});
