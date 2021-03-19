@@ -126,6 +126,14 @@ class WadRun {
       return new Int(orient);
     }});
 
+    builtin("getx", 0, new Builtin() { Exp eval() {
+      return new Int(xp);
+    }});
+
+    builtin("gety", 0, new Builtin() { Exp eval() {
+      return new Int(yp);
+    }});
+
     builtin("up", 0, new Builtin() { Exp eval() {
       pendown = false;
       return n;

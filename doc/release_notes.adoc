@@ -17,6 +17,11 @@ toc::[]
 
 Not yet released.
 
+=== Language features
+
+ * Two new built-ins: `getx` and `gety` return the cursor's current X/Y
+   position.
+
 === new/modified example programs
 
  * `vanilla_conveyor.wl`: simple demonstration of vanilla conveyors
