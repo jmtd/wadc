@@ -36,6 +36,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.ButtonGroup;
 import javax.swing.KeyStroke;
+import javax.swing.JTabbedPane;
 
 public class WadC extends JFrame implements WadCMainFrame {
   private JTextArea programTextArea = new JTextArea("",15,30);
@@ -43,6 +44,7 @@ public class WadC extends JFrame implements WadCMainFrame {
   private GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
   private Panel panel1 = new Panel();
   private TextArea messagesTextArea = new TextArea("",5,20);
+  private TextArea tunablesArea = new TextArea("",5,20); // placeholder
   private JMenuBar mainMenuBar = new JMenuBar();
   private JMenu fileMenu = new JMenu();
   private JMenuItem newMenuItem = new JMenuItem();
@@ -77,6 +79,8 @@ public class WadC extends JFrame implements WadCMainFrame {
 
   private JMenuItem fontSizeDownItem = new JMenuItem();
   private JMenuItem fontSizeUpItem = new JMenuItem();
+
+  private JTabbedPane tabbedPane = new JTabbedPane();
 
   private Canvas cv;
   UndoManager manager = new UndoManager();
@@ -306,10 +310,13 @@ public class WadC extends JFrame implements WadCMainFrame {
     fillMenu.add(lightSectors);
     
     cv = new WadCanvas(this);
-    //messagesTextArea.setBackground(Color.lightGray);
+
     messagesTextArea.setEditable(false);
+    tabbedPane.addTab(__("Messages"), messagesTextArea);
+    tabbedPane.addTab(__("Tunables"), tunablesArea);
+
     panel1.add(cv,"b3");
-    panel1.add(messagesTextArea, "b1");
+    panel1.add(tabbedPane, "b1");
     add(panel1, "b3");
     //setSize(600,400);
     this.setLocation(50,50);
