@@ -565,6 +565,12 @@ class WadRun {
       mapname = a.sval();
       return n;
     }});
+
+    // XXX Rename!
+    builtin("tuneable", 2, new Builtin() { Exp eval(Exp label, Exp val) {
+        wp.mf.tuneable(label.sval());
+        return new Int(val.ival());
+    }});
   }
 
   private void builtin(String s, int nargs, Builtin b) {

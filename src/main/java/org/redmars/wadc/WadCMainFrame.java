@@ -26,4 +26,7 @@ public interface WadCMainFrame {
     // inserting text into the buffer
     //wp.mf.textArea1.insert(s,wp.editinsertpos);
     void insert(String s, int pos);
+
+    // registering a tuneable
+    void tuneable(String s);
 }

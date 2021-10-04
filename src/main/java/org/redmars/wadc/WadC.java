@@ -44,7 +44,7 @@ public class WadC extends JFrame implements WadCMainFrame {
   private GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
   private Panel panel1 = new Panel();
   private TextArea messagesTextArea = new TextArea("",5,20);
-  private TextArea tunablesArea = new TextArea("",5,20); // placeholder
+  private TuneablePanel tunablesArea = new TuneablePanel();
   private JMenuBar mainMenuBar = new JMenuBar();
   private JMenu fileMenu = new JMenu();
   private JMenuItem newMenuItem = new JMenuItem();
@@ -501,5 +501,8 @@ public class WadC extends JFrame implements WadCMainFrame {
   public void insert(String s, int pos) {
       programTextArea.insert(s, pos);
   }
-}
 
+  public void tuneable(String s) {
+      tunablesArea.append("\n"+s+"\n");
+  }
+}
