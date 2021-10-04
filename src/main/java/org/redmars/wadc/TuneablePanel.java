@@ -13,16 +13,20 @@
 package org.redmars.wadc;
 
 import java.awt.TextArea;
+import javax.swing.JPanel;
 
-public class TuneablePanel extends TextArea
+public class TuneablePanel extends JPanel
 {
+    private TextArea ta;
+
     public TuneablePanel()
     {
-        super(5,20);
+        ta = new TextArea(5,20);
+        this.add(ta);
     }
     
     public void append(String s)
     {
-        super.append(s);
+        ta.append(s);
     }
 }
