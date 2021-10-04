@@ -1,10 +1,5 @@
-
 /*
- * Copyright © 2017 Jonathan Dowland <jon@dow.land>
- * Copyright © 2009 Hauke Rehfeld
- *
- * Adapted from QuakeInjector:
- *     https://www.quaddicted.com/tools/quake_injector
+ * Copyright © 2021 Jonathan Dowland <jon@dow.land>
  *
  * Distributed under the terms of the GNU GPL Version 2
  * See file LICENSE.txt
@@ -14,7 +9,7 @@ package org.redmars.wadc;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.TextField;
+import javax.swing.JSlider;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -46,15 +41,22 @@ public class TuneablePanel extends JPanel
     {
         this.setLayout(new GridBagLayout());
     }
-    
+     
+    // temporary values, which will eventually be part of the Tuneable interface
+    private int min = 0;
+    private int max = 100;
+
     public void addTuneable(String s, int i)
     {
         JLabel label = new JLabel(s);
-        final int inputLength = 5; // reasonable default?
-        TextField tf = new TextField(""+i, inputLength);
+        JSlider js = new JSlider(min, max, i);
+        js.setLabelTable(js.createStandardLabels(max/2));
+        js.setPaintLabels(true);
         final int _row = row;
         this.add(label, new LabelConstraints() {{ gridy = _row; }});
-        this.add(tf, new InputConstraints() {{ gridy = _row; }});
+        this.add(js, new InputConstraints() {{ gridy = _row; }});
         ++row;
+
+        this.updateUI();
     }
 }
