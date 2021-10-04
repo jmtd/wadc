@@ -28,5 +28,5 @@ public interface WadCMainFrame {
     void insert(String s, int pos);
 
     // registering a tuneable
-    void tuneable(String s);
+    void tuneable(String s, int v);
 }

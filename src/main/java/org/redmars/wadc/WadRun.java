@@ -568,8 +568,9 @@ class WadRun {
 
     // XXX Rename!
     builtin("tuneable", 2, new Builtin() { Exp eval(Exp label, Exp val) {
-        wp.mf.tuneable(label.sval());
-        return new Int(val.ival());
+        int i = val.ival();
+        wp.mf.tuneable(label.sval(), i);
+        return new Int(i);
     }});
   }
 

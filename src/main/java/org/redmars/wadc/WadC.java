@@ -502,7 +502,7 @@ public class WadC extends JFrame implements WadCMainFrame {
       programTextArea.insert(s, pos);
   }
 
-  public void tuneable(String s) {
-      tunablesArea.append("\n"+s+"\n");
+  public void tuneable(String s, int v) {
+      tunablesArea.addTuneable(s,v);
   }
 }
