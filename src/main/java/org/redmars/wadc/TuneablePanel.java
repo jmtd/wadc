@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JSlider;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.util.Hashtable;
 
 public class TuneablePanel extends JPanel
 {
@@ -37,9 +38,12 @@ public class TuneablePanel extends JPanel
  
     private int row = 1;
 
+    private Hashtable<String,Integer> tuneables;
+
     public TuneablePanel()
     {
         this.setLayout(new GridBagLayout());
+        tuneables = new Hashtable<>();
     }
      
     // temporary values, which will eventually be part of the Tuneable interface
@@ -48,15 +52,20 @@ public class TuneablePanel extends JPanel
 
     public void addTuneable(String s, int i)
     {
-        JLabel label = new JLabel(s);
-        JSlider js = new JSlider(min, max, i);
-        js.setLabelTable(js.createStandardLabels(max/2));
-        js.setPaintLabels(true);
-        final int _row = row;
-        this.add(label, new LabelConstraints() {{ gridy = _row; }});
-        this.add(js, new InputConstraints() {{ gridy = _row; }});
-        ++row;
+        if(!tuneables.containsKey(s))
+        {
+            tuneables.put(s,i);
 
-        this.updateUI();
+            JLabel label = new JLabel(s);
+            JSlider js = new JSlider(min, max, i);
+            js.setLabelTable(js.createStandardLabels(max/2));
+            js.setPaintLabels(true);
+            final int _row = row;
+            this.add(label, new LabelConstraints() {{ gridy = _row; }});
+            this.add(js, new InputConstraints() {{ gridy = _row; }});
+            ++row;
+
+            this.updateUI();
+        }
     }
 }
