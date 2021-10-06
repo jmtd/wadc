@@ -46,11 +46,7 @@ public class TuneablePanel extends JPanel
         tuneables = new Hashtable<>();
     }
      
-    // temporary values, which will eventually be part of the Tuneable interface
-    private int min = 0;
-    private int max = 100;
-
-    public void addTuneable(String s, int i)
+    public void addTuneable(String s, int min, int i, int max)
     {
         if(!tuneables.containsKey(s))
         {

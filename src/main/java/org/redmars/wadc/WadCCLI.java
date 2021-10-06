@@ -110,7 +110,7 @@ public class WadCCLI implements WadCMainFrame {
     public void insert(String s, int pos) {
         // not implemented
     }
-    public void tuneable(String s, int v) {
+    public void tuneable(String s, int min, int v, int max) {
         // not implemented
     }
 }
