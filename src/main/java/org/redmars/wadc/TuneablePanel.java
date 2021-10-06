@@ -9,12 +9,16 @@ package org.redmars.wadc;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.JSlider;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.util.Hashtable;
 
-public class TuneablePanel extends JPanel
+public class TuneablePanel
+    extends JPanel
+    implements ChangeListener
 {
     class LabelConstraints extends GridBagConstraints {{
             anchor = LINE_START;
@@ -38,7 +42,9 @@ public class TuneablePanel extends JPanel
  
     private int row = 1;
 
-    private Hashtable<String,Integer> tuneables;
+    record Knob (String label, int val, JSlider slider) {}
+
+    private Hashtable<String,Knob> tuneables;
 
     public TuneablePanel()
     {
@@ -50,18 +56,40 @@ public class TuneablePanel extends JPanel
     {
         if(!tuneables.containsKey(s))
         {
-            tuneables.put(s,i);
 
             JLabel label = new JLabel(s);
             JSlider js = new JSlider(min, max, i);
             js.setLabelTable(js.createStandardLabels(max/2));
             js.setPaintLabels(true);
+            js.addChangeListener(this);
+
+            tuneables.put(s, new Knob(s, i, js));
+
             final int _row = row;
             this.add(label, new LabelConstraints() {{ gridy = _row; }});
             this.add(js, new InputConstraints() {{ gridy = _row; }});
             ++row;
 
             this.updateUI();
+        }
+    }
+
+    // ChangeListener interface
+    public void stateChanged(ChangeEvent e)
+    {
+        JSlider js = (JSlider)e.getSource();
+        for(Knob k : tuneables.values())
+        {
+            if(k.slider == js)
+            {
+                int val = js.getValue();
+                if(k.val != val)
+                {
+                    Knob k2 = new Knob(k.label, val, js);
+                    tuneables.put(k2.label, k2);
+                    System.err.println(k2.label + " changed value from " + k.val + " + to " + k2.val);
+                }
+            }
         }
     }
 }
