@@ -46,6 +46,13 @@ public class TuneablePanel
 
     private Hashtable<String,Knob> tuneables;
 
+    public void clear()
+    {
+        this.removeAll();
+        this.updateUI();
+        tuneables.clear();
+    }
+
     public TuneablePanel()
     {
         this.setLayout(new GridBagLayout());
