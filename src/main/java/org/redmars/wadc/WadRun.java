@@ -568,7 +568,7 @@ class WadRun {
 
     // integers only so far
     builtin("knob", 4, new Builtin() { Exp eval(Exp label, Exp min, Exp val, Exp max) {
-        int i = wp.mf.getOrSet(label.sval(), min.ival(), val.ival(), max.ival());
+        int i = wp.mf.knobs.getOrSet(label.sval(), min.ival(), val.ival(), max.ival());
         return new Int(i);
     }});
   }

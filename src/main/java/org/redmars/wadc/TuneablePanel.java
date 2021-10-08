@@ -18,7 +18,7 @@ import java.util.Hashtable;
 
 public class TuneablePanel
     extends JPanel
-    implements ChangeListener
+    implements ChangeListener, KnobEventListener
 {
     class LabelConstraints extends GridBagConstraints {{
             anchor = LINE_START;
@@ -39,12 +39,10 @@ public class TuneablePanel
             weightx = 1;
             weighty = 0;
     }};
- 
+
     private int row = 1;
 
-    record Knob (String label, int val, JSlider slider) {}
-
-    private Hashtable<String,Knob> tuneables;
+    private Hashtable<String,JSlider> tuneables;
 
     public void clear()
     {
@@ -53,24 +51,26 @@ public class TuneablePanel
         tuneables.clear();
     }
 
-    public TuneablePanel()
+    private static KnobJockey knobs;
+    public TuneablePanel(KnobJockey knobs)
     {
         this.setLayout(new GridBagLayout());
+        this.knobs = knobs;
         tuneables = new Hashtable<>();
+        knobs.addListener(this);
     }
-     
+
     public void addTuneable(String s, int min, int i, int max)
     {
         if(!tuneables.containsKey(s))
         {
-
             JLabel label = new JLabel(s);
             JSlider js = new JSlider(min, max, i);
             js.setLabelTable(js.createStandardLabels(max/2));
             js.setPaintLabels(true);
             js.addChangeListener(this);
 
-            tuneables.put(s, new Knob(s, i, js));
+            tuneables.put(s, js);
 
             final int _row = row;
             this.add(label, new LabelConstraints() {{ gridy = _row; }});
@@ -81,37 +81,30 @@ public class TuneablePanel
         }
     }
 
-    public int getOrSet(String s, int min, int val, int max)
+    // KnobEventListener interface
+    public void knobAdded(String label, int min, int val, int max)
     {
-
-        if(!tuneables.containsKey(s))
-        {
-            addTuneable(s,min,val,max);
-            return val;
-        }
-        else
-        {
-            Knob k = tuneables.get(s);
-            // XXX update min/max
-            // XXX clamp value
-            return k.val;
-        }
+        addTuneable(label, min, val, max);
     }
 
     // ChangeListener interface
     public void stateChanged(ChangeEvent e)
     {
         JSlider js = (JSlider)e.getSource();
-        for(Knob k : tuneables.values())
+        for(String s : tuneables.keySet())
         {
-            if(k.slider == js)
+            JSlider slider = tuneables.get(s);
+            if(slider == js)
             {
                 int val = js.getValue();
-                if(k.val != val)
+
+                Knob k = knobs.get(s);
+
+                if(k.val() != val)
                 {
-                    Knob k2 = new Knob(k.label, val, js);
-                    tuneables.put(k2.label, k2);
-                    System.err.println(k2.label + " changed value from " + k.val + " + to " + k2.val);
+                    // XXX this will send a listener event back here, will we ignore it?
+                    knobs.set(s,val);
+                    System.err.println(s + " changed value from " + k.val() + " + to " + val);
                 }
             }
         }

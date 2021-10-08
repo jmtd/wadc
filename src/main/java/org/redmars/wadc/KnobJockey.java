@@ -12,13 +12,75 @@
 
 package org.redmars.wadc;
 
-public interface KnobJockey
+import java.util.ArrayList;
+import java.util.Hashtable;
+
+public class KnobJockey
 {
-    // XXX we probably want a Listener interface to notify things
-    // when a knob value changes
+    private Hashtable<String,Knob> tuneables;
+    private ArrayList<KnobEventListener> listeners;
+
+    public KnobJockey()
+    {
+        tuneables = new Hashtable<>();
+        listeners = new ArrayList<>();
+    }
+
+    public void addListener(KnobEventListener l)
+    {
+        listeners.add(l);
+    }
+
+    private void notifyAdd(Knob k)
+    {
+        for(KnobEventListener l : listeners)
+        {
+            l.knobAdded(k.label(), k.min(), k.val(), k.max());
+        }
+    }
 
     // if there exists a Knob with key 's', clamp its value to
     // between min and max; update the registered min and max
     // values to those supplied, and return the clamped value.
-    public int getOrSet(String s, int min, int val, int max);
+    public int getOrSet(String s, int min, int val, int max)
+    {
+        if(!tuneables.containsKey(s))
+        {
+            Knob k = new Knob(s, min, val, max);
+            tuneables.put(s, k);
+            notifyAdd(k);
+            return val;
+        }
+        else
+        {
+            Knob k = tuneables.get(s);
+            // XXX update min/max
+            // XXX clamp value
+            return k.val();
+        }
+    }
+
+    public Knob get(String s)
+    {
+        return tuneables.get(s);
+    }
+
+    public void set(String s, int val)
+    {
+        if(tuneables.containsKey(s))
+        {
+            Knob o = tuneables.get(s);
+            Knob k = new Knob(s, o.min(), val, o.max());
+            tuneables.put(s, k);
+            notifyAdd(k);
+        }
+    }
+
+    public void dumpAll()
+    {
+        for(Knob k: tuneables.values())
+        {
+            System.err.println(k);
+        }
+    }
 }

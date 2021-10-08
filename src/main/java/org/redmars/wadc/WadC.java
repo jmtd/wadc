@@ -44,7 +44,7 @@ public class WadC extends JFrame implements WadCMainFrame {
   private GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
   private Panel panel1 = new Panel();
   private TextArea messagesTextArea = new TextArea("",5,20);
-  private TuneablePanel tunablesArea = new TuneablePanel();
+  private TuneablePanel tunablesArea = new TuneablePanel(this.knobs);
   private JMenuBar mainMenuBar = new JMenuBar();
   private JMenu fileMenu = new JMenu();
   private JMenuItem newMenuItem = new JMenuItem();
@@ -433,6 +433,7 @@ public class WadC extends JFrame implements WadCMainFrame {
       lastwp = wp;
       cv.repaint();
     }
+    knobs.dumpAll();
   }
 
   private String savewad(ActionEvent e) {
@@ -502,10 +503,5 @@ public class WadC extends JFrame implements WadCMainFrame {
 
   public void insert(String s, int pos) {
       programTextArea.insert(s, pos);
-  }
-
-  public int getOrSet(String s, int min, int val, int max)
-  {
-        return tunablesArea.getOrSet(s,min,val,max);
   }
 }

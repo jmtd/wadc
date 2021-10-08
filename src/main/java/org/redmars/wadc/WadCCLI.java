@@ -110,9 +110,5 @@ public class WadCCLI implements WadCMainFrame {
     public void insert(String s, int pos) {
         // not implemented
     }
-    public int getOrSet(String s, int min, int val, int max)
-    {
-        return 0; // XXX implement
-    }
 }
 
