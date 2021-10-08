@@ -41,7 +41,7 @@ public class TuneablePanel
     }};
 
     private int row = 1;
-    private Hashtable<String,JSlider> tuneables = new Hashtable<>();
+    private Hashtable<JSlider,String> tuneables = new Hashtable<>();
     private static KnobJockey knobs;
 
     public TuneablePanel(KnobJockey knobs)
@@ -56,7 +56,7 @@ public class TuneablePanel
 
     public void knobAdded(String label, int min, int val, int max)
     {
-        if(!tuneables.containsKey(label))
+        if(!tuneables.containsValue(label))
         {
             JLabel jl = new JLabel(label);
             JSlider js = new JSlider(min, max, val);
@@ -64,7 +64,7 @@ public class TuneablePanel
             js.setPaintLabels(true);
             js.addChangeListener(this);
 
-            tuneables.put(label, js);
+            tuneables.put(js, label);
 
             final int _row = row;
             this.add(jl, new LabelConstraints() {{ gridy = _row; }});
@@ -88,22 +88,14 @@ public class TuneablePanel
     public void stateChanged(ChangeEvent e)
     {
         JSlider js = (JSlider)e.getSource();
+        String s   = tuneables.get(js);
+        Knob k     = knobs.get(s);
+        int val    = js.getValue();
 
-        for(String s : tuneables.keySet())
+        if(k.val() != val)
         {
-            JSlider slider = tuneables.get(s);
-            if(slider == js)
-            {
-                int val = js.getValue();
-
-                Knob k = knobs.get(s);
-
-                if(k.val() != val)
-                {
-                    knobs.set(s,val);
-                    System.err.println(s + " changed value from " + k.val() + " + to " + val);
-                }
-            }
+            knobs.set(s,val);
+            System.err.println(s + " changed value from " + k.val() + " + to " + val);
         }
     }
 }
