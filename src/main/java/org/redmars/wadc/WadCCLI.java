@@ -110,13 +110,6 @@ public class WadCCLI implements WadCMainFrame {
     public void insert(String s, int pos) {
         // not implemented
     }
-    public void tuneable(String s, int min, int v, int max) {
-        // not implemented
-    }
-    public void addKnob(String s, int min, int val, int max)
-    {
-          // does nothing
-    }
     public int getOrSet(String s, int min, int val, int max)
     {
         return 0; // XXX implement

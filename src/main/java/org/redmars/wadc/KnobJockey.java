@@ -14,14 +14,6 @@ package org.redmars.wadc;
 
 public interface KnobJockey
 {
-    /*
-     * Register a new tuneable Integer variable. Define the name,
-     * minimum and maximum bounds that are valid for the value
-     * and the initial value.
-     * XXX unused?
-     */
-    public void addKnob(String s, int min, int val, int max);
-
     // XXX we probably want a Listener interface to notify things
     // when a knob value changes
 
