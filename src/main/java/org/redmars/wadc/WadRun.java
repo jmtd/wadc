@@ -569,8 +569,7 @@ class WadRun {
     // XXX Rename!
     // integers only so far
     builtin("tuneable", 4, new Builtin() { Exp eval(Exp label, Exp min, Exp val, Exp max) {
-        int i = val.ival();
-        wp.mf.tuneable(label.sval(), min.ival(), i, max.ival());
+        int i = wp.mf.getOrSet(label.sval(), min.ival(), val.ival(), max.ival());
         return new Int(i);
     }});
   }

@@ -505,4 +505,14 @@ public class WadC extends JFrame implements WadCMainFrame {
   public void tuneable(String s, int min, int v, int max) {
       tunablesArea.addTuneable(s,min,v,max);
   }
+
+  public void addKnob(String s, int min, int val, int max)
+  {
+      // does nothing
+  }
+
+  public int getOrSet(String s, int min, int val, int max)
+  {
+        return tunablesArea.getOrSet(s,min,val,max);
+  }
 }

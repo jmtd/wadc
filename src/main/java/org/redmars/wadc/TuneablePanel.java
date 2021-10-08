@@ -74,6 +74,23 @@ public class TuneablePanel
         }
     }
 
+    public int getOrSet(String s, int min, int val, int max)
+    {
+
+        if(!tuneables.containsKey(s))
+        {
+            addTuneable(s,min,val,max);
+            return val;
+        }
+        else
+        {
+            Knob k = tuneables.get(s);
+            // XXX update min/max
+            // XXX clamp value
+            return k.val;
+        }
+    }
+
     // ChangeListener interface
     public void stateChanged(ChangeEvent e)
     {

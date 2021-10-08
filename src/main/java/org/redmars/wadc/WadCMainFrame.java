@@ -13,7 +13,9 @@
 
 package org.redmars.wadc;
 
-public interface WadCMainFrame {
+public interface WadCMainFrame
+    extends KnobJockey
+{
     void msg(String m);
     // member variables that can't belong in an interface :(
         // add getters/setters?
