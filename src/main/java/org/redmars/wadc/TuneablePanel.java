@@ -41,8 +41,39 @@ public class TuneablePanel
     }};
 
     private int row = 1;
+    private Hashtable<String,JSlider> tuneables = new Hashtable<>();
+    private static KnobJockey knobs;
 
-    private Hashtable<String,JSlider> tuneables;
+    public TuneablePanel(KnobJockey knobs)
+    {
+        this.setLayout(new GridBagLayout());
+        this.knobs = knobs;
+        knobs.addListener(this);
+    }
+
+//////////////////////////////////////////////////////////////////////////////
+// KnobEventListener interface methods
+
+    public void knobAdded(String label, int min, int val, int max)
+    {
+        if(!tuneables.containsKey(label))
+        {
+            JLabel jl = new JLabel(label);
+            JSlider js = new JSlider(min, max, val);
+            js.setLabelTable(js.createStandardLabels(max/2));
+            js.setPaintLabels(true);
+            js.addChangeListener(this);
+
+            tuneables.put(label, js);
+
+            final int _row = row;
+            this.add(jl, new LabelConstraints() {{ gridy = _row; }});
+            this.add(js, new InputConstraints() {{ gridy = _row; }});
+            ++row;
+
+            this.updateUI();
+        }
+    }
 
     public void clear()
     {
@@ -51,46 +82,13 @@ public class TuneablePanel
         tuneables.clear();
     }
 
-    private static KnobJockey knobs;
-    public TuneablePanel(KnobJockey knobs)
-    {
-        this.setLayout(new GridBagLayout());
-        this.knobs = knobs;
-        tuneables = new Hashtable<>();
-        knobs.addListener(this);
-    }
+//////////////////////////////////////////////////////////////////////////////
+// JSlider ChangeListener interface
 
-    public void addTuneable(String s, int min, int i, int max)
-    {
-        if(!tuneables.containsKey(s))
-        {
-            JLabel label = new JLabel(s);
-            JSlider js = new JSlider(min, max, i);
-            js.setLabelTable(js.createStandardLabels(max/2));
-            js.setPaintLabels(true);
-            js.addChangeListener(this);
-
-            tuneables.put(s, js);
-
-            final int _row = row;
-            this.add(label, new LabelConstraints() {{ gridy = _row; }});
-            this.add(js, new InputConstraints() {{ gridy = _row; }});
-            ++row;
-
-            this.updateUI();
-        }
-    }
-
-    // KnobEventListener interface
-    public void knobAdded(String label, int min, int val, int max)
-    {
-        addTuneable(label, min, val, max);
-    }
-
-    // ChangeListener interface
     public void stateChanged(ChangeEvent e)
     {
         JSlider js = (JSlider)e.getSource();
+
         for(String s : tuneables.keySet())
         {
             JSlider slider = tuneables.get(s);
@@ -102,7 +100,6 @@ public class TuneablePanel
 
                 if(k.val() != val)
                 {
-                    // XXX this will send a listener event back here, will we ignore it?
                     knobs.set(s,val);
                     System.err.println(s + " changed value from " + k.val() + " + to " + val);
                 }

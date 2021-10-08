@@ -72,10 +72,21 @@ public class KnobJockey
             Knob o = tuneables.get(s);
             Knob k = new Knob(s, o.min(), val, o.max());
             tuneables.put(s, k);
-            notifyAdd(k);
         }
     }
 
+    // clear out all the Knobs, such as when a new map is started
+    // or loaded
+    public void clear()
+    {
+        for(KnobEventListener l : listeners)
+        {
+            l.clear();
+        }
+        tuneables.clear();
+    }
+
+    // for debugging
     public void dumpAll()
     {
         for(Knob k: tuneables.values())

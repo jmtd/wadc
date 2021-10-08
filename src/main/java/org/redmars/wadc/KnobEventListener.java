@@ -11,5 +11,9 @@ package org.redmars.wadc;
 
 public interface KnobEventListener
 {
+    // add a new Knob
     public void knobAdded(String label, int min, int val, int max);
+
+    // remove all Knobs
+    public void clear();
 }
