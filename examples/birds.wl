@@ -56,7 +56,7 @@
 #"control.h"
 #"sectors.h"
 
-skyheight    { tuneable("skyheight",0,192,2048) }
+skyheight    { knob("skyheight",0,192,2048) }
 wallheight   { 96  }
 turretheight { 160 }
 ceilheight   { 136 }

@@ -19,9 +19,9 @@
 #"lines.h"
 #"sectors.h"
 
-skyheight { tuneable("skyheight", 0, 320, 512) }
-wsize { tuneable("wsize", 0, 112, 200) }
-skylight { tuneable("skylight", 0, 160, 255) }
+skyheight { knob("skyheight", 0, 320, 512) }
+wsize { knob("wsize", 0, 112, 200) }
+skylight { knob("skylight", 0, 160, 255) }
 
 main
 {
