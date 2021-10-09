@@ -20,8 +20,7 @@
 #"sectors.h"
 
 skyheight { knob("skyheight", 0, 320, 512) }
-wsize { knob("wsize", 0, 112, 200) }
-skylight { knob("skylight", 0, 160, 255) }
+skylight  { knob("skylight",  0, 160, 255) }
 
 main
 {
