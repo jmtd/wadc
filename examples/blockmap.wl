@@ -15,6 +15,9 @@
 #"basic.h"
 #"blockmap.h"
 
+quantity { knob("quantity", 1, 16, 128) }
+brightness { knob("brightness", 0, 160, 255) }
+
 ------------------------------------------------------------------------------
 
 drawlist
@@ -47,7 +50,7 @@ drawlist_dump
 
 door
 {
-  box(0,128, 160, 64,128)
+  box(0,128, brightness, 64,128)
 }
 
 inner_arrow
@@ -77,7 +80,7 @@ possible_future_room(t)
 -- the right.
 basic_room(t)
 {
-  box(0,160, 160, 256,256)
+  box(0,160, brightness, 256,256)
   inner_arrow
   possible_future_room(t)
   rotright
@@ -145,7 +148,7 @@ main
   place(64,96, thing)
   drawlist_add(pair(0,0))
 
-  fori(1, 16, place_random_room)
+  fori(1, quantity, place_random_room)
 }
 
 place_random_room
