@@ -46,7 +46,7 @@ public class KnobJockey
     {
         if(!tuneables.containsKey(s))
         {
-            Knob k = new Knob(s, min, val, max);
+            Knob k = new Knob(s, min, clamp(min,val,max), max);
             tuneables.put(s, k);
             notifyAdd(k);
             return val;
@@ -54,10 +54,21 @@ public class KnobJockey
         else
         {
             Knob k = tuneables.get(s);
-            // XXX update min/max
-            // XXX clamp value
-            return k.val();
+            int  v = clamp(min, k.val(), max);
+
+            // possibly update the min/max values
+            // XXX probably need to notify in that case
+            tuneables.replace(s, new Knob(s, min, v, max));
+
+            return v;
         }
+    }
+
+    private int clamp(int min, int val, int max)
+    {
+        if(val < min) val = min;
+        if(val > max) val = max;
+        return val;
     }
 
     public Knob get(String s)
