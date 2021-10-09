@@ -313,7 +313,7 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     messagesTextArea.setEditable(false);
     tabbedPane.addTab(__("Messages"), messagesTextArea);
-    tabbedPane.addTab(__("Tunables"), tunablesArea);
+    tabbedPane.addTab(__("Knobs"), tunablesArea);
 
     panel1.add(cv,"b3");
     panel1.add(tabbedPane, "b1");
