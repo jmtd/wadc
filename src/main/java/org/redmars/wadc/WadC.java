@@ -358,7 +358,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     programTextArea.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
     // XXX: nasty hack to ensure basename is always a FQ path
     prefs.put("basename", new File(System.getProperty("user.home"), "untitled.wl").toString());
-    tunablesArea.clear();
+    this.knobs.clear();
   }
 
   private void open(ActionEvent e) {
@@ -369,7 +369,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     if(name==null) return;
     prefs.put("basename", (new File(fd.getDirectory(),name)).toString());
     programTextArea.setText(loadTextFile(prefs.get("basename")));
-    tunablesArea.clear();
+    this.knobs.clear();
   }
 
   private void saveAs(ActionEvent e) {
