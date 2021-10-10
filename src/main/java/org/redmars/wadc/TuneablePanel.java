@@ -11,9 +11,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.JSlider;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
 import java.util.Hashtable;
 
 public class TuneablePanel
@@ -49,6 +51,16 @@ public class TuneablePanel
         this.setLayout(new GridBagLayout());
         this.knobs = knobs;
         knobs.addListener(this);
+        addSeedControls();
+    }
+
+    void addSeedControls()
+    {
+            JTextField jt = new JTextField();
+            final int _row = row;
+            this.add(new JButton("Seed ♺"), new LabelConstraints() {{ gridy = _row; }});
+            this.add(jt, new InputConstraints() {{ gridy = _row; }});
+            ++row;
     }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -80,6 +92,7 @@ public class TuneablePanel
         this.removeAll();
         this.updateUI();
         tuneables.clear();
+        addSeedControls();
     }
 
 //////////////////////////////////////////////////////////////////////////////
