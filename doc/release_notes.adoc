@@ -22,6 +22,12 @@ Not yet released.
  * Two new built-ins: `getx` and `gety` return the cursor's current X/Y
    position.
 
+=== Core program changes
+
+ * Knobs: mark an expression with `knob(label,min,val,max)§ to register
+   a tweakable Knob in the UI, clamped within the range defined by the
+   min and max parameters.
+
 === new/modified example programs
 
  * `vanilla_conveyor.wl`: simple demonstration of vanilla conveyors
