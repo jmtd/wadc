@@ -62,7 +62,7 @@ public class TuneablePanel
     void addSeedControls()
     {
             rngSeed = new JTextField();
-            rngSeed.setText(""+Choice.seed);
+            //rngSeed.setText(""+KnobJockey.seed);
             final int _row = row;
             this.add(new JButton("Seed ♺"), new LabelConstraints() {{ gridy = _row; }});
             this.add(rngSeed, new InputConstraints() {{ gridy = _row; }});

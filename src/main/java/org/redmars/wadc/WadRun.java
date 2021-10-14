@@ -552,7 +552,7 @@ class WadRun {
       int floor = ea.ival();
       int ceil  = eb.ival();
       if(floor > ceil) { int c = floor; floor = ceil; ceil = c; }
-      return new Int(floor + Choice.rnd.nextInt(ceil - floor + 1));
+      return new Int(floor + KnobJockey.rnd.nextInt(ceil - floor + 1));
       // +1 to make ceiling inclusive (nextInt is exclusive of ceiling)
     }});
 
@@ -1273,8 +1273,8 @@ class WadRun {
 
   void setSeed(int s)
   {
-      Choice.setSeed(s);
-      wp.mf.msg("random seed set to " + Choice.seed);
+      KnobJockey.setSeed(s);
+      wp.mf.msg("random seed set to " + s);
   }
 
   void run() throws Error {

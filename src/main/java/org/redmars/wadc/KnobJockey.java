@@ -14,12 +14,21 @@ package org.redmars.wadc;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Random;
 
 public class KnobJockey
 {
     private Hashtable<String,Knob> tuneables;
     private ArrayList<KnobEventListener> listeners;
 
+    private static long seed;
+    public static Random rnd = new Random();
+
+    public static void setSeed(int s)
+    {
+      seed = s;
+      rnd.setSeed(s);
+    }
 
     private static KnobJockey singleton = new KnobJockey();
     public static KnobJockey getInstance()
