@@ -23,7 +23,6 @@ public interface WadCMainFrame
 
     String getText();
     static WadCPrefs prefs = new WadCPrefs();
-    static KnobJockey knobs = new KnobJockey();
 
     // inserting text into the buffer
     //wp.mf.textArea1.insert(s,wp.editinsertpos);

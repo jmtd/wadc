@@ -44,7 +44,7 @@ public class WadC extends JFrame implements WadCMainFrame {
   private GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
   private Panel panel1 = new Panel();
   private TextArea messagesTextArea = new TextArea("",5,20);
-  private TuneablePanel tunablesArea = new TuneablePanel(this.knobs);
+  private TuneablePanel tunablesArea = new TuneablePanel();
   private JMenuBar mainMenuBar = new JMenuBar();
   private JMenu fileMenu = new JMenu();
   private JMenuItem newMenuItem = new JMenuItem();
@@ -358,7 +358,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     programTextArea.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
     // XXX: nasty hack to ensure basename is always a FQ path
     prefs.put("basename", new File(System.getProperty("user.home"), "untitled.wl").toString());
-    this.knobs.clear();
+    KnobJockey.getInstance().clear();
   }
 
   private void open(ActionEvent e) {
@@ -369,7 +369,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     if(name==null) return;
     prefs.put("basename", (new File(fd.getDirectory(),name)).toString());
     programTextArea.setText(loadTextFile(prefs.get("basename")));
-    this.knobs.clear();
+    KnobJockey.getInstance().clear();
   }
 
   private void saveAs(ActionEvent e) {
@@ -433,7 +433,7 @@ public class WadC extends JFrame implements WadCMainFrame {
       lastwp = wp;
       cv.repaint();
     }
-    knobs.dumpAll();
+    KnobJockey.getInstance().dumpAll();
   }
 
   private String savewad(ActionEvent e) {

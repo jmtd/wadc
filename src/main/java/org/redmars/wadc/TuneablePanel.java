@@ -44,13 +44,11 @@ public class TuneablePanel
 
     private int row = 1;
     private Hashtable<JSlider,String> tuneables = new Hashtable<>();
-    private static KnobJockey knobs;
 
-    public TuneablePanel(KnobJockey knobs)
+    public TuneablePanel()
     {
         this.setLayout(new GridBagLayout());
-        this.knobs = knobs;
-        knobs.addListener(this);
+        KnobJockey.getInstance().addListener(this);
         addSeedControls();
     }
 
@@ -110,12 +108,12 @@ public class TuneablePanel
     {
         JSlider js = (JSlider)e.getSource();
         String s   = tuneables.get(js);
-        Knob k     = knobs.get(s);
+        Knob k     = KnobJockey.getInstance().get(s);
         int val    = js.getValue();
 
         if(k.val() != val)
         {
-            knobs.set(s,val);
+            KnobJockey.getInstance().set(s,val);
             System.err.println(s + " changed value from " + k.val() + " + to " + val);
         }
     }

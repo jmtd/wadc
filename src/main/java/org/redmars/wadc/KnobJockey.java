@@ -20,7 +20,13 @@ public class KnobJockey
     private Hashtable<String,Knob> tuneables;
     private ArrayList<KnobEventListener> listeners;
 
-    public KnobJockey()
+
+    private static KnobJockey singleton = new KnobJockey();
+    public static KnobJockey getInstance()
+    {
+        return singleton;
+    }
+    private KnobJockey()
     {
         tuneables = new Hashtable<>();
         listeners = new ArrayList<>();
