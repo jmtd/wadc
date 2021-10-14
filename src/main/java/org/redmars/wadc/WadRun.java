@@ -544,8 +544,7 @@ class WadRun {
     }});
 
     builtin("seed", 1, new Builtin() { Exp eval(Exp a) {
-      Choice.setSeed(a.ival());
-      wp.mf.msg("random seed set to " + Choice.seed);
+      setSeed(a.ival());
       return n;
     }});
 
@@ -1272,9 +1271,14 @@ class WadRun {
     renderxtraverts(g);
   }
 
-  void run() throws Error {
-      Choice.setSeed((int)System.currentTimeMillis());
+  void setSeed(int s)
+  {
+      Choice.setSeed(s);
       wp.mf.msg("random seed set to " + Choice.seed);
+  }
+
+  void run() throws Error {
+      setSeed((int)System.currentTimeMillis());
       makevertex();
       call(new Id("main"));
       for(int i = 0; i<vertices.size(); i++) {
