@@ -54,7 +54,7 @@ public class TuneablePanel
 
     private JTextField rngSeed;
 
-    public void setSeed(int s)
+    public void setSeed(long s)
     {
         rngSeed.setText(""+s);
     }
@@ -91,6 +91,11 @@ public class TuneablePanel
 
             this.updateUI();
         }
+    }
+
+    public void seedChanged(long s)
+    {
+        this.setSeed(s);
     }
 
     public void clear()

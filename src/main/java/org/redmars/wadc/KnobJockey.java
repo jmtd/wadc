@@ -19,15 +19,17 @@ import java.util.Random;
 public class KnobJockey
 {
     private Hashtable<String,Knob> tuneables;
-    private ArrayList<KnobEventListener> listeners;
+    static private ArrayList<KnobEventListener> listeners;
 
-    private static long seed;
     public static Random rnd = new Random();
 
     public static void setSeed(int s)
     {
-      seed = s;
       rnd.setSeed(s);
+      for(KnobEventListener l : listeners)
+      {
+          l.seedChanged(s);
+      }
     }
 
     private static KnobJockey singleton = new KnobJockey();
