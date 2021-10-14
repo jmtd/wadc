@@ -54,12 +54,20 @@ public class TuneablePanel
         addSeedControls();
     }
 
+    private JTextField rngSeed;
+
+    public void setSeed(int s)
+    {
+        rngSeed.setText(""+s);
+    }
+
     void addSeedControls()
     {
-            JTextField jt = new JTextField();
+            rngSeed = new JTextField();
+            rngSeed.setText(""+Choice.seed);
             final int _row = row;
             this.add(new JButton("Seed ♺"), new LabelConstraints() {{ gridy = _row; }});
-            this.add(jt, new InputConstraints() {{ gridy = _row; }});
+            this.add(rngSeed, new InputConstraints() {{ gridy = _row; }});
             ++row;
     }
 
