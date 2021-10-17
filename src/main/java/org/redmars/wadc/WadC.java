@@ -120,7 +120,7 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     final int MENU_SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
-    programTextArea.setFont(new Font("Monospaced",0,12));
+    programTextArea.setFont(new Font("Monospaced",0, prefs.getInt("fontSize", 18)));
     programTextArea.getDocument().addDocumentListener(new DocumentListener() {
         public void removeUpdate(DocumentEvent e) {
             textArea1_textValueChanged();
@@ -254,6 +254,7 @@ public class WadC extends JFrame implements WadCMainFrame {
             Font f = programTextArea.getFont();
             Float ff = f.getSize2D() - 1.0f;
             programTextArea.setFont(f.deriveFont(ff));
+            prefs.putInt("fontSize", ff.intValue());
         }
     });
     fontSizeUpItem.setText(__("Increase font size"));
@@ -263,6 +264,7 @@ public class WadC extends JFrame implements WadCMainFrame {
             Font f = programTextArea.getFont();
             Float ff = f.getSize2D() + 1.0f;
             programTextArea.setFont(f.deriveFont(ff));
+            prefs.putInt("fontSize", ff.intValue());
         }
     });
 
