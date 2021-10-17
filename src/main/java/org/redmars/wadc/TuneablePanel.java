@@ -7,6 +7,8 @@
 
 package org.redmars.wadc;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.event.ChangeEvent;
@@ -61,10 +63,15 @@ public class TuneablePanel
 
     void addSeedControls()
     {
+            JButton jb = new JButton("Seed ♺");
+            jb.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                  KnobJockey.getInstance().setSeed(System.currentTimeMillis());
+                }
+            });
             rngSeed = new JTextField();
-            //rngSeed.setText(""+KnobJockey.seed);
             final int _row = row;
-            this.add(new JButton("Seed ♺"), new LabelConstraints() {{ gridy = _row; }});
+            this.add(jb, new LabelConstraints() {{ gridy = _row; }});
             this.add(rngSeed, new InputConstraints() {{ gridy = _row; }});
             ++row;
     }

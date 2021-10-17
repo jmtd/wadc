@@ -23,7 +23,7 @@ public class KnobJockey
 
     public static Random rnd = new Random();
 
-    public static void setSeed(int s)
+    public static void setSeed(long s)
     {
       rnd.setSeed(s);
       for(KnobEventListener l : listeners)
