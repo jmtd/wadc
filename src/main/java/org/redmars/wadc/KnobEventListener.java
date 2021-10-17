@@ -9,7 +9,7 @@
 
 package org.redmars.wadc;
 
-public interface KnobEventListener
+public interface KnobEventListener extends RandomListener
 {
     // add a new Knob
     public void knobAdded(String label, int min, int val, int max);
