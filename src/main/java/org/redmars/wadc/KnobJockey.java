@@ -20,13 +20,14 @@ public class KnobJockey
 {
     private Hashtable<String,Knob> tuneables;
     static private ArrayList<KnobEventListener> listeners;
+    static private ArrayList<RandomListener> randListeners;
 
     public static Random rnd = new Random();
 
     public static void setSeed(long s)
     {
       rnd.setSeed(s);
-      for(KnobEventListener l : listeners)
+      for(RandomListener l : randListeners)
       {
           l.seedChanged(s);
       }
@@ -41,11 +42,16 @@ public class KnobJockey
     {
         tuneables = new Hashtable<>();
         listeners = new ArrayList<>();
+        randListeners = new ArrayList<>();
     }
 
     public void addListener(KnobEventListener l)
     {
         listeners.add(l);
+    }
+    public void addRandomListener(RandomListener l)
+    {
+        randListeners.add(l);
     }
 
     private void notifyAdd(Knob k)

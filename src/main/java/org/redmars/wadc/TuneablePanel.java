@@ -20,6 +20,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import java.util.Hashtable;
 
+
 public class TuneablePanel
     extends JPanel
     implements ChangeListener, KnobEventListener
@@ -47,32 +48,25 @@ public class TuneablePanel
     private int row = 1;
     private Hashtable<JSlider,String> tuneables = new Hashtable<>();
 
+    private SeedPanel seedPanel;
+
     public TuneablePanel()
     {
         this.setLayout(new GridBagLayout());
-        KnobJockey.getInstance().addListener(this);
         addSeedControls();
+        KnobJockey.getInstance().addListener(this);
+        KnobJockey.getInstance().addRandomListener(seedPanel);
     }
 
     private JTextField rngSeed;
 
-    public void setSeed(long s)
-    {
-        rngSeed.setText(""+s);
-    }
-
     void addSeedControls()
     {
-            JButton jb = new JButton("Seed ♺");
-            jb.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                  KnobJockey.getInstance().setSeed(System.currentTimeMillis());
-                }
-            });
-            rngSeed = new JTextField();
+            JLabel l = new JLabel("Random seed");
+            seedPanel = new SeedPanel();
             final int _row = row;
-            this.add(jb, new LabelConstraints() {{ gridy = _row; }});
-            this.add(rngSeed, new InputConstraints() {{ gridy = _row; }});
+            this.add(l, new LabelConstraints() {{ gridy = _row; }});
+            this.add(seedPanel,  new InputConstraints() {{ gridy = _row; }});
             ++row;
     }
 
@@ -98,11 +92,6 @@ public class TuneablePanel
 
             this.updateUI();
         }
-    }
-
-    public void seedChanged(long s)
-    {
-        this.setSeed(s);
     }
 
     public void clear()

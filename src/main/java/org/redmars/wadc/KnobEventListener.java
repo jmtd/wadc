@@ -9,13 +9,10 @@
 
 package org.redmars.wadc;
 
-public interface KnobEventListener extends RandomListener
+public interface KnobEventListener
 {
     // add a new Knob
     public void knobAdded(String label, int min, int val, int max);
-
-    // RNG seed changed
-    public void seedChanged(long seed);
 
     // remove all Knobs
     public void clear();
