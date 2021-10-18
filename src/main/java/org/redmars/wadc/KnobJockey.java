@@ -14,40 +14,11 @@ package org.redmars.wadc;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Random;
 
-public class KnobJockey
+public class KnobJockey extends Random
 {
     private Hashtable<String,Knob> tuneables;
     static private ArrayList<KnobEventListener> listeners;
-    static private ArrayList<RandomListener> randListeners;
-
-    private static Random rnd = new Random();
-    private static long seed;
-
-    public static void setSeed(long s)
-    {
-      seed = s;
-      rnd.setSeed(seed);
-      for(RandomListener l : randListeners)
-      {
-          l.seedChanged(seed);
-      }
-    }
-    public static long getSeed()
-    {
-        return seed;
-    }
-    public static int nextInt()
-    {
-        int r = rnd.nextInt();
-        return r;
-    }
-    public static int nextInt(int bound)
-    {
-        int r = rnd.nextInt(bound);
-        return r;
-    }
 
     private static KnobJockey singleton = new KnobJockey();
     public static KnobJockey getInstance()
@@ -58,16 +29,11 @@ public class KnobJockey
     {
         tuneables = new Hashtable<>();
         listeners = new ArrayList<>();
-        randListeners = new ArrayList<>();
     }
 
     public void addListener(KnobEventListener l)
     {
         listeners.add(l);
-    }
-    public void addRandomListener(RandomListener l)
-    {
-        randListeners.add(l);
     }
 
     private void notifyAdd(Knob k)
