@@ -15,7 +15,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-class WadRun implements RandomListener {
+class WadRun {
   WadParse wp;
   private WadCPrefs prefs;
   // state variables
@@ -100,7 +100,6 @@ class WadRun implements RandomListener {
   private LinkedHashSet<Vertex> collect = new LinkedHashSet<>();
 
   WadRun(WadParse p) {
-      KnobJockey.getInstance().addRandomListener(this);
       wp = p;
       prefs = WadCMainFrame.prefs;
   }
@@ -1273,11 +1272,6 @@ class WadRun implements RandomListener {
   void setSeed(int s)
   {
       KnobJockey.setSeed(s);
-      // XXX could we make mf a RandomListener and do it there?
-  }
-  public void seedChanged(long seed)
-  {
-      wp.mf.msg("random seed set to " + seed);
   }
 
   void run() throws Error {

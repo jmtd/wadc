@@ -38,7 +38,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.KeyStroke;
 import javax.swing.JTabbedPane;
 
-public class WadC extends JFrame implements WadCMainFrame {
+public class WadC extends JFrame implements WadCMainFrame, RandomListener {
   private JTextArea programTextArea = new JTextArea("",15,30);
   private JScrollPane sp = new JScrollPane(programTextArea);
   private GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
@@ -329,10 +329,12 @@ public class WadC extends JFrame implements WadCMainFrame {
     if(lf.length()>0) { programTextArea.setText(lf); } else { newfile(null); };
 
     // initial random seed.
-    // XXX move to KnobJockey constructor?
     int s = (int)System.currentTimeMillis();
+    KnobJockey.getInstance().addRandomListener(this);
     KnobJockey.setSeed(s);
-    // XXX could we make WadC a RandomListener and do it there?
+  }
+
+  public void seedChanged(long s) {
     msg(__("random seed set to ") + s);
   }
 
