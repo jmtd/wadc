@@ -15,7 +15,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-class WadRun {
+class WadRun implements RandomListener {
   WadParse wp;
   private WadCPrefs prefs;
   // state variables
@@ -99,9 +99,8 @@ class WadRun {
 
   private LinkedHashSet<Vertex> collect = new LinkedHashSet<>();
 
-  private static Random rnd = new Random();
-
   WadRun(WadParse p) {
+      KnobJockey.getInstance().addRandomListener(this);
       wp = p;
       prefs = WadCMainFrame.prefs;
   }
@@ -552,7 +551,7 @@ class WadRun {
       int floor = ea.ival();
       int ceil  = eb.ival();
       if(floor > ceil) { int c = floor; floor = ceil; ceil = c; }
-      return new Int(floor + KnobJockey.rnd.nextInt(ceil - floor + 1));
+      return new Int(floor + KnobJockey.nextInt(ceil - floor + 1));
       // +1 to make ceiling inclusive (nextInt is exclusive of ceiling)
     }});
 
@@ -1274,11 +1273,15 @@ class WadRun {
   void setSeed(int s)
   {
       KnobJockey.setSeed(s);
-      wp.mf.msg("random seed set to " + s);
+      // XXX could we make mf a RandomListener and do it there?
+  }
+  public void seedChanged(long seed)
+  {
+      wp.mf.msg("random seed set to " + seed);
   }
 
   void run() throws Error {
-      setSeed((int)System.currentTimeMillis());
+      KnobJockey.setSeed(KnobJockey.getSeed());
       makevertex();
       call(new Id("main"));
       for(int i = 0; i<vertices.size(); i++) {

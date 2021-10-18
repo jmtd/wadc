@@ -22,15 +22,31 @@ public class KnobJockey
     static private ArrayList<KnobEventListener> listeners;
     static private ArrayList<RandomListener> randListeners;
 
-    public static Random rnd = new Random();
+    private static Random rnd = new Random();
+    private static long seed;
 
     public static void setSeed(long s)
     {
-      rnd.setSeed(s);
+      seed = s;
+      rnd.setSeed(seed);
       for(RandomListener l : randListeners)
       {
-          l.seedChanged(s);
+          l.seedChanged(seed);
       }
+    }
+    public static long getSeed()
+    {
+        return seed;
+    }
+    public static int nextInt()
+    {
+        int r = rnd.nextInt();
+        return r;
+    }
+    public static int nextInt(int bound)
+    {
+        int r = rnd.nextInt(bound);
+        return r;
     }
 
     private static KnobJockey singleton = new KnobJockey();

@@ -18,7 +18,7 @@ class Choice extends Exp {
   }
 
   Exp replace(Vector n, Vector r) {
-    return (v.get(Math.abs(KnobJockey.rnd.nextInt()) % v.size())).replace(n,r);
+    return (v.get(Math.abs(KnobJockey.nextInt()) % v.size())).replace(n,r);
   }
 
   String show() {

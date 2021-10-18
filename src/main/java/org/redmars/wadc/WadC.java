@@ -327,6 +327,13 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     String lf = loadTextFile(prefs.get("basename"));
     if(lf.length()>0) { programTextArea.setText(lf); } else { newfile(null); };
+
+    // initial random seed.
+    // XXX move to KnobJockey constructor?
+    int s = (int)System.currentTimeMillis();
+    KnobJockey.setSeed(s);
+    // XXX could we make WadC a RandomListener and do it there?
+    msg(__("random seed set to ") + s);
   }
 
   public void msg(String s) {
