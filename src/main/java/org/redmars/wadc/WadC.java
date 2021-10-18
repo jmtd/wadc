@@ -330,7 +330,7 @@ public class WadC extends JFrame implements WadCMainFrame, RandomListener {
 
     // initial random seed.
     int s = (int)System.currentTimeMillis();
-    KnobJockey.getInstance().addRandomListener(this);
+    KnobJockey.addRandomListener(this);
     KnobJockey.setSeed(s);
   }
 

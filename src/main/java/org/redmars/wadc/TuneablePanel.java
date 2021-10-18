@@ -54,8 +54,8 @@ public class TuneablePanel
     {
         this.setLayout(new GridBagLayout());
         addSeedControls();
-        KnobJockey.getInstance().addListener(this);
-        KnobJockey.getInstance().addRandomListener(seedPanel);
+        KnobJockey.addListener(this);
+        KnobJockey.addRandomListener(seedPanel);
     }
 
     private JTextField rngSeed;

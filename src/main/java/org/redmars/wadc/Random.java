@@ -49,7 +49,7 @@ public class Random
         return seed;
     }
 
-    public void addRandomListener(RandomListener l)
+    public static void addRandomListener(RandomListener l)
     {
         randListeners.add(l);
     }

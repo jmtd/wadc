@@ -18,7 +18,7 @@ import java.util.Hashtable;
 public class KnobJockey extends Random
 {
     private Hashtable<String,Knob> tuneables;
-    static private ArrayList<KnobEventListener> listeners;
+    static private ArrayList<KnobEventListener> listeners = new ArrayList<>();
 
     private static KnobJockey singleton = new KnobJockey();
     public static KnobJockey getInstance()
@@ -28,10 +28,9 @@ public class KnobJockey extends Random
     private KnobJockey()
     {
         tuneables = new Hashtable<>();
-        listeners = new ArrayList<>();
     }
 
-    public void addListener(KnobEventListener l)
+    public static void addListener(KnobEventListener l)
     {
         listeners.add(l);
     }
