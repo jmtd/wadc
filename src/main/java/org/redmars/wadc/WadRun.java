@@ -99,6 +99,8 @@ class WadRun {
 
   private LinkedHashSet<Vertex> collect = new LinkedHashSet<>();
 
+  private long initSeed;
+
   WadRun(WadParse p) {
       wp = p;
       prefs = WadCMainFrame.prefs;
@@ -1274,8 +1276,13 @@ class WadRun {
       KnobJockey.setSeed(s);
   }
 
+  public long getInitSeed() {
+    return initSeed;
+  }
+
   void run() throws Error {
-      KnobJockey.setSeed(KnobJockey.getSeed());
+      initSeed = KnobJockey.getSeed();
+      KnobJockey.setSeed(initSeed);
       makevertex();
       call(new Id("main"));
       for(int i = 0; i<vertices.size(); i++) {

@@ -73,6 +73,10 @@ public class WadCCLI implements WadCMainFrame {
     public WadCCLI(final String infile, boolean writesrc) {
         String wadfile;
         readSource(infile);
+
+        // XXX: move to a common parent of WadC, WadCCLI
+        KnobJockey.setSeed((int)System.currentTimeMillis());
+
         WadParse wp = new WadParse(this.src, this);
         try {
             wp.run();
