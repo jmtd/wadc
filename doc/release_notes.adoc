@@ -24,9 +24,31 @@ Not yet released.
 
 === Core program changes
 
- * Knobs: mark an expression with `knob(label,min,val,max)§ to register
+ * Knobs: mark an expression with `knob(label,min,val,max)` to register
    a tweakable Knob in the UI, clamped within the range defined by the
-   min and max parameters.
+   min and max parameters. Knobs can have their values adjusted in the
+   "Knobs" tab pane in the main WadC GUI. The new value will take effect
+   next time the Wad Language program is Run.
+
+ * Random seed: In Prior WadC versions, the random number generator was
+   re-seeded with the current time each time the Wad Language program was
+   Run. As a result, repeatedly re-running a program which heavily relies
+   upon RNG (such as `bsp.wl`) will not produce different results. To get
+   the old behaviour, add a line like the following towards the beginning
+   of your program:
+
+       seed(rand(0,13371337))
+
+ * The random seed at Run-time is exposed as a tweakable knob in the Knob UI.
+ * The random seed at Run-time is written to the embedded `WADCSRC` lump as
+   a comment prior to the program source. This is to help reproducibility.
+
+==== Distribution and runtime requirements
+
+WadC's minimum Java version, both as as source and run time dependency,
+has moved to 16.
+
+==== UI improvements
 
 === new/modified example programs
 
