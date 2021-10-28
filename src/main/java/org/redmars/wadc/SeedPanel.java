@@ -29,12 +29,11 @@ public class SeedPanel extends JPanel implements RandomListener
         refreshButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
               KnobJockey.getInstance().setSeed(System.currentTimeMillis());
-              add(refreshButton);
-              add(seedField);
             }
         });
 
         seedField = new JTextField();
+        seedField.setEditable(false);
 
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         add(seedField);
