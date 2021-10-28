@@ -17,9 +17,6 @@
 #"control.h"
 #"vanilla_conveyor.h"
 
--- XXX move to include/lines.h
-door_w1_openclose { 2 }
-
 main
 {
   rotright
