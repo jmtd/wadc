@@ -4,6 +4,7 @@
 40b8aeec2c438476900ca0ea4515cc286220c2f6 *examples/birds.wad
 b14622544d82d167ff4dcb7af90b68bbf757ec1f *examples/blockmap.wad
 75b0acf76ff631f97c137f95b4d538b8a050ab46 *examples/boom.wad
+e005a80d18ff5e23330b3510caa9ff90f4c953eb *examples/brexit.wad
 a5227f37550c523593875b5eeec7f58657f6eacc *examples/bsp.wad
 999290b471d7d129be050653a48f1fa4c145e898 *examples/choicetest.wad
 847d30520dbef02beb502d08590c41b03a857352 *examples/choz.wad
@@ -32,12 +33,15 @@ e524e8c6e0dd5891ad3f9e90997c9e29775544a7 *examples/strife_ex.wad
 f24c21d345f7fd219c88c8f1a854879caa72d133 *examples/textures.wad
 7dbb4c742d8f60db24b1603c34c6edc4d73a6a08 *examples/triangle.wad
 6f3756fef72b71274bb2112bf3fa5b4113b5d801 *examples/tulip.wad
+41c1d08bc1d185848aaa413b2ff8252d1aa0a99b *examples/vanilla_conveyor.wad
 5eba541980130e7a55b8ebb5b90e01f43bfed296 *examples/water.wad
+99a30928d46ec321e40e535fe9498ef0addfb71e *tests/accessor.wad
 dcf3d2e3fa534cdeeeb3642f6e7ecac7e36c9f62 *tests/angles.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/blockmap.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/evenodd.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/getorient.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/hex.wad
+99a30928d46ec321e40e535fe9498ef0addfb71e *tests/knobs.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/lessthan.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/list.wad
 b5098fc1536de6adeb788d0508d34f7fd9fd1a18 *tests/mixtypes.wad
@@ -47,5 +51,6 @@ b5098fc1536de6adeb788d0508d34f7fd9fd1a18 *tests/mixtypes.wad
 99a30928d46ec321e40e535fe9498ef0addfb71e *tests/randcheck.wad
 3b9af89bef4623f3fb73e9ab530d4864a1e9bd29 *tests/sectorfill.wad
 416c5003b77b8662d075a03a962b8c59097f9da8 *tests/skills.wad
+99a30928d46ec321e40e535fe9498ef0addfb71e *tests/streq.wad
 fae9fccbb559479fe0747f033108e621d882938d *tests/testboom.wad
 8ae429025eb74867de2a50a8e563e4432fff131f *tests/usedto.wad
