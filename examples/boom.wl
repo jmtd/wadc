@@ -12,6 +12,7 @@
 
 #"standard.h"
 #"boom.h"
+#"sectors.h"
 
 main {
 
