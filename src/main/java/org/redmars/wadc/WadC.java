@@ -444,7 +444,6 @@ public class WadC extends JFrame implements WadCMainFrame, RandomListener {
       lastwp = wp;
       cv.repaint();
     }
-    KnobJockey.getInstance().dumpAll();
   }
 
   private String savewad(ActionEvent e) {

@@ -100,13 +100,4 @@ public class KnobJockey extends Random
         }
         tuneables.clear();
     }
-
-    // for debugging
-    public void dumpAll()
-    {
-        for(Knob k: tuneables.values())
-        {
-            System.err.println(k);
-        }
-    }
 }
