@@ -39,7 +39,6 @@ Not yet released.
 
        seed(rand(0,13371337))
 
- * The random seed at Run-time is exposed as a tweakable knob in the Knob UI.
  * The random seed at Run-time is written to the embedded `WADCSRC` lump as
    a comment prior to the program source. This is to help reproducibility.
 
@@ -49,6 +48,16 @@ WadC's minimum Java version, both as as source and run time dependency,
 has moved to 16.
 
 ==== UI improvements
+
+ * The default font size is now 18 points, up from 12. Your chosen font
+   size is saved and restored as a Preference.
+
+ * A new GUI panel "Knobs" has been added as a Tab-pane in the same area
+   as the messages box. This panel lets you set values for any variables
+   marked as `knob` in the program text. That value is used next time the
+   program is evaluated.
+
+ * The random seed at Run-time is exposed as a tweakable knob in the Knob UI.
 
 === new/modified example programs
 
