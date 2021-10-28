@@ -1,5 +1,6 @@
 #"standard.h"
 #"boom.h"
+#"sectors.h"
 
 -- zdoom (and UDMF) shift the generalised sector bits up 3 places.
 -- test that we handle this.
