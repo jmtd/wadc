@@ -1,8 +1,8 @@
 #!/usr/bin/make -f
 
 export DH_VERBOSE=1
-version := $(shell dpkg-parsechangelog -S Version | cut -d- -f1)
-mainver := $(shell echo $(version) | cut -d+ -f1)
+version := $(shell dpkg-parsechangelog -S Version)
+mainver := $(shell echo $(version) | sed 's/[+-].*//')
 mvnrepo := debian/wadc/usr/share/maven-repo
 
 %:
@@ -15,7 +15,7 @@ doc/%.html: doc/%.adoc
 	asciidoctor -a 'webfonts!' $<
 
 override_dh_auto_build: $(DOCS)
-	echo git.commit.id.describe=v$(version) > src/main/resources/git.properties
+	echo git.commit.id.describe="v$(version) (Debian)" > src/main/resources/git.properties
 	dh_auto_build --buildsystem=maven
 
 override_dh_auto_clean:

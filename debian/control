@@ -34,5 +34,5 @@ Description: programming environment for creating Doom maps
  script's output. Also included is an experimental command line
  interface, wadccli.
  .
- An external nodes builder (such as glbsp) is required before
+ An external nodes builder (such as zdbsp) is required before
  the resulting WAD file can be played by a doom-engine.

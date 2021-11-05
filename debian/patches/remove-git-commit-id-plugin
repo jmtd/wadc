@@ -1,0 +1,38 @@
+Description: remove maven plugin git-commit-id-plugin
+ This Maven plugin is used upstream to automatically map the output of "git
+ describe" into a property file "git.properties". This is used by WadC to
+ establish its version, which it writes out into WADCSRC header lumps when
+ generating WAD files.
+ .
+ For the Debian package build, we generate the "git.properties" file using
+ debian/rules instead.
+Last-Update: 2022-09-22
+
+--- wadc-3.1.orig/pom.xml
++++ wadc-3.1/pom.xml
+@@ -22,25 +22,6 @@
+         </configuration>
+       </plugin>
+       <plugin>
+-        <groupId>pl.project13.maven</groupId>
+-        <artifactId>git-commit-id-plugin</artifactId>
+-        <version>2.1.15</version>
+-        <executions>
+-          <execution>
+-            <goals>
+-              <goal>revision</goal>
+-            </goals>
+-          </execution>
+-        </executions>
+-        <configuration>
+-          <generateGitPropertiesFile>true</generateGitPropertiesFile>
+-          <generateGitPropertiesFilename>src/main/resources/git.properties</generateGitPropertiesFilename>
+-          <includeOnlyProperties>
+-            <includeOnlyProperty>^git.commit.id.describe$</includeOnlyProperty>
+-          </includeOnlyProperties>
+-        </configuration>
+-      </plugin>
+-      <plugin>
+         <artifactId>maven-assembly-plugin</artifactId>
+         <version>3.1.0</version>
+         <executions>
