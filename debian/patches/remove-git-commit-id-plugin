@@ -1,0 +1,64 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ wadc (3.1-1) UNRELEASED; urgency=medium
+ .
+   [ Jonathan Dowland ]
+   * Orphan package.
+ .
+   [ Debian Janitor ]
+   * Use secure copyright file specification URI.
+   * Bump debhelper from deprecated 9 to 12.
+   * Set debhelper-compat version in Build-Depends.
+   * Use canonical URL in Vcs-Git.
+ .
+   [ Jonathan Dowland ]
+   * New upstream version
+   * Replace glbsp reference in long-description with zdbsp
+Author: Jonathan Dowland <jmtd@debian.org>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2021-11-05
+
+--- wadc-3.1.orig/pom.xml
++++ wadc-3.1/pom.xml
+@@ -22,25 +22,6 @@
+         </configuration>
+       </plugin>
+       <plugin>
+-        <groupId>pl.project13.maven</groupId>
+-        <artifactId>git-commit-id-plugin</artifactId>
+-        <version>2.1.15</version>
+-        <executions>
+-          <execution>
+-            <goals>
+-              <goal>revision</goal>
+-            </goals>
+-          </execution>
+-        </executions>
+-        <configuration>
+-          <generateGitPropertiesFile>true</generateGitPropertiesFile>
+-          <generateGitPropertiesFilename>src/main/resources/git.properties</generateGitPropertiesFilename>
+-          <includeOnlyProperties>
+-            <includeOnlyProperty>^git.commit.id.describe$</includeOnlyProperty>
+-          </includeOnlyProperties>
+-        </configuration>
+-      </plugin>
+-      <plugin>
+         <artifactId>maven-assembly-plugin</artifactId>
+         <version>3.1.0</version>
+         <executions>

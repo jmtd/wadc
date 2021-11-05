@@ -4,8 +4,9 @@ Priority: optional
 Maintainer: Debian QA Group <packages@qa.debian.org>
 Build-Depends: asciidoctor,
                debhelper-compat (= 12),
-               default-jdk-headless (>= 2:1.8),
+               default-jdk-headless (>= 2:1.17),
                dh-exec,
+               libpicocli-java,
                maven-debian-helper (>= 2.1)
 Standards-Version: 3.9.8
 Vcs-Git: https://github.com/jmtd/wadc.git -b debian
@@ -14,7 +15,7 @@ Homepage: https://jmtd.net/wadc/
 
 Package: wadc
 Architecture: all
-Depends: default-jre (>= 2:1.8) | java8-runtime,
+Depends: default-jre (>= 2:1.17) | java17-runtime,
          jarwrapper,
          ${maven:Depends},
          ${misc:Depends}
@@ -34,5 +35,5 @@ Description: programming environment for creating Doom maps
  script's output. Also included is an experimental command line
  interface, wadccli.
  .
- An external nodes builder (such as glbsp) is required before
+ An external nodes builder (such as zdbsp) is required before
  the resulting WAD file can be played by a doom-engine.
