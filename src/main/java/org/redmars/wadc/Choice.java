@@ -10,13 +10,6 @@ package org.redmars.wadc;
 import java.util.*;
 
 class Choice extends Exp {
-  static long seed;
-  static Random rnd = new Random();
-
-  static void setSeed(int s) {
-      seed = s;
-      rnd.setSeed(s);
-  }
 
   List<Exp> v = new ArrayList<>();
 
@@ -25,7 +18,7 @@ class Choice extends Exp {
   }
 
   Exp replace(Vector n, Vector r) {
-    return (v.get(Math.abs(rnd.nextInt()) % v.size())).replace(n,r);
+    return (v.get(Math.abs(KnobJockey.nextInt()) % v.size())).replace(n,r);
   }
 
   String show() {

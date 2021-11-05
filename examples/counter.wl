@@ -14,6 +14,8 @@
 #"basic.h"
 #"boom.h"
 
+count { knob("count", 1, 8, 16) }
+
 main {
     -- control lines for scrolling
     linetype(253, $scroll_north_ish) step(256,-64)
@@ -27,7 +29,7 @@ main {
 
     move(512)
     !main
-    counters(8)
+    counters(count)
 }
 
 /*

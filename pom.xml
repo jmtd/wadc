@@ -4,7 +4,7 @@
   <groupId>org.redmars.wadc</groupId>
   <artifactId>wadc</artifactId>
   <packaging>jar</packaging>
-  <version>3.0</version>
+  <version>3.1</version>
   <name>WadC</name>
   <url>https://jmtd.net/wadc/</url>
   <properties>
@@ -19,18 +19,6 @@
         <configuration>
           <source>8</source>
           <target>8</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <version>2.4</version>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>org.redmars.wadc.WadCLaunch</mainClass>
-            </manifest>
-          </archive>
         </configuration>
       </plugin>
       <plugin>
@@ -55,41 +43,45 @@
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>3.1.0</version>
-        <configuration>
-          <descriptors>
-            <descriptor>src/assembly/zip.xml</descriptor>
-          </descriptors>
-        </configuration>
         <executions>
+          <execution>
+            <id>create-jar-with-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                <manifest>
+                  <mainClass>org.redmars.wadc.WadCLaunch</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
           <execution>
             <id>create-archive</id>
             <phase>package</phase>
             <goals>
               <goal>single</goal>
             </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/assembly/zip.xml</descriptor>
+              </descriptors>
+            </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.asciidoctor</groupId>
-        <artifactId>asciidoctor-maven-plugin</artifactId>
-        <version>1.5.2</version>
-        <executions>
-          <execution>
-            <id>output-html</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>process-asciidoc</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <sourceDirectory>${basedir}/doc</sourceDirectory>
-          <outputDirectory>${project.build.directory}/docs</outputDirectory>
-          <backend>html</backend>
-          <imagesDir>./</imagesDir>
-        </configuration>
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>info.picocli</groupId>
+      <artifactId>picocli</artifactId>
+      <version>4.6.1</version>
+    </dependency>
+  </dependencies>
 </project>

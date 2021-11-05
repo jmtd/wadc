@@ -48,6 +48,13 @@ public class WadCPrefs {
       prefs.putBoolean(key, value);
   }
 
+  public int getInt(String key, int def) {
+      return prefs.getInt(key, def);
+  }
+  public void putInt(String key, int v) {
+      prefs.putInt(key,v);
+  }
+
   public void toggle(String key) {
       putBoolean(key, !getBoolean(key));
   }

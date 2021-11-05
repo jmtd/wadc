@@ -7,3 +7,8 @@ wadc.zip
 src/main/resources/git.properties
 .idea/
 *.iml
+gallery/*.html
+gallery/wads
+gallery/img/map_*.png
+examples/*.wad
+doc/*.html

@@ -58,17 +58,27 @@ i { get("i") }
 
 /*
  * forXY
- * x: number of columns
- * y: number of rows
- * row: callback for ending a row (like carriage return)
+ * x: number of rows
+ * y: number of columns
+ * col: callback for ending a row (like a carriage return)
  * cell: callback for new cells
+  
+   The first two parameters are ordered such that the results
+   are consistent with "box":
+
+   -- 64 units forward, 32 units wide
+   box(0,0,0, 64,32)
+
+   -- 3*32 forward, 2*32 wide
+   !m forXY(3,2 ^m move(32) !m, thing movestep(0,32))
+
  */
 forXY(x,y,row,cell) {
-  set("x", 1)
+  set("y", 1)
   for(1, y,
-    set("y", 1)
-    for(1, x, cell inc("y",1))
-    inc("x", 1)
+    set("x", 1)
+    for(1, x, cell inc("x",1))
+    inc("y", 1)
     row
   )
 }

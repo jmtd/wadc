@@ -390,6 +390,45 @@ use larger.
 
 `simplex` is entirely deterministic, reproducible and not affected by `seed`.
 
+=== Tuneable Knobs
+
+When developing maps in WadC, it is sometimes useful to structure a set of
+variables as switches for map behaviour. Examples might be turning on "high
+detail mode", or setting a global default light level, or ceiling height,
+or the number of things in a population, or the size or scale of geometry.
+E.g.:
+
+    lightlevel { 200 } -- default light level
+    ...
+    main {
+    ...
+        leftsector(0, 400, lightlevel)
+    ...
+
+It is possible to mark such variables as tuneable Knobs. WadC provides a UI
+of sliders for such variables that can be adjusted to quickly experiment with
+different combinations of values. To mark a variable as a Knob, use
+`knob(label, min, value, max)`. E.g.
+
+    lightlevel { knob("lightlevel", 0, 200, 255) }
+
+The first time a `knob` expression is evaluated, it returns the value
+declared within, and registers a Knob with the given label, value, and
+minimum/maximum bounds.
+
+The WadC UI provides visual sliders to set a different value for the Knob
+within the minimum/maximum bounds.
+
+Subsequent evaluations of `knob` with the same label will return the value
+set in the UI. If the subsequent `knob` declarations specify different
+minimum/maximum bounds, the value will be clamped within that range and
+the registered bounds updated.
+
+Setting the value of Knobs is not currently possible from the CLI.
+
+Several of the examples provided with WadC define knobs. Try loading one
+into the GUI, tweaking the sliders and Running the results.
+
 === Doom Specific Commands
 
 The bit you have been waiting for :)
