@@ -17,6 +17,8 @@ toc::[]
 
 Not yet released.
 
+== 3.1
+
 === Language features
 
  * Two new built-ins: `getx` and `gety` return the cursor's current X/Y
