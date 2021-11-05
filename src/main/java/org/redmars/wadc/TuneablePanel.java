@@ -112,10 +112,10 @@ public class TuneablePanel
         Knob k     = KnobJockey.getInstance().get(s);
         int val    = js.getValue();
 
-        if(k.val() != val)
+        if(k.val != val)
         {
+            System.err.println(s + " changed value from " + k.val + " + to " + val);
             KnobJockey.getInstance().set(s,val);
-            System.err.println(s + " changed value from " + k.val() + " + to " + val);
         }
     }
 }

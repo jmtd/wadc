@@ -7,4 +7,18 @@
 
 package org.redmars.wadc;
 
-public record Knob (String label, int min, int val, int max) {}
+public class Knob
+{
+  public String label;
+  public int min;
+  public int val;
+  public int max;
+
+  public Knob(String l, int mi, int v, int ma)
+  {
+    label = l;
+    min = mi;
+    val = v;
+    max = ma;
+  }
+}

@@ -39,7 +39,7 @@ public class KnobJockey extends Random
     {
         for(KnobEventListener l : listeners)
         {
-            l.knobAdded(k.label(), k.min(), k.val(), k.max());
+            l.knobAdded(k.label, k.min, k.val, k.max);
         }
     }
 
@@ -58,13 +58,14 @@ public class KnobJockey extends Random
         else
         {
             Knob k = tuneables.get(s);
-            int  v = clamp(min, k.val(), max);
+            k.val  = clamp(min, k.val, max);
 
             // possibly update the min/max values
             // XXX probably need to notify in that case
-            tuneables.replace(s, new Knob(s, min, v, max));
+            // is this actually necessary if I modified the object above?
+            tuneables.replace(s, k);
 
-            return v;
+            return k.val;
         }
     }
 
@@ -84,8 +85,8 @@ public class KnobJockey extends Random
     {
         if(tuneables.containsKey(s))
         {
-            Knob o = tuneables.get(s);
-            Knob k = new Knob(s, o.min(), val, o.max());
+            Knob k = tuneables.get(s);
+            k.val = val;
             tuneables.put(s, k);
         }
     }
