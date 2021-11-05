@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian QA Group <packages@qa.debian.org>
 Build-Depends: asciidoctor,
                debhelper-compat (= 12),
-               default-jdk-headless (>= 2:1.17),
+               default-jdk-headless (>= 2:1.8),
                dh-exec,
                libpicocli-java,
                maven-debian-helper (>= 2.1)
@@ -15,7 +15,7 @@ Homepage: https://jmtd.net/wadc/
 
 Package: wadc
 Architecture: all
-Depends: default-jre (>= 2:1.17) | java17-runtime,
+Depends: default-jre (>= 2:1.8) | java8-runtime,
          jarwrapper,
          ${maven:Depends},
          ${misc:Depends}
