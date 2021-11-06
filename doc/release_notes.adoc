@@ -1,7 +1,7 @@
 = WadC Release Notes
 Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 :toc:
-:toc-placement!:
+:toc-placement: right
 :toclevels: 5
 :toc-title:
 :homepage: https://jmtd.net/wadc/
@@ -12,10 +12,6 @@ current features, see link:reference.adoc[the Reference].
 == Table of Contents
 
 toc::[]
-
-== Dev
-
-Not yet released.
 
 == 3.1
 
@@ -48,6 +44,10 @@ Not yet released.
 
 WadC's minimum Java version, both as as source and run time dependency,
 has moved to 16.
+
+WadC now depends upon the [picocli library](http://picocli.info/) for
+command-line argument handling. picocli is distributed under the terms
+of the link:Apache-License-2.0.txt[Apache License, Version 2.0].
 
 ==== UI improvements
 
