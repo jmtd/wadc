@@ -140,7 +140,7 @@ random_room(t)
 
 main
 {
-  seed(191617415)
+  seed(rand(0,191617415))
   !start
   blockmap_init
   drawlist_init

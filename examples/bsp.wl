@@ -17,7 +17,7 @@ size { knob("size", 0, 2048, 8192) }
 
 main
 {
-    seed(1337)
+    seed(rand(0,1337))
     bsp(size, size, 0)
     pushpop( movestep(32,32) thing)
 }

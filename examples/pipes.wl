@@ -93,7 +93,7 @@ scurve(f,c,l) { slimecurve(f,c,l) | slimecurve_r(f,c,l) }
 
 main {
 
-  seed(14424)
+  seed(rand(0,14424))
 
   pushpop( movestep(64,64) thing )
 
