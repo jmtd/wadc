@@ -22,7 +22,7 @@ software.
 Since 2008, WadC is developed by Jonathan Dowland <jon@dow.land>.
 
 WadC was originally written by Wouter van Oortmerssen
-(link:http://strlen.com/wadc/[Aardappel]) in 2001.
+(link:http://strlen.com/wadc/[Aardappel]) in 1999.
 
 == Version history
 
@@ -32,7 +32,7 @@ See link:release_notes.adoc[Release notes and version history].
 
 - any computer that runs Java 1.8 or better
 - any version of Doom
-- a Doom nodebuilder (bsp 5.2 recommended)
+- a Doom nodebuilder (link:zdbsp[https://github.com/rheit/zdbsp] recommended)
 
 
 == Source code
@@ -48,13 +48,13 @@ You need a Java runtime environment installed to use WadC. Get one from
 https://java.com/download if you don't have it already.
 
 Unpack the whole zip to any directory you like. On most systems, just
-double-click or activate the "wadc-2.1.jar" file. From a command line in
-the location where you extracted the ZIP, could also run
+double-click or activate the "wadc-3.1-jar-with-dependencies.jar" file. From a
+command line in the location where you extracted the ZIP, could also run
 
-    java -jar wadc.jar
+    java -jar wadc-3.1-jar-with-dependencies.jar
 
 To play the .wad files you create using WadC in Doom, you also need a
-node builder, such as BSP, available from http://games.moria.org.uk/doom/bsp/
+node builder, such as zdBSP, available from https://github.com/rheit/zdbsp
 For a list of other node builders, see http://doomwiki.org/wiki/Category:Node_builders
 
 === Sneak-peek: command-line interface
@@ -62,7 +62,7 @@ For a list of other node builders, see http://doomwiki.org/wiki/Category:Node_bu
 There is a very early-stages command-line interface now available. To
 launch it, you need to run
 
-    java -cp wadc.jar org.redmars.wadc.WadCCLI path/to/input.wl
+    java -cp wadc-3.1-jar-with-dependencies.jar org.redmars.wadc.WadCCLI path/to/input.wl
 
 It will attempt to parse, run and write out to path/to/output.wad. Be
 aware that this is alpha quality, consider this a tech preview :)
