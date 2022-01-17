@@ -53,4 +53,9 @@ public class Random
     {
         randListeners.add(l);
     }
+
+    public static void removeRandomListener(RandomListener l)
+    {
+        randListeners.remove(l);
+    }
 }

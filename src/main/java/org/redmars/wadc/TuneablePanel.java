@@ -55,19 +55,19 @@ public class TuneablePanel
         this.setLayout(new GridBagLayout());
         addSeedControls();
         KnobJockey.addListener(this);
-        KnobJockey.addRandomListener(seedPanel);
     }
 
     private JTextField rngSeed;
 
     void addSeedControls()
     {
-            JLabel l = new JLabel("Random seed");
-            seedPanel = new SeedPanel();
-            final int _row = row;
-            this.add(l, new LabelConstraints() {{ gridy = _row; }});
-            this.add(seedPanel,  new InputConstraints() {{ gridy = _row; }});
-            ++row;
+        JLabel l = new JLabel("Random seed");
+        seedPanel = new SeedPanel();
+        final int _row = row;
+        this.add(l, new LabelConstraints() {{ gridy = _row; }});
+        this.add(seedPanel,  new InputConstraints() {{ gridy = _row; }});
+        KnobJockey.addRandomListener(seedPanel);
+        ++row;
     }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -99,6 +99,7 @@ public class TuneablePanel
         this.removeAll();
         this.updateUI();
         tuneables.clear();
+        KnobJockey.removeRandomListener(seedPanel);
         addSeedControls();
     }
 
