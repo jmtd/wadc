@@ -14,7 +14,6 @@
         <include>LICENSE*</include>
         <include>extra/**</include>
         <include>examples/**</include>
-        <include>doc/**</include>
       </includes>
       <excludes>
         <exclude>examples/**/*wad</exclude>
@@ -24,6 +23,7 @@
       <directory>${project.build.directory}</directory>
       <outputDirectory>.</outputDirectory>
       <includes>
+        <include>docs/**</include>
         <include>*jar-with-dependencies.jar</include>
       </includes>
     </fileSet>
