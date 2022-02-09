@@ -1,0 +1,101 @@
+= WadC setup and getting started
+Jonathan Dowland <jon@dow.land>
+:toc:
+:toc-placement: right
+:toclevels: 5
+:homepage: http://jmtd.net/wadc/
+
+To use [[WadC]], you require Java, a Doom engine, a node builder and
+game data for a Doom game (known as the IWAD).
+
+[TIP]
+.Debian and Ubuntu
+====
+image::debian.png[float=right,width=100,alt="Debian logo"]
+image::ubuntu.png[float=right,width=100,alt="Ubuntu logo"]
+WadC is packaged for Debian and Ubuntu-based distributions. You can skip
+all of these steps, simply do
+     
+```
+$ sudo apt install wadc
+$ wadc
+```
+====
+
+toc::[]
+
+== Pre-requisites
+
+=== Java
+
+WadC requires a Java Runtime Environment to run, version 8 or newer.
+I recommend OpenJDK.
+
+==== Linux
+
+For Debian-based systems:
+
+....
+apt install openjdk-17-jre
+....
+
+On Fedora/Red Hat style systems
+
+....
+dnf install java-17-openjdk
+....
+
+==== Mac OS or Windows
+
+https://adoptium.net/[Download and install AdoptOpenJDK’s build of OpenJDK here].
+
+=== Doom Engine
+
+You’ll also need a Doom https://doomwiki.org/wiki/Doom_engine[engine]. I
+recommend https://github.com/fabiangreffrath/crispy-doom[Crispy Doom]
+(Debian package `crispy-doom`).
+
+=== Node Builder
+
+Finally you may require a https://doomwiki.org/wiki/Node_builder[node
+builder]. I recommend https://github.com/rheit/zdbsp[zdBSP] (Debian
+package `zdbsp`).
+
+=== Game Data (IWAD)
+
+https://doomwiki.org/wiki/IWAD[IWAD] (game data). If you don’t have the
+commercial game data, https://www.gog.com/game/doom_ii_final_doom[buy it
+from GoG] or grab https://freedoom.github.io[FreeDoom] (Debian package
+`freedoom`).
+
+== Configuring WadC
+
+Unpack everything.
+
+Launch WadC by double-clicking the JAR file.
+
+TIP: failing that, from a command-line, `java -jar wadc*with-dependencies.jar`
+
+Open WadC’s preferences dialog (macOS: ⌘ + ,) and set the paths to the game
+engine, IWAD and node builder (these should be set to sensible defaults
+already if you installed the Debian package).
+
+=== macOS
+
+Most Doom Engines for Mac OS are distributed as "app bundles": within
+the UI, they appear like applications that can be double-clicked, have
+an icon, etc.; but under the hood they are actually folders that contain
+other files (e.g. `Eternity.app/`). One of the included files is the
+actual engine program.
+
+When selecting the game engine, WadC requires you to select the engine
+program from within the App bundle. The File chooser should let you
+expand the App as if it were a folder and browse the contents. For
+example, for Eternity, the engine is
+`Eternity.app/Contents/MacOS/Eternity Engine`.
+
+== First run
+
+Open up one of the files from `examples/` in the unpacked WadC ZIP. From
+the WadC Control menu, hit *Run / Save / Save WAD / BSP / Doom* to try
+it out!

@@ -16,11 +16,11 @@ See the WadC homepage: <https://jmtd.net/wadc/>.
 
 == Documentation
 
- * link:https://jmtd.net/wadc/setup/[Setup and getting started] (external)
- * link:https://redmars.org/wadc/examples/[Examples gallery] (external)
+ * link:doc/setup.adoc[Setup and getting started]
  * link:doc/reference.adoc[Complete reference]
  * link:doc/release_notes.adoc[Release notes and version history]
  * link:doc/tutorial.adoc[Incomplete tutorial (work in progress)]
+ * link:https://redmars.org/wadc/examples/[Examples gallery] (external)
 
 It's also worth reading the link:examples/[] and
 link:include/[standard library].
