@@ -16,7 +16,8 @@ See the WadC homepage: <https://jmtd.net/wadc/>.
 
 == Documentation
 
- * link:https://jmtd.net/wadc/setup/[Setup and getting started]
+ * link:https://jmtd.net/wadc/setup/[Setup and getting started] (external)
+ * link:https://redmars.org/wadc/examples/[Examples gallery] (external)
  * link:doc/reference.adoc[Complete reference]
  * link:doc/release_notes.adoc[Release notes and version history]
  * link:doc/tutorial.adoc[Incomplete tutorial (work in progress)]
