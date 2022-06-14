@@ -647,6 +647,13 @@ width, i.e. if width = 128, then subdivision = 64 gives you sectors of 2 units w
 Arch adds to xoff automatically to reduce funny texturing. On the y axis it is best
 if you precede arch by unpegged.
 
+
+    archclip(height,width,depth,subdivision,floor,lightlevel,clip)
+
+This is a special-case version of arch which has an additional parameter, clip, to
+cut short generating the arch. This can be used to create structures such as gothic
+arches.
+
     mergesectors
 
 turns sector merge mode on. In this mode WadC will check for existing sectors
