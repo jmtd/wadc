@@ -20,6 +20,9 @@ Thank you Kayvan, for introducing me to Doom, amongst many other things.
 
 === Language features
 
+ * New (experimental) built-in `archclip`: behaves the same as `arch`,
+   but stops generating the arch after N units, where N is the seventh
+   parameter supplied
  * Two new built-ins: `getx` and `gety` return the cursor's current X/Y
    position.
 

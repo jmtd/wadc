@@ -177,6 +177,38 @@ class WadRun {
       return n;
     }});
 
+    builtin("archclip", 7, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f, Exp g) {
+      int height = a.ival();
+      int width = b.ival();
+      int depth = c.ival();
+      int steps = d.ival();
+      int step = width/steps;
+      floor = e.ival();
+      lightlevel = f.ival();
+
+      int maxLength = g.ival(); // maximum length we will generate, to make shortened arches
+      int curLength = 0;
+
+      for(int i = 0; i<steps && curLength < maxLength; i++) {
+        step = width/steps;
+        if( (maxLength - curLength) < step) {
+          step = maxLength - curLength;
+        }
+        curLength += step;
+
+        int xtra = (int)(Math.sin(Math.acos(2*i/(double)steps-1.0))*width/2);
+        step(step,0);
+        step(0,depth);
+        step(-step,0);
+        step(0,-depth);
+        step(step,0);
+        makesector(true,-1,floor,floor+height+xtra,lightlevel);
+        xoff += step;
+      }
+      return n;
+    }});
+
+
     builtin("arch", 6, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f) {
       int height = a.ival();
       int width = b.ival();
@@ -1336,6 +1368,13 @@ class WadRun {
                            ((Exp)v.elementAt(3)).eval(this),
                            ((Exp)v.elementAt(4)).eval(this),
                            ((Exp)v.elementAt(5)).eval(this)); break;
+        case 7: r = b.eval(((Exp)v.elementAt(0)).eval(this),
+                           ((Exp)v.elementAt(1)).eval(this),
+                           ((Exp)v.elementAt(2)).eval(this),
+                           ((Exp)v.elementAt(3)).eval(this),
+                           ((Exp)v.elementAt(4)).eval(this),
+                           ((Exp)v.elementAt(5)).eval(this),
+                           ((Exp)v.elementAt(6)).eval(this)); break;
         case 8: r = b.eval(((Exp)v.elementAt(0)).eval(this),
                            ((Exp)v.elementAt(1)).eval(this),
                            ((Exp)v.elementAt(2)).eval(this),
