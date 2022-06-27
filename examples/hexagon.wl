@@ -14,7 +14,7 @@
 #"pickups.h"
 
 main {
-  seed (1337)
+  seed(rand(0,1337))
   mergesectors
   prunelines
   toggleflag(ambush)

@@ -22,7 +22,7 @@ software.
 Since 2008, WadC is developed by Jonathan Dowland <jon@dow.land>.
 
 WadC was originally written by Wouter van Oortmerssen
-(link:http://strlen.com/wadc/[Aardappel]) in 2001.
+(link:http://strlen.com/wadc/[Aardappel]) in 1999.
 
 == Version history
 
@@ -32,7 +32,7 @@ See link:release_notes.adoc[Release notes and version history].
 
 - any computer that runs Java 1.8 or better
 - any version of Doom
-- a Doom nodebuilder (bsp 5.2 recommended)
+- a Doom nodebuilder (link:zdbsp[https://github.com/rheit/zdbsp] recommended)
 
 
 == Source code
@@ -45,16 +45,16 @@ GPL (GNU Public License, version 2. see the included LICENSE.txt file.)
 
 
 You need a Java runtime environment installed to use WadC. Get one from
-https://java.com/download if you don't have it already.
+https://adoptopenjdk.net/ if you don't have it already.
 
 Unpack the whole zip to any directory you like. On most systems, just
-double-click or activate the "wadc-2.1.jar" file. From a command line in
-the location where you extracted the ZIP, could also run
+double-click or activate the "wadc-3.1-jar-with-dependencies.jar" file. From a
+command line in the location where you extracted the ZIP, could also run
 
-    java -jar wadc.jar
+    java -jar wadc-3.1-jar-with-dependencies.jar
 
 To play the .wad files you create using WadC in Doom, you also need a
-node builder, such as BSP, available from http://games.moria.org.uk/doom/bsp/
+node builder, such as zdBSP, available from https://github.com/rheit/zdbsp
 For a list of other node builders, see http://doomwiki.org/wiki/Category:Node_builders
 
 === Sneak-peek: command-line interface
@@ -62,7 +62,7 @@ For a list of other node builders, see http://doomwiki.org/wiki/Category:Node_bu
 There is a very early-stages command-line interface now available. To
 launch it, you need to run
 
-    java -cp wadc.jar org.redmars.wadc.WadCCLI path/to/input.wl
+    java -cp wadc-3.1-jar-with-dependencies.jar org.redmars.wadc.WadCCLI path/to/input.wl
 
 It will attempt to parse, run and write out to path/to/output.wad. Be
 aware that this is alpha quality, consider this a tech preview :)
@@ -390,6 +390,45 @@ use larger.
 
 `simplex` is entirely deterministic, reproducible and not affected by `seed`.
 
+=== Tuneable Knobs
+
+When developing maps in WadC, it is sometimes useful to structure a set of
+variables as switches for map behaviour. Examples might be turning on "high
+detail mode", or setting a global default light level, or ceiling height,
+or the number of things in a population, or the size or scale of geometry.
+E.g.:
+
+    lightlevel { 200 } -- default light level
+    ...
+    main {
+    ...
+        leftsector(0, 400, lightlevel)
+    ...
+
+It is possible to mark such variables as tuneable Knobs. WadC provides a UI
+of sliders for such variables that can be adjusted to quickly experiment with
+different combinations of values. To mark a variable as a Knob, use
+`knob(label, min, value, max)`. E.g.
+
+    lightlevel { knob("lightlevel", 0, 200, 255) }
+
+The first time a `knob` expression is evaluated, it returns the value
+declared within, and registers a Knob with the given label, value, and
+minimum/maximum bounds.
+
+The WadC UI provides visual sliders to set a different value for the Knob
+within the minimum/maximum bounds.
+
+Subsequent evaluations of `knob` with the same label will return the value
+set in the UI. If the subsequent `knob` declarations specify different
+minimum/maximum bounds, the value will be clamped within that range and
+the registered bounds updated.
+
+Setting the value of Knobs is not currently possible from the CLI.
+
+Several of the examples provided with WadC define knobs. Try loading one
+into the GUI, tweaking the sliders and Running the results.
+
 === Doom Specific Commands
 
 The bit you have been waiting for :)
@@ -607,6 +646,13 @@ level. width is across the arch, depth is into the arch, subdivision should divi
 width, i.e. if width = 128, then subdivision = 64 gives you sectors of 2 units wide.
 Arch adds to xoff automatically to reduce funny texturing. On the y axis it is best
 if you precede arch by unpegged.
+
+
+    archclip(height,width,depth,subdivision,floor,lightlevel,clip)
+
+This is a special-case version of arch which has an additional parameter, clip, to
+cut short generating the arch. This can be used to create structures such as gothic
+arches.
 
     mergesectors
 

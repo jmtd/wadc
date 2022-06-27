@@ -348,6 +348,10 @@ public class Wad {
     return properties.get("git.commit.id.describe").toString();
   }
 
+  String getInitSeed() {
+    return ""+wr.getInitSeed();
+  }
+
   /*
    * bundle the WadC source into the WAD
    * XXX: Issues:
@@ -360,6 +364,7 @@ public class Wad {
 
       for(String s : Arrays.asList(
         "-- generated with WadC version ", getVersion(), "\n",
+        "-- initial random seed: ", getInitSeed(), "\n",
         mf.getText() )) {
 
         byte[] v = s.getBytes("UTF-8");

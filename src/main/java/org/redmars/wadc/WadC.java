@@ -36,13 +36,15 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.ButtonGroup;
 import javax.swing.KeyStroke;
+import javax.swing.JTabbedPane;
 
-public class WadC extends JFrame implements WadCMainFrame {
+public class WadC extends JFrame implements WadCMainFrame, RandomListener {
   private JTextArea programTextArea = new JTextArea("",15,30);
   private JScrollPane sp = new JScrollPane(programTextArea);
   private GroupLayout borderLayout1 = new GroupLayout(true, 2.0f, 2.0f);
   private Panel panel1 = new Panel();
   private TextArea messagesTextArea = new TextArea("",5,20);
+  private TuneablePanel tunablesArea = new TuneablePanel();
   private JMenuBar mainMenuBar = new JMenuBar();
   private JMenu fileMenu = new JMenu();
   private JMenuItem newMenuItem = new JMenuItem();
@@ -77,6 +79,8 @@ public class WadC extends JFrame implements WadCMainFrame {
 
   private JMenuItem fontSizeDownItem = new JMenuItem();
   private JMenuItem fontSizeUpItem = new JMenuItem();
+
+  private JTabbedPane tabbedPane = new JTabbedPane();
 
   private Canvas cv;
   UndoManager manager = new UndoManager();
@@ -116,7 +120,7 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     final int MENU_SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
-    programTextArea.setFont(new Font("Monospaced",0,12));
+    programTextArea.setFont(new Font("Monospaced",0, prefs.getInt("fontSize", 18)));
     programTextArea.getDocument().addDocumentListener(new DocumentListener() {
         public void removeUpdate(DocumentEvent e) {
             textArea1_textValueChanged();
@@ -250,6 +254,7 @@ public class WadC extends JFrame implements WadCMainFrame {
             Font f = programTextArea.getFont();
             Float ff = f.getSize2D() - 1.0f;
             programTextArea.setFont(f.deriveFont(ff));
+            prefs.putInt("fontSize", ff.intValue());
         }
     });
     fontSizeUpItem.setText(__("Increase font size"));
@@ -259,6 +264,7 @@ public class WadC extends JFrame implements WadCMainFrame {
             Font f = programTextArea.getFont();
             Float ff = f.getSize2D() + 1.0f;
             programTextArea.setFont(f.deriveFont(ff));
+            prefs.putInt("fontSize", ff.intValue());
         }
     });
 
@@ -306,10 +312,13 @@ public class WadC extends JFrame implements WadCMainFrame {
     fillMenu.add(lightSectors);
     
     cv = new WadCanvas(this);
-    //messagesTextArea.setBackground(Color.lightGray);
+
     messagesTextArea.setEditable(false);
+    tabbedPane.addTab(__("Messages"), messagesTextArea);
+    tabbedPane.addTab(__("Knobs"), tunablesArea);
+
     panel1.add(cv,"b3");
-    panel1.add(messagesTextArea, "b1");
+    panel1.add(tabbedPane, "b1");
     add(panel1, "b3");
     //setSize(600,400);
     this.setLocation(50,50);
@@ -318,6 +327,15 @@ public class WadC extends JFrame implements WadCMainFrame {
 
     String lf = loadTextFile(prefs.get("basename"));
     if(lf.length()>0) { programTextArea.setText(lf); } else { newfile(null); };
+
+    // initial random seed.
+    int s = (int)System.currentTimeMillis();
+    KnobJockey.addRandomListener(this);
+    KnobJockey.setSeed(s);
+  }
+
+  public void seedChanged(long s) {
+    msg(__("random seed set to ") + s);
   }
 
   public void msg(String s) {
@@ -351,6 +369,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     programTextArea.setText("#\"standard.h\"\n\nmain {\n  straight(64)\n}\n");
     // XXX: nasty hack to ensure basename is always a FQ path
     prefs.put("basename", new File(System.getProperty("user.home"), "untitled.wl").toString());
+    KnobJockey.getInstance().clear();
   }
 
   private void open(ActionEvent e) {
@@ -361,6 +380,7 @@ public class WadC extends JFrame implements WadCMainFrame {
     if(name==null) return;
     prefs.put("basename", (new File(fd.getDirectory(),name)).toString());
     programTextArea.setText(loadTextFile(prefs.get("basename")));
+    KnobJockey.getInstance().clear();
   }
 
   private void saveAs(ActionEvent e) {
@@ -495,4 +515,3 @@ public class WadC extends JFrame implements WadCMainFrame {
       programTextArea.insert(s, pos);
   }
 }
-

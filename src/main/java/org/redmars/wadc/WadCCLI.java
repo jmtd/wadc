@@ -10,47 +10,48 @@
 package org.redmars.wadc;
 
 import java.io.*;
+import java.util.concurrent.Callable;
 import java.util.List;
+
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 
 /*
  * an initial, very hacky CLI for WadC
  */
 
-public class WadCCLI implements WadCMainFrame {
+@Command(name="wadccli", description="wadc cli")
+public class WadCCLI implements WadCMainFrame, Callable<Integer>
+{
 
     String src = "";
 
-    private static void usage() {
-        System.err.println("usage: WadCCLI <infile>");
-        System.exit(1);
-    }
+    @Option(names={"--seed"}, description="Set the initial RNG seed")
+    // XXX: move initial value to a common parent of WadC, WadCCLI?
+    private long initSeed = (int)System.currentTimeMillis();
 
-    public static void main(String [] args) {
+    @Option(names={"-nosrc"}, description="Disable generating WADCSRC lump")
+    private boolean nosrc = false;
 
-        String infile = "";
-        boolean writesrc = true;
+    @Option(names={"-o","--outfile"}, description="File path to write the generated PWAD")
+    private String wadfile = null;
 
-        if (args.length < 1) {
-            usage();
+    @Parameters(index="0", description="The Wad Language source file")
+    private String srcFile = "";
 
-        // presently undocumented hack
-        } else if(args.length == 2) {
-            if(!"-nosrc".equals(args[0])) {
-                usage();
-            }
-            writesrc = false;
-            infile = args[1];
-
-        } else {
-            infile = args[0];
-        }
-
-        new WadCCLI(infile, writesrc);
+    public static void main(String [] args)
+    {
+        WadCCLI cli = new WadCCLI();
+        System.exit(new CommandLine(cli).execute(args));
     }
 
     // XXX: copied verbatim from MainFrame. should be a static interface method?
-    private String loadTextFile(String name) {
-      try {
+    private String loadTextFile(String name)
+    {
+      try
+      {
         BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(name)));
         String c = "";
         String t;
@@ -58,56 +59,69 @@ public class WadCCLI implements WadCMainFrame {
         in.close();
         msg("file "+name+" read");
         return c;
-      } catch(IOException i) {
+      }
+      catch(IOException i)
+      {
         msg("couldn't load file "+name);
       }
       return "";
     }
 
-    private void readSource(final String name) {
+    private void readSource(final String name)
+    {
         if(name==null) return;
         this.src = loadTextFile((new File(name)).toString());
     }
 
     /* do the magic */
-    public WadCCLI(final String infile, boolean writesrc) {
-        String wadfile;
-        readSource(infile);
+    @Override
+    public Integer call() throws Exception
+    {
+        readSource(srcFile);
+        System.err.println("debug seed: " + initSeed);
+        KnobJockey.setSeed(initSeed);
         WadParse wp = new WadParse(this.src, this);
-        try {
+        try
+        {
             wp.run();
-            wadfile = infile.substring(0,infile.lastIndexOf('.'))+".wad";
-            Wad wad = new Wad(wp,this,wadfile,writesrc);
+            if(wadfile ==null)
+                wadfile = srcFile.substring(0,srcFile.lastIndexOf('.'))+".wad";
+            Wad wad = new Wad(wp,this,wadfile,!nosrc);
             wad.run();
 
-        } catch(Error e) {
+        }
+        catch(Error e)
+        {
             System.err.println("eval: "+e.getMessage());
 
             List<String> stacktrace = wp.wr.stacktrace;
-            if(stacktrace.size()>0) {
+            if(stacktrace.size()>0)
+            {
               System.err.println("stacktrace: ");
               int st = stacktrace.size()-10;
               if(st<0) st = 0;
-              for(int i = stacktrace.size()-1; i>=st; i--) {
+              for(int i = stacktrace.size()-1; i>=st; i--)
+              {
                 System.err.println(stacktrace.get(i));
               }
             }
-
-            System.exit(1);
+            return 1;
         }
+        return 0;
     }
 
-    // XXX: consider appending the output of this to the WADCSRC lump too.
-    // why? to capture the initial random seed, for when one wasn't specified.
-    public void msg(String m) {
+    public void msg(String m)
+    {
         System.out.println(m);
     }
 
-    public String getText() {
+    public String getText()
+    {
         return this.src;
     }
 
-    public void insert(String s, int pos) {
+    public void insert(String s, int pos)
+    {
         // not implemented
     }
 }

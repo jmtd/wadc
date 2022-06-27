@@ -56,12 +56,12 @@
 #"control.h"
 #"sectors.h"
 
-skyheight    { 192 }
-wallheight   { 96  }
-turretheight { 160 }
-ceilheight   { 136 }
-skybright    { 150 }
-housebright  { 200 }
+skyheight    { knob("skyheight",    0, 192, 2048) }
+wallheight   { knob("wallheight",   0, 96,  256) }
+turretheight { knob("turretheight", 0, 160, 1024) }
+ceilheight   { knob("ceilheight",   0, 136, 1024) }
+skybright    { knob("skybright",    0, 150, 255) }
+housebright  { knob("housebright",  0, 200, 255) }
 
 main {
   hereticdefaults
