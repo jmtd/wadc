@@ -45,7 +45,7 @@ GPL (GNU Public License, version 2. see the included LICENSE.txt file.)
 
 
 You need a Java runtime environment installed to use WadC. Get one from
-https://java.com/download if you don't have it already.
+https://adoptopenjdk.net/ if you don't have it already.
 
 Unpack the whole zip to any directory you like. On most systems, just
 double-click or activate the "wadc-3.1-jar-with-dependencies.jar" file. From a
