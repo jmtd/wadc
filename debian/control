@@ -4,9 +4,9 @@ Priority: optional
 Maintainer: Debian QA Group <packages@qa.debian.org>
 Build-Depends: asciidoctor,
                debhelper-compat (= 12),
-               default-jdk-headless (>= 2:1.8),
+               default-jdk-headless,
                dh-exec,
-               maven-debian-helper (>= 2.1)
+               maven-debian-helper
 Standards-Version: 3.9.8
 Vcs-Git: https://github.com/jmtd/wadc.git -b debian
 Vcs-Browser: https://github.com/jmtd/wadc
@@ -14,7 +14,7 @@ Homepage: https://jmtd.net/wadc/
 
 Package: wadc
 Architecture: all
-Depends: default-jre (>= 2:1.8) | java8-runtime,
+Depends: default-jre | java8-runtime,
          jarwrapper,
          ${maven:Depends},
          ${misc:Depends}
