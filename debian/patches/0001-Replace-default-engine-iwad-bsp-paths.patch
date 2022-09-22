@@ -6,10 +6,10 @@ Date:   Mon, 19 Nov 2018 16:40:57 +0000
     Sensible defaults for Debian systems
 
 diff --git a/src/main/java/org/redmars/wadc/WadCPrefs.java b/src/main/java/org/redmars/wadc/WadCPrefs.java
-index 445da67..bce1c67 100644
+index 5ee1ad5..e587d2d 100644
 --- a/src/main/java/org/redmars/wadc/WadCPrefs.java
 +++ b/src/main/java/org/redmars/wadc/WadCPrefs.java
-@@ -59,10 +59,10 @@ public class WadCPrefs {
+@@ -66,10 +66,10 @@ public class WadCPrefs {
    public WadCPrefs() {
        prefs = Preferences.userNodeForPackage(WadCPrefs.class);
  

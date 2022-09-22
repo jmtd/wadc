@@ -8,12 +8,15 @@ Description: remove maven plugin git-commit-id-plugin
  debian/rules instead.
 Last-Update: 2022-09-22
 
---- wadc-3.1.orig/pom.xml
-+++ wadc-3.1/pom.xml
-@@ -22,25 +22,6 @@
+diff --git a/pom.xml b/pom.xml
+index 16ea8dd..b4cc817 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -33,25 +33,6 @@
+           <target>8</target>
          </configuration>
        </plugin>
-       <plugin>
+-      <plugin>
 -        <groupId>pl.project13.maven</groupId>
 -        <artifactId>git-commit-id-plugin</artifactId>
 -        <version>2.1.15</version>
@@ -32,7 +35,6 @@ Last-Update: 2022-09-22
 -          </includeOnlyProperties>
 -        </configuration>
 -      </plugin>
--      <plugin>
+       <plugin>
          <artifactId>maven-assembly-plugin</artifactId>
          <version>3.1.0</version>
-         <executions>
