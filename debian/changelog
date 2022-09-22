@@ -1,4 +1,4 @@
-wadc (3.1-1) UNRELEASED; urgency=medium
+wadc (3.1-1) unstable; urgency=medium
 
   [ Debian Janitor ]
   * Use secure copyright file specification URI.
