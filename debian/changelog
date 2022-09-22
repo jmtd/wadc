@@ -21,7 +21,7 @@ wadc (3.1-1) unstable; urgency=medium
     Adjust the version we generate to indicate the Debian package.
   * Bump standards version
 
- -- Jonathan Dowland <jmtd@debian.org>  Fri, 05 Nov 2021 21:18:00 +0000
+ -- Jonathan Dowland <jmtd@debian.org>  Thu, 22 Sep 2022 23:04:34 +0100
 
 wadc (3.0-1) unstable; urgency=medium
 
