@@ -1,0 +1,14 @@
+Description: explicitly add picocli to wadccli classpath
+Author: Jonathan Dowland <jmtd@debian.org>
+Last-Update: 2022-09-22
+
+diff --git a/extra/wadccli.sh b/extra/wadccli.sh
+index e55a0ae..065b4ff 100755
+--- a/extra/wadccli.sh
++++ b/extra/wadccli.sh
+@@ -14,4 +14,4 @@ findjar() {
+ JAR=${JAR:-$(findjar)}
+ 
+ # example of how to launch the (alpha) cli
+-java -cp "$JAR" org.redmars.wadc.WadCCLI "$@"
++java -cp "$JAR:/usr/share/java/picocli.jar" org.redmars.wadc.WadCCLI "$@"

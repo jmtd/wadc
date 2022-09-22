@@ -1,3 +1,4 @@
 0001-Replace-default-engine-iwad-bsp-paths.patch
 0002-docs-bsp.patch
 remove-git-commit-id-plugin
+wadccli.patch

@@ -16,6 +16,7 @@ Package: wadc
 Architecture: all
 Depends: default-jre | java8-runtime,
          jarwrapper,
+         libpicocli-java (>= 4.6.1),
          ${maven:Depends},
          ${misc:Depends}
 Recommends: freedoom | doom-wad | boom-wad | game-data-packager,
