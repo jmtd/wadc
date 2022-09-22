@@ -99,7 +99,7 @@ class WadRun {
 
   private LinkedHashSet<Vertex> collect = new LinkedHashSet<>();
 
-  private static Random rnd = new Random();
+  private long initSeed;
 
   WadRun(WadParse p) {
       wp = p;
@@ -124,6 +124,14 @@ class WadRun {
 
     builtin("getorient", 0, new Builtin() { Exp eval() {
       return new Int(orient);
+    }});
+
+    builtin("getx", 0, new Builtin() { Exp eval() {
+      return new Int(xp);
+    }});
+
+    builtin("gety", 0, new Builtin() { Exp eval() {
+      return new Int(yp);
     }});
 
     builtin("up", 0, new Builtin() { Exp eval() {
@@ -168,6 +176,38 @@ class WadRun {
       rotate((side>0)?1:-1);
       return n;
     }});
+
+    builtin("archclip", 7, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f, Exp g) {
+      int height = a.ival();
+      int width = b.ival();
+      int depth = c.ival();
+      int steps = d.ival();
+      int step = width/steps;
+      floor = e.ival();
+      lightlevel = f.ival();
+
+      int maxLength = g.ival(); // maximum length we will generate, to make shortened arches
+      int curLength = 0;
+
+      for(int i = 0; i<steps && curLength < maxLength; i++) {
+        step = width/steps;
+        if( (maxLength - curLength) < step) {
+          step = maxLength - curLength;
+        }
+        curLength += step;
+
+        int xtra = (int)(Math.sin(Math.acos(2*i/(double)steps-1.0))*width/2);
+        step(step,0);
+        step(0,depth);
+        step(-step,0);
+        step(0,-depth);
+        step(step,0);
+        makesector(true,-1,floor,floor+height+xtra,lightlevel);
+        xoff += step;
+      }
+      return n;
+    }});
+
 
     builtin("arch", 6, new Builtin() { Exp eval(Exp a, Exp b, Exp c, Exp d, Exp e, Exp f) {
       int height = a.ival();
@@ -330,18 +370,25 @@ class WadRun {
       return n;
     }});
 
-    // accessors for the pen's current texture
-    Arrays.stream( new String [][] {
-        { "getfloor", texfloor },
-        { "getceil",  texceil  },
-        { "gettop",   textop   },
-        { "getbot",   texbot   },
-        { "getmid",   texmid   },
-    }).forEach(p ->
-        builtin(p[0], 0, new Builtin() { Exp eval() {
-          return new Str(p[1]);
-        }})
-    );
+    builtin("getfloor", 0, new Builtin() { Exp eval() {
+        return new Str(texfloor);
+    }});
+
+    builtin("getceil", 0, new Builtin() { Exp eval() {
+        return new Str(texceil);
+    }});
+
+    builtin("gettop", 0, new Builtin() { Exp eval() {
+        return new Str(textop);
+    }});
+
+    builtin("getbot", 0, new Builtin() { Exp eval() {
+        return new Str(texbot);
+    }});
+
+    builtin("getmid", 0, new Builtin() { Exp eval() {
+        return new Str(texmid);
+    }});
 
     builtin("xoff", 1, new Builtin() { Exp eval(Exp s) {
       xoff = s.ival();
@@ -424,6 +471,10 @@ class WadRun {
 
     builtin("eq", 2, new Builtin() { Exp eval(Exp a, Exp b) {
       return new Int(a.ival()==b.ival()?1:0);
+    }});
+
+    builtin("streq", 2, new Builtin() { Exp eval(Exp a, Exp b) {
+      return new Int(a.sval().equals(b.sval())?1:0);
     }});
 
     builtin("lessthaneq", 2, new Builtin() { Exp eval(Exp a, Exp b) {
@@ -525,8 +576,7 @@ class WadRun {
     }});
 
     builtin("seed", 1, new Builtin() { Exp eval(Exp a) {
-      Choice.setSeed(a.ival());
-      wp.mf.msg("random seed set to " + Choice.seed);
+      setSeed(a.ival());
       return n;
     }});
 
@@ -534,7 +584,7 @@ class WadRun {
       int floor = ea.ival();
       int ceil  = eb.ival();
       if(floor > ceil) { int c = floor; floor = ceil; ceil = c; }
-      return new Int(floor + Choice.rnd.nextInt(ceil - floor + 1));
+      return new Int(floor + KnobJockey.nextInt(ceil - floor + 1));
       // +1 to make ceiling inclusive (nextInt is exclusive of ceiling)
     }});
 
@@ -545,6 +595,12 @@ class WadRun {
     builtin("mapname", 1, new Builtin() { Exp eval(Exp a) {
       mapname = a.sval();
       return n;
+    }});
+
+    // integers only so far
+    builtin("knob", 4, new Builtin() { Exp eval(Exp label, Exp min, Exp val, Exp max) {
+        int i = KnobJockey.getInstance().getOrSet(label.sval(), min.ival(), val.ival(), max.ival());
+        return new Int(i);
     }});
   }
 
@@ -1247,9 +1303,18 @@ class WadRun {
     renderxtraverts(g);
   }
 
+  void setSeed(int s)
+  {
+      KnobJockey.setSeed(s);
+  }
+
+  public long getInitSeed() {
+    return initSeed;
+  }
+
   void run() throws Error {
-      Choice.setSeed((int)System.currentTimeMillis());
-      wp.mf.msg("random seed set to " + Choice.seed);
+      initSeed = KnobJockey.getSeed();
+      KnobJockey.setSeed(initSeed);
       makevertex();
       call(new Id("main"));
       for(int i = 0; i<vertices.size(); i++) {
@@ -1303,6 +1368,13 @@ class WadRun {
                            ((Exp)v.elementAt(3)).eval(this),
                            ((Exp)v.elementAt(4)).eval(this),
                            ((Exp)v.elementAt(5)).eval(this)); break;
+        case 7: r = b.eval(((Exp)v.elementAt(0)).eval(this),
+                           ((Exp)v.elementAt(1)).eval(this),
+                           ((Exp)v.elementAt(2)).eval(this),
+                           ((Exp)v.elementAt(3)).eval(this),
+                           ((Exp)v.elementAt(4)).eval(this),
+                           ((Exp)v.elementAt(5)).eval(this),
+                           ((Exp)v.elementAt(6)).eval(this)); break;
         case 8: r = b.eval(((Exp)v.elementAt(0)).eval(this),
                            ((Exp)v.elementAt(1)).eval(this),
                            ((Exp)v.elementAt(2)).eval(this),

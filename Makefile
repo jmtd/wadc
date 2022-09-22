@@ -4,7 +4,7 @@
 
 # hint: md5sha1sum via brew for OS X
 
-JAR  := target/wadc-3.0.jar
+JAR  := target/wadc-3.1-jar-with-dependencies.jar
 WADS := $(patsubst %.wl,%.wad, $(wildcard examples/*.wl) $(wildcard tests/*.wl))
 
 default: check
@@ -15,7 +15,7 @@ check:
 wads: $(WADS)
 
 %.wad : %.wl
-	java -cp $(JAR) org.redmars.wadc.WadCCLI -nosrc "$<"
+	java -cp $(JAR) org.redmars.wadc.WadCCLI -nosrc --seed 1337 "$<"
 
 # this should not be automatically re-generated so it should not appear as
 # a dependency in any other rules. To be run by hand by someone who is very

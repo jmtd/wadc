@@ -24,7 +24,7 @@
       <outputDirectory>.</outputDirectory>
       <includes>
         <include>docs/**</include>
-        <include>*.jar</include>
+        <include>*jar-with-dependencies.jar</include>
       </includes>
     </fileSet>
     <fileSet>

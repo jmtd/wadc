@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -ue
 
 cat examples.adoc.in
@@ -21,7 +21,7 @@ for wl in ../examples/*wl; do
     fi
     echo
 
-    echo "PWAD:: https://redmars.org/wadc/examples/${bn/wl/wad}[${bn/wl/wad}]"
-    echo "Source:: https://github.com/jmtd/wadc/blob/master/examples/$bn[$bn]"
+    echo "PWAD:: link:wads/${bn/wl/wad}[${bn/wl/wad}]"
+    echo "Source:: link:wads/$bn[$bn]"
     echo
 done

@@ -1,7 +1,7 @@
 = WadC Release Notes
 Jonathan Dowland <jon@dow.land>; Wouter van Oortmerssen
 :toc:
-:toc-placement!:
+:toc-placement: right
 :toclevels: 5
 :toc-title:
 :homepage: https://jmtd.net/wadc/
@@ -12,6 +12,71 @@ current features, see link:reference.adoc[the Reference].
 == Table of Contents
 
 toc::[]
+
+== 3.1
+
+This version of WadC is dedicated to Kayvan Walker (1983-2022). RIP.
+Thank you Kayvan, for introducing me to Doom, amongst many other things.
+
+=== Language features
+
+ * New (experimental) built-in `archclip`: behaves the same as `arch`,
+   but stops generating the arch after N units, where N is the seventh
+   parameter supplied
+ * Two new built-ins: `getx` and `gety` return the cursor's current X/Y
+   position.
+
+=== Core program changes
+
+ * Knobs: mark an expression with `knob(label,min,val,max)` to register
+   a tweakable Knob in the UI, clamped within the range defined by the
+   min and max parameters. Knobs can have their values adjusted in the
+   "Knobs" tab pane in the main WadC GUI. The new value will take effect
+   next time the Wad Language program is Run.
+
+ * Random seed: In Prior WadC versions, the random number generator was
+   re-seeded with the current time each time the Wad Language program was
+   Run. As a result, repeatedly re-running a program which heavily relies
+   upon RNG (such as `bsp.wl`) will not produce different results. To get
+   the old behaviour, add a line like the following towards the beginning
+   of your program:
+
+       seed(rand(0,13371337))
+
+ * The random seed at Run-time is written to the embedded `WADCSRC` lump as
+   a comment prior to the program source. This is to help reproducibility.
+
+==== Distribution and runtime requirements
+
+WadC's minimum Java version, both as as source and run time dependency,
+has moved to 16.
+
+WadC now depends upon the [picocli library](http://picocli.info/) for
+command-line argument handling. picocli is distributed under the terms
+of the link:Apache-License-2.0.txt[Apache License, Version 2.0].
+
+==== UI improvements
+
+ * The default font size is now 18 points, up from 12. Your chosen font
+   size is saved and restored as a Preference.
+
+ * A new GUI panel "Knobs" has been added as a Tab-pane in the same area
+   as the messages box. This panel lets you set values for any variables
+   marked as `knob` in the program text. That value is used next time the
+   program is evaluated.
+
+ * The random seed at Run-time is exposed as a tweakable knob in the Knob UI.
+
+=== new/modified example programs
+
+ * `vanilla_conveyor.wl`: simple demonstration of vanilla conveyors
+ * `brexit.wl`: more complex demonstration of vanilla conveyors
+
+==== Library additions/deletions
+
+ * `vanilla_conveyor.h`: helper routines for building vanilla "conveyor"
+    triggers, based on a discovery by Mikolah & Linguica on the Doomworld
+    Forums. Experimental.
 
 == 3.0
 

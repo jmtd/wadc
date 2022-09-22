@@ -61,6 +61,8 @@ floor_s1_up_512              { 140 }
 
 -- XXX: ceilings
 
+ceiling_w1_down_8f           { 44 }
+
 -- platforms
 
 sr_lift { 62 }
@@ -78,7 +80,17 @@ crusher_wr_fast   { 77 }
 crusher_w1_silent { 141 }
 
 -- XXX stairbuilders
+
+stairs_w1_slow_8  { 8 }
+stairs_w1_fast_16 { 100 }
+
 -- XXX lighting
+
+light_w1_255  { 13 }
+light_w1_35   { 35 }
+light_w1_maxN { 12 }
+light_w1_minN { 104 }
+light_w1_blink{ 17 }
 
 -- exits
 
@@ -95,3 +107,11 @@ teleport_w1_monsteronly { 125 }
 teleport_wr_monsteronly { 126 }
 
 -- XXX donuts
+
+-- doors
+
+door_w1_openclose { 2 }
+
+-- decorative
+
+wall_scroll_left { 48 }
