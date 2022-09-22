@@ -7,7 +7,7 @@ Build-Depends: asciidoctor,
                default-jdk-headless,
                dh-exec,
                maven-debian-helper
-Standards-Version: 3.9.8
+Standards-Version: 4.6.1
 Vcs-Git: https://github.com/jmtd/wadc.git -b debian
 Vcs-Browser: https://github.com/jmtd/wadc
 Homepage: https://jmtd.net/wadc/

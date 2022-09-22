@@ -19,6 +19,7 @@ wadc (3.1-1) UNRELEASED; urgency=medium
   * Remove git-commit-id-plugin from Maven pom. For the Debian build
     we generate the git.properties file using debian/rules instead.
     Adjust the version we generate to indicate the Debian package.
+  * Bump standards version
 
  -- Jonathan Dowland <jmtd@debian.org>  Fri, 05 Nov 2021 21:18:00 +0000
 
