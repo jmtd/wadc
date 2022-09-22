@@ -1,9 +1,8 @@
+Description: Replace default preferences values with sensible defaults
+ .
+ Sensible defaults for Debian systems
+Last-Update: 2022-09-22
 Author: Jonathan Dowland <jmtd@debian.org>
-Date:   Mon, 19 Nov 2018 16:40:57 +0000
-
-    Replace default preferences values with sensible defaults
-    
-    Sensible defaults for Debian systems
 
 diff --git a/src/main/java/org/redmars/wadc/WadCPrefs.java b/src/main/java/org/redmars/wadc/WadCPrefs.java
 index 5ee1ad5..e587d2d 100644
@@ -15,7 +14,7 @@ index 5ee1ad5..e587d2d 100644
  
 -      defs.put("bspcmd",   "c:\\doom2\\bsp");
 -      defs.put("doomexe",  "c:\\doom\\zdoom.exe");
-+      defs.put("bspcmd",   "bsp");
++      defs.put("bspcmd",   "zdbsp");
 +      defs.put("doomexe",  "doom");
        defs.put("doomargs", "-warp 1 -file");
 -      defs.put("iwad",     "c:\\doom2\\doomw.wad");
