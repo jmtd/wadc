@@ -12,7 +12,7 @@ Copyright: 2010, GreyGhost
            2010-2017, Jonathan Dowland <jmtd@debian.org>
 License: GPL-2
 
-Files: src/main/java/org/redmars/wadc/MainFrame.java
+Files: src/main/java/org/redmars/wadc/WadC.java
 Copyright: 2000-2008, Wouter van Oortmerssen;
            2015, Jonathan Rimmer;
            2008-2017, Jonathan Dowland <jmtd@debian.org>
