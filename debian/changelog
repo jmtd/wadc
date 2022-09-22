@@ -12,6 +12,8 @@ wadc (3.1-1) UNRELEASED; urgency=medium
 
   [ Jonathan Dowland ]
   * New upstream version
+    * explicit dependency on libpicocli-java as we rely on the API
+      from 4.x onwards
   * Replace glbsp reference in long-description with zdbsp
     * replace default node-builder in properties file with zdbsp
   * Remove git-commit-id-plugin from Maven pom. For the Debian build
