@@ -52,6 +52,8 @@ public class Wad {
       writeInt(numentries);
       writeInt(12); // dir offset
       int tsize = writeThings();
+      preprocessLines();
+      packSides();
       int lsize = writeLines();
       int dsize = writeSides();
       int vsize = writeVertices();
@@ -119,10 +121,16 @@ public class Wad {
     return v.size()*4;
   }
 
-  int writeLines() throws IOException {
+  /*
+   * process all the linedefs, pruning invalid ones and assigning final values of linedef
+   * fields, such as sidedefs, texture offsets and midtextures. Also prunes sidedefs
+   * referenced by the pruned linedefs 
+   */
+  private void preprocessLines() {
     //swapped roles of left and right to account for mirroring bug (see -a.x in vertices/things)
     List<Line> lines = wr.lines;
-    int numlines = 0;
+    List<Line> prunedLines = new ArrayList<>();
+    List<Side> prunedSides = new ArrayList<>();
     for (Line a : lines) {
       if (a.left == null) {
         a.left = a.right;
@@ -130,69 +138,111 @@ public class Wad {
         Vertex x = a.from;
         a.from = a.to;
         a.to = x;
-        if (a.left == null) {
-          if (wr.prunelines) {} else {
-            if (linewarn) mf.msg("warning: found line not part of any sector, assigned sector 0, & line 0 properties");
-            linewarn = false;
-            a.left = new Side(wr.lines.get(0), wr.sides);
-            a.left.s = wr.sectors.get(0);
-          }
-        }
+	if (wr.prunelines && ((a.right != null && a.left.s == a.right.s && a.type == 0)
+              || (a.right == null && a.left == null))) {
+          continue;
+	}
+      }
+      if (a.left == null) {
+        if (linewarn) mf.msg("warning: found line not part of any sector, assigned sector 0, & line 0 properties");
+        linewarn = false;
+        a.left = new Side(wr.lines.get(0), wr.sides);
+        a.left.s = wr.sectors.get(0);
+      }
+      if (a.undefx) {
+        Vertex from = a.from;
+        Vertex to = a.to;
+        a.xoff = from.x == to.x
+                ? (from.y < to.y ? from.y : -from.y)
+                : (from.y == to.y
+                ? (from.x < to.x ? from.x : -from.x)
+                : a.xoff);
+      }
+      if (a.right != null && !a.midtex) a.m = "-";
+      prunedLines.add(a);
+      a.left.idx = prunedSides.size();
+      prunedSides.add(a.left);
+      if (a.right != null) {
+	  a.right.idx = prunedSides.size();
+	  prunedSides.add(a.right);
+      }
+    }
+    wr.lines = prunedLines;
+    wr.sides = prunedSides;
+  }
+
+  int writeLines() throws IOException {
+    List<Line> lines = wr.lines;
+    int numlines = 0;
+    for (Line a : lines) {
+      numlines++;
+      writeShort(a.from.idx);
+      writeShort(a.to.idx);
+      if (a.right == null) {
+        a.flags |= 1;
+      } else {
+        a.flags |= 4;
+      }
+      ;
+      writeShort(a.flags); // flags
+      if (!wr.hexen) {
+        writeShort(a.type); // type
+        writeShort(a.tag); // trigger
+      } else {
+        writeByte(a.type);
+        writeByte(a.tag);
+        for(int j : a.specialargs) writeByte(j);
       }
 
-      if (!(wr.prunelines && ((a.right != null && a.left.s == a.right.s && a.type == 0)
-              || (a.right == null && a.left == null)))) {
-        numlines++;
-        if (a.undefx) {
-          Vertex from = a.from;
-          Vertex to = a.to;
-          a.xoff = from.x == to.x
-                  ? (from.y < to.y ? from.y : -from.y)
-                  : (from.y == to.y
-                  ? (from.x < to.x ? from.x : -from.x)
-                  : a.xoff);
-        }
-
-        writeShort(a.from.idx);
-        writeShort(a.to.idx);
-        if (a.right == null) {
-          a.flags |= 1;
-        } else {
-          a.flags |= 4;
-          if (!a.midtex) a.m = "-";
-        }
-        ;
-        writeShort(a.flags); // flags
-        if (!wr.hexen) {
-          writeShort(a.type); // type
-          writeShort(a.tag); // trigger
-        } else {
-          writeByte(a.type);
-          writeByte(a.tag);
-          for(int j : a.specialargs) writeByte(j);
-        }
-
-        writeShort(a.left.idx);
-        writeShort(a.right == null ? -1 : a.right.idx);
-      }
+      writeShort(a.left.idx);
+      writeShort(a.right == null ? -1 : a.right.idx);
     }
 
     return numlines*(wr.hexen ? 16 : 14);
   }
 
-  private int writeSides() throws IOException {
-    List<Side> v = wr.sides;
-    int numsides = 0;
-    for (Side a : v) {
-      numsides++;
-      writeShort(a.l.xoff);
-      writeShort(a.l.yoff);
+  private void packSides() {
+    wr.packedSides = new ArrayList<PackedSide>();
+    HashMap<PackedSide, Integer> packedSides = new LinkedHashMap<>();
+    for (Side a : wr.sides) {
+      int xoff = a.l.xoff;
+      int yoff = a.l.yoff;
       int w = a.l.width();
       Side os = a.l.left == a ? a.l.right : a.l.left;
       if (os == null) os = a;
-      string(lookup("U", a.l.t, a.s.ceil - os.s.ceil, w, a.s.floor + 1000));
-      string(lookup("L", a.l.b, os.s.floor - a.s.floor, w, a.s.floor + 1000));
-      string(lookup("N", a.l.m, a.s.ceil - a.s.floor, w, a.s.floor + 1000));
+      String t = lookup("U", a.l.t, a.s.ceil - os.s.ceil, w, a.s.floor + 1000);
+      String b = lookup("L", a.l.b, os.s.floor - a.s.floor, w, a.s.floor + 1000);
+      String m = lookup("N", a.l.m, a.s.ceil - a.s.floor, w, a.s.floor + 1000);
+      Sector s = a.s;
+      PackedSide packedSide = new PackedSide(xoff, yoff, t, b, m, s);
+      if (wr.packsides) {
+        Integer index = packedSides.get(packedSide);
+        if (index == null) {
+          index = packedSides.size();
+          packedSides.put(packedSide, index);
+        }
+        a.idx = index;
+      } else {
+        wr.packedSides.add(packedSide);
+      }
+    }
+    if (wr.packsides) {
+      for (PackedSide side : packedSides.keySet()) {
+        wr.packedSides.add(side);
+      }
+    }
+  }
+
+  private int writeSides() throws IOException {
+    List<PackedSide> v = wr.packedSides;
+    int numsides = 0;
+    for (PackedSide a : v) {
+      numsides++;
+      writeShort(a.xoff);
+      writeShort(a.yoff);
+      string(a.t);
+      string(a.b);
+      string(a.m);
       writeShort(a.s.idx);
     }
 
