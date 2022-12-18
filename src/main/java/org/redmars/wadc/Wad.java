@@ -138,10 +138,10 @@ public class Wad {
         Vertex x = a.from;
         a.from = a.to;
         a.to = x;
-	if (wr.prunelines && ((a.right != null && a.left.s == a.right.s && a.type == 0)
-              || (a.right == null && a.left == null))) {
+      }
+      if (wr.prunelines && ((a.right != null && a.left.s == a.right.s && a.type == 0)
+            || (a.right == null && a.left == null))) {
           continue;
-	}
       }
       if (a.left == null) {
         if (linewarn) mf.msg("warning: found line not part of any sector, assigned sector 0, & line 0 properties");
