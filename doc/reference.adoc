@@ -670,6 +670,11 @@ sector on both sides, and linedefs with no sidedefs at all. This is often
 used in combination with mergesectors, and avoids the "sidedefs assigned
 to same sector" error.
 
+    packsides
+
+when there are identical sidedefs referenced by many linedefs this option replaces
+them with a single sidedef referenced by all of the linedefs.
+
     lastsector
     forcesector(index)
 

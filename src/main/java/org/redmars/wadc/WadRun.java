@@ -40,6 +40,7 @@ class WadRun {
   private int cursectortag = 0;
   private boolean mergesectors = false;
   boolean prunelines = false;
+  boolean packsides = false;
   private boolean undefx = false;
   private boolean undefy = false;
   private int forcesec = -1;
@@ -69,6 +70,7 @@ class WadRun {
   List<Vertex> vertices = new ArrayList<>();
   List<Line> lines = new ArrayList<>();
   List<Side> sides = new ArrayList<>();
+  List<PackedSide> packedSides = new ArrayList<>();
   List<Sector> sectors = new ArrayList<>();
   List<Thing> things = new ArrayList<>();
 
@@ -261,6 +263,11 @@ class WadRun {
 
     builtin("prunelines", 0, new Builtin() { Exp eval() {
       prunelines = true;
+      return n;
+    }});
+
+    builtin("packsides", 0, new Builtin() { Exp eval() {
+      packsides = true;
       return n;
     }});
 
