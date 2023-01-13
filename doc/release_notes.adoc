@@ -13,7 +13,21 @@ current features, see link:reference.adoc[the Reference].
 
 toc::[]
 
+== Dev
+
+Not yet released.
+
+=== Language features
+
+ * New built-in `packsides`: when enabled, the generated sidedefs
+   are de-duplicated and shared amongst linedefs. This allows for
+   larger maps within given engine limits.
+
+   Thanks to Piotr Wieczorek!
+
 == 3.1
+
+Released 27<sup>th</sup> June 2022.
 
 This version of WadC is dedicated to Kayvan Walker (1983-2022). RIP.
 Thank you Kayvan, for introducing me to Doom, amongst many other things.
