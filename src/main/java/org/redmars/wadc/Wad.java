@@ -58,7 +58,7 @@ public class Wad {
       int dsize = writeSides();
       int vsize = writeVertices();
       int ssize = writeSectors();
-      int bsize = writeBehaviour();
+      int bsize = writeBehavior();
       int texsize = writeTextures();
       int psize = writePnames();
       int wlsize = 0;
@@ -286,10 +286,9 @@ public class Wad {
     return v.size()*(wr.hexen ? 20 : 10);
   }
 
-  private int writeBehaviour() throws IOException {
-    byte data[] = { 65, 67, 0x53, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    if(wr.hexen) f.write(data);
-    return 16;
+  private int writeBehavior() throws IOException {
+    if(wr.hexen) f.write(wr.behavior);
+    return wr.behavior.length;
   }
 
   private int writeTextures() throws IOException {
