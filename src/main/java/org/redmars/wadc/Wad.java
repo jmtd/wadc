@@ -11,6 +11,8 @@ import java.util.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 public class Wad {
   private WadParse wp;
@@ -286,9 +288,21 @@ public class Wad {
     return v.size()*(wr.hexen ? 20 : 10);
   }
 
+  final static byte[] defaultBehavior = { 65, 67, 0x53, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  // permit overriding the contents of the BEHAVIOR lump
+  byte[] behavior = defaultBehavior;
+
   private int writeBehavior() throws IOException {
-    if(wr.hexen) f.write(wr.behavior);
-    return wr.behavior.length;
+    if(!wr.hexen) return 0;
+
+    if(null != wr.acssource) {
+      Path bn = Paths.get(mf.prefs.get("basename")).getParent();
+      Path path = Paths.get(bn.toString(), wr.acssource);
+      behavior = Files.readAllBytes(path);
+    }
+
+    f.write(behavior);
+    return behavior.length;
   }
 
   private int writeTextures() throws IOException {

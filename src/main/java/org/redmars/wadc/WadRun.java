@@ -15,11 +15,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
-
 class WadRun {
   WadParse wp;
   private WadCPrefs prefs;
@@ -70,9 +65,7 @@ class WadRun {
   private int xoff = 0, yoff = 0;
   private int lineflags = 0;
 
-  final static byte[] defaultBehavior = { 65, 67, 0x53, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-  // permit overriding the contents of the BEHAVIOR lump
-  byte[] behavior = defaultBehavior;
+  String acssource = null;
 
   // generated data
 
@@ -347,17 +340,7 @@ class WadRun {
     }});
 
     builtin("loadbehavior", 1, new Builtin() { Exp eval(Exp s) {
-      String fname = s.sval();
-      // XXX: restrict to relative?
-      try {
-        Path bn = Paths.get(prefs.get("basename")).getParent();
-        Path path = Paths.get(bn.toString(), fname);
-        behavior = Files.readAllBytes(path);
-
-      } catch (IOException e) {
-        wp.mf.msg("loadbehavior: "+e);
-        wp.error("died");
-      }
+      acssource = s.sval();
       return n;
     }});
 
