@@ -288,17 +288,46 @@ public class Wad {
     return v.size()*(wr.hexen ? 20 : 10);
   }
 
+  // Copied from WadC.java, __ removed (non-static)
+  private void subcmd(List<String> cmd) {
+    ProcessBuilder pb = new ProcessBuilder(cmd);
+    pb.inheritIO();
+    mf.msg(("launching: ") + String.join(" ", cmd));
+
+    try {
+      if(pb.start().waitFor() != 0) mf.msg(("cmd failed? ") + cmd.get(0));
+    } catch(Exception e) {
+      mf.msg(("command interrupted! ") + cmd.get(0));
+    }
+  }
+
   final static byte[] defaultBehavior = { 65, 67, 0x53, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   // permit overriding the contents of the BEHAVIOR lump
   byte[] behavior = defaultBehavior;
+
+  private void compileAcs(String acssource) throws IOException {
+    Path bn = Paths.get(mf.prefs.get("basename")).getParent();
+    Path srcpath = Paths.get(bn.toString(), acssource);
+
+    File outf = File.createTempFile("wadc-acc",".o");
+    outf.deleteOnExit();
+
+    ArrayList<String> cmd = new ArrayList<>();
+    cmd.add(mf.prefs.get("acsexe"));
+    cmd.addAll(Arrays.asList(mf.prefs.get("acsargs").split("\\s+")));
+    cmd.add(srcpath.toString());
+    cmd.add(outf.getCanonicalPath());
+    subcmd(cmd);
+
+    behavior = Files.readAllBytes(Paths.get(outf.getCanonicalPath()));
+    outf.delete();
+  }
 
   private int writeBehavior() throws IOException {
     if(!wr.hexen) return 0;
 
     if(null != wr.acssource) {
-      Path bn = Paths.get(mf.prefs.get("basename")).getParent();
-      Path path = Paths.get(bn.toString(), wr.acssource);
-      behavior = Files.readAllBytes(path);
+      compileAcs(wr.acssource);
     }
 
     f.write(behavior);

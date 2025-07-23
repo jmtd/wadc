@@ -339,7 +339,7 @@ class WadRun {
       return n;
     }});
 
-    builtin("loadbehavior", 1, new Builtin() { Exp eval(Exp s) {
+    builtin("acssource", 1, new Builtin() { Exp eval(Exp s) {
       acssource = s.sval();
       return n;
     }});

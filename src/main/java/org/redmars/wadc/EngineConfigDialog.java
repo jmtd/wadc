@@ -51,9 +51,11 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
 
     private final JPanel configPanel;
 
-    private final TextField doomargsField;
     private final JPathPanel enginePath;
+    private final TextField doomargsField;
     private final JPathPanel bspPath;
+    private final JPathPanel acsPath;
+    private final TextField acsArgs;
     private final JPathPanel iwadPath;
     private final JPathPanel twad1Path;
     private final JPathPanel twad2Path;
@@ -134,6 +136,28 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
             ++row;
         }
         {
+            JLabel label = new JLabel("ACS compiler command path");
+            label.setBorder(leftBorder);
+
+            acsPath = new JPathPanel(prefs.get("acsexe"));
+
+            final int row_ = row;
+            configPanel.add(label, new LabelConstraints() {{ gridy = row_; }});
+            configPanel.add(acsPath, new InputConstraints() {{ gridy = row_; }});
+            ++row;
+        }
+        {
+            JLabel label = new JLabel("ACS compiler arguments");
+            label.setBorder(leftBorder);
+
+            acsArgs = new TextField(prefs.get("acsargs"), 40);
+
+            final int row_ = row;
+            configPanel.add(label, new LabelConstraints() {{ gridy = row_; }});
+            configPanel.add(acsArgs, new InputConstraints() {{ gridy = row_; }});
+            ++row;
+        }
+        {
             JLabel label = new JLabel("Doom IWAD path");
             label.setBorder(leftBorder);
 
@@ -195,6 +219,10 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
         prefs.put("doomargs", doomargsField.getText());
         prefs.put("doomexe", enginePath.getPath().toString());
         prefs.put("bspcmd", bspPath.getPath().toString());
+
+        prefs.put("acsexe", acsPath.getPath().toString());
+        prefs.put("acsargs", acsArgs.getText());
+
         prefs.put("iwad", iwadPath.getPath().toString());
         prefs.put("twad1", twad1Path.getPath().toString());
         prefs.put("twad2", twad2Path.getPath().toString());
@@ -211,6 +239,12 @@ public class EngineConfigDialog extends JDialog implements PreferenceChangeListe
         }
         if(key.equals("bspcmd")) {
             bspPath.setPath(evt.getNewValue());
+        }
+        if(key.equals("acsexe")) {
+            acsPath.setPath(evt.getNewValue());
+        }
+        if(key.equals("acsargs")) {
+            acsArgs.setText(evt.getNewValue());
         }
         if(key.equals("iwad")) {
             iwadPath.setPath(evt.getNewValue());

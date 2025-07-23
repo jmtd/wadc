@@ -74,5 +74,8 @@ public class WadCPrefs {
       defs.put("twad2",    "");
       defs.put("twad3",    "");
       defs.put("basename",  "untitled.wl"); // current (or last) file edited (aka lastfile)
+
+      defs.put("acsexe",   "/usr/games/acc");
+      defs.put("acsargs",  "-h");
   }
 }
